@@ -40,6 +40,16 @@ const LeaderSkillText = ({ monster }: { monster: any }) => {
 
 const ChooseCard = styled.button`
   border: 1px solid black;
+  padding: 0.25rem 0.5rem;
+`;
+
+const CardQueryInput = styled.input`
+  border: 1px solid gray;
+  border-radius: 2px;
+  font-size: 1rem;
+  padding: 0.5rem 0.5rem;
+  text-align: center;
+  width: 100%;
 `;
 
 export const CardSelectorModal = ({
@@ -90,7 +100,7 @@ export const CardSelectorModal = ({
 
         {/* Todo make this react select for id query */}
         <FlexColC>
-          <input type="text" placeholder="type ids query here" />
+          <CardQueryInput type="text" placeholder="Search id/name/query" />
         </FlexColC>
 
         <div>List of monsters from query</div>

@@ -16,6 +16,7 @@ export type { HTTPValidationError } from './models/HTTPValidationError';
 export type { LeaderSkill } from './models/LeaderSkill';
 export type { MonsterResponse } from './models/MonsterResponse';
 export { MonsterType } from './models/MonsterType';
+export type { MonsterWithEvosResponse } from './models/MonsterWithEvosResponse';
 export type { Series } from './models/Series';
 export type { StatValue } from './models/StatValue';
 export type { StatValues } from './models/StatValues';

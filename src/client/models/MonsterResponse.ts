@@ -43,8 +43,8 @@ export type MonsterResponse = {
     is_inheritable: boolean;
     is_stackable: boolean;
     latent_slots: number;
-    leader_skill: LeaderSkill;
-    leader_skill_id: number;
+    leader_skill?: LeaderSkill;
+    leader_skill_id?: number;
     level: number;
     limit_mult: number;
     monster_id: number;
