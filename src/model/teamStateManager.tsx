@@ -1,4 +1,5 @@
 import React from "react";
+import { computeTeamStats, TeamStats } from "../components/teamStats";
 
 export interface TeamSlotState {
   baseId: number;
@@ -60,11 +61,12 @@ export const DEFAULT_TEAM_STATE: TeamState = {
   },
 };
 
-export function setCard(
+export async function setCard(
   cardSlot: string,
   value: number,
   teamState: TeamState,
-  setTeamState: React.Dispatch<React.SetStateAction<TeamState>>
+  setTeamState: React.Dispatch<React.SetStateAction<TeamState>>,
+  setTeamStats: React.Dispatch<React.SetStateAction<TeamStats>>
 ) {
   const parts = cardSlot.split("-");
   const p = parts[0].toLowerCase() as keyof TeamState;
@@ -82,6 +84,7 @@ export function setCard(
   console.log(newTeamState);
 
   setTeamState(newTeamState);
+  setTeamStats(await computeTeamStats(newTeamState));
 }
 
 export function setCardLatents(

@@ -8,26 +8,14 @@ import Modal from "react-modal";
 import { ApiError, MonsterResponse } from "../../client";
 import { AwakeningImage, BASE_ICON_URL } from "../../model/images";
 import m from "../../model/monster.json";
-import {
-  MonsterCacheClient,
-  monsterCacheClient,
-} from "../../model/monsterCacheClient";
+import { MonsterCacheClient, monsterCacheClient } from "../../model/monsterCacheClient";
 import { setCard, TeamState } from "../../model/teamStateManager";
 import { getKillers, MonsterType } from "../../model/types/monster";
-import {
-  BoundingBox,
-  FlexCol,
-  FlexColC,
-  FlexRow,
-  FlexRowC,
-  H2,
-  H3,
-  Page,
-  PageBox,
-} from "../../stylePrimitives";
+import { BoundingBox, FlexCol, FlexColC, FlexRow, FlexRowC, H2, H3, Page, PageBox } from "../../stylePrimitives";
 import { CardInfo } from "./cardInfo";
 import { leftPad } from "../generic/leftPad";
 import { breakpoint } from "../../breakpoints";
+import { TeamStats } from "../teamStats";
 
 const ChooseCard = styled.button`
   border: 1px solid black;
@@ -48,9 +36,7 @@ const handleInputChange = async (
   query: string,
   setQueriedId: React.Dispatch<React.SetStateAction<number>>,
   setAlternateEvoIds: React.Dispatch<React.SetStateAction<number[]>>,
-  setSelectedMonster: React.Dispatch<
-    React.SetStateAction<MonsterResponse | null>
-  >,
+  setSelectedMonster: React.Dispatch<React.SetStateAction<MonsterResponse | null>>,
   setError: React.Dispatch<React.SetStateAction<string>>
 ) => {
   try {
@@ -86,14 +72,12 @@ export const AlternateEvoImages = ({
   ids,
   queriedId,
   selectedMonster,
-  setSelectedMonster,
+  setSelectedMonster
 }: {
   ids: number[];
   queriedId: number;
   selectedMonster: MonsterResponse | null;
-  setSelectedMonster: React.Dispatch<
-    React.SetStateAction<MonsterResponse | null>
-  >;
+  setSelectedMonster: React.Dispatch<React.SetStateAction<MonsterResponse | null>>;
 }) => {
   return (
     <FlexColC>
@@ -106,9 +90,7 @@ export const AlternateEvoImages = ({
               const monster = await monsterCacheClient.get(id);
               setSelectedMonster(monster);
             }}
-            selected={
-              selectedMonster ? id === selectedMonster.monster_id : false
-            }
+            selected={selectedMonster ? id === selectedMonster.monster_id : false}
           />
         ))}
       </FlexRowC>
@@ -143,18 +125,19 @@ export const CardSelectorModal = ({
   cardSlotSelected,
   teamState,
   setTeamState,
+  setTeamStats
 }: {
   isOpen: boolean;
   setModalIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
   cardSlotSelected: string;
   teamState: TeamState;
   setTeamState: React.Dispatch<React.SetStateAction<TeamState>>;
+  setTeamStats: React.Dispatch<React.SetStateAction<TeamStats>>;
 }) => {
   const [queriedId, setQueriedId] = useState(0);
   const [altEvoIds, setAltEvoIds] = useState([] as number[]);
   const [error, setError] = useState("");
-  const [selectedMonster, setSelectedMonster] =
-    useState<MonsterResponse | null>(null);
+  const [selectedMonster, setSelectedMonster] = useState<MonsterResponse | null>(null);
 
   return (
     <Modal
@@ -168,12 +151,7 @@ export const CardSelectorModal = ({
       overlayClassName={overlayClassName}
       ariaHideApp={false}
     >
-      <BoundingBox
-        minWidth="50vw"
-        maxWidth="50vw"
-        minWidthM="75vw"
-        maxWidthM="90vw"
-      >
+      <BoundingBox minWidth="50vw" maxWidth="50vw" minWidthM="75vw" maxWidthM="90vw">
         <div
           className={css`
             background-color: #fefefe;
@@ -188,14 +166,8 @@ export const CardSelectorModal = ({
                 placeholder="Search id/name/query"
                 onChange={debounce(async (e) => {
                   e.preventDefault();
-                  await handleInputChange(
-                    e.target.value,
-                    setQueriedId,
-                    setAltEvoIds,
-                    setSelectedMonster,
-                    setError
-                  );
-                }, 200)}
+                  await handleInputChange(e.target.value, setQueriedId, setAltEvoIds, setSelectedMonster, setError);
+                }, 300)}
               />
 
               {error ? <span>{error}</span> : <></>}
@@ -214,12 +186,7 @@ export const CardSelectorModal = ({
             <FlexColC>
               <ChooseCard
                 onClick={() => {
-                  setCard(
-                    cardSlotSelected,
-                    selectedMonster!.monster_id,
-                    teamState,
-                    setTeamState
-                  );
+                  setCard(cardSlotSelected, selectedMonster!.monster_id, teamState, setTeamState, setTeamStats);
                   setModalIsOpen(false);
                 }}
               >
@@ -235,11 +202,7 @@ export const CardSelectorModal = ({
                 box-shadow: 2px 2px #888888;
               `}
             >
-              {selectedMonster ? (
-                <CardInfo monster={selectedMonster} />
-              ) : (
-                <FlexColC>Monster Details</FlexColC>
-              )}
+              {selectedMonster ? <CardInfo monster={selectedMonster} /> : <FlexColC>Monster Details</FlexColC>}
             </FlexCol>
           </FlexCol>
         </div>
