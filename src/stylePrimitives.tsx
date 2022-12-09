@@ -23,7 +23,7 @@ type FlexProps = {
 
 type FlexRowProps = {
   gap?: string;
-  wrap?: boolean;
+  wrap?: string;
   center?: boolean;
 };
 
@@ -31,6 +31,7 @@ export const FlexRow = styled.div<FlexRowProps>`
   display: flex;
   gap: ${(props) => (props.gap ? props.gap : "0")};
   justify-content: ${(props) => (props.center ? "center" : "start")};
+  flex-wrap: ${(props) => (props.wrap ? props.wrap : "nowrap")};
 `;
 
 export const FlexRowC = styled(FlexRow)`
@@ -78,15 +79,22 @@ export const HR2 = styled.hr`
 
 type PageProps = {
   maxWidth: string;
+  margin?: string;
 };
 
 export const PageBox = styled.div<PageProps>`
   width: 100%;
   max-width: ${(props) => props.maxWidth};
-  margin: 1rem;
+  margin: ${(props) => (props.margin ? props.margin : "1rem")};
 `;
 
-export const Page = ({ maxWidth, children }: { maxWidth: string; children: React.ReactNode }) => {
+export const Page = ({
+  maxWidth,
+  children,
+}: {
+  maxWidth: string;
+  children: React.ReactNode;
+}) => {
   return (
     <PageFlow>
       <PageBox maxWidth={maxWidth}>{children}</PageBox>
@@ -103,12 +111,16 @@ export const PageFlow = styled.div`
 type BoundingBoxProps = {
   maxWidth?: string;
   maxWidthM?: string;
+  minWidth?: string;
+  minWidthM?: string;
 };
 
 export const BoundingBox = styled.div<BoundingBoxProps>`
   max-width: ${(props) => props.maxWidth ?? "100%"};
+  min-width: ${(props) => props.minWidth ?? "0%"};
 
   @media ${breakpoint.xs} {
     max-width: ${(props) => props.maxWidthM ?? "100%"};
+    min-width: ${(props) => props.minWidthM ?? "0%"};
   }
 `;

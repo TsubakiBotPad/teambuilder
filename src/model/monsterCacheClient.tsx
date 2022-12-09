@@ -8,7 +8,11 @@ export class MonsterCacheClient {
     this.cache = {};
   }
 
-  public async getMonster(monsterId: number) {
+  public async get(monsterId: number) {
+    if (monsterId === 0) {
+      return null;
+    }
+
     if (this.cache[monsterId]) {
       return this.cache[monsterId];
     }
@@ -29,17 +33,24 @@ export class MonsterCacheClient {
       needsQuery.push({ index: idx, monsterId: monsterIds[idx] });
     }
 
-    const url = `https://api.tsubakibot.com/monsters?`;
-    var params = {
-      ids: needsQuery.map((a) => a.monsterId).join(",")
-    };
+    const j = await MonsterService.getManyById(
+      needsQuery.map((a) => a.monsterId).join(",")
+    );
+    j.monsters.forEach((m) => {
+      this.cache[m.monster_id] = m;
+    });
 
-    const resp = await fetch(url + new URLSearchParams(params));
-
-    const j = await resp.json();
+    return j;
   }
 
-  public async queryMonsters(query: string) {}
+  public async teamBuilderQuery(query: string) {
+    const j = await MonsterService.teamBuilderQuery(query);
+    [j.monster, ...j.evolutions].forEach((m) => {
+      this.cache[m.monster_id] = m;
+    });
+
+    return j;
+  }
 }
 
 export const monsterCacheClient = new MonsterCacheClient();

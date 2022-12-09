@@ -11,6 +11,7 @@ import { Team } from "../components/team";
 import { DEFAULT_TEAM_STATE, TeamState } from "../model/teamStateManager";
 import { FlexCol, FlexColC, FlexRow, H1, H2, Page } from "../stylePrimitives";
 import { css } from "@emotion/css";
+import { PadAssetImage } from "../model/padAssets";
 
 const maxPageWidth = "1440px";
 
@@ -110,6 +111,16 @@ export const PadTeamBuilderPage = () => {
             urna a ornare dapibus, lorem eros accumsan mi, sed scelerisque nunc
             velit sit amet massa. Fusce ut commodo nisl.
           </span>
+          <PadAssetImage assetName="te+" />
+          <PadAssetImage assetName="rres+" />
+          <PadAssetImage assetName="bres+" />
+          <PadAssetImage assetName="gres+" />
+          <PadAssetImage assetName="lres+" />
+          <PadAssetImage assetName="dres+" />
+          <PadAssetImage assetName="hp++" />
+          <PadAssetImage assetName="atk++" />
+          <PadAssetImage assetName="rcv++" />
+          <PadAssetImage assetName="6slotLatentBg" />
         </FlexColC>
       </FlexRow>
     </Page>

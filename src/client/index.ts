@@ -15,6 +15,7 @@ export type { AwokenSkill } from './models/AwokenSkill';
 export type { HTTPValidationError } from './models/HTTPValidationError';
 export type { LeaderSkill } from './models/LeaderSkill';
 export type { MonsterResponse } from './models/MonsterResponse';
+export type { MonstersResponse } from './models/MonstersResponse';
 export { MonsterType } from './models/MonsterType';
 export type { MonsterWithEvosResponse } from './models/MonsterWithEvosResponse';
 export type { Series } from './models/Series';

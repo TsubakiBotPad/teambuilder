@@ -34,7 +34,13 @@ export const Card = ({
   monsterId: number;
 }) => {
   return monsterId !== 0 ? (
-    <CardSelected monsterId={monsterId} />
+    <CardSelected
+      monsterId={monsterId}
+      onClick={() => {
+        setCardSlotSelected(cardId);
+        setModalIsOpen(true);
+      }}
+    />
   ) : (
     <CardEmpty
       onClick={() => {

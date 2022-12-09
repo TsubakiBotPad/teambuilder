@@ -2,6 +2,7 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { MonsterResponse } from '../models/MonsterResponse';
+import type { MonstersResponse } from '../models/MonstersResponse';
 import type { MonsterWithEvosResponse } from '../models/MonsterWithEvosResponse';
 
 import type { CancelablePromise } from '../core/CancelablePromise';
@@ -24,6 +25,27 @@ export class MonsterService {
             url: '/monster/{monster_id}',
             path: {
                 'monster_id': monsterId,
+            },
+            errors: {
+                422: `Validation Error`,
+            },
+        });
+    }
+
+    /**
+     * Getmanybyid
+     * @param q
+     * @returns MonstersResponse Successful Response
+     * @throws ApiError
+     */
+    public static getManyById(
+        q?: string,
+    ): CancelablePromise<MonstersResponse> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/monster/get-many/',
+            query: {
+                'q': q,
             },
             errors: {
                 422: `Validation Error`,
