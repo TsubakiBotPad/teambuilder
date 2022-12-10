@@ -1,9 +1,9 @@
 import { css } from "@emotion/css";
-import { AwakeningImage } from "../model/images";
-import { monsterCacheClient } from "../model/monsterCacheClient";
-import { PlayerState } from "../model/teamStateManager";
-import { AwokenSkills } from "../model/types/monster";
-import { FlexCol, FlexRowC, H2, H3 } from "../stylePrimitives";
+import { AwakeningImage } from "../../model/images";
+import { monsterCacheClient } from "../../model/monsterCacheClient";
+import { PlayerState } from "../../model/teamStateManager";
+import { AwokenSkills } from "../../model/types/monster";
+import { FlexCol, FlexRowC, H2, H3 } from "../../stylePrimitives";
 
 export type AwakeningHistogram = { [key: string]: number };
 
@@ -192,13 +192,13 @@ export const AwakeningStatsDisplay = ({ awakenings }: { awakenings?: AwakeningHi
         width: 100%;
       `}
     >
-      <FlexCol gap="1rem">
+      <FlexCol gap="0.75rem">
         {AwakeningsToDisplay.map((a) => {
           const data = a.data;
           return (
-            <div>
+            <FlexCol>
               <H3>{a.header}</H3>
-              <FlexCol gap="0.25rem">
+              <div>
                 {data.map((b) => {
                   return (
                     <FlexRowC gap="1rem">
@@ -206,8 +206,8 @@ export const AwakeningStatsDisplay = ({ awakenings }: { awakenings?: AwakeningHi
                     </FlexRowC>
                   );
                 })}
-              </FlexCol>
-            </div>
+              </div>
+            </FlexCol>
           );
         })}
       </FlexCol>

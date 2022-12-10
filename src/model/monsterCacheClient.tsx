@@ -10,7 +10,7 @@ export class MonsterCacheClient {
 
   public async get(monsterId: number) {
     if (monsterId === 0) {
-      return null;
+      return undefined;
     }
 
     if (this.cache[monsterId]) {
@@ -33,9 +33,7 @@ export class MonsterCacheClient {
       needsQuery.push({ index: idx, monsterId: monsterIds[idx] });
     }
 
-    const j = await MonsterService.getManyById(
-      needsQuery.map((a) => a.monsterId).join(",")
-    );
+    const j = await MonsterService.getManyById(needsQuery.map((a) => a.monsterId).join(","));
     j.monsters.forEach((m) => {
       this.cache[m.monster_id] = m;
     });

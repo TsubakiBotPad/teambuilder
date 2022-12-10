@@ -1,27 +1,15 @@
 import { css } from "@emotion/css";
 import { useState } from "react";
 import Modal from "react-modal";
-import { breakpoint } from "../../breakpoints";
-import { AwakeningImage } from "../../model/images";
 
-import m from "../../model/monster.json";
+import { breakpoint } from "../../breakpoints";
 import { PadAssetImage } from "../../model/padAssets";
-import {
-  LATENTS_ID_TO_NAME,
-  LATENTS_NAME_TO_ID,
-  LATENT_NAMES,
-} from "../../model/types/latents";
-import { MonsterType } from "../../model/types/monster";
-import {
-  BoundingBox,
-  FlexCol,
-  FlexColC,
-  FlexRow,
-  FlexRowC,
-  H2,
-  H3,
-  Page,
-} from "../../stylePrimitives";
+import { setCardLatents, TeamState } from "../../model/teamStateManager";
+import { LATENTS_ID_TO_NAME, LATENTS_NAME_TO_ID, LATENT_NAMES } from "../../model/types/latents";
+import { BoundingBox, FlexColC, FlexRowC, H2 } from "../../stylePrimitives";
+import { GameConfig } from "../gameConfigSelector";
+import { ConfirmButton } from "../generic/confirmButton";
+import { TeamStats } from "../teamStats/teamStats";
 
 const modalClassName = css`
   border: 0;
@@ -54,10 +42,18 @@ export const LatentSelectorModal = ({
   isOpen,
   setModalIsOpen,
   cardSlotSelected,
+  teamState,
+  gameConfig,
+  setTeamState,
+  setTeamStats
 }: {
   isOpen: boolean;
   setModalIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
   cardSlotSelected: string;
+  teamState: TeamState;
+  gameConfig: GameConfig;
+  setTeamState: React.Dispatch<React.SetStateAction<TeamState>>;
+  setTeamStats: React.Dispatch<React.SetStateAction<TeamStats>>;
 }) => {
   const [selectedLatents, setSelectedLatents] = useState<number[]>([]);
 
@@ -78,12 +74,7 @@ export const LatentSelectorModal = ({
       overlayClassName={overlayClassName}
       ariaHideApp={false}
     >
-      <BoundingBox
-        minWidth="50vw"
-        maxWidth="50vw"
-        minWidthM="75vw"
-        maxWidthM="90vw"
-      >
+      <BoundingBox minWidth="50vw" maxWidth="50vw" minWidthM="75vw" maxWidthM="90vw">
         <div
           className={css`
             background-color: #fefefe;
@@ -127,6 +118,17 @@ export const LatentSelectorModal = ({
                 return <PadAssetImage assetName="emptyLatent" />;
               })}
             </FlexRowC>
+
+            <FlexColC>
+              <ConfirmButton
+                onClick={() => {
+                  setCardLatents(cardSlotSelected, selectedLatents, teamState, gameConfig, setTeamState, setTeamStats);
+                  setModalIsOpen(false);
+                }}
+              >
+                Use Latents
+              </ConfirmButton>
+            </FlexColC>
           </FlexColC>
         </div>
       </BoundingBox>

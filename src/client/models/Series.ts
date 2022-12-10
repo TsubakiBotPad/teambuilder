@@ -7,6 +7,6 @@ export type Series = {
     name_ja: string;
     name_en: string;
     name_ko: string;
-    series_type: string;
+    series_type?: string;
 };
 

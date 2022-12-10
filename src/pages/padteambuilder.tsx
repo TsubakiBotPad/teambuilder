@@ -6,7 +6,7 @@ import { GameConfig, GameConfigSelector } from "../components/gameConfigSelector
 import { CardSelectorModal } from "../components/modal/cardSelectorModal";
 import { LatentSelectorModal } from "../components/modal/latentSelectorModal";
 import { Team } from "../components/team";
-import { TeamStats, TeamStatsDisplay } from "../components/teamStats";
+import { TeamStats, TeamStatsDisplay } from "../components/teamStats/teamStats";
 import { PadAssetImage } from "../model/padAssets";
 import { DEFAULT_TEAM_STATE, TeamState } from "../model/teamStateManager";
 import { FlexCol, FlexColC, FlexRow, H1, H2, H3, Page } from "../stylePrimitives";
@@ -39,6 +39,7 @@ export const PadTeamBuilderPage = () => {
         setModalIsOpen={setModalIsOpen}
         cardSlotSelected={cardSlotSelected}
         teamState={teamState}
+        gameConfig={gameConfig}
         setTeamState={setTeamState}
         setTeamStats={setTeamStats}
       />
@@ -46,6 +47,10 @@ export const PadTeamBuilderPage = () => {
         isOpen={latentModalIsOpen}
         setModalIsOpen={setLatentModalIsOpen}
         cardSlotSelected={cardSlotSelected}
+        teamState={teamState}
+        gameConfig={gameConfig}
+        setTeamState={setTeamState}
+        setTeamStats={setTeamStats}
       />
       <FlexRow style={{ justifyContent: "space-around" }}>
         <FlexCol
@@ -95,7 +100,7 @@ export const PadTeamBuilderPage = () => {
           <span>normal: HP, RCV</span>
           <span>awo bound: HP, RCV</span>
           <span>eHP</span>
-          <span>fully unbindable?, card types, has L, has all attr</span>
+          <span>psf, jsf</span>
           <TeamStatsDisplay teamStats={teamStats} />
         </FlexColC>
       </FlexRow>

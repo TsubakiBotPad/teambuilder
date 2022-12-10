@@ -15,13 +15,9 @@ import { BoundingBox, FlexCol, FlexColC, FlexRow, FlexRowC, H2, H3, Page, PageBo
 import { CardInfo } from "./cardInfo";
 import { leftPad } from "../generic/leftPad";
 import { breakpoint } from "../../breakpoints";
-import { TeamStats } from "../teamStats";
-
-const ChooseCard = styled.button`
-  border: 1px solid black;
-  padding: 0.25rem 0.5rem;
-  background-color: #eee;
-`;
+import { TeamStats } from "../teamStats/teamStats";
+import { ConfirmButton } from "../generic/confirmButton";
+import { GameConfig } from "../gameConfigSelector";
 
 const CardQueryInput = styled.input`
   border: 1px solid gray;
@@ -36,7 +32,7 @@ const handleInputChange = async (
   query: string,
   setQueriedId: React.Dispatch<React.SetStateAction<number>>,
   setAlternateEvoIds: React.Dispatch<React.SetStateAction<number[]>>,
-  setSelectedMonster: React.Dispatch<React.SetStateAction<MonsterResponse | null>>,
+  setSelectedMonster: React.Dispatch<React.SetStateAction<MonsterResponse | undefined>>,
   setError: React.Dispatch<React.SetStateAction<string>>
 ) => {
   try {
@@ -76,8 +72,8 @@ export const AlternateEvoImages = ({
 }: {
   ids: number[];
   queriedId: number;
-  selectedMonster: MonsterResponse | null;
-  setSelectedMonster: React.Dispatch<React.SetStateAction<MonsterResponse | null>>;
+  selectedMonster: MonsterResponse | undefined;
+  setSelectedMonster: React.Dispatch<React.SetStateAction<MonsterResponse | undefined>>;
 }) => {
   return (
     <FlexColC>
@@ -124,6 +120,7 @@ export const CardSelectorModal = ({
   setModalIsOpen,
   cardSlotSelected,
   teamState,
+  gameConfig,
   setTeamState,
   setTeamStats
 }: {
@@ -131,13 +128,14 @@ export const CardSelectorModal = ({
   setModalIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
   cardSlotSelected: string;
   teamState: TeamState;
+  gameConfig: GameConfig;
   setTeamState: React.Dispatch<React.SetStateAction<TeamState>>;
   setTeamStats: React.Dispatch<React.SetStateAction<TeamStats>>;
 }) => {
   const [queriedId, setQueriedId] = useState(0);
   const [altEvoIds, setAltEvoIds] = useState([] as number[]);
   const [error, setError] = useState("");
-  const [selectedMonster, setSelectedMonster] = useState<MonsterResponse | null>(null);
+  const [selectedMonster, setSelectedMonster] = useState<MonsterResponse | undefined>(undefined);
 
   return (
     <Modal
@@ -184,14 +182,21 @@ export const CardSelectorModal = ({
             </FlexColC>
 
             <FlexColC>
-              <ChooseCard
+              <ConfirmButton
                 onClick={() => {
-                  setCard(cardSlotSelected, selectedMonster!.monster_id, teamState, setTeamState, setTeamStats);
+                  setCard(
+                    cardSlotSelected,
+                    selectedMonster!.monster_id,
+                    teamState,
+                    gameConfig,
+                    setTeamState,
+                    setTeamStats
+                  );
                   setModalIsOpen(false);
                 }}
               >
                 Use Card
-              </ChooseCard>
+              </ConfirmButton>
             </FlexColC>
 
             <FlexCol
