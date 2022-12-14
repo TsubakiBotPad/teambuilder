@@ -4,6 +4,7 @@ import { monsterCacheClient } from "../../model/monsterCacheClient";
 import { PlayerState } from "../../model/teamStateManager";
 import { AwokenSkills } from "../../model/types/monster";
 import { FlexCol, FlexRow, FlexRowC, H2, H3 } from "../../stylePrimitives";
+import { fixedDecimals } from "../generic/fixedDecimals";
 
 export async function computeTeamUnbindablePct(playerState: PlayerState) {
   const slots = [
@@ -42,29 +43,3 @@ export async function computeTeamUnbindablePct(playerState: PlayerState) {
 
   return (count / filledSlots) * 100;
 }
-
-function fixedDecimals(value: number, decimals: number = 2) {
-  const f = Math.pow(10, decimals);
-  return (Math.round(value * f) / f).toFixed(decimals);
-}
-
-export const TeamUnbindableDisplay = ({ pct }: { pct?: number }) => {
-  if (!pct) {
-    return <></>;
-  }
-
-  return (
-    <FlexCol
-      className={css`
-        width: 100%;
-      `}
-    >
-      <FlexRowC gap="0.1rem">
-        <FlexRowC>
-          <AwakeningImage awakeningId={AwokenSkills.UNBINDABLE} />:
-        </FlexRowC>
-        <b>{fixedDecimals(pct, 0)}%</b>
-      </FlexRowC>
-    </FlexCol>
-  );
-};

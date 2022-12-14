@@ -2,26 +2,20 @@ import { css } from "@emotion/css";
 import { MonsterResponse } from "../../client";
 
 import { AwakeningImage, BASE_ICON_URL } from "../../model/images";
-import m from "../../model/monster.json";
+import { PadAssetImage } from "../../model/padAssets";
+import { computeLeaderSkill } from "../../model/types/leaderSkill";
 import { getKillers, MonsterType } from "../../model/types/monster";
 import { FlexCol, FlexRow, FlexRowC, H3 } from "../../stylePrimitives";
 import { leftPad } from "../generic/leftPad";
 
-const LeaderSkillText = ({ monster }: { monster: any }) => {
-  const hp = m.leader_skill.max_hp * m.leader_skill.max_hp;
-  const atk = m.leader_skill.max_atk * m.leader_skill.max_atk;
-  const rcv = m.leader_skill.max_rcv * m.leader_skill.max_rcv;
-  const resist =
-    (1 - (1 - m.leader_skill.max_shield) * (1 - m.leader_skill.max_shield)) *
-    100;
-  const ehp = hp / (1 - resist);
-  const combos = m.leader_skill.max_combos * 2;
-  const fua = m.leader_skill.bonus_damage * 2;
+const LeaderSkillText = ({ monster: m }: { monster: MonsterResponse }) => {
+  if (!m.leader_skill) return <></>;
+
+  const { hp, atk, rcv, resist, ehp, combos, fua } = computeLeaderSkill(m, m);
   return (
     <>
       [{hp}/{atk}/{rcv}
-      {resist ? ` ${resist}%` : ""}] [{ehp}x eHP]{" "}
-      {combos ? `[+${combos}c]` : ""} {fua ? `[${fua} fua]` : ""}
+      {resist ? ` ${resist * 100}%` : ""}] [{ehp}x eHP] {combos ? `[+${combos}c]` : ""} {fua ? `[${fua} fua]` : ""}
     </>
   );
 };
@@ -44,10 +38,7 @@ export const CardInfo = ({ monster: m }: { monster: MonsterResponse }) => {
             {m.awakenings
               .filter((a) => !a.is_super)
               .map((a) => (
-                <AwakeningImage
-                  key={a.awakening_id}
-                  awakeningId={a.awoken_skill_id}
-                />
+                <AwakeningImage key={a.awakening_id} awakeningId={a.awoken_skill_id} />
               ))}
           </FlexRow>
           <FlexRow>
@@ -55,18 +46,22 @@ export const CardInfo = ({ monster: m }: { monster: MonsterResponse }) => {
             {m.awakenings
               .filter((a) => a.is_super)
               .map((a) => (
-                <AwakeningImage
-                  key={a.awakening_id}
-                  awakeningId={a.awoken_skill_id}
-                />
+                <AwakeningImage key={a.awakening_id} awakeningId={a.awoken_skill_id} />
               ))}
           </FlexRow>
         </FlexCol>
         <img src={`${BASE_ICON_URL}${leftPad(m.monster_id, 5)}.png`} />
       </div>
-      <span>
-        <b>Available killers:</b> [{m.latent_slots} slots] {getKillers(m)}
-      </span>
+      <FlexRowC gap="0.25rem">
+        <span>
+          <b>Available killers:</b> [{m.latent_slots} slots]{" "}
+        </span>
+        <div>
+          {getKillers(m).map((a) => (
+            <PadAssetImage assetName={`${a.substring(0, 3).toLocaleLowerCase()}t`} height={25} />
+          ))}
+        </div>
+      </FlexRowC>
       <FlexRow gap="5rem">
         <FlexCol>
           <b>{m.is_inheritable ? "" : "Not "}Inheritable</b>
@@ -95,8 +90,7 @@ export const CardInfo = ({ monster: m }: { monster: MonsterResponse }) => {
       </FlexRow>
       <FlexCol>
         <b>
-          Active Skill ({m.active_skill.cooldown_turns_max} -&gt;{" "}
-          {m.active_skill.cooldown_turns_min})
+          Active Skill ({m.active_skill.cooldown_turns_max} -&gt; {m.active_skill.cooldown_turns_min})
         </b>
         <span>{m.active_skill.desc_en}</span>
       </FlexCol>

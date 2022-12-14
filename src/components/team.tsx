@@ -19,7 +19,7 @@ const ColorBG = styled.div<ColorProps>`
 const teamIdToColor: { [key in string]: string } = {
   P1: "pink",
   P2: "lightblue",
-  P3: "lightgreen",
+  P3: "lightgreen"
 };
 
 const TeamSlot = ({
@@ -28,7 +28,7 @@ const TeamSlot = ({
   setModalIsOpen,
   setCardSlotSelected,
   setLatentModalIsOpen,
-  state,
+  state
 }: {
   teamId: string;
   slotId: string;
@@ -76,7 +76,7 @@ export const Team = ({
   setModalIsOpen,
   setCardSlotSelected,
   setLatentModalIsOpen,
-  state,
+  state
 }: {
   teamId: string;
   teamColor: string;

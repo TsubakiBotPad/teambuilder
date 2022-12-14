@@ -1,17 +1,29 @@
+import styled from "@emotion/styled";
+import { AwakeningImage } from "../../model/images";
 import { monsterCacheClient } from "../../model/monsterCacheClient";
-import { PlayerState } from "../../model/teamStateManager";
+import { PlayerState, TeamSlotState } from "../../model/teamStateManager";
+import { computeLeaderSkill } from "../../model/types/leaderSkill";
+import { AwokenSkills, MonsterType } from "../../model/types/monster";
 import { maxLevel, stat } from "../../model/types/stat";
-import { FlexRow } from "../../stylePrimitives";
+import { FlexCol, FlexRow } from "../../stylePrimitives";
 import { GameConfig } from "../gameConfigSelector";
+import { fixedDecimals } from "../generic/fixedDecimals";
+import { AttributeHistogram } from "./attributes";
+import { computeTotalAwakenings } from "./awakenings";
+import { TeamTypes } from "./types";
+import { Attribute } from "../../model/types/monster";
+import { PadAssetImage } from "../../model/padAssets";
 
 export interface TeamBasicStats {
   hp: number;
   rcv: number;
+  ehp: number;
   hpNoAwo: number;
   rcvNoAwo: number;
+  ehpNoAwo: number;
 }
 
-export async function computeTeamBasicStats(playerState: PlayerState, gameConfig: GameConfig) {
+export async function computeTeamBasicStats(playerState: PlayerState, gameConfig: GameConfig): Promise<TeamBasicStats> {
   const slots = [
     playerState.teamSlot1,
     playerState.teamSlot2,
@@ -21,6 +33,31 @@ export async function computeTeamBasicStats(playerState: PlayerState, gameConfig
     playerState.teamSlot6
   ];
 
+  const leader = await monsterCacheClient.get(slots[0].baseId);
+  const helper = await monsterCacheClient.get(slots[5].baseId);
+  const ls = computeLeaderSkill(leader, helper);
+
+  var { hpAcc, rcvAcc, hpNoAwoAcc, rcvNoAwoAcc } = await accumulateBasicStats(slots, gameConfig);
+
+  // TODO: Team HP/RCV
+  const awakenings = await computeTotalAwakenings(playerState);
+  const numTeamHp = awakenings[AwokenSkills.ENHTEAMHP] ?? 0;
+  const numTeamRcv = awakenings[AwokenSkills.ENHTEAMRCV] ?? 0;
+
+  hpAcc *= 1 + 0.05 * numTeamHp;
+  rcvAcc *= 1 + 0.2 * numTeamRcv;
+
+  return {
+    hp: hpAcc,
+    rcv: rcvAcc,
+    ehp: ls.ehp * hpAcc,
+    hpNoAwo: hpNoAwoAcc,
+    rcvNoAwo: rcvNoAwoAcc,
+    ehpNoAwo: ls.ehp * hpNoAwoAcc
+  };
+}
+
+async function accumulateBasicStats(slots: TeamSlotState[], gameConfig: GameConfig) {
   var hpAcc = 0;
   var hpNoAwoAcc = 0;
 
@@ -83,7 +120,8 @@ export async function computeTeamBasicStats(playerState: PlayerState, gameConfig
         inherit: false,
         is_plus_297: is_plus_297,
         multiplayer: multiplayer,
-        inherited_monster: m1a
+        inherited_monster: m1a,
+        ignore_awakenings: true
       })
     );
     const rcvNoAwo = Math.round(
@@ -95,33 +133,146 @@ export async function computeTeamBasicStats(playerState: PlayerState, gameConfig
         inherit: false,
         is_plus_297: is_plus_297,
         multiplayer: multiplayer,
-        inherited_monster: m1a
+        inherited_monster: m1a,
+        ignore_awakenings: true
       })
     );
 
     hpNoAwoAcc += hpNoAwo;
     rcvNoAwoAcc += rcvNoAwo;
   }
-
-  // TODO: Team HP/RCV
-
-  return { hp: hpAcc, rcv: rcvAcc, hpNoAwo: hpNoAwoAcc, rcvNoAwo: rcvNoAwoAcc };
+  return { hpAcc, rcvAcc, hpNoAwoAcc, rcvNoAwoAcc };
 }
 
-export const TeamBasicStatsDisplay = ({ tbs }: { tbs?: TeamBasicStats }) => {
+type AttrImgProps = {
+  selected: boolean;
+};
+
+const AttrImg = styled.img<AttrImgProps>`
+  width: 20px;
+  opacity: ${(props) => (props.selected ? "1" : "0.25")};
+  border: ${(props) => (props.selected ? "1px solid gray" : "0")};
+  border-radius: ${(props) => (props.selected ? "1000px" : "0")};
+`;
+
+const TD = styled.td`
+  padding: 0.1rem 1rem 0.1rem 0;
+  vertical-align: middle;
+`;
+
+export const TeamBasicStatsDisplay = ({
+  tbs,
+  tt,
+  unbindablePct,
+  ah
+}: {
+  tbs?: TeamBasicStats;
+  tt?: TeamTypes;
+  unbindablePct?: number;
+  ah?: AttributeHistogram;
+}) => {
   if (!tbs) {
     return <></>;
   }
+
   return (
-    <FlexRow gap={"1rem"}>
-      Team Attributes:{" "}
-      {Object.entries(tbs).map((a) => {
-        return (
-          <span>
-            {a[0]}: {a[1]}
-          </span>
-        );
-      })}
-    </FlexRow>
+    <FlexCol gap={"1rem"}>
+      <table>
+        <thead>
+          <th></th>
+          <th style={{ textAlign: "start", verticalAlign: "middle" }}>
+            <AwakeningImage awakeningId={AwokenSkills.AWOKENKILLER} width={25} />
+          </th>
+          <th style={{ textAlign: "start", verticalAlign: "middle" }}>
+            <img src="img/awoBind.webp" width={"25px"} />
+          </th>
+        </thead>
+        <tbody>
+          <tr>
+            <TD>
+              <b>HP</b>
+            </TD>
+            <TD>{fixedDecimals(tbs.hp, 0)}</TD>
+            <TD>{fixedDecimals(tbs.hpNoAwo, 0)}</TD>
+          </tr>
+          <tr>
+            <TD>
+              <b>eHP</b>
+            </TD>
+            <TD>{fixedDecimals(tbs.ehp, 0)}</TD>
+            <TD>{fixedDecimals(tbs.ehpNoAwo, 0)}</TD>
+          </tr>
+          <tr>
+            <TD>
+              <b>RCV</b>
+            </TD>
+            <TD>{fixedDecimals(tbs.rcv, 0)}</TD>
+            <TD>{fixedDecimals(tbs.rcvNoAwo, 0)}</TD>
+          </tr>
+        </tbody>
+      </table>
+
+      <table>
+        <tbody>
+          {tt ? (
+            <tr>
+              <TD>
+                <b>Types</b>
+              </TD>
+              <TD>
+                {tt.map((a) => {
+                  const x = MonsterType[a];
+                  console.log(MonsterType);
+                  return (
+                    <>
+                      {
+                        <PadAssetImage
+                          assetName={`${MonsterType[a].toLocaleLowerCase().substring(0, 3)}t`}
+                          height={25}
+                        />
+                      }
+                    </>
+                  );
+                })}
+              </TD>
+            </tr>
+          ) : (
+            <></>
+          )}
+
+          {ah ? (
+            <tr>
+              <TD>
+                <b>Attr</b>
+              </TD>
+              <TD>
+                <FlexRow gap={"0.25rem"}>
+                  {Object.entries(ah).map((a) => {
+                    const attr = Attribute[a[0] as keyof {}].toLocaleLowerCase();
+                    return (
+                      <span>
+                        <AttrImg src={`img/orb${attr}.webp`} selected={a[1]} />
+                      </span>
+                    );
+                  })}
+                </FlexRow>
+              </TD>
+            </tr>
+          ) : (
+            <></>
+          )}
+          {unbindablePct ? (
+            <tr>
+              <TD>
+                <b>!Bind</b>
+              </TD>
+              <TD>{fixedDecimals(unbindablePct, 0)}%</TD>
+            </tr>
+          ) : (
+            <></>
+          )}
+        </tbody>
+      </table>
+    </FlexCol>
   );
 };

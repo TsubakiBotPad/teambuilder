@@ -66,14 +66,26 @@ const AltEvoImg = styled.img<AltEvoimgProps>`
 
 export const AlternateEvoImages = ({
   ids,
-  queriedId,
   selectedMonster,
-  setSelectedMonster
+  setSelectedMonster,
+  setModalIsOpen,
+  cardSlotSelected,
+  gameConfig,
+  teamState,
+  setTeamState,
+  teamStats,
+  setTeamStats
 }: {
   ids: number[];
-  queriedId: number;
   selectedMonster: MonsterResponse | undefined;
   setSelectedMonster: React.Dispatch<React.SetStateAction<MonsterResponse | undefined>>;
+  setModalIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  cardSlotSelected: string;
+  gameConfig: GameConfig;
+  teamState: TeamState;
+  setTeamState: React.Dispatch<React.SetStateAction<TeamState>>;
+  teamStats: TeamStats;
+  setTeamStats: React.Dispatch<React.SetStateAction<TeamStats>>;
 }) => {
   return (
     <FlexColC>
@@ -85,6 +97,18 @@ export const AlternateEvoImages = ({
             onClick={async (e) => {
               const monster = await monsterCacheClient.get(id);
               setSelectedMonster(monster);
+            }}
+            onDoubleClick={() => {
+              setCard(
+                cardSlotSelected,
+                selectedMonster!.monster_id,
+                gameConfig,
+                teamState,
+                setTeamState,
+                teamStats,
+                setTeamStats
+              );
+              setModalIsOpen(false);
             }}
             selected={selectedMonster ? id === selectedMonster.monster_id : false}
           />
@@ -119,20 +143,23 @@ export const CardSelectorModal = ({
   isOpen,
   setModalIsOpen,
   cardSlotSelected,
-  teamState,
   gameConfig,
+  teamState,
   setTeamState,
+  teamStats,
   setTeamStats
 }: {
   isOpen: boolean;
   setModalIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
   cardSlotSelected: string;
-  teamState: TeamState;
   gameConfig: GameConfig;
+  teamState: TeamState;
   setTeamState: React.Dispatch<React.SetStateAction<TeamState>>;
+  teamStats: TeamStats;
   setTeamStats: React.Dispatch<React.SetStateAction<TeamStats>>;
 }) => {
   const [queriedId, setQueriedId] = useState(0);
+  const [queriedText, setQueriedText] = useState("");
   const [altEvoIds, setAltEvoIds] = useState([] as number[]);
   const [error, setError] = useState("");
   const [selectedMonster, setSelectedMonster] = useState<MonsterResponse | undefined>(undefined);
@@ -172,9 +199,15 @@ export const CardSelectorModal = ({
               {!error ? (
                 <AlternateEvoImages
                   ids={altEvoIds}
-                  queriedId={queriedId}
                   selectedMonster={selectedMonster}
                   setSelectedMonster={setSelectedMonster}
+                  setModalIsOpen={setModalIsOpen}
+                  gameConfig={gameConfig}
+                  cardSlotSelected={cardSlotSelected}
+                  teamState={teamState}
+                  setTeamState={setTeamState}
+                  teamStats={teamStats}
+                  setTeamStats={setTeamStats}
                 />
               ) : (
                 <></>
@@ -182,21 +215,32 @@ export const CardSelectorModal = ({
             </FlexColC>
 
             <FlexColC>
-              <ConfirmButton
-                onClick={() => {
-                  setCard(
-                    cardSlotSelected,
-                    selectedMonster!.monster_id,
-                    teamState,
-                    gameConfig,
-                    setTeamState,
-                    setTeamStats
-                  );
-                  setModalIsOpen(false);
-                }}
-              >
-                Use Card
-              </ConfirmButton>
+              <FlexRowC gap="0.25rem">
+                <ConfirmButton
+                  onClick={() => {
+                    setCard(
+                      cardSlotSelected,
+                      selectedMonster!.monster_id,
+                      gameConfig,
+                      teamState,
+                      setTeamState,
+                      teamStats,
+                      setTeamStats
+                    );
+                    setModalIsOpen(false);
+                  }}
+                >
+                  Use Card
+                </ConfirmButton>
+                <ConfirmButton
+                  onClick={() => {
+                    setCard(cardSlotSelected, 0, gameConfig, teamState, setTeamState, teamStats, setTeamStats);
+                    setModalIsOpen(false);
+                  }}
+                >
+                  Remove
+                </ConfirmButton>
+              </FlexRowC>
             </FlexColC>
 
             <FlexCol

@@ -162,15 +162,13 @@ export const AwakeningRowDisplay = ({ ah, asa }: { ah: AwakeningHistogram; asa: 
       {asa.map((b) => {
         var numToDisplay = b.aggFunc ? b.aggFunc(ah) : ah[b.awokenSkill];
         return numToDisplay ? (
-          <FlexRowC gap="0.1rem">
-            <FlexRowC>
-              <AwakeningImage awakeningId={b.awokenSkill} />
-              {b.percent ? ":" : "x"}
-            </FlexRowC>
-            <b>
+          <FlexRowC gap="0.15rem">
+            <AwakeningImage awakeningId={b.awokenSkill} />
+            {b.percent ? ":" : "ⅹ"}
+            <span>
               {numToDisplay}
               {b.percent ? "%" : ""}
-            </b>
+            </span>
           </FlexRowC>
         ) : (
           <></>
@@ -193,12 +191,13 @@ export const AwakeningStatsDisplay = ({ awakenings }: { awakenings?: AwakeningHi
       `}
     >
       <FlexCol gap="0.75rem">
+        <H3>Awakenings</H3>
         {AwakeningsToDisplay.map((a) => {
           const data = a.data;
           return (
             <FlexCol>
-              <H3>{a.header}</H3>
-              <div>
+              <b>{a.header}</b>
+              <FlexCol gap="0.35rem">
                 {data.map((b) => {
                   return (
                     <FlexRowC gap="1rem">
@@ -206,7 +205,7 @@ export const AwakeningStatsDisplay = ({ awakenings }: { awakenings?: AwakeningHi
                     </FlexRowC>
                   );
                 })}
-              </div>
+              </FlexCol>
             </FlexCol>
           );
         })}

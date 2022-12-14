@@ -49,16 +49,32 @@ export const LATENTS_ID_TO_NAME: { [key: number]: string } = {
   606: "unm",
   607: "spn",
   608: "abs",
+  609: "dbl",
+  610: "sb++",
+  611: "cloudtape"
 };
 
 export const LATENTS_NAME_TO_ID: { [key: string]: number } = Object.fromEntries(
-  Object.entries(LATENTS_ID_TO_NAME).map((a) => a.reverse())
+  Object.entries(LATENTS_ID_TO_NAME)
+    .slice(2)
+    .map((a) => a.reverse())
 );
+
+export const LATENTS_BY_SIZE: { [key: number]: string[] } = Object.entries(LATENTS_ID_TO_NAME)
+  .slice(2)
+  .reduce((d, [num, name]) => {
+    const idx = Math.floor((num as any) / 100);
+    if (!d[idx]) {
+      d[idx] = [];
+    }
+    d[idx].push(name);
+    return d;
+  }, {} as { [key: number]: string[] });
 
 export const LATENT_NAMES = Object.keys(LATENTS_NAME_TO_ID);
 
 export const AWO_RES_LATENT_TO_AWO_MAP = {
   606: 27,
   607: 20,
-  608: 62,
+  608: 62
 };

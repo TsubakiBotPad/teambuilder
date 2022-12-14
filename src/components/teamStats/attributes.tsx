@@ -1,3 +1,4 @@
+import styled from "@emotion/styled";
 import { monsterCacheClient } from "../../model/monsterCacheClient";
 import { PlayerState } from "../../model/teamStateManager";
 import { Attribute as AttributeNamed } from "../../model/types/monster";
@@ -44,21 +45,3 @@ export async function computeAttributes(playerState: PlayerState) {
 
   return attrs;
 }
-
-export const TeamAttributesDisplay = ({ ah }: { ah?: AttributeHistogram }) => {
-  if (!ah) {
-    return <></>;
-  }
-  return (
-    <FlexRow gap={"1rem"}>
-      Team Attributes:{" "}
-      {Object.entries(ah).map((a) => {
-        return (
-          <span>
-            {AttributeNamed[a[0] as keyof {}]}: {a[1].toString()}
-          </span>
-        );
-      })}
-    </FlexRow>
-  );
-};

@@ -159,7 +159,7 @@ export function stat({
           key: key,
           lv: inherited_monster_lvl,
           inherit: true,
-          multiplayer: false
+          multiplayer: multiplayer
         })
       );
     }

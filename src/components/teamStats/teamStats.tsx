@@ -1,17 +1,21 @@
 import { css } from "@emotion/css";
-import { Attribute } from "../../client";
-import { monsterCacheClient } from "../../model/monsterCacheClient";
 
-import { PlayerState, TeamState } from "../../model/teamStateManager";
-import { FlexCol, FlexRow } from "../../stylePrimitives";
+import { TeamState } from "../../model/teamStateManager";
+import { FlexCol } from "../../stylePrimitives";
 import { GameConfig } from "../gameConfigSelector";
-import { AttributeHistogram, computeAttributes, TeamAttributesDisplay } from "./attributes";
+import { AttributeHistogram, computeAttributes } from "./attributes";
 import { AwakeningHistogram, AwakeningStatsDisplay, computeTotalAwakenings } from "./awakenings";
 import { computeTeamBasicStats, TeamBasicStats, TeamBasicStatsDisplay } from "./basicStats";
-import { computeTypes, TeamTypes, TeamTypesDisplay } from "./types";
-import { computeTeamUnbindablePct, TeamUnbindableDisplay } from "./unbindable";
+import { computeTypes, TeamTypes } from "./types";
+import { computeTeamUnbindablePct } from "./unbindable";
 
 export interface TeamStats {
+  p1?: TeamStat;
+  p2?: TeamStat;
+  p3?: TeamStat;
+}
+
+export interface TeamStat {
   awakenings?: AwakeningHistogram;
   attributes?: AttributeHistogram;
   teamTypes?: TeamTypes;
@@ -19,28 +23,48 @@ export interface TeamStats {
   teamBasicStats?: TeamBasicStats;
 }
 
-export async function computeTeamStats(teamState: TeamState, gameConfig: GameConfig): Promise<TeamStats> {
+export async function computeTeamStat(
+  teamState: TeamState,
+  gameConfig: GameConfig,
+  player: "p1" | "p2" | "p3"
+): Promise<TeamStat> {
   return {
-    awakenings: await computeTotalAwakenings(teamState.p1),
-    attributes: await computeAttributes(teamState.p1),
-    teamTypes: await computeTypes(teamState.p1),
-    teamUnbindablePct: await computeTeamUnbindablePct(teamState.p1),
-    teamBasicStats: await computeTeamBasicStats(teamState.p1, gameConfig)
+    awakenings: await computeTotalAwakenings(teamState[player]),
+    attributes: await computeAttributes(teamState[player]),
+    teamTypes: await computeTypes(teamState[player]),
+    teamUnbindablePct: await computeTeamUnbindablePct(teamState[player]),
+    teamBasicStats: await computeTeamBasicStats(teamState[player], gameConfig)
   };
 }
 
-export const TeamStatsDisplay = ({ teamStats }: { teamStats: TeamStats }) => {
+export const TeamStatDisplay = ({ teamStat }: { teamStat?: TeamStat }) => {
+  if (!teamStat) {
+    return <></>;
+  }
+
   return (
     <FlexCol
       className={css`
         width: 100%;
       `}
     >
-      <TeamBasicStatsDisplay tbs={teamStats.teamBasicStats} />
-      <TeamTypesDisplay tt={teamStats.teamTypes} />
-      <TeamUnbindableDisplay pct={teamStats.teamUnbindablePct} />
-      <TeamAttributesDisplay ah={teamStats.attributes} />
-      <AwakeningStatsDisplay awakenings={teamStats.awakenings} />
+      <div
+        className={css`
+          display: flex;
+          justify-content: space-between;
+          gap: 3rem;
+        `}
+      >
+        <div>
+          <TeamBasicStatsDisplay
+            tbs={teamStat.teamBasicStats}
+            tt={teamStat.teamTypes}
+            unbindablePct={teamStat.teamUnbindablePct}
+            ah={teamStat.attributes}
+          />
+        </div>
+        <AwakeningStatsDisplay awakenings={teamStat.awakenings} />
+      </div>
     </FlexCol>
   );
 };

@@ -1,6 +1,6 @@
 import React from "react";
 import { GameConfig } from "../components/gameConfigSelector";
-import { computeTeamStats, TeamStats } from "../components/teamStats/teamStats";
+import { computeTeamStat, TeamStats } from "../components/teamStats/teamStats";
 
 export interface TeamSlotState {
   baseId: number;
@@ -65,9 +65,10 @@ export const DEFAULT_TEAM_STATE: TeamState = {
 export async function setCard(
   cardSlot: string,
   value: number,
-  teamState: TeamState,
   gameConfig: GameConfig,
+  teamState: TeamState,
   setTeamState: React.Dispatch<React.SetStateAction<TeamState>>,
+  teamStats: TeamStats,
   setTeamStats: React.Dispatch<React.SetStateAction<TeamStats>>
 ) {
   const parts = cardSlot.split("-");
@@ -84,15 +85,16 @@ export async function setCard(
   console.log(newTeamState);
 
   setTeamState(newTeamState);
-  setTeamStats(await computeTeamStats(newTeamState, gameConfig));
+  setTeamStats({ ...teamStats, [p]: await computeTeamStat(teamState, gameConfig, p) });
 }
 
 export async function setCardLatents(
   cardSlot: string,
   value: number[],
-  teamState: TeamState,
   gameConfig: GameConfig,
+  teamState: TeamState,
   setTeamState: React.Dispatch<React.SetStateAction<TeamState>>,
+  teamStats: TeamStats,
   setTeamStats: React.Dispatch<React.SetStateAction<TeamStats>>
 ) {
   const parts = cardSlot.split("-");
@@ -106,7 +108,7 @@ export async function setCardLatents(
 
   (newTeamState[p][s] as TeamSlotState)[c] = value;
   setTeamState(newTeamState);
-  setTeamStats(await computeTeamStats(newTeamState, gameConfig));
+  setTeamStats({ ...teamStats, [p]: await computeTeamStat(teamState, gameConfig, p) });
 }
 
 export function setPlayerBadge(

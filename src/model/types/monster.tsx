@@ -1,3 +1,5 @@
+import { MonsterResponse } from "../../client";
+
 export enum MonsterType {
   Evolve = 0,
   Balanced = 1,
@@ -146,5 +148,7 @@ export const typeToKillers: { [key in MonsterType]: string[] } = {
 };
 
 export function getKillers(m: any) {
-  return m.types.map((a: MonsterType) => typeToKillers[a]).flat();
+  const arr: string[] = m.types.map((a: MonsterType) => typeToKillers[a]).flat();
+
+  return arr.filter((v, i, a) => a.indexOf(v) === i);
 }

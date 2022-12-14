@@ -5,8 +5,8 @@ import Modal from "react-modal";
 import { breakpoint } from "../../breakpoints";
 import { PadAssetImage } from "../../model/padAssets";
 import { setCardLatents, TeamState } from "../../model/teamStateManager";
-import { LATENTS_ID_TO_NAME, LATENTS_NAME_TO_ID, LATENT_NAMES } from "../../model/types/latents";
-import { BoundingBox, FlexColC, FlexRowC, H2 } from "../../stylePrimitives";
+import { LATENTS_BY_SIZE, LATENTS_ID_TO_NAME, LATENTS_NAME_TO_ID, LATENT_NAMES } from "../../model/types/latents";
+import { BoundingBox, FlexCol, FlexColC, FlexRow, FlexRowC, H2, H3 } from "../../stylePrimitives";
 import { GameConfig } from "../gameConfigSelector";
 import { ConfirmButton } from "../generic/confirmButton";
 import { TeamStats } from "../teamStats/teamStats";
@@ -42,17 +42,19 @@ export const LatentSelectorModal = ({
   isOpen,
   setModalIsOpen,
   cardSlotSelected,
-  teamState,
   gameConfig,
+  teamState,
   setTeamState,
+  teamStats,
   setTeamStats
 }: {
   isOpen: boolean;
   setModalIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
   cardSlotSelected: string;
-  teamState: TeamState;
   gameConfig: GameConfig;
+  teamState: TeamState;
   setTeamState: React.Dispatch<React.SetStateAction<TeamState>>;
+  teamStats: TeamStats;
   setTeamStats: React.Dispatch<React.SetStateAction<TeamStats>>;
 }) => {
   const [selectedLatents, setSelectedLatents] = useState<number[]>([]);
@@ -83,46 +85,73 @@ export const LatentSelectorModal = ({
         >
           <H2>{cardSlotSelected}-Latents</H2>
           <FlexColC>
-            <FlexRowC wrap={"wrap"}>
-              {LATENT_NAMES.map((n: string) => {
-                return (
-                  <PadAssetImage
-                    assetName={n}
-                    onClick={() => {
-                      handleAddLatent(n, selectedLatents, setSelectedLatents);
-                    }}
-                  />
-                );
-              })}
-            </FlexRowC>
+            <FlexRow wrap={"wrap"}>
+              <FlexCol gap="1rem">
+                {Object.entries(LATENTS_BY_SIZE).map(([n, names]) => {
+                  return (
+                    <FlexCol>
+                      <H3>{n}-slot</H3>
+                      <FlexRow wrap="wrap">
+                        {names.map((n) => {
+                          return (
+                            <PadAssetImage
+                              assetName={n}
+                              onClick={() => {
+                                handleAddLatent(n, selectedLatents, setSelectedLatents);
+                              }}
+                            />
+                          );
+                        })}
+                      </FlexRow>
+                    </FlexCol>
+                  );
+                })}
+              </FlexCol>
+            </FlexRow>
 
             <br />
-            <FlexRowC>
-              {selectedLatents.map((i: number, idx: number) => {
-                const name = LATENTS_ID_TO_NAME[i];
-                const valid = true; // TODO: check against monster
-                return (
-                  <PadAssetImage
-                    assetName={name}
-                    onClick={() => {
-                      selectedLatents.splice(idx, 1);
-                      setSelectedLatents([...selectedLatents]);
-                    }}
-                    className={css`
-                      opacity: ${valid ? "1" : "0.5"};
-                    `}
-                  />
-                );
-              })}
-              {Array.from(Array(MAX_LATENTS - currentSize).keys()).map((i) => {
-                return <PadAssetImage assetName="emptyLatent" />;
-              })}
-            </FlexRowC>
-
+            <FlexRow gap={"14px"}>
+              {selectedLatents.length !== 0 ? (
+                <FlexRow gap={"14px"}>
+                  {selectedLatents.map((i: number, idx: number) => {
+                    const name = LATENTS_ID_TO_NAME[i];
+                    const valid = true; // TODO: check against monster
+                    return (
+                      <PadAssetImage
+                        assetName={name}
+                        onClick={() => {
+                          selectedLatents.splice(idx, 1);
+                          setSelectedLatents([...selectedLatents]);
+                        }}
+                        className={css`
+                          opacity: ${valid ? "1" : "0.5"};
+                        `}
+                      />
+                    );
+                  })}
+                </FlexRow>
+              ) : null}
+              {MAX_LATENTS - currentSize !== 0 ? (
+                <FlexRow gap={"14px"}>
+                  {Array.from(Array(MAX_LATENTS - currentSize).keys()).map((i) => {
+                    return <PadAssetImage assetName="emptyLatent" height={31} />;
+                  })}
+                </FlexRow>
+              ) : null}
+            </FlexRow>
+            <br />
             <FlexColC>
               <ConfirmButton
                 onClick={() => {
-                  setCardLatents(cardSlotSelected, selectedLatents, teamState, gameConfig, setTeamState, setTeamStats);
+                  setCardLatents(
+                    cardSlotSelected,
+                    selectedLatents,
+                    gameConfig,
+                    teamState,
+                    setTeamState,
+                    teamStats,
+                    setTeamStats
+                  );
                   setModalIsOpen(false);
                 }}
               >
