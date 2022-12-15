@@ -84,7 +84,7 @@ const SixSlotLatentImg = styled.div`
 const RemainderLatents = styled.div`
   width: 50%;
   position: relative;
-  top: -17px;
+  top: -50%;
   left: 50%;
   display: flex;
   gap: 3px;
@@ -168,14 +168,14 @@ export const Latents = ({
       }}
     >
       {hasSixSlot ? (
-        <div>
+        <>
           <SixSlotLatent latentName={sixSlotLatentName} halfBreakDamage={false} />
           <RemainderLatents>
             {remainderLatents.map((a) => {
               return <PadAssetImage assetName={LATENTS_ID_TO_NAME[a]} height={16} />;
             })}
           </RemainderLatents>
-        </div>
+        </>
       ) : (
         <FlexRow gap="3px" wrap="wrap">
           {remainderLatents
