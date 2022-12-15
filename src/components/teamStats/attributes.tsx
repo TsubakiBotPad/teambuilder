@@ -1,8 +1,5 @@
-import styled from "@emotion/styled";
 import { monsterCacheClient } from "../../model/monsterCacheClient";
 import { PlayerState } from "../../model/teamStateManager";
-import { Attribute as AttributeNamed } from "../../model/types/monster";
-import { FlexRow } from "../../stylePrimitives";
 
 export type AttributeHistogram = { [key: number]: boolean };
 

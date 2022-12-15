@@ -1,5 +1,3 @@
-import { MonsterResponse } from "../../client";
-
 export enum MonsterType {
   Evolve = 0,
   Balanced = 1,

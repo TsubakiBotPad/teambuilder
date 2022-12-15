@@ -1,6 +1,7 @@
 import { css } from "@emotion/css";
 import styled from "@emotion/styled";
-import React, { useState } from "react";
+import React from "react";
+
 import { BASE_ICON_URL } from "../model/images";
 import { PadAssetImage } from "../model/padAssets";
 import { LATENTS_ID_TO_NAME } from "../model/types/latents";

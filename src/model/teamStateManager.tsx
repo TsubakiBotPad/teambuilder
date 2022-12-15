@@ -9,7 +9,7 @@ export interface TeamSlotState {
 }
 
 export interface PlayerState {
-  badgeId: number;
+  badgeId: string;
   teamSlot1: TeamSlotState;
   teamSlot2: TeamSlotState;
   teamSlot3: TeamSlotState;
@@ -34,7 +34,7 @@ export const DEFAULT_TEAM_SLOT_STATE = () => {
 
 export const DEFAULT_TEAM_STATE: TeamState = {
   p1: {
-    badgeId: 0,
+    badgeId: "",
     teamSlot1: DEFAULT_TEAM_SLOT_STATE(),
     teamSlot2: DEFAULT_TEAM_SLOT_STATE(),
     teamSlot3: DEFAULT_TEAM_SLOT_STATE(),
@@ -43,7 +43,7 @@ export const DEFAULT_TEAM_STATE: TeamState = {
     teamSlot6: DEFAULT_TEAM_SLOT_STATE()
   },
   p2: {
-    badgeId: 0,
+    badgeId: "",
     teamSlot1: DEFAULT_TEAM_SLOT_STATE(),
     teamSlot2: DEFAULT_TEAM_SLOT_STATE(),
     teamSlot3: DEFAULT_TEAM_SLOT_STATE(),
@@ -52,7 +52,7 @@ export const DEFAULT_TEAM_STATE: TeamState = {
     teamSlot6: DEFAULT_TEAM_SLOT_STATE()
   },
   p3: {
-    badgeId: 0,
+    badgeId: "",
     teamSlot1: DEFAULT_TEAM_SLOT_STATE(),
     teamSlot2: DEFAULT_TEAM_SLOT_STATE(),
     teamSlot3: DEFAULT_TEAM_SLOT_STATE(),
@@ -111,11 +111,14 @@ export async function setCardLatents(
   setTeamStats({ ...teamStats, [p]: await computeTeamStat(teamState, gameConfig, p) });
 }
 
-export function setPlayerBadge(
-  playerId: string,
-  value: number,
+export async function setPlayerBadge(
+  playerId: "p1" | "p2" | "p3",
+  value: string,
+  gameConfig: GameConfig,
   teamState: TeamState,
-  setTeamState: React.Dispatch<React.SetStateAction<TeamState>>
+  setTeamState: React.Dispatch<React.SetStateAction<TeamState>>,
+  teamStats: TeamStats,
+  setTeamStats: React.Dispatch<React.SetStateAction<TeamStats>>
 ) {
   var newTeamState = {
     ...teamState
@@ -123,4 +126,5 @@ export function setPlayerBadge(
 
   newTeamState[playerId as keyof TeamState].badgeId = value;
   setTeamState(newTeamState);
+  setTeamStats({ ...teamStats, [playerId]: await computeTeamStat(teamState, gameConfig, playerId) });
 }

@@ -1,9 +1,12 @@
+import { css } from "@emotion/css";
 import styled from "@emotion/styled";
+
 import { AwakeningImage } from "../../model/images";
 import { monsterCacheClient } from "../../model/monsterCacheClient";
+import { PadAssetImage } from "../../model/padAssets";
 import { PlayerState, TeamSlotState } from "../../model/teamStateManager";
 import { computeLeaderSkill } from "../../model/types/leaderSkill";
-import { AwokenSkills, MonsterType } from "../../model/types/monster";
+import { Attribute, AwokenSkills, MonsterType } from "../../model/types/monster";
 import { maxLevel, stat } from "../../model/types/stat";
 import { FlexCol, FlexRow } from "../../stylePrimitives";
 import { GameConfig } from "../gameConfigSelector";
@@ -11,8 +14,6 @@ import { fixedDecimals } from "../generic/fixedDecimals";
 import { AttributeHistogram } from "./attributes";
 import { computeTotalAwakenings } from "./awakenings";
 import { TeamTypes } from "./types";
-import { Attribute } from "../../model/types/monster";
-import { PadAssetImage } from "../../model/padAssets";
 
 export interface TeamBasicStats {
   hp: number;
@@ -75,7 +76,7 @@ async function accumulateBasicStats(slots: TeamSlotState[], gameConfig: GameConf
     const plus = 297; // TODO: make config
     var is_plus_297 = false;
     var plusArr = [0, 0, 0];
-    if (plus == 297) {
+    if (plus === 297) {
       plusArr = [99, 99, 99];
       is_plus_297 = true;
     }
@@ -181,10 +182,19 @@ export const TeamBasicStatsDisplay = ({
         <thead>
           <th></th>
           <th style={{ textAlign: "start", verticalAlign: "middle" }}>
-            <AwakeningImage awakeningId={AwokenSkills.AWOKENKILLER} width={25} />
+            <AwakeningImage awakeningId={AwokenSkills.AWOKENKILLER} width={23} />
           </th>
           <th style={{ textAlign: "start", verticalAlign: "middle" }}>
-            <img src="img/awoBind.webp" width={"25px"} />
+            <div
+              className={css`
+                background: url("img/awoBind.webp") no-repeat;
+                background-size: contain;
+                height: 20px;
+                display: flex;
+                align-items: center;
+              `}
+            ></div>
+            {/* <img src="img/awoBind.webp" width={"20px"} /> */}
           </th>
         </thead>
         <tbody>
@@ -222,8 +232,6 @@ export const TeamBasicStatsDisplay = ({
               <TD>
                 <FlexRow>
                   {tt.map((a) => {
-                    const x = MonsterType[a];
-                    console.log(MonsterType);
                     return (
                       <PadAssetImage assetName={`${MonsterType[a].toLocaleLowerCase().substring(0, 3)}t`} height={25} />
                     );

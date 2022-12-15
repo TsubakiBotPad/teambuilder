@@ -1,6 +1,6 @@
 import { css } from "@emotion/css";
-import { MonsterResponse } from "../../client";
 
+import { MonsterResponse } from "../../client";
 import { AwakeningImage, BASE_ICON_URL } from "../../model/images";
 import { PadAssetImage } from "../../model/padAssets";
 import { computeLeaderSkill } from "../../model/types/leaderSkill";
@@ -42,7 +42,7 @@ export const CardInfo = ({ monster: m }: { monster: MonsterResponse }) => {
               ))}
           </FlexRow>
           <FlexRow>
-            <img src="img/saQuestion.webp" width={"25px"} />
+            <img src="img/saQuestion.webp" width={"25px"} alt="?" />
             {m.awakenings
               .filter((a) => a.is_super)
               .map((a) => (
@@ -50,17 +50,17 @@ export const CardInfo = ({ monster: m }: { monster: MonsterResponse }) => {
               ))}
           </FlexRow>
         </FlexCol>
-        <img src={`${BASE_ICON_URL}${leftPad(m.monster_id, 5)}.png`} />
+        <img src={`${BASE_ICON_URL}${leftPad(m.monster_id, 5)}.png`} alt="monster" />
       </div>
       <FlexRowC gap="0.25rem">
         <span>
           <b>Available killers:</b> [{m.latent_slots} slots]{" "}
         </span>
-        <div>
+        <FlexRowC>
           {getKillers(m).map((a) => (
             <PadAssetImage assetName={`${a.substring(0, 3).toLocaleLowerCase()}t`} height={25} />
           ))}
-        </div>
+        </FlexRowC>
       </FlexRowC>
       <FlexRow gap="5rem">
         <FlexCol>
@@ -75,7 +75,7 @@ export const CardInfo = ({ monster: m }: { monster: MonsterResponse }) => {
         </FlexCol>
         <FlexCol>
           <FlexRowC>
-            297_img <b>Stats</b> (level_img)
+            <b>Stats</b> (Lvl 120, +297)
           </FlexRowC>
           <span>
             <b>HP</b> {m.hp_max}

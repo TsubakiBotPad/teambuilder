@@ -1,15 +1,14 @@
-import { css } from "@emotion/css";
 import styled from "@emotion/styled";
 import React, { useState } from "react";
 
 import { GameConfig, GameConfigSelector } from "../components/gameConfigSelector";
+import { BadgeSelectorModal } from "../components/modal/badgeSelectorModal";
 import { CardSelectorModal } from "../components/modal/cardSelectorModal";
 import { LatentSelectorModal } from "../components/modal/latentSelectorModal";
 import { Team } from "../components/team";
-import { TeamStats, TeamStatDisplay } from "../components/teamStats/teamStats";
-import { PadAssetImage } from "../model/padAssets";
+import { TeamStatDisplay, TeamStats } from "../components/teamStats/teamStats";
 import { DEFAULT_TEAM_STATE, TeamState } from "../model/teamStateManager";
-import { FlexCol, FlexColC, FlexRow, H1, H2, H3, Page } from "../stylePrimitives";
+import { FlexCol, FlexColC, FlexRow, H1, Page } from "../stylePrimitives";
 
 const maxPageWidth = "1440px";
 
@@ -23,6 +22,8 @@ const TeamInput = styled.input`
 export const PadTeamBuilderPage = () => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [latentModalIsOpen, setLatentModalIsOpen] = useState(false);
+  const [badgeModalIsOpen, setBadgeModalIsOpen] = useState(false);
+  const [playerSelected, setPlayerSelected] = useState("");
   const [cardSlotSelected, setCardSlotSelected] = useState("");
   const [teamState, setTeamState] = useState(DEFAULT_TEAM_STATE as TeamState);
   const [gameConfig, setGameConfig] = useState({ mode: "3p" } as GameConfig);
@@ -59,6 +60,16 @@ export const PadTeamBuilderPage = () => {
         teamStats={teamStats}
         setTeamStats={setTeamStats}
       />
+      <BadgeSelectorModal
+        isOpen={badgeModalIsOpen}
+        setModalIsOpen={setBadgeModalIsOpen}
+        playerSelected={playerSelected as any}
+        gameConfig={gameConfig}
+        teamState={teamState}
+        setTeamState={setTeamState}
+        teamStats={teamStats}
+        setTeamStats={setTeamStats}
+      />
       <FlexColC>
         <FlexRow gap="1rem">
           <FlexCol>
@@ -67,9 +78,10 @@ export const PadTeamBuilderPage = () => {
               <FlexRow gap="3rem">
                 <Team
                   teamId={"P1"}
-                  teamColor={"pink"}
                   setModalIsOpen={setModalIsOpen}
                   setLatentModalIsOpen={setLatentModalIsOpen}
+                  setBadgeModalIsOpen={setBadgeModalIsOpen}
+                  setPlayerSelected={setPlayerSelected}
                   setCardSlotSelected={setCardSlotSelected}
                   state={teamState.p1}
                 />
@@ -79,10 +91,11 @@ export const PadTeamBuilderPage = () => {
                 <FlexRow gap="3rem">
                   <Team
                     teamId={"P2"}
-                    teamColor={"lightblue"}
                     setModalIsOpen={setModalIsOpen}
                     setLatentModalIsOpen={setLatentModalIsOpen}
+                    setBadgeModalIsOpen={setBadgeModalIsOpen}
                     setCardSlotSelected={setCardSlotSelected}
+                    setPlayerSelected={setPlayerSelected}
                     state={teamState.p2}
                   />
                   <TeamStatDisplay teamStat={teamStats.p2} />
@@ -92,10 +105,11 @@ export const PadTeamBuilderPage = () => {
                 <FlexRow gap="3rem">
                   <Team
                     teamId={"P3"}
-                    teamColor={"lightgreen"}
                     setModalIsOpen={setModalIsOpen}
                     setLatentModalIsOpen={setLatentModalIsOpen}
+                    setBadgeModalIsOpen={setBadgeModalIsOpen}
                     setCardSlotSelected={setCardSlotSelected}
+                    setPlayerSelected={setPlayerSelected}
                     state={teamState.p3}
                   />
                   <TeamStatDisplay teamStat={teamStats.p3} />
@@ -105,7 +119,6 @@ export const PadTeamBuilderPage = () => {
           </FlexCol>
         </FlexRow>
       </FlexColC>
-      <PadAssetImage assetName="badgebase" />
     </Page>
   );
 };

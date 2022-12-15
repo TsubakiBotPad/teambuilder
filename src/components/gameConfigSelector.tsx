@@ -1,6 +1,7 @@
 import styled from "@emotion/styled";
+
 import { TeamState } from "../model/teamStateManager";
-import { FlexRow, FlexRowC } from "../stylePrimitives";
+import { FlexRowC } from "../stylePrimitives";
 import { computeTeamStat, TeamStats } from "./teamStats/teamStats";
 
 export interface GameConfig {
@@ -38,7 +39,7 @@ export const GameConfigSelector = ({
         <FancyButton
           backgroundColorFocused="red"
           backgroundColorUnfocused="pink"
-          focused={gameConfig.mode == "1p"}
+          focused={gameConfig.mode === "1p"}
           onClick={async () => {
             const newGameConfig = { mode: "1p" };
             setGameConfig(newGameConfig);
@@ -52,7 +53,7 @@ export const GameConfigSelector = ({
         <FancyButton
           backgroundColorFocused="blue"
           backgroundColorUnfocused="lightblue"
-          focused={gameConfig.mode == "2p"}
+          focused={gameConfig.mode === "2p"}
           onClick={async () => {
             const newGameConfig = { mode: "2p" };
             setGameConfig(newGameConfig);
@@ -67,7 +68,7 @@ export const GameConfigSelector = ({
         <FancyButton
           backgroundColorFocused="green"
           backgroundColorUnfocused="lightgreen"
-          focused={gameConfig.mode == "3p"}
+          focused={gameConfig.mode === "3p"}
           onClick={async () => {
             const newGameConfig = { mode: "3p" };
             setGameConfig(newGameConfig);

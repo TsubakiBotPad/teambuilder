@@ -1,9 +1,10 @@
 import styled from "@emotion/styled";
-import React, { useState } from "react";
+import React from "react";
 import { AiOutlineCaretDown } from "react-icons/ai";
 
 import { PlayerState, TeamSlotState } from "../model/teamStateManager";
 import { FlexCol, FlexColC, FlexRow, FlexRowC, H2 } from "../stylePrimitives";
+import { BadgeDisplay } from "./badge";
 import { Card, Latents } from "./card";
 
 type ColorProps = {
@@ -72,24 +73,32 @@ const TeamSlot = ({
 
 export const Team = ({
   teamId,
-  teamColor,
   setModalIsOpen,
-  setCardSlotSelected,
   setLatentModalIsOpen,
+  setBadgeModalIsOpen,
+  setCardSlotSelected,
+  setPlayerSelected,
   state
 }: {
   teamId: string;
-  teamColor: string;
   setModalIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setLatentModalIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setBadgeModalIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setCardSlotSelected: React.Dispatch<React.SetStateAction<string>>;
+  setPlayerSelected: React.Dispatch<React.SetStateAction<string>>;
   state: PlayerState;
 }) => {
   return (
     <FlexCol gap="0.25rem">
-      <FlexRowC>
+      <FlexRowC gap="0.5rem">
         <H2>{teamId}</H2>
-        <span>Badge Icon</span>
+        <BadgeDisplay
+          onClick={() => {
+            setPlayerSelected(teamId.toLocaleLowerCase());
+            setBadgeModalIsOpen(true);
+          }}
+          badgeName={state.badgeId}
+        />
       </FlexRowC>
       <FlexRow>
         <TeamSlot

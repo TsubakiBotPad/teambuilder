@@ -5,8 +5,8 @@ import Modal from "react-modal";
 import { breakpoint } from "../../breakpoints";
 import { PadAssetImage } from "../../model/padAssets";
 import { setCardLatents, TeamState } from "../../model/teamStateManager";
-import { LATENTS_BY_SIZE, LATENTS_ID_TO_NAME, LATENTS_NAME_TO_ID, LATENT_NAMES } from "../../model/types/latents";
-import { BoundingBox, FlexCol, FlexColC, FlexRow, FlexRowC, H2, H3 } from "../../stylePrimitives";
+import { LATENTS_BY_SIZE, LATENTS_ID_TO_NAME, LATENTS_NAME_TO_ID } from "../../model/types/latents";
+import { BoundingBox, FlexCol, FlexColC, FlexRow, H2, H3 } from "../../stylePrimitives";
 import { GameConfig } from "../gameConfigSelector";
 import { ConfirmButton } from "../generic/confirmButton";
 import { TeamStats } from "../teamStats/teamStats";
@@ -33,10 +33,6 @@ const overlayClassName = css`
 `;
 
 const MAX_LATENTS = 8;
-
-interface SelectedLatent {
-  id: string;
-}
 
 export const LatentSelectorModal = ({
   isOpen,

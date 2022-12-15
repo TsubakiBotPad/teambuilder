@@ -5,19 +5,17 @@ import { debounce } from "lodash";
 import { useState } from "react";
 import Modal from "react-modal";
 
-import { ApiError, MonsterResponse } from "../../client";
-import { AwakeningImage, BASE_ICON_URL } from "../../model/images";
-import m from "../../model/monster.json";
-import { MonsterCacheClient, monsterCacheClient } from "../../model/monsterCacheClient";
-import { setCard, TeamState } from "../../model/teamStateManager";
-import { getKillers, MonsterType } from "../../model/types/monster";
-import { BoundingBox, FlexCol, FlexColC, FlexRow, FlexRowC, H2, H3, Page, PageBox } from "../../stylePrimitives";
-import { CardInfo } from "./cardInfo";
-import { leftPad } from "../generic/leftPad";
 import { breakpoint } from "../../breakpoints";
-import { TeamStats } from "../teamStats/teamStats";
-import { ConfirmButton } from "../generic/confirmButton";
+import { ApiError, MonsterResponse } from "../../client";
+import { BASE_ICON_URL } from "../../model/images";
+import { monsterCacheClient } from "../../model/monsterCacheClient";
+import { setCard, TeamState } from "../../model/teamStateManager";
+import { BoundingBox, FlexCol, FlexColC, FlexRowC, H2 } from "../../stylePrimitives";
 import { GameConfig } from "../gameConfigSelector";
+import { ConfirmButton } from "../generic/confirmButton";
+import { leftPad } from "../generic/leftPad";
+import { TeamStats } from "../teamStats/teamStats";
+import { CardInfo } from "./cardInfo";
 
 const CardQueryInput = styled.input`
   border: 1px solid gray;
@@ -158,8 +156,7 @@ export const CardSelectorModal = ({
   teamStats: TeamStats;
   setTeamStats: React.Dispatch<React.SetStateAction<TeamStats>>;
 }) => {
-  const [queriedId, setQueriedId] = useState(0);
-  const [queriedText, setQueriedText] = useState("");
+  const [, setQueriedId] = useState(0);
   const [altEvoIds, setAltEvoIds] = useState([] as number[]);
   const [error, setError] = useState("");
   const [selectedMonster, setSelectedMonster] = useState<MonsterResponse | undefined>(undefined);

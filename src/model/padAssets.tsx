@@ -1,5 +1,5 @@
-import { css } from "@emotion/css";
 import styled from "@emotion/styled";
+
 import { SpriteProps } from "./images";
 
 class SpriteCoordinates {
@@ -119,29 +119,40 @@ const ASSET_NAME_TO_SPRITE_PROPS: { [key: string]: SpriteCoordinates } = {
   lslatentbase: new SpriteCoordinates(508, 498, 32, 32),
   attrlatentbase: new SpriteCoordinates(544, 498, 32, 28),
   "sb++latentbase": new SpriteCoordinates(576, 498, 32, 32),
-  unmlatentbase: new SpriteCoordinates(296, 844, 32, 32),
-  spnlatentbase: new SpriteCoordinates(958, 295, 32, 32),
+
+  unmlatentbase: new SpriteCoordinates(957, 225, 32, 32),
+  spnlatentbase: new SpriteCoordinates(920, 225, 32, 32),
 
   psflatentbase: new SpriteCoordinates(474, 500, 32, 29),
-  massatkbadge: new SpriteCoordinates(474, 531, 32, 29),
-  "rcv+badge": new SpriteCoordinates(474, 560, 32, 29),
-  "hp+badge": new SpriteCoordinates(474, 591, 32, 29),
+  massatkbadge: new SpriteCoordinates(474, 529, 29, 29),
+  "rcv+badge": new SpriteCoordinates(473, 560, 29, 29),
+  "hp+badge": new SpriteCoordinates(473, 591, 29, 29),
   "1.5xlatentbase": new SpriteCoordinates(474, 624, 32, 29),
   vdplatentbase: new SpriteCoordinates(474, 653, 32, 29),
   cloudtapelatentbase: new SpriteCoordinates(474, 681, 32, 29),
-  "atk+badge": new SpriteCoordinates(474, 710, 32, 29),
+  "atk+badge": new SpriteCoordinates(473, 710, 29, 29),
   abslatentbase: new SpriteCoordinates(474, 739, 32, 29),
   // "9": new SpriteCoordinates(474, 779, 32, 29),
   // "10": new SpriteCoordinates(474, 824, 32, 29),
-  rcvbadge: new SpriteCoordinates(474, 822, 32, 29),
-  hpbadge: new SpriteCoordinates(474, 851, 32, 29),
-  sbbadge: new SpriteCoordinates(474, 878, 32, 29),
-  unbindablebadge: new SpriteCoordinates(474, 906, 32, 29),
-  sbrbadge: new SpriteCoordinates(474, 934, 32, 29),
+  rcvbadge: new SpriteCoordinates(472, 822, 29, 29),
+  hpbadge: new SpriteCoordinates(472, 851, 29, 29),
+  sbbadge: new SpriteCoordinates(474, 878, 29, 29),
+  unbindablebadge: new SpriteCoordinates(473, 906, 29, 29),
+  sbrbadge: new SpriteCoordinates(473, 934, 29, 29),
   unmatachable: new SpriteCoordinates(474, 962, 32, 29),
   dbllatentbase: new SpriteCoordinates(474, 990, 32, 29),
 
-  badgebase: new SpriteCoordinates(260, 637, 52, 38)
+  badgebase: new SpriteCoordinates(260, 637, 52, 38),
+  padpassbadge: new SpriteCoordinates(260, 680, 58, 37),
+  costbadge: new SpriteCoordinates(162, 336, 67, 45),
+  tebadge: new SpriteCoordinates(636, 499, 28, 28),
+  atkbadge: new SpriteCoordinates(664, 499, 29, 29),
+  nosfbadge: new SpriteCoordinates(308, 802, 29, 29),
+  "te+badge": new SpriteCoordinates(230, 432, 29, 29),
+  rankexpbadge: new SpriteCoordinates(162, 433, 67, 44),
+  blindbadge: new SpriteCoordinates(101, 810, 56, 56),
+  jammerbadge: new SpriteCoordinates(97, 916, 56, 56),
+  poisonbadge: new SpriteCoordinates(159, 583, 56, 56)
 };
 
 const PadAssetImg = styled.div<SpriteProps>`
@@ -168,7 +179,7 @@ export const PadAssetImage = ({
 }) => {
   const c = ASSET_NAME_TO_SPRITE_PROPS[assetName];
   if (!c) {
-    return <>missing</>;
+    return <>missing:{assetName}</>;
   }
 
   const scale = desiredHeight ? desiredHeight / c.heightPx : 1;

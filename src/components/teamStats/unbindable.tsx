@@ -1,10 +1,6 @@
-import { css } from "@emotion/css";
-import { AwakeningImage } from "../../model/images";
 import { monsterCacheClient } from "../../model/monsterCacheClient";
 import { PlayerState } from "../../model/teamStateManager";
 import { AwokenSkills } from "../../model/types/monster";
-import { FlexCol, FlexRow, FlexRowC, H2, H3 } from "../../stylePrimitives";
-import { fixedDecimals } from "../generic/fixedDecimals";
 
 export async function computeTeamUnbindablePct(playerState: PlayerState) {
   const slots = [
