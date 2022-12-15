@@ -128,3 +128,22 @@ export async function setPlayerBadge(
   setTeamState(newTeamState);
   setTeamStats({ ...teamStats, [playerId]: await computeTeamStat(teamState, gameConfig, playerId) });
 }
+
+export function serializeTeamState(teamState: TeamState) {}
+
+function serializePlayerState(prefix: string, playerId: string, p: PlayerState) {
+  const k = `${prefix}p${playerId}`;
+  return [
+    { [`${k}b`]: p.badgeId },
+    serializeTeamSlot(k, 1, p.teamSlot1),
+    serializeTeamSlot(k, 2, p.teamSlot2),
+    serializeTeamSlot(k, 3, p.teamSlot3),
+    serializeTeamSlot(k, 4, p.teamSlot4),
+    serializeTeamSlot(k, 5, p.teamSlot5),
+    serializeTeamSlot(k, 6, p.teamSlot6)
+  ];
+}
+
+function serializeTeamSlot(prefix: string, slotId: number, ts: TeamSlotState) {
+  return { [`${prefix}s${slotId}`]: [ts.baseId, ts.assistId, ts.latents] };
+}

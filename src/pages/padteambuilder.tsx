@@ -1,4 +1,5 @@
 import styled from "@emotion/styled";
+import { debounce } from "lodash";
 import React, { useState } from "react";
 
 import { GameConfig, GameConfigSelector } from "../components/gameConfigSelector";
@@ -6,9 +7,11 @@ import { BadgeSelectorModal } from "../components/modal/badgeSelectorModal";
 import { CardSelectorModal } from "../components/modal/cardSelectorModal";
 import { LatentSelectorModal } from "../components/modal/latentSelectorModal";
 import { Team } from "../components/team";
-import { TeamStatDisplay, TeamStats } from "../components/teamStats/teamStats";
+import { computeTeamStat, TeamStatDisplay, TeamStats } from "../components/teamStats/teamStats";
+import { ConfigData, serializeConfig } from "../model/serializedUri";
 import { DEFAULT_TEAM_STATE, TeamState } from "../model/teamStateManager";
 import { FlexCol, FlexColC, FlexRow, H1, Page } from "../stylePrimitives";
+import { useNavigate, useParams } from "react-router-dom";
 
 const maxPageWidth = "1440px";
 
@@ -26,8 +29,21 @@ export const PadTeamBuilderPage = () => {
   const [playerSelected, setPlayerSelected] = useState("");
   const [cardSlotSelected, setCardSlotSelected] = useState("");
   const [teamState, setTeamState] = useState(DEFAULT_TEAM_STATE as TeamState);
+  const [teamName, setTeamName] = useState("");
   const [gameConfig, setGameConfig] = useState({ mode: "3p" } as GameConfig);
   const [teamStats, setTeamStats] = useState<TeamStats>({});
+
+  const navigate = useNavigate();
+
+  const updateUrl = debounce((config: Partial<ConfigData>) => {
+    const finalConfig = {
+      n: teamName,
+      ts: teamState,
+      gc: gameConfig,
+      ...config
+    };
+    navigate("/" + serializeConfig(finalConfig));
+  }, 250);
 
   return (
     <Page maxWidth={maxPageWidth}>
@@ -73,7 +89,14 @@ export const PadTeamBuilderPage = () => {
       <FlexColC>
         <FlexRow gap="1rem">
           <FlexCol>
-            <TeamInput placeholder="Team Title" size={35} />
+            <TeamInput
+              placeholder="Team Title"
+              size={35}
+              value={teamName}
+              onChange={(e) => {
+                setTeamName(e.target.value);
+              }}
+            />
             <FlexCol gap="1.5rem">
               <FlexRow gap="3rem">
                 <Team
@@ -84,6 +107,7 @@ export const PadTeamBuilderPage = () => {
                   setPlayerSelected={setPlayerSelected}
                   setCardSlotSelected={setCardSlotSelected}
                   state={teamState.p1}
+                  gameConfig={gameConfig}
                 />
                 <TeamStatDisplay teamStat={teamStats.p1} />
               </FlexRow>
@@ -97,6 +121,7 @@ export const PadTeamBuilderPage = () => {
                     setCardSlotSelected={setCardSlotSelected}
                     setPlayerSelected={setPlayerSelected}
                     state={teamState.p2}
+                    gameConfig={gameConfig}
                   />
                   <TeamStatDisplay teamStat={teamStats.p2} />
                 </FlexRow>
@@ -111,6 +136,7 @@ export const PadTeamBuilderPage = () => {
                     setCardSlotSelected={setCardSlotSelected}
                     setPlayerSelected={setPlayerSelected}
                     state={teamState.p3}
+                    gameConfig={gameConfig}
                   />
                   <TeamStatDisplay teamStat={teamStats.p3} />
                 </FlexRow>

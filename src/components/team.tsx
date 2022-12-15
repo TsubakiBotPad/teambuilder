@@ -6,6 +6,7 @@ import { PlayerState, TeamSlotState } from "../model/teamStateManager";
 import { FlexCol, FlexColC, FlexRow, FlexRowC, H2 } from "../stylePrimitives";
 import { BadgeDisplay } from "./badge";
 import { Card, Latents } from "./card";
+import { GameConfig } from "./gameConfigSelector";
 
 type ColorProps = {
   color: string;
@@ -78,7 +79,8 @@ export const Team = ({
   setBadgeModalIsOpen,
   setCardSlotSelected,
   setPlayerSelected,
-  state
+  state,
+  gameConfig
 }: {
   teamId: string;
   setModalIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -87,18 +89,21 @@ export const Team = ({
   setCardSlotSelected: React.Dispatch<React.SetStateAction<string>>;
   setPlayerSelected: React.Dispatch<React.SetStateAction<string>>;
   state: PlayerState;
+  gameConfig: GameConfig;
 }) => {
   return (
     <FlexCol gap="0.25rem">
       <FlexRowC gap="0.5rem">
         <H2>{teamId}</H2>
-        <BadgeDisplay
-          onClick={() => {
-            setPlayerSelected(teamId.toLocaleLowerCase());
-            setBadgeModalIsOpen(true);
-          }}
-          badgeName={state.badgeId}
-        />
+        {gameConfig.mode !== "2p" ? (
+          <BadgeDisplay
+            onClick={() => {
+              setPlayerSelected(teamId.toLocaleLowerCase());
+              setBadgeModalIsOpen(true);
+            }}
+            badgeName={state.badgeId}
+          />
+        ) : null}
       </FlexRowC>
       <FlexRow>
         <TeamSlot

@@ -9,6 +9,7 @@ import { breakpoint } from "../../breakpoints";
 import { ApiError, MonsterResponse } from "../../client";
 import { BASE_ICON_URL } from "../../model/images";
 import { monsterCacheClient } from "../../model/monsterCacheClient";
+import { deserializeConfig, serializeConfig } from "../../model/serializedUri";
 import { setCard, TeamState } from "../../model/teamStateManager";
 import { BoundingBox, FlexCol, FlexColC, FlexRowC, H2 } from "../../stylePrimitives";
 import { GameConfig } from "../gameConfigSelector";
@@ -225,6 +226,9 @@ export const CardSelectorModal = ({
                       setTeamStats
                     );
                     setModalIsOpen(false);
+                    const z = serializeConfig({ n: "asdf", ts: teamState, gc: gameConfig });
+                    const a = deserializeConfig(z);
+                    debugger;
                   }}
                 >
                   Use Card
