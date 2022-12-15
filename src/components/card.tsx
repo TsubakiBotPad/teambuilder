@@ -58,36 +58,27 @@ export const Card = ({
 const LatentEmpty = styled.div`
   background-color: lightyellow;
   width: 5rem;
-  height: 2rem;
+  height: 2.14rem;
   border: 2px dotted #aaa;
+  box-sizing: border-box;
 `;
 
 const LatentSelected = styled(FlexRow)`
   background-color: lightred;
   width: 5rem;
-  height: 2rem;
-  padding: 2px 0;
+  height: 2.14rem;
   flex-wrap: wrap;
   gap: 0px 2px;
-  border-left: 2px solid transparent;
-  border-right: 2px solid transparent;
-`;
-
-const SixSlotLatentImg = styled.div`
-  background-image: url(img/6slotL.png);
-  width: 5rem;
-  height: 36px;
-  background-size: 80px 36px;
-  position: relative;
 `;
 
 const RemainderLatents = styled.div`
   width: 50%;
   position: relative;
-  top: -50%;
+  top: -48%;
   left: 50%;
   display: flex;
   gap: 3px;
+  justify-content: center;
 `;
 
 const SixSlotLatent = ({ latentName, halfBreakDamage }: { latentName: string; halfBreakDamage: boolean }) => {
@@ -96,35 +87,37 @@ const SixSlotLatent = ({ latentName, halfBreakDamage }: { latentName: string; ha
     return <></>;
   }
 
+  halfBreakDamage = true;
   return (
-    <div>
-      <SixSlotLatentImg />
-      <div
+    <div
+      className={css`
+        width: 100%;
+        height: 100%;
+        background-image: url(img/6slotL.png);
+        background-size: contain;
+        background-repeat: no-repeat;
+      `}
+    >
+      <PadAssetImage
+        assetName={`${latentName}latentbase`}
+        height={17}
         className={css`
-          height: 0;
+          position: relative;
+          top: ${halfBreakDamage ? 2 : 7}px;
+          left: 11px;
         `}
-      >
+      />
+      {halfBreakDamage ? (
         <PadAssetImage
-          assetName={`${latentName}latentbase`}
-          height={18}
+          assetName={`1.5xlatentbase`}
+          height={12}
           className={css`
             position: relative;
-            top: ${halfBreakDamage ? -32 : -27}px;
-            left: 11px;
+            top: 1px;
+            left: 13px;
           `}
         />
-        {halfBreakDamage ? (
-          <PadAssetImage
-            assetName={`1.5xlatentbase`}
-            height={12}
-            className={css`
-              position: relative;
-              top: -33px;
-              left: 13px;
-            `}
-          />
-        ) : null}
-      </div>
+      ) : null}
     </div>
   );
 };
