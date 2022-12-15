@@ -116,6 +116,13 @@ const overlayClassName = css`
   inset: 0;
 `;
 
+const f = async (e: any, setQueriedId: any, setAltEvoIds: any, setSelectedMonster: any, setError: any) => {
+  e.preventDefault();
+  await handleInputChange(e.target.value, setQueriedId, setAltEvoIds, setSelectedMonster, setError);
+};
+
+const debouncedOnChange = debounce(f, 300);
+
 export const CardSelectorModal = ({ isOpen }: { isOpen: boolean }) => {
   const { setModalIsOpen, cardSlotSelected } = useContext(AppStateContext);
   const { teamState, setTeamState } = useContext(TeamStateContext);
@@ -150,10 +157,9 @@ export const CardSelectorModal = ({ isOpen }: { isOpen: boolean }) => {
               <CardQueryInput
                 type="text"
                 placeholder="Search id/name/query"
-                onChange={debounce(async (e) => {
-                  e.preventDefault();
-                  await handleInputChange(e.target.value, setQueriedId, setAltEvoIds, setSelectedMonster, setError);
-                }, 300)}
+                onChange={async (e) => {
+                  debouncedOnChange(e, setQueriedId, setAltEvoIds, setSelectedMonster, setError);
+                }}
               />
 
               {error ? <span>{error}</span> : <></>}
