@@ -1,15 +1,13 @@
 import { css } from "@emotion/css";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import Modal from "react-modal";
 
 import { breakpoint } from "../../breakpoints";
 import { PadAssetImage } from "../../model/padAssets";
-import { setCardLatents, TeamState } from "../../model/teamStateManager";
+import { AppStateContext, setCardLatents, TeamStateContext } from "../../model/teamStateManager";
 import { LATENTS_BY_SIZE, LATENTS_ID_TO_NAME, LATENTS_NAME_TO_ID } from "../../model/types/latents";
 import { BoundingBox, FlexCol, FlexColC, FlexRow, H2, H3 } from "../../stylePrimitives";
-import { GameConfig } from "../gameConfigSelector";
 import { ConfirmButton } from "../generic/confirmButton";
-import { TeamStats } from "../teamStats/teamStats";
 
 const modalClassName = css`
   border: 0;
@@ -34,26 +32,10 @@ const overlayClassName = css`
 
 const MAX_LATENTS = 8;
 
-export const LatentSelectorModal = ({
-  isOpen,
-  setModalIsOpen,
-  cardSlotSelected,
-  gameConfig,
-  teamState,
-  setTeamState,
-  teamStats,
-  setTeamStats
-}: {
-  isOpen: boolean;
-  setModalIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  cardSlotSelected: string;
-  gameConfig: GameConfig;
-  teamState: TeamState;
-  setTeamState: React.Dispatch<React.SetStateAction<TeamState>>;
-  teamStats: TeamStats;
-  setTeamStats: React.Dispatch<React.SetStateAction<TeamStats>>;
-}) => {
+export const LatentSelectorModal = ({ isOpen }: { isOpen: boolean }) => {
   const [selectedLatents, setSelectedLatents] = useState<number[]>([]);
+  const { setLatentModalIsOpen, cardSlotSelected } = useContext(AppStateContext);
+  const { teamState, setTeamState } = useContext(TeamStateContext);
 
   const currentSize = selectedLatents.reduce((a, b) => {
     const s = Math.floor(b / 100);
@@ -66,7 +48,7 @@ export const LatentSelectorModal = ({
       contentLabel="Example Modal"
       shouldCloseOnOverlayClick={true}
       onRequestClose={() => {
-        setModalIsOpen(false);
+        setLatentModalIsOpen(false);
       }}
       className={modalClassName}
       overlayClassName={overlayClassName}
@@ -168,16 +150,8 @@ export const LatentSelectorModal = ({
             <FlexColC>
               <ConfirmButton
                 onClick={() => {
-                  setCardLatents(
-                    cardSlotSelected,
-                    selectedLatents,
-                    gameConfig,
-                    teamState,
-                    setTeamState,
-                    teamStats,
-                    setTeamStats
-                  );
-                  setModalIsOpen(false);
+                  setCardLatents(cardSlotSelected, selectedLatents, teamState, setTeamState);
+                  setLatentModalIsOpen(false);
                 }}
               >
                 Use Latents

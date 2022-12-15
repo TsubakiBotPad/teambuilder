@@ -33,7 +33,7 @@ export async function computeTeamStat(
     attributes: await computeAttributes(teamState[player]),
     teamTypes: await computeTypes(teamState[player]),
     teamUnbindablePct: await computeTeamUnbindablePct(teamState[player]),
-    teamBasicStats: await computeTeamBasicStats(teamState[player], gameConfig)
+    teamBasicStats: await computeTeamBasicStats(teamState[player], gameConfig, teamState)
   };
 }
 

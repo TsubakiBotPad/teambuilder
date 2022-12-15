@@ -1,15 +1,13 @@
 import { css } from "@emotion/css";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import Modal from "react-modal";
 
 import { breakpoint } from "../../breakpoints";
 import { PadAssetImage } from "../../model/padAssets";
-import { setPlayerBadge, TeamState } from "../../model/teamStateManager";
+import { AppStateContext, setPlayerBadge, TeamStateContext } from "../../model/teamStateManager";
 import { BADGE_NAMES } from "../../model/types/badges";
 import { BoundingBox, FlexColC, FlexRow, H2 } from "../../stylePrimitives";
-import { GameConfig } from "../gameConfigSelector";
 import { ConfirmButton } from "../generic/confirmButton";
-import { TeamStats } from "../teamStats/teamStats";
 
 const modalClassName = css`
   border: 0;
@@ -32,26 +30,10 @@ const overlayClassName = css`
   inset: 0;
 `;
 
-export const BadgeSelectorModal = ({
-  isOpen,
-  setModalIsOpen,
-  playerSelected,
-  gameConfig,
-  teamState,
-  setTeamState,
-  teamStats,
-  setTeamStats
-}: {
-  isOpen: boolean;
-  setModalIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  playerSelected: "p1" | "p2" | "p3";
-  gameConfig: GameConfig;
-  teamState: TeamState;
-  setTeamState: React.Dispatch<React.SetStateAction<TeamState>>;
-  teamStats: TeamStats;
-  setTeamStats: React.Dispatch<React.SetStateAction<TeamStats>>;
-}) => {
+export const BadgeSelectorModal = ({ isOpen }: { isOpen: boolean }) => {
   const [selectedBadge, setSelectedBadge] = useState<string>("");
+  const { setBadgeModalIsOpen, playerSelected } = useContext(AppStateContext);
+  const { teamState, setTeamState } = useContext(TeamStateContext);
 
   return (
     <Modal
@@ -59,7 +41,7 @@ export const BadgeSelectorModal = ({
       contentLabel="Badge Modal"
       shouldCloseOnOverlayClick={true}
       onRequestClose={() => {
-        setModalIsOpen(false);
+        setBadgeModalIsOpen(false);
       }}
       className={modalClassName}
       overlayClassName={overlayClassName}
@@ -102,16 +84,8 @@ export const BadgeSelectorModal = ({
             <FlexColC>
               <ConfirmButton
                 onClick={() => {
-                  setPlayerBadge(
-                    playerSelected,
-                    selectedBadge,
-                    gameConfig,
-                    teamState,
-                    setTeamState,
-                    teamStats,
-                    setTeamStats
-                  );
-                  setModalIsOpen(false);
+                  setPlayerBadge(playerSelected as any, selectedBadge, teamState, setTeamState);
+                  setBadgeModalIsOpen(false);
                 }}
               >
                 Use Badge

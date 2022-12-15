@@ -1,12 +1,11 @@
 import styled from "@emotion/styled";
-import React from "react";
+import React, { useContext } from "react";
 import { AiOutlineCaretDown } from "react-icons/ai";
 
-import { PlayerState, TeamSlotState } from "../model/teamStateManager";
+import { AppStateContext, PlayerState, TeamSlotState } from "../model/teamStateManager";
 import { FlexCol, FlexColC, FlexRow, FlexRowC, H2 } from "../stylePrimitives";
 import { BadgeDisplay } from "./badge";
 import { Card, Latents } from "./card";
-import { GameConfig } from "./gameConfigSelector";
 
 type ColorProps = {
   color: string;
@@ -24,73 +23,28 @@ const teamIdToColor: { [key in string]: string } = {
   P3: "lightgreen"
 };
 
-const TeamSlot = ({
-  teamId,
-  slotId,
-  setModalIsOpen,
-  setCardSlotSelected,
-  setLatentModalIsOpen,
-  state
-}: {
-  teamId: string;
-  slotId: string;
-  setModalIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  setCardSlotSelected: React.Dispatch<React.SetStateAction<string>>;
-  setLatentModalIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  state: TeamSlotState;
-}) => {
+const TeamSlot = ({ teamId, slotId, state }: { teamId: string; slotId: string; state: TeamSlotState }) => {
   return (
     <FlexColC>
       <ColorBG color="#f0f0f0">
-        <Card
-          cardId={`${teamId}-Slot${slotId}-Assist`}
-          setModalIsOpen={setModalIsOpen}
-          setCardSlotSelected={setCardSlotSelected}
-          monsterId={state.assistId}
-        />
+        <Card cardId={`${teamId}-Slot${slotId}-Assist`} monsterId={state.assistId} />
       </ColorBG>
       <FlexRowC>
         <AiOutlineCaretDown /> Assist
       </FlexRowC>
       <ColorBG color={teamIdToColor[teamId]}>
         <FlexColC gap="0.25rem">
-          <Card
-            cardId={`${teamId}-Slot${slotId}-Base`}
-            setModalIsOpen={setModalIsOpen}
-            setCardSlotSelected={setCardSlotSelected}
-            monsterId={state.baseId}
-          />
-          <Latents
-            cardId={`${teamId}-Slot${slotId}-Base`}
-            setLatentModalIsOpen={setLatentModalIsOpen}
-            setCardSlotSelected={setCardSlotSelected}
-            latents={state.latents}
-          />
+          <Card cardId={`${teamId}-Slot${slotId}-Base`} monsterId={state.baseId} />
+          <Latents cardId={`${teamId}-Slot${slotId}-Base`} latents={state.latents} />
         </FlexColC>
       </ColorBG>
     </FlexColC>
   );
 };
 
-export const Team = ({
-  teamId,
-  setModalIsOpen,
-  setLatentModalIsOpen,
-  setBadgeModalIsOpen,
-  setCardSlotSelected,
-  setPlayerSelected,
-  state,
-  gameConfig
-}: {
-  teamId: string;
-  setModalIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  setLatentModalIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  setBadgeModalIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  setCardSlotSelected: React.Dispatch<React.SetStateAction<string>>;
-  setPlayerSelected: React.Dispatch<React.SetStateAction<string>>;
-  state: PlayerState;
-  gameConfig: GameConfig;
-}) => {
+export const Team = ({ teamId, state }: { teamId: string; state: PlayerState }) => {
+  const { gameConfig, setPlayerSelected, setBadgeModalIsOpen } = useContext(AppStateContext);
+
   return (
     <FlexCol gap="0.25rem">
       <FlexRowC gap="0.5rem">
@@ -106,54 +60,12 @@ export const Team = ({
         ) : null}
       </FlexRowC>
       <FlexRow>
-        <TeamSlot
-          teamId={teamId}
-          slotId={"1"}
-          setModalIsOpen={setModalIsOpen}
-          setLatentModalIsOpen={setLatentModalIsOpen}
-          setCardSlotSelected={setCardSlotSelected}
-          state={state.teamSlot1}
-        />
-        <TeamSlot
-          teamId={teamId}
-          slotId={"2"}
-          setModalIsOpen={setModalIsOpen}
-          setLatentModalIsOpen={setLatentModalIsOpen}
-          setCardSlotSelected={setCardSlotSelected}
-          state={state.teamSlot2}
-        />
-        <TeamSlot
-          teamId={teamId}
-          slotId={"3"}
-          setModalIsOpen={setModalIsOpen}
-          setLatentModalIsOpen={setLatentModalIsOpen}
-          setCardSlotSelected={setCardSlotSelected}
-          state={state.teamSlot3}
-        />
-        <TeamSlot
-          teamId={teamId}
-          slotId={"4"}
-          setModalIsOpen={setModalIsOpen}
-          setLatentModalIsOpen={setLatentModalIsOpen}
-          setCardSlotSelected={setCardSlotSelected}
-          state={state.teamSlot4}
-        />
-        <TeamSlot
-          teamId={teamId}
-          slotId={"5"}
-          setModalIsOpen={setModalIsOpen}
-          setLatentModalIsOpen={setLatentModalIsOpen}
-          setCardSlotSelected={setCardSlotSelected}
-          state={state.teamSlot5}
-        />
-        <TeamSlot
-          teamId={teamId}
-          slotId={"6"}
-          setModalIsOpen={setModalIsOpen}
-          setLatentModalIsOpen={setLatentModalIsOpen}
-          setCardSlotSelected={setCardSlotSelected}
-          state={state.teamSlot6}
-        />
+        <TeamSlot teamId={teamId} slotId={"1"} state={state.teamSlot1} />
+        <TeamSlot teamId={teamId} slotId={"2"} state={state.teamSlot2} />
+        <TeamSlot teamId={teamId} slotId={"3"} state={state.teamSlot3} />
+        <TeamSlot teamId={teamId} slotId={"4"} state={state.teamSlot4} />
+        <TeamSlot teamId={teamId} slotId={"5"} state={state.teamSlot5} />
+        <TeamSlot teamId={teamId} slotId={"6"} state={state.teamSlot6} />
       </FlexRow>
     </FlexCol>
   );

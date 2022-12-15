@@ -4,7 +4,7 @@ import styled from "@emotion/styled";
 import { AwakeningImage } from "../../model/images";
 import { monsterCacheClient } from "../../model/monsterCacheClient";
 import { PadAssetImage } from "../../model/padAssets";
-import { PlayerState, TeamSlotState } from "../../model/teamStateManager";
+import { PlayerState, TeamSlotState, TeamState } from "../../model/teamStateManager";
 import { computeLeaderSkill } from "../../model/types/leaderSkill";
 import { Attribute, AwokenSkills, MonsterType } from "../../model/types/monster";
 import { maxLevel, stat } from "../../model/types/stat";
@@ -12,7 +12,7 @@ import { FlexCol, FlexRow } from "../../stylePrimitives";
 import { GameConfig } from "../gameConfigSelector";
 import { fixedDecimals } from "../generic/fixedDecimals";
 import { AttributeHistogram } from "./attributes";
-import { computeTotalAwakenings } from "./awakenings";
+import { computeTotalAwakeningsFromSlots } from "./awakenings";
 import { TeamTypes } from "./types";
 
 export interface TeamBasicStats {
@@ -24,15 +24,35 @@ export interface TeamBasicStats {
   ehpNoAwo: number;
 }
 
-export async function computeTeamBasicStats(playerState: PlayerState, gameConfig: GameConfig): Promise<TeamBasicStats> {
-  const slots = [
-    playerState.teamSlot1,
-    playerState.teamSlot2,
-    playerState.teamSlot3,
-    playerState.teamSlot4,
-    playerState.teamSlot5,
-    playerState.teamSlot6
-  ];
+export async function computeTeamBasicStats(
+  playerState: PlayerState,
+  gameConfig: GameConfig,
+  teamState: TeamState
+): Promise<TeamBasicStats> {
+  var slots = [];
+  if (gameConfig.mode === "2p") {
+    slots = [
+      teamState.p1.teamSlot1,
+      teamState.p1.teamSlot2,
+      teamState.p1.teamSlot3,
+      teamState.p1.teamSlot4,
+      teamState.p1.teamSlot5,
+      teamState.p2.teamSlot1,
+      teamState.p2.teamSlot2,
+      teamState.p2.teamSlot3,
+      teamState.p2.teamSlot4,
+      teamState.p2.teamSlot5
+    ];
+  } else {
+    slots = [
+      playerState.teamSlot1,
+      playerState.teamSlot2,
+      playerState.teamSlot3,
+      playerState.teamSlot4,
+      playerState.teamSlot5,
+      playerState.teamSlot6
+    ];
+  }
 
   const leader = await monsterCacheClient.get(slots[0].baseId);
   const helper = await monsterCacheClient.get(slots[5].baseId);
@@ -40,8 +60,7 @@ export async function computeTeamBasicStats(playerState: PlayerState, gameConfig
 
   var { hpAcc, rcvAcc, hpNoAwoAcc, rcvNoAwoAcc } = await accumulateBasicStats(slots, gameConfig);
 
-  // TODO: Team HP/RCV
-  const awakenings = await computeTotalAwakenings(playerState);
+  const awakenings = await computeTotalAwakeningsFromSlots(slots);
   const numTeamHp = awakenings[AwokenSkills.ENHTEAMHP] ?? 0;
   const numTeamRcv = awakenings[AwokenSkills.ENHTEAMRCV] ?? 0;
 

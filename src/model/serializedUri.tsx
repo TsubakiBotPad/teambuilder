@@ -38,9 +38,8 @@ export const serializeConfig = ({ n: teamName, ts: teamState, gc: gameConfig }: 
 //   return [{ [`${prefix}s${slotId}`]: [`${ts.baseId}`, `${ts.assistId}`] }, { [`${prefix}l${slotId}`]: ts.latents }];
 // }
 
-export const deserializeConfig = (serialized: string) => {
+export const deserializeConfig = (serialized: string): ConfigData => {
   const x = Buffer.from(serialized, "base64").toString();
   const y = JSON.parse(x);
-
   return y;
 };

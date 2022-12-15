@@ -1,8 +1,8 @@
 import styled from "@emotion/styled";
+import { useContext } from "react";
 
-import { TeamState } from "../model/teamStateManager";
+import { AppStateContext } from "../model/teamStateManager";
 import { FlexRowC } from "../stylePrimitives";
-import { computeTeamStat, TeamStats } from "./teamStats/teamStats";
 
 export interface GameConfig {
   mode: string;
@@ -21,17 +21,9 @@ const FancyButton = styled.button<FancyButtonProps>`
   padding: 0.25rem 1rem;
 `;
 
-export const GameConfigSelector = ({
-  gameConfig,
-  setGameConfig,
-  teamState,
-  setTeamStats
-}: {
-  gameConfig: GameConfig;
-  setGameConfig: React.Dispatch<React.SetStateAction<GameConfig>>;
-  teamState: TeamState;
-  setTeamStats: React.Dispatch<React.SetStateAction<TeamStats>>;
-}) => {
+export const GameConfigSelector = () => {
+  const { gameConfig, setGameConfig, updateUrl } = useContext(AppStateContext);
+
   return (
     <FlexRowC gap="0.25rem">
       <span>Game Mode:</span>
@@ -43,9 +35,7 @@ export const GameConfigSelector = ({
           onClick={async () => {
             const newGameConfig = { mode: "1p" };
             setGameConfig(newGameConfig);
-            setTeamStats({
-              p1: await computeTeamStat(teamState, newGameConfig, "p1")
-            });
+            updateUrl({ gc: newGameConfig });
           }}
         >
           1P
@@ -57,10 +47,7 @@ export const GameConfigSelector = ({
           onClick={async () => {
             const newGameConfig = { mode: "2p" };
             setGameConfig(newGameConfig);
-            setTeamStats({
-              p1: await computeTeamStat(teamState, newGameConfig, "p1"),
-              p2: await computeTeamStat(teamState, newGameConfig, "p2")
-            });
+            updateUrl({ gc: newGameConfig });
           }}
         >
           2P
@@ -72,11 +59,8 @@ export const GameConfigSelector = ({
           onClick={async () => {
             const newGameConfig = { mode: "3p" };
             setGameConfig(newGameConfig);
-            setTeamStats({
-              p1: await computeTeamStat(teamState, newGameConfig, "p1"),
-              p2: await computeTeamStat(teamState, newGameConfig, "p2"),
-              p3: await computeTeamStat(teamState, newGameConfig, "p3")
-            });
+
+            updateUrl({ gc: newGameConfig });
           }}
         >
           3P

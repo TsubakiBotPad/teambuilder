@@ -1,9 +1,10 @@
 import { css } from "@emotion/css";
 import styled from "@emotion/styled";
-import React from "react";
+import React, { useContext } from "react";
 
 import { BASE_ICON_URL } from "../model/images";
 import { PadAssetImage } from "../model/padAssets";
+import { AppStateContext } from "../model/teamStateManager";
 import { LATENTS_ID_TO_NAME } from "../model/types/latents";
 import { FlexRow } from "../stylePrimitives";
 import { leftPad } from "./generic/leftPad";
@@ -27,17 +28,9 @@ const CardSelected = styled.div<CardSelectedType>`
   height: 5rem;
 `;
 
-export const Card = ({
-  cardId,
-  setModalIsOpen,
-  setCardSlotSelected,
-  monsterId
-}: {
-  cardId: string;
-  setModalIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  setCardSlotSelected: React.Dispatch<React.SetStateAction<string>>;
-  monsterId: number;
-}) => {
+export const Card = ({ cardId, monsterId }: { cardId: string; monsterId: number }) => {
+  const { setModalIsOpen, setCardSlotSelected } = useContext(AppStateContext);
+
   return monsterId !== 0 ? (
     <CardSelected
       monsterId={monsterId}
@@ -123,17 +116,8 @@ const SixSlotLatent = ({ latentName, halfBreakDamage }: { latentName: string; ha
   );
 };
 
-export const Latents = ({
-  cardId,
-  setLatentModalIsOpen,
-  setCardSlotSelected,
-  latents
-}: {
-  cardId: string;
-  setLatentModalIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  setCardSlotSelected: React.Dispatch<React.SetStateAction<string>>;
-  latents: number[];
-}) => {
+export const Latents = ({ cardId, latents }: { cardId: string; latents: number[] }) => {
+  const { setCardSlotSelected, setLatentModalIsOpen } = useContext(AppStateContext);
   const latentsBySize = latents.reduce((d, num) => {
     const idx = Math.floor((num as any) / 100);
     if (!d[idx]) {

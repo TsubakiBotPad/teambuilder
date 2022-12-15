@@ -2,22 +2,13 @@ import { css } from "@emotion/css";
 
 import { AwakeningImage } from "../../model/images";
 import { monsterCacheClient } from "../../model/monsterCacheClient";
-import { PlayerState } from "../../model/teamStateManager";
+import { PlayerState, TeamSlotState } from "../../model/teamStateManager";
 import { AwokenSkills } from "../../model/types/monster";
 import { FlexCol, FlexRowC, H3 } from "../../stylePrimitives";
 
 export type AwakeningHistogram = { [key: string]: number };
 
-export async function computeTotalAwakenings(playerState: PlayerState) {
-  const slots = [
-    playerState.teamSlot1,
-    playerState.teamSlot2,
-    playerState.teamSlot3,
-    playerState.teamSlot4,
-    playerState.teamSlot5,
-    playerState.teamSlot6
-  ];
-
+export async function computeTotalAwakeningsFromSlots(slots: TeamSlotState[]) {
   const totalAwakenings = [];
   for (const slot of slots) {
     const m1b = await monsterCacheClient.get(slot.baseId);
@@ -42,6 +33,19 @@ export async function computeTotalAwakenings(playerState: PlayerState) {
   }, {});
 
   return histogram;
+}
+
+export async function computeTotalAwakenings(playerState: PlayerState) {
+  const slots = [
+    playerState.teamSlot1,
+    playerState.teamSlot2,
+    playerState.teamSlot3,
+    playerState.teamSlot4,
+    playerState.teamSlot5,
+    playerState.teamSlot6
+  ];
+
+  return computeTotalAwakeningsFromSlots(slots);
 }
 
 export class AwokenSkillAggregation {

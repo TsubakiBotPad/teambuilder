@@ -1,6 +1,9 @@
+import { debounce, DebouncedFunc } from "lodash";
 import React from "react";
+
 import { GameConfig } from "../components/gameConfigSelector";
-import { computeTeamStat, TeamStats } from "../components/teamStats/teamStats";
+import { TeamStats } from "../components/teamStats/teamStats";
+import { ConfigData } from "./serializedUri";
 
 export interface TeamSlotState {
   baseId: number;
@@ -62,14 +65,59 @@ export const DEFAULT_TEAM_STATE: TeamState = {
   }
 };
 
+interface ITeamStateContext {
+  teamState: TeamState;
+  setTeamState: React.Dispatch<React.SetStateAction<TeamState>>;
+}
+
+const DEFAULT_TEAM_STATE_CONTEXT: ITeamStateContext = { teamState: DEFAULT_TEAM_STATE, setTeamState: () => {} };
+export const TeamStateContext = React.createContext(DEFAULT_TEAM_STATE_CONTEXT);
+
+interface AppState {
+  gameConfig: GameConfig;
+  setGameConfig: React.Dispatch<React.SetStateAction<GameConfig>>;
+  teamName: string;
+  setTeamStats: React.Dispatch<React.SetStateAction<TeamStats>>;
+  teamStats: TeamStats;
+  modalIsOpen: boolean;
+  setModalIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  latentModalIsOpen: boolean;
+  setLatentModalIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  badgeModalIsOpen: boolean;
+  setBadgeModalIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  cardSlotSelected: string;
+  setCardSlotSelected: React.Dispatch<React.SetStateAction<string>>;
+  playerSelected: string;
+  setPlayerSelected: React.Dispatch<React.SetStateAction<string>>;
+  updateUrl: DebouncedFunc<(config: Partial<ConfigData>) => void>;
+}
+
+const DEFAULT_APP_STATE: AppState = {
+  gameConfig: { mode: "3p" },
+  setGameConfig: () => {},
+  teamName: "",
+  teamStats: {},
+  setTeamStats: () => {},
+  modalIsOpen: false,
+  setModalIsOpen: () => {},
+  latentModalIsOpen: false,
+  setLatentModalIsOpen: () => {},
+  badgeModalIsOpen: false,
+  setBadgeModalIsOpen: () => {},
+  cardSlotSelected: "",
+  setCardSlotSelected: () => {},
+  playerSelected: "",
+  setPlayerSelected: () => {},
+  updateUrl: debounce(() => {})
+};
+
+export const AppStateContext = React.createContext(DEFAULT_APP_STATE);
+
 export async function setCard(
   cardSlot: string,
   value: number,
-  gameConfig: GameConfig,
   teamState: TeamState,
-  setTeamState: React.Dispatch<React.SetStateAction<TeamState>>,
-  teamStats: TeamStats,
-  setTeamStats: React.Dispatch<React.SetStateAction<TeamStats>>
+  setTeamState: React.Dispatch<React.SetStateAction<TeamState>>
 ) {
   const parts = cardSlot.split("-");
   const p = parts[0].toLowerCase() as keyof TeamState;
@@ -81,21 +129,14 @@ export async function setCard(
   };
 
   (newTeamState[p][s] as TeamSlotState)[c] = value as any;
-  console.log(p, s, c);
-  console.log(newTeamState);
-
   setTeamState(newTeamState);
-  setTeamStats({ ...teamStats, [p]: await computeTeamStat(teamState, gameConfig, p) });
 }
 
 export async function setCardLatents(
   cardSlot: string,
   value: number[],
-  gameConfig: GameConfig,
   teamState: TeamState,
-  setTeamState: React.Dispatch<React.SetStateAction<TeamState>>,
-  teamStats: TeamStats,
-  setTeamStats: React.Dispatch<React.SetStateAction<TeamStats>>
+  setTeamState: React.Dispatch<React.SetStateAction<TeamState>>
 ) {
   const parts = cardSlot.split("-");
   const p = parts[0].toLowerCase() as keyof TeamState;
@@ -108,17 +149,13 @@ export async function setCardLatents(
 
   (newTeamState[p][s] as TeamSlotState)[c] = [...value];
   setTeamState(newTeamState);
-  setTeamStats({ ...teamStats, [p]: await computeTeamStat(teamState, gameConfig, p) });
 }
 
 export async function setPlayerBadge(
   playerId: "p1" | "p2" | "p3",
   value: string,
-  gameConfig: GameConfig,
   teamState: TeamState,
-  setTeamState: React.Dispatch<React.SetStateAction<TeamState>>,
-  teamStats: TeamStats,
-  setTeamStats: React.Dispatch<React.SetStateAction<TeamStats>>
+  setTeamState: React.Dispatch<React.SetStateAction<TeamState>>
 ) {
   var newTeamState = {
     ...teamState
@@ -126,24 +163,4 @@ export async function setPlayerBadge(
 
   newTeamState[playerId as keyof TeamState].badgeId = value;
   setTeamState(newTeamState);
-  setTeamStats({ ...teamStats, [playerId]: await computeTeamStat(teamState, gameConfig, playerId) });
-}
-
-export function serializeTeamState(teamState: TeamState) {}
-
-function serializePlayerState(prefix: string, playerId: string, p: PlayerState) {
-  const k = `${prefix}p${playerId}`;
-  return [
-    { [`${k}b`]: p.badgeId },
-    serializeTeamSlot(k, 1, p.teamSlot1),
-    serializeTeamSlot(k, 2, p.teamSlot2),
-    serializeTeamSlot(k, 3, p.teamSlot3),
-    serializeTeamSlot(k, 4, p.teamSlot4),
-    serializeTeamSlot(k, 5, p.teamSlot5),
-    serializeTeamSlot(k, 6, p.teamSlot6)
-  ];
-}
-
-function serializeTeamSlot(prefix: string, slotId: number, ts: TeamSlotState) {
-  return { [`${prefix}s${slotId}`]: [ts.baseId, ts.assistId, ts.latents] };
 }
