@@ -13,7 +13,7 @@ const Container = styled.div`
 export const SingleValueInput = <T extends string>({
   selections,
   currentValue,
-  setCurrentValue,
+  setCurrentValue
 }: {
   selections: T[];
   currentValue: T;
@@ -23,9 +23,9 @@ export const SingleValueInput = <T extends string>({
     ...selections.map((d) => {
       return {
         value: d,
-        label: d,
+        label: d
       };
-    }),
+    })
   ];
 
   const customStyle = {
@@ -35,28 +35,28 @@ export const SingleValueInput = <T extends string>({
       color: state.isSelected ? GRAY_RANGE[900] : GRAY_RANGE[900],
       backgroundColor: state.isSelected ? GRAY_RANGE[200] : GRAY_RANGE[100],
       padding: "0.75rem 1rem",
-      fontSize: "1.25rem",
+      fontSize: "1.25rem"
     }),
     control: (provided: any, state: any) => ({
       ...provided,
       backgroundColor: COLORS.BLUE,
-      border: `1px solid ${GRAY_RANGE[200]}`,
+      border: `1px solid ${GRAY_RANGE[200]}`
     }),
     menuList: (provided: any, state: any) => ({
       ...provided,
       padding: 0,
-      border: `1px solid ${GRAY_RANGE[300]}`,
+      border: `1px solid ${GRAY_RANGE[300]}`
     }),
     valueContainer: (provided: any, state: any) => ({
       ...provided,
       padding: "0rem 1rem",
-      textAlign: "center",
+      textAlign: "center"
     }),
     singleValue: (provided: any, state: any) => ({
       ...provided,
       fontSize: "1.25rem",
-      lineHeight: "1.5rem",
-    }),
+      lineHeight: "1.5rem"
+    })
   };
 
   return (
@@ -68,10 +68,7 @@ export const SingleValueInput = <T extends string>({
         classNamePrefix="select"
         styles={customStyle}
         value={{ label: currentValue, value: currentValue }}
-        onChange={(
-          newValue: SingleValue<SelectOption>,
-          actionMeta: ActionMeta<SelectOption>
-        ) => {
+        onChange={(newValue: SingleValue<SelectOption>, actionMeta: ActionMeta<SelectOption>) => {
           setCurrentValue(newValue?.value as T);
         }}
       />

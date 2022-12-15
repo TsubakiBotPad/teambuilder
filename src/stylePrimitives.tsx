@@ -88,13 +88,7 @@ export const PageBox = styled.div<PageProps>`
   margin: ${(props) => (props.margin ? props.margin : "1rem")};
 `;
 
-export const Page = ({
-  maxWidth,
-  children,
-}: {
-  maxWidth: string;
-  children: React.ReactNode;
-}) => {
+export const Page = ({ maxWidth, children }: { maxWidth: string; children: React.ReactNode }) => {
   return (
     <PageFlow>
       <PageBox maxWidth={maxWidth}>{children}</PageBox>

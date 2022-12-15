@@ -2,11 +2,10 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import type { StatValue } from './StatValue';
+import type { StatValue } from "./StatValue";
 
 export type StatValues = {
-    hp: StatValue;
-    atk: StatValue;
-    rcv: StatValue;
+  hp: StatValue;
+  atk: StatValue;
+  rcv: StatValue;
 };
-

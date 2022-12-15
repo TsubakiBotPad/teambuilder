@@ -2,10 +2,9 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import type { MonsterResponse } from './MonsterResponse';
+import type { MonsterResponse } from "./MonsterResponse";
 
 export type MonsterWithEvosResponse = {
-    monster: MonsterResponse;
-    evolutions: Array<MonsterResponse>;
+  monster: MonsterResponse;
+  evolutions: Array<MonsterResponse>;
 };
-

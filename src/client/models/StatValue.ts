@@ -3,8 +3,7 @@
 /* eslint-disable */
 
 export type StatValue = {
-    min: number;
-    max: number;
-    scale: number;
+  min: number;
+  max: number;
+  scale: number;
 };
-
