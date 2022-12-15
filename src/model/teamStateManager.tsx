@@ -106,7 +106,7 @@ export async function setCardLatents(
     ...teamState
   };
 
-  (newTeamState[p][s] as TeamSlotState)[c] = value;
+  (newTeamState[p][s] as TeamSlotState)[c] = [...value];
   setTeamState(newTeamState);
   setTeamStats({ ...teamStats, [p]: await computeTeamStat(teamState, gameConfig, p) });
 }

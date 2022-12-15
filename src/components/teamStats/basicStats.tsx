@@ -220,20 +220,15 @@ export const TeamBasicStatsDisplay = ({
                 <b>Types</b>
               </TD>
               <TD>
-                {tt.map((a) => {
-                  const x = MonsterType[a];
-                  console.log(MonsterType);
-                  return (
-                    <>
-                      {
-                        <PadAssetImage
-                          assetName={`${MonsterType[a].toLocaleLowerCase().substring(0, 3)}t`}
-                          height={25}
-                        />
-                      }
-                    </>
-                  );
-                })}
+                <FlexRow>
+                  {tt.map((a) => {
+                    const x = MonsterType[a];
+                    console.log(MonsterType);
+                    return (
+                      <PadAssetImage assetName={`${MonsterType[a].toLocaleLowerCase().substring(0, 3)}t`} height={25} />
+                    );
+                  })}
+                </FlexRow>
               </TD>
             </tr>
           ) : (

@@ -9,7 +9,7 @@ import { Team } from "../components/team";
 import { TeamStats, TeamStatDisplay } from "../components/teamStats/teamStats";
 import { PadAssetImage } from "../model/padAssets";
 import { DEFAULT_TEAM_STATE, TeamState } from "../model/teamStateManager";
-import { FlexCol, FlexColC, FlexRow, H1, Page } from "../stylePrimitives";
+import { FlexCol, FlexColC, FlexRow, H1, H2, H3, Page } from "../stylePrimitives";
 
 const maxPageWidth = "1440px";
 
@@ -64,70 +64,48 @@ export const PadTeamBuilderPage = () => {
           <FlexCol>
             <TeamInput placeholder="Team Title" size={35} />
             <FlexCol gap="1.5rem">
-              <Team
-                teamId={"P1"}
-                teamColor={"pink"}
-                setModalIsOpen={setModalIsOpen}
-                setLatentModalIsOpen={setLatentModalIsOpen}
-                setCardSlotSelected={setCardSlotSelected}
-                state={teamState.p1}
-              />
-              {gameConfig.mode === "2p" || gameConfig.mode === "3p" ? (
+              <FlexRow gap="3rem">
                 <Team
-                  teamId={"P2"}
-                  teamColor={"lightblue"}
+                  teamId={"P1"}
+                  teamColor={"pink"}
                   setModalIsOpen={setModalIsOpen}
                   setLatentModalIsOpen={setLatentModalIsOpen}
                   setCardSlotSelected={setCardSlotSelected}
-                  state={teamState.p2}
+                  state={teamState.p1}
                 />
+                <TeamStatDisplay teamStat={teamStats.p1} />
+              </FlexRow>
+              {gameConfig.mode === "2p" || gameConfig.mode === "3p" ? (
+                <FlexRow gap="3rem">
+                  <Team
+                    teamId={"P2"}
+                    teamColor={"lightblue"}
+                    setModalIsOpen={setModalIsOpen}
+                    setLatentModalIsOpen={setLatentModalIsOpen}
+                    setCardSlotSelected={setCardSlotSelected}
+                    state={teamState.p2}
+                  />
+                  <TeamStatDisplay teamStat={teamStats.p2} />
+                </FlexRow>
               ) : null}
               {gameConfig.mode === "3p" ? (
-                <Team
-                  teamId={"P3"}
-                  teamColor={"lightgreen"}
-                  setModalIsOpen={setModalIsOpen}
-                  setLatentModalIsOpen={setLatentModalIsOpen}
-                  setCardSlotSelected={setCardSlotSelected}
-                  state={teamState.p3}
-                />
+                <FlexRow gap="3rem">
+                  <Team
+                    teamId={"P3"}
+                    teamColor={"lightgreen"}
+                    setModalIsOpen={setModalIsOpen}
+                    setLatentModalIsOpen={setLatentModalIsOpen}
+                    setCardSlotSelected={setCardSlotSelected}
+                    state={teamState.p3}
+                  />
+                  <TeamStatDisplay teamStat={teamStats.p3} />
+                </FlexRow>
               ) : null}
             </FlexCol>
           </FlexCol>
-          <FlexColC
-            className={css`
-              max-width: 50%;
-              padding: 1rem;
-            `}
-          >
-            <span>
-              TODO: <span>psf, jsf</span>
-            </span>
-            {/* <FlexCol gap="1em">
-              <PadAssetImage assetName="0" />
-              <PadAssetImage assetName="1" />
-              <PadAssetImage assetName="2" />
-              <PadAssetImage assetName="3" />
-              <PadAssetImage assetName="4" />
-              <PadAssetImage assetName="5" />
-              <PadAssetImage assetName="6" />
-              <PadAssetImage assetName="7" />
-              <PadAssetImage assetName="8" />
-              <PadAssetImage assetName="9" />
-              <PadAssetImage assetName="10" />
-              <PadAssetImage assetName="11" />
-              <PadAssetImage assetName="12" />
-              <PadAssetImage assetName="13" />
-              <PadAssetImage assetName="14" />
-              <PadAssetImage assetName="15" />
-              <PadAssetImage assetName="16" />
-              <PadAssetImage assetName="17" />
-            </FlexCol> */}
-            <PadAssetImage assetName="psf" />
-            <TeamStatDisplay teamStat={teamStats.p1} />
-          </FlexColC>
         </FlexRow>
       </FlexColC>
+      <PadAssetImage assetName="badgebase" />
     </Page>
   );
 };

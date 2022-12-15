@@ -116,6 +116,35 @@ export const LatentSelectorModal = ({
                   {selectedLatents.map((i: number, idx: number) => {
                     const name = LATENTS_ID_TO_NAME[i];
                     const valid = true; // TODO: check against monster
+
+                    const isSixSlot = Math.floor(i / 100) === 6;
+                    if (isSixSlot) {
+                      return (
+                        <div>
+                          <PadAssetImage
+                            assetName={"6slotLatentBg"}
+                            onClick={() => {
+                              selectedLatents.splice(idx, 1);
+                              setSelectedLatents([...selectedLatents]);
+                            }}
+                            className={css`
+                              opacity: ${valid ? "1" : "0.5"};
+                            `}
+                          />
+                          <div
+                            className={css`
+                              position: relative;
+                              top: -50%;
+                              left: 45%;
+                              width: 0;
+                            `}
+                          >
+                            <PadAssetImage assetName={`${name}latentbase`} />
+                          </div>
+                        </div>
+                      );
+                    }
+
                     return (
                       <PadAssetImage
                         assetName={name}

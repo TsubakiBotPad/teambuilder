@@ -117,7 +117,12 @@ export const AwakeningsToDisplay = [
       [
         new AwokenSkillAggregation(AwokenSkills.ENHCOMBO7C, null),
         new AwokenSkillAggregation(AwokenSkills.ENHCOMBO10C, null),
-        new AwokenSkillAggregation(AwokenSkills.VDP, null)
+        new AwokenSkillAggregation(AwokenSkills.VDP, null),
+        new AwokenSkillAggregation(AwokenSkills.ATTR3BOOST, null),
+        new AwokenSkillAggregation(AwokenSkills.ATTR4BOOST, null),
+        new AwokenSkillAggregation(AwokenSkills.ATTR5BOOST, null),
+        new AwokenSkillAggregation(AwokenSkills.HP80ORMORE, null),
+        new AwokenSkillAggregation(AwokenSkills.HP50ORLESS, null)
       ],
       [
         new AwokenSkillAggregation(AwokenSkills.COMBOORB, null),
@@ -150,7 +155,8 @@ export const AwakeningsToDisplay = [
         new AwokenSkillAggregation(AwokenSkills.DUNGEONBONUS, null),
         new AwokenSkillAggregation(AwokenSkills.FUA, null),
         new AwokenSkillAggregation(AwokenSkills.SUPERFUA, null),
-        new AwokenSkillAggregation(AwokenSkills.BINDRECOVERY, null)
+        new AwokenSkillAggregation(AwokenSkills.BINDRECOVERY, null),
+        new AwokenSkillAggregation(AwokenSkills.GUARDBREAK, null)
       ]
     ]
   }

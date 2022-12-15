@@ -115,10 +115,12 @@ const ASSET_NAME_TO_SPRITE_PROPS: { [key: string]: SpriteCoordinates } = {
   // need to cut more
 
   // 6-slot latents nobg
-  jsflatentbase: new SpriteCoordinates(960, 466, 32, 32),
-  lslatentbase: new SpriteCoordinates(508, 500, 32, 32),
-  attrlatentbase: new SpriteCoordinates(542, 500, 32, 32),
-  "sb++latentbase": new SpriteCoordinates(576, 500, 32, 32),
+  jsflatentbase: new SpriteCoordinates(960, 464, 32, 32),
+  lslatentbase: new SpriteCoordinates(508, 498, 32, 32),
+  attrlatentbase: new SpriteCoordinates(544, 498, 32, 28),
+  "sb++latentbase": new SpriteCoordinates(576, 498, 32, 32),
+  unmlatentbase: new SpriteCoordinates(296, 844, 32, 32),
+  spnlatentbase: new SpriteCoordinates(958, 295, 32, 32),
 
   psflatentbase: new SpriteCoordinates(474, 500, 32, 29),
   massatkbadge: new SpriteCoordinates(474, 531, 32, 29),
@@ -137,7 +139,9 @@ const ASSET_NAME_TO_SPRITE_PROPS: { [key: string]: SpriteCoordinates } = {
   unbindablebadge: new SpriteCoordinates(474, 906, 32, 29),
   sbrbadge: new SpriteCoordinates(474, 934, 32, 29),
   unmatachable: new SpriteCoordinates(474, 962, 32, 29),
-  dbllatentbase: new SpriteCoordinates(474, 990, 32, 29)
+  dbllatentbase: new SpriteCoordinates(474, 990, 32, 29),
+
+  badgebase: new SpriteCoordinates(260, 637, 52, 38)
 };
 
 const PadAssetImg = styled.div<SpriteProps>`

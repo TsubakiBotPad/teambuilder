@@ -69,28 +69,19 @@ const LatentSelected = styled(FlexRow)`
   padding: 2px 0;
   flex-wrap: wrap;
   gap: 0px 2px;
-  justify-content: center;
   border-left: 2px solid transparent;
   border-right: 2px solid transparent;
 `;
 
-type LatentImgProps = {
-  hasSixSlot: boolean;
-};
-
-const SixSlotLatentImg = styled.div<LatentImgProps>`
-  background-image: ${(props) => (props.hasSixSlot ? "url(img/6slotL.png)" : "")};
+const SixSlotLatentImg = styled.div`
+  background-image: url(img/6slotL.png);
   width: 5rem;
   height: 36px;
   background-size: 80px 36px;
   position: relative;
 `;
 
-type RemainderLatentsProps = {
-  hasSixSlot: boolean;
-};
-
-const RemainderLatents = styled.div<RemainderLatentsProps>`
+const RemainderLatents = styled.div`
   width: 50%;
   position: relative;
   top: -17px;
@@ -99,15 +90,7 @@ const RemainderLatents = styled.div<RemainderLatentsProps>`
   gap: 3px;
 `;
 
-const SixSlotLatent = ({
-  shouldDisplay,
-  latentName,
-  halfBreakDamage
-}: {
-  shouldDisplay: boolean;
-  latentName: string;
-  halfBreakDamage: boolean;
-}) => {
+const SixSlotLatent = ({ latentName, halfBreakDamage }: { latentName: string; halfBreakDamage: boolean }) => {
   console.log(`"6 slot ${latentName}`);
   if (!latentName) {
     return <></>;
@@ -115,7 +98,7 @@ const SixSlotLatent = ({
 
   return (
     <div>
-      <SixSlotLatentImg hasSixSlot={shouldDisplay} />
+      <SixSlotLatentImg />
       <div
         className={css`
           height: 0;
@@ -157,12 +140,25 @@ export const Latents = ({
   setCardSlotSelected: React.Dispatch<React.SetStateAction<string>>;
   latents: number[];
 }) => {
-  const sixSlotLatent = latents.filter((a) => Math.floor(a / 100) === 6)[0];
-  const sixSlotLatentName = LATENTS_ID_TO_NAME[sixSlotLatent];
+  const latentsBySize = latents.reduce((d, num) => {
+    const idx = Math.floor((num as any) / 100);
+    if (!d[idx]) {
+      d[idx] = [];
+    }
+    d[idx].push(num);
+    return d;
+  }, {} as { [key: number]: number[] });
 
-  const hasSixSlot = true;
+  const sixSlotLatent = latentsBySize[6] ?? [];
+  const sixSlotLatentName = LATENTS_ID_TO_NAME[sixSlotLatent[0]];
 
-  const remainderLatentNames = latents.filter((a) => Math.floor(a / 100) !== 6).map((a) => LATENTS_ID_TO_NAME[a]);
+  const hasSixSlot = !!sixSlotLatentName;
+
+  const remainderLatents = latents
+    .filter((a) => Math.floor(a / 100) !== 6)
+    .sort((a, b) => {
+      return b - a;
+    });
 
   return latents.length !== 0 ? (
     <LatentSelected
@@ -171,14 +167,26 @@ export const Latents = ({
         setLatentModalIsOpen(true);
       }}
     >
-      <div>
-        <SixSlotLatent shouldDisplay={hasSixSlot} latentName={"vdp"} halfBreakDamage={false} />
-        <RemainderLatents hasSixSlot={hasSixSlot}>
-          {/* <PadAssetImage assetName="drk" height={17} /> */}
-          <PadAssetImage assetName="sdr" height={17} />
-          <PadAssetImage assetName="sdr" height={17} />
-        </RemainderLatents>
-      </div>
+      {hasSixSlot ? (
+        <div>
+          <SixSlotLatent latentName={sixSlotLatentName} halfBreakDamage={false} />
+          <RemainderLatents>
+            {remainderLatents.map((a) => {
+              return <PadAssetImage assetName={LATENTS_ID_TO_NAME[a]} height={16} />;
+            })}
+          </RemainderLatents>
+        </div>
+      ) : (
+        <FlexRow gap="3px" wrap="wrap">
+          {remainderLatents
+            .sort((a, b) => {
+              return b - a;
+            })
+            .map((a) => {
+              return <PadAssetImage assetName={LATENTS_ID_TO_NAME[a]} height={16} />;
+            })}
+        </FlexRow>
+      )}
     </LatentSelected>
   ) : (
     <LatentEmpty
