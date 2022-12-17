@@ -5,6 +5,7 @@ import { AwakeningImage, BASE_ICON_URL } from "../../model/images";
 import { PadAssetImage } from "../../model/padAssets";
 import { computeLeaderSkill } from "../../model/types/leaderSkill";
 import { getKillers, MonsterType } from "../../model/types/monster";
+import { maxLevel } from "../../model/types/stat";
 import { FlexCol, FlexRow, FlexRowC, H3 } from "../../stylePrimitives";
 import { fixedDecimals } from "../generic/fixedDecimals";
 import { leftPad } from "../generic/leftPad";
@@ -79,7 +80,7 @@ export const CardInfo = ({ monster: m }: { monster: MonsterResponse }) => {
         </FlexCol>
         <FlexCol>
           <FlexRowC>
-            <b>Stats</b> (Lvl 120, +297)
+            <b>Stats</b> (Lvl {maxLevel(m)}, +297)
           </FlexRowC>
           <span>
             <b>HP</b> {m.hp_max}
