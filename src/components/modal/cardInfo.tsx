@@ -6,6 +6,7 @@ import { PadAssetImage } from "../../model/padAssets";
 import { computeLeaderSkill } from "../../model/types/leaderSkill";
 import { getKillers, MonsterType } from "../../model/types/monster";
 import { FlexCol, FlexRow, FlexRowC, H3 } from "../../stylePrimitives";
+import { fixedDecimals } from "../generic/fixedDecimals";
 import { leftPad } from "../generic/leftPad";
 
 const LeaderSkillText = ({ monster: m }: { monster: MonsterResponse }) => {
@@ -15,7 +16,8 @@ const LeaderSkillText = ({ monster: m }: { monster: MonsterResponse }) => {
   return (
     <>
       [{hp}/{atk}/{rcv}
-      {resist ? ` ${resist * 100}%` : ""}] [{ehp}x eHP] {combos ? `[+${combos}c]` : ""} {fua ? `[${fua} fua]` : ""}
+      {resist ? ` ${fixedDecimals(resist * 100)}%` : ""}] [{fixedDecimals(ehp)}x eHP] {combos ? `[+${combos}c]` : ""}{" "}
+      {fua ? `[${fua} fua]` : ""}
     </>
   );
 };
