@@ -1,5 +1,7 @@
+import { css } from "@emotion/css";
 import styled from "@emotion/styled";
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
+import { AiFillCloseCircle } from "react-icons/ai";
 
 import { BASE_ICON_URL } from "../model/images";
 import { AppStateContext } from "../model/teamStateManager";
@@ -31,20 +33,41 @@ const CardSelected = styled.div<CardSelectedType>`
 
 export const Card = ({ cardId, monsterId, hide }: { cardId: string; monsterId: number; hide?: boolean }) => {
   const { setModalIsOpen, setCardSlotSelected } = useContext(AppStateContext);
+  const [hover, setHover] = useState(false);
 
   return monsterId !== 0 ? (
-    <CardSelected
-      monsterId={monsterId}
-      onClick={
-        !hide
-          ? () => {
-              setCardSlotSelected(cardId);
-              setModalIsOpen(true);
-            }
-          : () => {}
-      }
-      hide={!!hide}
-    />
+    <div>
+      <CardSelected
+        monsterId={monsterId}
+        onClick={
+          !hide
+            ? () => {
+                setCardSlotSelected(cardId);
+                setModalIsOpen(true);
+              }
+            : () => {}
+        }
+        hide={!!hide}
+        onMouseOver={() => {
+          setHover(true);
+        }}
+        onMouseOut={() => {
+          setHover(false);
+        }}
+      >
+        {hover ? (
+          <div
+            className={css`
+              position: relative;
+              top: -10%;
+              left: 85%;
+            `}
+          >
+            <AiFillCloseCircle color="white" />
+          </div>
+        ) : null}
+      </CardSelected>
+    </div>
   ) : (
     <CardEmpty
       onClick={

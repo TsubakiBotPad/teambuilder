@@ -60,7 +60,7 @@ const SixSlotLatent = ({
         background: url(img/6slotL.png);
         background-size: contain;
         background-repeat: no-repeat;
-        opacity: ${opacity};
+        filter: grayscale(${opacity});
       `}
     >
       <PadAssetImage
@@ -113,7 +113,7 @@ export const Latents = ({
   const sixSlotLatentName = LATENTS_ID_TO_NAME[latentId];
   const requiredAwakening = AWO_RES_LATENT_TO_AWO_MAP[latentId];
 
-  const opacity = requiredAwakening in awakenings ? 1 : 0.5;
+  const opacity = awakenings.includes(requiredAwakening) ? 0 : 1;
 
   const hasSixSlot = !!sixSlotLatentName;
 

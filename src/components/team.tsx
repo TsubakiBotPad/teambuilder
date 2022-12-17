@@ -1,5 +1,6 @@
+import { css } from "@emotion/css";
 import styled from "@emotion/styled";
-import React, { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { AiOutlineCaretDown } from "react-icons/ai";
 
 import { AppStateContext, PlayerState, TeamSlotState } from "../model/teamStateManager";
@@ -29,36 +30,29 @@ const TeamSlot = ({
   teamId,
   slotId,
   state,
-  hide
+  invert
 }: {
   teamId: string;
   slotId: string;
   state: TeamSlotState;
-  hide?: boolean;
+  invert?: boolean;
 }) => {
-  const awakenings: AwokenSkills[] = []; // TODO: Populate this correctly
+  const awakenings: AwokenSkills[] = [20, 27, 62, 59, 45]; // TODO: Populate this correctly
+  //   const awakenings: AwokenSkills[] = []; // TODO: Populate this correctly
+  const otherTeamColor = teamId === "P1" ? teamIdToColor["P2"] : teamIdToColor["P1"];
 
   return (
     <FlexColC>
-      <ColorBG color={hide ? "transparent" : "#f0f0f0"}>
-        <Card cardId={`${teamId}-Slot${slotId}-Assist`} monsterId={state.assistId} hide={hide} />
+      <ColorBG color={"#f0f0f0"}>
+        <Card cardId={`${teamId}-Slot${slotId}-Assist`} monsterId={state.assistId} />
       </ColorBG>
       <FlexRowC>
-        {hide ? null : (
-          <>
-            <AiOutlineCaretDown /> Assist
-          </>
-        )}
+        <AiOutlineCaretDown />
       </FlexRowC>
-      <ColorBG color={hide ? "transparent" : teamIdToColor[teamId]}>
+      <ColorBG color={invert ? otherTeamColor : teamIdToColor[teamId]}>
         <FlexColC gap="0.25rem">
-          <Card cardId={`${teamId}-Slot${slotId}-Base`} monsterId={state.baseId} hide={hide} />
-          <Latents
-            cardId={`${teamId}-Slot${slotId}-Base`}
-            latents={state.latents}
-            hide={hide}
-            awakenings={awakenings}
-          />
+          <Card cardId={`${teamId}-Slot${slotId}-Base`} monsterId={state.baseId} />
+          <Latents cardId={`${teamId}-Slot${slotId}-Base`} latents={state.latents} awakenings={awakenings} />
         </FlexColC>
       </ColorBG>
     </FlexColC>
@@ -75,12 +69,18 @@ export const Team = ({ teamId, state }: { teamId: string; state: PlayerState }) 
       <FlexCol gap="0.25rem">
         <H2>{teamId}</H2>
         <FlexRow>
-          <TeamSlot teamId={teamId} slotId={"1"} state={state.teamSlot1} hide={teamId === "P2"} />
+          <TeamSlot teamId={teamId} slotId={"1"} state={state.teamSlot1} />
           <TeamSlot teamId={teamId} slotId={"2"} state={state.teamSlot2} />
           <TeamSlot teamId={teamId} slotId={"3"} state={state.teamSlot3} />
           <TeamSlot teamId={teamId} slotId={"4"} state={state.teamSlot4} />
           <TeamSlot teamId={teamId} slotId={"5"} state={state.teamSlot5} />
-          <TeamSlot teamId={teamId} slotId={"6"} state={state.teamSlot6} hide={teamId === "P1"} />
+          <div
+            className={css`
+              margin-left: 0.5rem;
+            `}
+          >
+            <TeamSlot teamId={teamId} slotId={"6"} state={state.teamSlot6} invert={true} />
+          </div>
         </FlexRow>
       </FlexCol>
     );
