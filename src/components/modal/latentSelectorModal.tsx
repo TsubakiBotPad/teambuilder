@@ -8,6 +8,7 @@ import { AppStateContext, setCardLatents, TeamStateContext } from "../../model/t
 import { LATENTS_BY_SIZE, LATENTS_ID_TO_NAME, LATENTS_NAME_TO_ID } from "../../model/types/latents";
 import { BoundingBox, FlexCol, FlexColC, FlexRow, H2, H3 } from "../../stylePrimitives";
 import { ConfirmButton } from "../generic/confirmButton";
+import { ModalCloseButton } from "./common";
 
 const modalClassName = css`
   border: 0;
@@ -36,6 +37,7 @@ export const LatentSelectorModal = ({ isOpen }: { isOpen: boolean }) => {
   const [selectedLatents, setSelectedLatents] = useState<number[]>([]);
   const { setLatentModalIsOpen, cardSlotSelected } = useContext(AppStateContext);
   const { teamState, setTeamState } = useContext(TeamStateContext);
+  const [hoverClose, setHoverClose] = useState(false);
 
   const currentSize = selectedLatents.reduce((a, b) => {
     const s = Math.floor(b / 100);
@@ -55,6 +57,7 @@ export const LatentSelectorModal = ({ isOpen }: { isOpen: boolean }) => {
       ariaHideApp={false}
     >
       <BoundingBox minWidth="50vw" maxWidth="50vw" minWidthM="75vw" maxWidthM="90vw">
+        <ModalCloseButton hoverClose={hoverClose} setHoverClose={setHoverClose} setModalOpen={setLatentModalIsOpen} />
         <div
           className={css`
             background-color: #fefefe;

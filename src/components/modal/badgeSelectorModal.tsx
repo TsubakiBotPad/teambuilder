@@ -8,6 +8,7 @@ import { AppStateContext, setPlayerBadge, TeamStateContext } from "../../model/t
 import { BADGE_NAMES } from "../../model/types/badges";
 import { BoundingBox, FlexColC, FlexRow, H2 } from "../../stylePrimitives";
 import { ConfirmButton } from "../generic/confirmButton";
+import { ModalCloseButton } from "./common";
 
 const modalClassName = css`
   border: 0;
@@ -34,6 +35,7 @@ export const BadgeSelectorModal = ({ isOpen }: { isOpen: boolean }) => {
   const [selectedBadge, setSelectedBadge] = useState<string>("");
   const { setBadgeModalIsOpen, playerSelected } = useContext(AppStateContext);
   const { teamState, setTeamState } = useContext(TeamStateContext);
+  const [hoverClose, setHoverClose] = useState(false);
 
   return (
     <Modal
@@ -48,6 +50,7 @@ export const BadgeSelectorModal = ({ isOpen }: { isOpen: boolean }) => {
       ariaHideApp={false}
     >
       <BoundingBox minWidth="50vw" maxWidth="50vw" minWidthM="75vw" maxWidthM="90vw">
+        <ModalCloseButton hoverClose={hoverClose} setHoverClose={setHoverClose} setModalOpen={setBadgeModalIsOpen} />
         <div
           className={css`
             background-color: #fefefe;

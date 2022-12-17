@@ -3,6 +3,7 @@ import styled from "@emotion/styled";
 import { AxiosError } from "axios";
 import { debounce } from "lodash";
 import { useContext, useState } from "react";
+import { AiFillCloseCircle } from "react-icons/ai";
 import Modal from "react-modal";
 
 import { breakpoint } from "../../breakpoints";
@@ -14,6 +15,7 @@ import { BoundingBox, FlexCol, FlexColC, FlexRowC, H2 } from "../../stylePrimiti
 import { ConfirmButton } from "../generic/confirmButton";
 import { leftPad } from "../generic/leftPad";
 import { CardInfo } from "./cardInfo";
+import { ModalCloseButton } from "./common";
 
 const CardQueryInput = styled.input`
   border: 1px solid gray;
@@ -131,6 +133,7 @@ export const CardSelectorModal = ({ isOpen }: { isOpen: boolean }) => {
   const [altEvoIds, setAltEvoIds] = useState([] as number[]);
   const [error, setError] = useState("");
   const [selectedMonster, setSelectedMonster] = useState<MonsterResponse | undefined>(undefined);
+  const [hoverClose, setHoverClose] = useState(false);
 
   return (
     <Modal
@@ -145,6 +148,7 @@ export const CardSelectorModal = ({ isOpen }: { isOpen: boolean }) => {
       ariaHideApp={false}
     >
       <BoundingBox minWidth="50vw" maxWidth="50vw" minWidthM="75vw" maxWidthM="90vw">
+        <ModalCloseButton hoverClose={hoverClose} setHoverClose={setHoverClose} setModalOpen={setModalIsOpen} />
         <div
           className={css`
             background-color: #fefefe;
