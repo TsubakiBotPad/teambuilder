@@ -69,7 +69,7 @@ const AlternateEvoImages = ({
   selectedMonster: MonsterResponse | undefined;
   setSelectedMonster: React.Dispatch<React.SetStateAction<MonsterResponse | undefined>>;
 }) => {
-  const { cardSlotSelected, setModalIsOpen } = useContext(AppStateContext);
+  const { cardSlotSelected, setModalIsOpen, gameConfig } = useContext(AppStateContext);
   const { teamState, setTeamState } = useContext(TeamStateContext);
 
   return (
@@ -84,7 +84,7 @@ const AlternateEvoImages = ({
               setSelectedMonster(monster);
             }}
             onDoubleClick={() => {
-              setCard(cardSlotSelected, selectedMonster!.monster_id, teamState, setTeamState);
+              setCard(cardSlotSelected, selectedMonster!.monster_id, teamState, setTeamState, gameConfig);
               setModalIsOpen(false);
             }}
             selected={selectedMonster ? id === selectedMonster.monster_id : false}
@@ -124,7 +124,7 @@ const f = async (e: any, setQueriedId: any, setAltEvoIds: any, setSelectedMonste
 const debouncedOnChange = debounce(f, 300);
 
 export const CardSelectorModal = ({ isOpen }: { isOpen: boolean }) => {
-  const { setModalIsOpen, cardSlotSelected } = useContext(AppStateContext);
+  const { setModalIsOpen, cardSlotSelected, gameConfig } = useContext(AppStateContext);
   const { teamState, setTeamState } = useContext(TeamStateContext);
 
   const [, setQueriedId] = useState(0);
@@ -178,7 +178,7 @@ export const CardSelectorModal = ({ isOpen }: { isOpen: boolean }) => {
               <FlexRowC gap="0.25rem">
                 <ConfirmButton
                   onClick={() => {
-                    setCard(cardSlotSelected, selectedMonster!.monster_id, teamState, setTeamState);
+                    setCard(cardSlotSelected, selectedMonster!.monster_id, teamState, setTeamState, gameConfig);
                     setModalIsOpen(false);
                   }}
                 >
@@ -186,7 +186,7 @@ export const CardSelectorModal = ({ isOpen }: { isOpen: boolean }) => {
                 </ConfirmButton>
                 <ConfirmButton
                   onClick={() => {
-                    setCard(cardSlotSelected, 0, teamState, setTeamState);
+                    setCard(cardSlotSelected, 0, teamState, setTeamState, gameConfig);
                     setModalIsOpen(false);
                   }}
                 >

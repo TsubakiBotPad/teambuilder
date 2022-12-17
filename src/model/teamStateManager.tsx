@@ -117,7 +117,8 @@ export async function setCard(
   cardSlot: string,
   value: number,
   teamState: TeamState,
-  setTeamState: React.Dispatch<React.SetStateAction<TeamState>>
+  setTeamState: React.Dispatch<React.SetStateAction<TeamState>>,
+  gameConfig: GameConfig
 ) {
   const parts = cardSlot.split("-");
   const p = parts[0].toLowerCase() as keyof TeamState;
@@ -127,6 +128,11 @@ export async function setCard(
   var newTeamState = {
     ...teamState
   };
+
+  if (gameConfig.mode === "2p") {
+    newTeamState.p1.teamSlot6 = newTeamState.p2.teamSlot1;
+    newTeamState.p2.teamSlot6 = newTeamState.p1.teamSlot1;
+  }
 
   (newTeamState[p][s] as TeamSlotState)[c] = value as any;
   setTeamState(newTeamState);
