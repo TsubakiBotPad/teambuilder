@@ -30,6 +30,7 @@ export async function computeTeamBasicStats(
   teamState: TeamState
 ): Promise<TeamBasicStats> {
   var slots = [];
+  var includeBadge = false;
   if (gameConfig.mode === "2p") {
     slots = [
       teamState.p1.teamSlot1,
@@ -52,6 +53,7 @@ export async function computeTeamBasicStats(
       playerState.teamSlot5,
       playerState.teamSlot6
     ];
+    includeBadge = true;
   }
 
   const leader = await monsterCacheClient.get(slots[0].baseId);
@@ -64,8 +66,23 @@ export async function computeTeamBasicStats(
   const numTeamHp = awakenings[AwokenSkills.ENHTEAMHP] ?? 0;
   const numTeamRcv = awakenings[AwokenSkills.ENHTEAMRCV] ?? 0;
 
-  hpAcc *= 1 + 0.05 * numTeamHp;
-  rcvAcc *= 1 + 0.2 * numTeamRcv;
+  var hpBadgeMult = 1;
+  var rcvBadgeMult = 1;
+
+  if (includeBadge) {
+    if (playerState.badgeId === "hpbadge") {
+      hpBadgeMult = 1.05;
+    } else if (playerState.badgeId === "hp+badge") {
+      hpBadgeMult = 1.15;
+    } else if (playerState.badgeId === "rcvbadge") {
+      rcvBadgeMult = 1.25;
+    } else if (playerState.badgeId === "rcv+badge") {
+      rcvBadgeMult = 1.35;
+    }
+  }
+
+  hpAcc *= 1 + 0.05 * numTeamHp * hpBadgeMult;
+  rcvAcc *= 1 + 0.2 * numTeamRcv * rcvBadgeMult;
 
   return {
     hp: hpAcc,
