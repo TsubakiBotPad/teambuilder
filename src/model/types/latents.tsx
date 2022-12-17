@@ -73,8 +73,11 @@ export const LATENTS_BY_SIZE: { [key: number]: string[] } = Object.entries(LATEN
 
 export const LATENT_NAMES = Object.keys(LATENTS_NAME_TO_ID);
 
-export const AWO_RES_LATENT_TO_AWO_MAP = {
+export const AWO_RES_LATENT_TO_AWO_MAP: { [key: number]: number } = {
   606: 27,
   607: 20,
-  608: 62
+  608: 62,
+  610: 59,
+  611: 45
+  //612: 60 ASSIST CLEAR -> ELATTACK
 };

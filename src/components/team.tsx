@@ -1,11 +1,13 @@
 import styled from "@emotion/styled";
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { AiOutlineCaretDown } from "react-icons/ai";
 
 import { AppStateContext, PlayerState, TeamSlotState } from "../model/teamStateManager";
+import { AwokenSkills } from "../model/types/monster";
 import { FlexCol, FlexColC, FlexRow, FlexRowC, H2 } from "../stylePrimitives";
 import { BadgeDisplay } from "./badge";
-import { Card, Latents } from "./card";
+import { Card } from "./card";
+import { Latents } from "./latent";
 
 type ColorProps = {
   color: string;
@@ -34,6 +36,8 @@ const TeamSlot = ({
   state: TeamSlotState;
   hide?: boolean;
 }) => {
+  const awakenings: AwokenSkills[] = []; // TODO: Populate this correctly
+
   return (
     <FlexColC>
       <ColorBG color={hide ? "transparent" : "#f0f0f0"}>
@@ -49,7 +53,12 @@ const TeamSlot = ({
       <ColorBG color={hide ? "transparent" : teamIdToColor[teamId]}>
         <FlexColC gap="0.25rem">
           <Card cardId={`${teamId}-Slot${slotId}-Base`} monsterId={state.baseId} hide={hide} />
-          <Latents cardId={`${teamId}-Slot${slotId}-Base`} latents={state.latents} hide={hide} />
+          <Latents
+            cardId={`${teamId}-Slot${slotId}-Base`}
+            latents={state.latents}
+            hide={hide}
+            awakenings={awakenings}
+          />
         </FlexColC>
       </ColorBG>
     </FlexColC>
