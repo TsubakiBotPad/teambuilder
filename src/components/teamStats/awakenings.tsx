@@ -2,9 +2,10 @@ import { css } from "@emotion/css";
 
 import { AwakeningImage } from "../../model/images";
 import { monsterCacheClient } from "../../model/monsterCacheClient";
-import { PlayerState, TeamSlotState } from "../../model/teamStateManager";
+import { getTeamSlots, TeamSlotState, TeamState } from "../../model/teamStateManager";
 import { AwokenSkills } from "../../model/types/monster";
 import { FlexCol, FlexRowC, H3 } from "../../stylePrimitives";
+import { GameConfig } from "../gameConfigSelector";
 
 export type AwakeningHistogram = { [key: string]: number };
 
@@ -35,16 +36,8 @@ export async function computeTotalAwakeningsFromSlots(slots: TeamSlotState[]) {
   return histogram;
 }
 
-export async function computeTotalAwakenings(playerState: PlayerState) {
-  const slots = [
-    playerState.teamSlot1,
-    playerState.teamSlot2,
-    playerState.teamSlot3,
-    playerState.teamSlot4,
-    playerState.teamSlot5,
-    playerState.teamSlot6
-  ];
-
+export async function computeTotalAwakenings(gameConfig: GameConfig, teamState: TeamState, playerId: keyof TeamState) {
+  const slots = getTeamSlots(gameConfig, teamState, playerId);
   return computeTotalAwakeningsFromSlots(slots);
 }
 

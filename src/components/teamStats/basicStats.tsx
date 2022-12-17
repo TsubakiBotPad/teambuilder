@@ -4,7 +4,7 @@ import styled from "@emotion/styled";
 import { AwakeningImage } from "../../model/images";
 import { monsterCacheClient } from "../../model/monsterCacheClient";
 import { PadAssetImage } from "../../model/padAssets";
-import { PlayerState, TeamSlotState, TeamState } from "../../model/teamStateManager";
+import { getTeamSlots, TeamSlotState, TeamState } from "../../model/teamStateManager";
 import { computeLeaderSkill } from "../../model/types/leaderSkill";
 import { Attribute, AwokenSkills, MonsterType } from "../../model/types/monster";
 import { maxLevel, stat } from "../../model/types/stat";
@@ -25,36 +25,13 @@ export interface TeamBasicStats {
 }
 
 export async function computeTeamBasicStats(
-  playerState: PlayerState,
   gameConfig: GameConfig,
-  teamState: TeamState
+  teamState: TeamState,
+  playerId: keyof TeamState
 ): Promise<TeamBasicStats> {
-  var slots = [];
-  var includeBadge = false;
-  if (gameConfig.mode === "2p") {
-    slots = [
-      teamState.p1.teamSlot1,
-      teamState.p1.teamSlot2,
-      teamState.p1.teamSlot3,
-      teamState.p1.teamSlot4,
-      teamState.p1.teamSlot5,
-      teamState.p2.teamSlot1,
-      teamState.p2.teamSlot2,
-      teamState.p2.teamSlot3,
-      teamState.p2.teamSlot4,
-      teamState.p2.teamSlot5
-    ];
-  } else {
-    slots = [
-      playerState.teamSlot1,
-      playerState.teamSlot2,
-      playerState.teamSlot3,
-      playerState.teamSlot4,
-      playerState.teamSlot5,
-      playerState.teamSlot6
-    ];
-    includeBadge = true;
-  }
+  const slots = getTeamSlots(gameConfig, teamState, playerId);
+
+  var includeBadge = gameConfig.mode !== "2p";
 
   const leader = await monsterCacheClient.get(slots[0].baseId);
   const helper = await monsterCacheClient.get(slots[5].baseId);
@@ -69,14 +46,15 @@ export async function computeTeamBasicStats(
   var hpBadgeMult = 1;
   var rcvBadgeMult = 1;
 
+  var playerBadgeId = teamState[playerId].badgeId;
   if (includeBadge) {
-    if (playerState.badgeId === "hpbadge") {
+    if (playerBadgeId === "hpbadge") {
       hpBadgeMult = 1.05;
-    } else if (playerState.badgeId === "hp+badge") {
+    } else if (playerBadgeId === "hp+badge") {
       hpBadgeMult = 1.15;
-    } else if (playerState.badgeId === "rcvbadge") {
+    } else if (playerBadgeId === "rcvbadge") {
       rcvBadgeMult = 1.25;
-    } else if (playerState.badgeId === "rcv+badge") {
+    } else if (playerBadgeId === "rcv+badge") {
       rcvBadgeMult = 1.35;
     }
   }

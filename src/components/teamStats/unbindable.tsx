@@ -1,16 +1,14 @@
 import { monsterCacheClient } from "../../model/monsterCacheClient";
-import { PlayerState } from "../../model/teamStateManager";
+import { getTeamSlots, TeamState } from "../../model/teamStateManager";
 import { AwokenSkills } from "../../model/types/monster";
+import { GameConfig } from "../gameConfigSelector";
 
-export async function computeTeamUnbindablePct(playerState: PlayerState) {
-  const slots = [
-    playerState.teamSlot1,
-    playerState.teamSlot2,
-    playerState.teamSlot3,
-    playerState.teamSlot4,
-    playerState.teamSlot5,
-    playerState.teamSlot6
-  ];
+export async function computeTeamUnbindablePct(
+  gameConfig: GameConfig,
+  teamState: TeamState,
+  playerId: keyof TeamState
+) {
+  const slots = getTeamSlots(gameConfig, teamState, playerId);
 
   var count = 0;
   var filledSlots = 0;

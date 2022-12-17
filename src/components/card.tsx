@@ -8,52 +8,66 @@ import { AppStateContext } from "../model/teamStateManager";
 import { LATENTS_ID_TO_NAME } from "../model/types/latents";
 import { FlexRow } from "../stylePrimitives";
 import { leftPad } from "./generic/leftPad";
+type CardEmptyProps = {
+  hide: boolean;
+};
 
-const CardEmpty = styled.div`
-  background-color: #fefefe;
+const CardEmpty = styled.div<CardEmptyProps>`
+  background-color: ${(props) => (props.hide ? "transparent" : "#fefefe")};
   width: 5rem;
   height: 5rem;
-  border: 2px dotted #aaa;
+  border: 2px dotted ${(props) => (props.hide ? "transparent" : "#aaa")};
   box-sizing: border-box;
 `;
 
 type CardSelectedType = {
   monsterId: number;
+  hide: boolean;
 };
 
 const CardSelected = styled.div<CardSelectedType>`
-  background: ${(props) => `url("${BASE_ICON_URL}${leftPad(props.monsterId, 5)}.png")`};
+  background: ${(props) => (props.hide ? "" : `url("${BASE_ICON_URL}${leftPad(props.monsterId, 5)}.png")`)};
   background-size: cover;
   width: 5rem;
   height: 5rem;
 `;
 
-export const Card = ({ cardId, monsterId }: { cardId: string; monsterId: number }) => {
+export const Card = ({ cardId, monsterId, hide }: { cardId: string; monsterId: number; hide?: boolean }) => {
   const { setModalIsOpen, setCardSlotSelected } = useContext(AppStateContext);
 
   return monsterId !== 0 ? (
     <CardSelected
       monsterId={monsterId}
-      onClick={() => {
-        setCardSlotSelected(cardId);
-        setModalIsOpen(true);
-      }}
+      onClick={
+        !hide
+          ? () => {
+              setCardSlotSelected(cardId);
+              setModalIsOpen(true);
+            }
+          : () => {}
+      }
+      hide={!!hide}
     />
   ) : (
     <CardEmpty
-      onClick={() => {
-        setCardSlotSelected(cardId);
-        setModalIsOpen(true);
-      }}
+      onClick={
+        !hide
+          ? () => {
+              setCardSlotSelected(cardId);
+              setModalIsOpen(true);
+            }
+          : () => {}
+      }
+      hide={!!hide}
     />
   );
 };
 
-const LatentEmpty = styled.div`
-  background-color: lightyellow;
+const LatentEmpty = styled.div<CardEmptyProps>`
+  background-color: ${(props) => (props.hide ? "transparent" : "#lightyellow")};
   width: 5rem;
   height: 2.14rem;
-  border: 2px dotted #aaa;
+  border: 2px dotted ${(props) => (props.hide ? "transparent" : "#aaa")};
   box-sizing: border-box;
 `;
 
@@ -116,7 +130,7 @@ const SixSlotLatent = ({ latentName, halfBreakDamage }: { latentName: string; ha
   );
 };
 
-export const Latents = ({ cardId, latents }: { cardId: string; latents: number[] }) => {
+export const Latents = ({ cardId, latents, hide }: { cardId: string; latents: number[]; hide?: boolean }) => {
   const { setCardSlotSelected, setLatentModalIsOpen } = useContext(AppStateContext);
   const latentsBySize = latents.reduce((d, num) => {
     const idx = Math.floor((num as any) / 100);
@@ -139,39 +153,52 @@ export const Latents = ({ cardId, latents }: { cardId: string; latents: number[]
     });
 
   return latents.length !== 0 ? (
-    <LatentSelected
-      onClick={() => {
-        setCardSlotSelected(cardId);
-        setLatentModalIsOpen(true);
-      }}
-    >
-      {hasSixSlot ? (
-        <>
-          <SixSlotLatent latentName={sixSlotLatentName} halfBreakDamage={false} />
-          <RemainderLatents>
-            {remainderLatents.map((a) => {
-              return <PadAssetImage assetName={LATENTS_ID_TO_NAME[a]} height={16} />;
-            })}
-          </RemainderLatents>
-        </>
-      ) : (
-        <FlexRow gap="3px" wrap="wrap">
-          {remainderLatents
-            .sort((a, b) => {
-              return b - a;
-            })
-            .map((a) => {
-              return <PadAssetImage assetName={LATENTS_ID_TO_NAME[a]} height={16} />;
-            })}
-        </FlexRow>
-      )}
-    </LatentSelected>
+    hide ? (
+      <></>
+    ) : (
+      <LatentSelected
+        onClick={
+          !hide
+            ? () => {
+                setCardSlotSelected(cardId);
+                setLatentModalIsOpen(true);
+              }
+            : () => {}
+        }
+      >
+        {hasSixSlot ? (
+          <>
+            <SixSlotLatent latentName={sixSlotLatentName} halfBreakDamage={false} />
+            <RemainderLatents>
+              {remainderLatents.map((a) => {
+                return <PadAssetImage assetName={LATENTS_ID_TO_NAME[a]} height={16} />;
+              })}
+            </RemainderLatents>
+          </>
+        ) : (
+          <FlexRow gap="3px" wrap="wrap">
+            {remainderLatents
+              .sort((a, b) => {
+                return b - a;
+              })
+              .map((a) => {
+                return <PadAssetImage assetName={LATENTS_ID_TO_NAME[a]} height={16} />;
+              })}
+          </FlexRow>
+        )}
+      </LatentSelected>
+    )
   ) : (
     <LatentEmpty
-      onClick={() => {
-        setCardSlotSelected(cardId);
-        setLatentModalIsOpen(true);
-      }}
+      onClick={
+        !hide
+          ? () => {
+              setCardSlotSelected(cardId);
+              setLatentModalIsOpen(true);
+            }
+          : () => {}
+      }
+      hide={!!hide}
     />
   );
 };

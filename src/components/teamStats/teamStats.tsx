@@ -26,14 +26,14 @@ export interface TeamStat {
 export async function computeTeamStat(
   teamState: TeamState,
   gameConfig: GameConfig,
-  player: "p1" | "p2" | "p3"
+  player: keyof TeamState
 ): Promise<TeamStat> {
   return {
-    awakenings: await computeTotalAwakenings(teamState[player]),
-    attributes: await computeAttributes(teamState[player]),
-    teamTypes: await computeTypes(teamState[player]),
-    teamUnbindablePct: await computeTeamUnbindablePct(teamState[player]),
-    teamBasicStats: await computeTeamBasicStats(teamState[player], gameConfig, teamState)
+    awakenings: await computeTotalAwakenings(gameConfig, teamState, player),
+    attributes: await computeAttributes(gameConfig, teamState, player),
+    teamTypes: await computeTypes(gameConfig, teamState, player),
+    teamUnbindablePct: await computeTeamUnbindablePct(gameConfig, teamState, player),
+    teamBasicStats: await computeTeamBasicStats(gameConfig, teamState, player)
   };
 }
 

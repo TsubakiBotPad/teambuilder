@@ -1,17 +1,11 @@
 import { monsterCacheClient } from "../../model/monsterCacheClient";
-import { PlayerState } from "../../model/teamStateManager";
+import { getTeamSlots, TeamState } from "../../model/teamStateManager";
+import { GameConfig } from "../gameConfigSelector";
 
 export type AttributeHistogram = { [key: number]: boolean };
 
-export async function computeAttributes(playerState: PlayerState) {
-  const slots = [
-    playerState.teamSlot1,
-    playerState.teamSlot2,
-    playerState.teamSlot3,
-    playerState.teamSlot4,
-    playerState.teamSlot5,
-    playerState.teamSlot6
-  ];
+export async function computeAttributes(gameConfig: GameConfig, teamState: TeamState, playerId: keyof TeamState) {
+  const slots = getTeamSlots(gameConfig, teamState, playerId);
 
   /* python
       class Attribute(str, Enum):

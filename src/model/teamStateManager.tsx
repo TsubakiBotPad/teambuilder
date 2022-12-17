@@ -164,3 +164,29 @@ export async function setPlayerBadge(
   newTeamState[playerId as keyof TeamState].badgeId = value;
   setTeamState(newTeamState);
 }
+
+export function getTeamSlots(gameConfig: GameConfig, teamState: TeamState, playerId: keyof TeamState) {
+  var slots = [];
+  const playerState = teamState[playerId];
+  if (gameConfig.mode === "2p") {
+    slots = [
+      teamState.p1.teamSlot1,
+      playerState.teamSlot2,
+      playerState.teamSlot3,
+      playerState.teamSlot4,
+      playerState.teamSlot5,
+      teamState.p2.teamSlot6
+    ];
+  } else {
+    slots = [
+      playerState.teamSlot1,
+      playerState.teamSlot2,
+      playerState.teamSlot3,
+      playerState.teamSlot4,
+      playerState.teamSlot5,
+      playerState.teamSlot6
+    ];
+  }
+
+  return slots;
+}

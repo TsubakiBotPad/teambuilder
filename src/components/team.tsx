@@ -23,19 +23,33 @@ const teamIdToColor: { [key in string]: string } = {
   P3: "lightgreen"
 };
 
-const TeamSlot = ({ teamId, slotId, state }: { teamId: string; slotId: string; state: TeamSlotState }) => {
+const TeamSlot = ({
+  teamId,
+  slotId,
+  state,
+  hide
+}: {
+  teamId: string;
+  slotId: string;
+  state: TeamSlotState;
+  hide?: boolean;
+}) => {
   return (
     <FlexColC>
-      <ColorBG color="#f0f0f0">
-        <Card cardId={`${teamId}-Slot${slotId}-Assist`} monsterId={state.assistId} />
+      <ColorBG color={hide ? "transparent" : "#f0f0f0"}>
+        <Card cardId={`${teamId}-Slot${slotId}-Assist`} monsterId={state.assistId} hide={hide} />
       </ColorBG>
       <FlexRowC>
-        <AiOutlineCaretDown /> Assist
+        {hide ? null : (
+          <>
+            <AiOutlineCaretDown /> Assist
+          </>
+        )}
       </FlexRowC>
-      <ColorBG color={teamIdToColor[teamId]}>
+      <ColorBG color={hide ? "transparent" : teamIdToColor[teamId]}>
         <FlexColC gap="0.25rem">
-          <Card cardId={`${teamId}-Slot${slotId}-Base`} monsterId={state.baseId} />
-          <Latents cardId={`${teamId}-Slot${slotId}-Base`} latents={state.latents} />
+          <Card cardId={`${teamId}-Slot${slotId}-Base`} monsterId={state.baseId} hide={hide} />
+          <Latents cardId={`${teamId}-Slot${slotId}-Base`} latents={state.latents} hide={hide} />
         </FlexColC>
       </ColorBG>
     </FlexColC>
@@ -45,19 +59,35 @@ const TeamSlot = ({ teamId, slotId, state }: { teamId: string; slotId: string; s
 export const Team = ({ teamId, state }: { teamId: string; state: PlayerState }) => {
   const { gameConfig, setPlayerSelected, setBadgeModalIsOpen } = useContext(AppStateContext);
 
+  if (gameConfig.mode === "2p") {
+    if (teamId === "P1") {
+    }
+    return (
+      <FlexCol gap="0.25rem">
+        <H2>{teamId}</H2>
+        <FlexRow>
+          <TeamSlot teamId={teamId} slotId={"1"} state={state.teamSlot1} hide={teamId === "P2"} />
+          <TeamSlot teamId={teamId} slotId={"2"} state={state.teamSlot2} />
+          <TeamSlot teamId={teamId} slotId={"3"} state={state.teamSlot3} />
+          <TeamSlot teamId={teamId} slotId={"4"} state={state.teamSlot4} />
+          <TeamSlot teamId={teamId} slotId={"5"} state={state.teamSlot5} />
+          <TeamSlot teamId={teamId} slotId={"6"} state={state.teamSlot6} hide={teamId === "P1"} />
+        </FlexRow>
+      </FlexCol>
+    );
+  }
+
   return (
     <FlexCol gap="0.25rem">
       <FlexRowC gap="0.5rem">
         <H2>{teamId}</H2>
-        {gameConfig.mode !== "2p" ? (
-          <BadgeDisplay
-            onClick={() => {
-              setPlayerSelected(teamId.toLocaleLowerCase());
-              setBadgeModalIsOpen(true);
-            }}
-            badgeName={state.badgeId}
-          />
-        ) : null}
+        <BadgeDisplay
+          onClick={() => {
+            setPlayerSelected(teamId.toLocaleLowerCase());
+            setBadgeModalIsOpen(true);
+          }}
+          badgeName={state.badgeId}
+        />
       </FlexRowC>
       <FlexRow>
         <TeamSlot teamId={teamId} slotId={"1"} state={state.teamSlot1} />
