@@ -23,6 +23,7 @@ const LeaderSkillText = ({ monster: m }: { monster: MonsterResponse }) => {
 };
 
 export const CardInfo = ({ monster: m }: { monster: MonsterResponse }) => {
+  const superAwakenings = m.awakenings.filter((a) => a.is_super);
   return (
     <>
       <div
@@ -43,27 +44,28 @@ export const CardInfo = ({ monster: m }: { monster: MonsterResponse }) => {
                 <AwakeningImage key={a.awakening_id} awakeningId={a.awoken_skill_id} />
               ))}
           </FlexRow>
-          <FlexRow>
-            <img src="img/saQuestion.webp" width={"25px"} alt="?" />
-            {m.awakenings
-              .filter((a) => a.is_super)
-              .map((a) => (
+          {superAwakenings.length > 0 ? (
+            <FlexRow>
+              <img src="img/saQuestion.webp" width={"25px"} alt="?" />
+              {superAwakenings.map((a) => (
                 <AwakeningImage key={a.awakening_id} awakeningId={a.awoken_skill_id} />
               ))}
-          </FlexRow>
+            </FlexRow>
+          ) : null}
+          <FlexRowC gap="0.25rem">
+            <span>
+              <b>Available killers:</b> [{m.latent_slots} slots]{" "}
+            </span>
+            <FlexRowC>
+              {getKillers(m).map((a) => (
+                <PadAssetImage assetName={`${a.substring(0, 3).toLocaleLowerCase()}t`} height={25} />
+              ))}
+            </FlexRowC>
+          </FlexRowC>
         </FlexCol>
         <img src={`${BASE_ICON_URL}${leftPad(m.monster_id, 5)}.png`} alt="monster" />
       </div>
-      <FlexRowC gap="0.25rem">
-        <span>
-          <b>Available killers:</b> [{m.latent_slots} slots]{" "}
-        </span>
-        <FlexRowC>
-          {getKillers(m).map((a) => (
-            <PadAssetImage assetName={`${a.substring(0, 3).toLocaleLowerCase()}t`} height={25} />
-          ))}
-        </FlexRowC>
-      </FlexRowC>
+
       <FlexRow gap="5rem">
         <FlexCol>
           <b>{m.is_inheritable ? "" : "Not "}Inheritable</b>
