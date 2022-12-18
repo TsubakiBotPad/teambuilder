@@ -3,7 +3,6 @@ import styled from "@emotion/styled";
 import { AxiosError } from "axios";
 import { debounce } from "lodash";
 import { useContext, useState } from "react";
-import { AiFillCloseCircle } from "react-icons/ai";
 import Modal from "react-modal";
 
 import { breakpoint } from "../../breakpoints";
