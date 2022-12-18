@@ -1,18 +1,6 @@
 import { MonsterResponse } from "../client/models/MonsterResponse";
 import { MonsterService } from "../client/services/MonsterService";
 
-function cache(f: Function) {
-  var NO_RESULT = {}; // unique, would use Symbol if ES2015-able
-  var res = NO_RESULT;
-  return function () {
-    // if ES2015, name the function the same as fn
-    if (res === NO_RESULT) {
-      return (res = f.apply(f, arguments));
-    }
-    return res;
-  };
-}
-
 export class MonsterCacheClient {
   cache: { [key: number]: Promise<MonsterResponse> };
 

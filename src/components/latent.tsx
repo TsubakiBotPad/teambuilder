@@ -5,7 +5,6 @@ import React, { useContext, useMemo, useState } from "react";
 import { PadAssetImage } from "../model/padAssets";
 import { AppStateContext, TeamSlotState } from "../model/teamStateManager";
 import { AWO_RES_LATENT_TO_AWO_MAP, LATENTS_ID_TO_NAME } from "../model/types/latents";
-import { AwokenSkills } from "../model/types/monster";
 import { FlexRow } from "../stylePrimitives";
 import { computeTotalAwakeningsFromSlots } from "./teamStats/awakenings";
 
@@ -134,7 +133,7 @@ export const Latents = ({
       }
     };
     f();
-  }, [teamSlot]);
+  }, [teamSlot, hasSixSlot]);
 
   return latents.length !== 0 ? (
     hide ? (

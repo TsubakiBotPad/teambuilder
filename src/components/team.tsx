@@ -1,15 +1,13 @@
 import { css } from "@emotion/css";
 import styled from "@emotion/styled";
-import { useContext, useMemo, useState } from "react";
+import { useContext } from "react";
 import { AiOutlineCaretDown } from "react-icons/ai";
 
 import { AppStateContext, PlayerState, TeamSlotState } from "../model/teamStateManager";
-import { AwokenSkills } from "../model/types/monster";
 import { FlexCol, FlexColC, FlexRow, FlexRowC, H2 } from "../stylePrimitives";
 import { BadgeDisplay } from "./badge";
 import { Card } from "./card";
 import { Latents } from "./latent";
-import { computeTotalAwakeningsFromSlots } from "./teamStats/awakenings";
 
 type ColorProps = {
   color: string;
