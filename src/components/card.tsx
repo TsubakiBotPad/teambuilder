@@ -5,7 +5,9 @@ import { AiFillCloseCircle } from "react-icons/ai";
 
 import { BASE_ICON_URL } from "../model/images";
 import { AppStateContext } from "../model/teamStateManager";
+import { DraggableTypes } from "../pages/padteambuilder";
 import { leftPad } from "./generic/leftPad";
+import { useDrag } from "react-dnd";
 
 type CardEmptyProps = {
   hide: boolean;
@@ -35,50 +37,59 @@ export const Card = ({ cardId, monsterId, hide }: { cardId: string; monsterId: n
   const { setModalIsOpen, setCardSlotSelected } = useContext(AppStateContext);
   const [hover, setHover] = useState(false);
 
-  return monsterId !== 0 ? (
-    <div>
-      <CardSelected
-        monsterId={monsterId}
-        onClick={
-          !hide
-            ? () => {
-                setCardSlotSelected(cardId);
-                setModalIsOpen(true);
-              }
-            : () => {}
-        }
-        hide={!!hide}
-        onMouseOver={() => {
-          setHover(true);
-        }}
-        onMouseOut={() => {
-          setHover(false);
-        }}
-      >
-        {hover ? (
-          <div
-            className={css`
-              position: relative;
-              top: -10%;
-              left: 85%;
-            `}
-          >
-            <AiFillCloseCircle color="white" />
-          </div>
-        ) : null}
-      </CardSelected>
+  const [{ isDragging }, drag] = useDrag(() => ({
+    type: DraggableTypes.card,
+    collect: (monitor) => ({
+      isDragging: !!monitor.isDragging()
+    })
+  }));
+
+  return (
+    <div ref={drag}>
+      {monsterId !== 0 ? (
+        <CardSelected
+          monsterId={monsterId}
+          onClick={
+            !hide
+              ? () => {
+                  setCardSlotSelected(cardId);
+                  setModalIsOpen(true);
+                }
+              : () => {}
+          }
+          hide={!!hide}
+          onMouseOver={() => {
+            setHover(true);
+          }}
+          onMouseOut={() => {
+            setHover(false);
+          }}
+        >
+          {hover ? (
+            <div
+              className={css`
+                position: relative;
+                top: -10%;
+                left: 85%;
+              `}
+            >
+              <AiFillCloseCircle color="white" />
+            </div>
+          ) : null}
+        </CardSelected>
+      ) : (
+        <CardEmpty
+          onClick={
+            !hide
+              ? () => {
+                  setCardSlotSelected(cardId);
+                  setModalIsOpen(true);
+                }
+              : () => {}
+          }
+          hide={!!hide}
+        />
+      )}
     </div>
-  ) : (
-    <CardEmpty
-      onClick={
-        !hide
-          ? () => {
-              setCardSlotSelected(cardId);
-              setModalIsOpen(true);
-            }
-          : () => {}
-      }
-      hide={!!hide}
-    />
   );
 };

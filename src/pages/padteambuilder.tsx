@@ -1,6 +1,8 @@
 import styled from "@emotion/styled";
 import { debounce } from "lodash";
 import React, { useMemo, useState } from "react";
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
 import { useNavigate, useParams } from "react-router-dom";
 
 import { GameConfigSelector } from "../components/gameConfigSelector";
@@ -21,6 +23,11 @@ const TeamInput = styled.input`
   font-weight: 600;
   padding: 0.25rem 0.5rem 0.25rem 0;
 `;
+
+export const DraggableTypes = {
+  card: "card",
+  latent: "latent"
+};
 
 export const PadTeamBuilderPage = () => {
   const params = useParams();
@@ -73,69 +80,71 @@ export const PadTeamBuilderPage = () => {
   }, [teamName, teamState, gameConfig, updateUrl]);
 
   return (
-    <AppStateContext.Provider
-      value={{
-        teamName,
-        gameConfig,
-        setGameConfig,
-        teamStats,
-        setTeamStats,
-        modalIsOpen,
-        setModalIsOpen,
-        latentModalIsOpen,
-        setLatentModalIsOpen,
-        badgeModalIsOpen,
-        setBadgeModalIsOpen,
-        cardSlotSelected,
-        setCardSlotSelected,
-        playerSelected,
-        setPlayerSelected,
-        updateUrl
-      }}
-    >
-      <TeamStateContext.Provider value={{ teamState, setTeamState }}>
-        <Page maxWidth={maxPageWidth}>
-          <FlexColC gap="1rem">
-            <H1>PAD Team Builder</H1>
-            <GameConfigSelector />
-          </FlexColC>
-          <CardSelectorModal isOpen={modalIsOpen} />
-          <LatentSelectorModal isOpen={latentModalIsOpen} />
-          <BadgeSelectorModal isOpen={badgeModalIsOpen} />
-          <FlexColC>
-            <FlexRow gap="1rem">
-              <FlexCol>
-                <TeamInput
-                  placeholder="Team Title"
-                  size={35}
-                  value={teamName}
-                  onChange={(e) => {
-                    setTeamName(e.target.value);
-                  }}
-                />
-                <FlexCol gap="1.5rem">
-                  <FlexRow gap="3rem">
-                    <Team teamId={"P1"} state={teamState.p1} />
-                    <TeamStatDisplay teamStat={teamStats.p1} />
-                  </FlexRow>
-                  {gameConfig.mode === "2p" || gameConfig.mode === "3p" ? (
+    <DndProvider backend={HTML5Backend}>
+      <AppStateContext.Provider
+        value={{
+          teamName,
+          gameConfig,
+          setGameConfig,
+          teamStats,
+          setTeamStats,
+          modalIsOpen,
+          setModalIsOpen,
+          latentModalIsOpen,
+          setLatentModalIsOpen,
+          badgeModalIsOpen,
+          setBadgeModalIsOpen,
+          cardSlotSelected,
+          setCardSlotSelected,
+          playerSelected,
+          setPlayerSelected,
+          updateUrl
+        }}
+      >
+        <TeamStateContext.Provider value={{ teamState, setTeamState }}>
+          <Page maxWidth={maxPageWidth}>
+            <FlexColC gap="1rem">
+              <H1>PAD Team Builder</H1>
+              <GameConfigSelector />
+            </FlexColC>
+            <CardSelectorModal isOpen={modalIsOpen} />
+            <LatentSelectorModal isOpen={latentModalIsOpen} />
+            <BadgeSelectorModal isOpen={badgeModalIsOpen} />
+            <FlexColC>
+              <FlexRow gap="1rem">
+                <FlexCol>
+                  <TeamInput
+                    placeholder="Team Title"
+                    size={35}
+                    value={teamName}
+                    onChange={(e) => {
+                      setTeamName(e.target.value);
+                    }}
+                  />
+                  <FlexCol gap="1.5rem">
                     <FlexRow gap="3rem">
-                      <Team teamId={"P2"} state={teamState.p2} />
-                      <TeamStatDisplay teamStat={teamStats.p2} />
+                      <Team teamId={"P1"} state={teamState.p1} />
+                      <TeamStatDisplay teamStat={teamStats.p1} />
                     </FlexRow>
-                  ) : null}
-                  {gameConfig.mode === "3p" ? (
-                    <FlexRow gap="3rem">
-                      <Team teamId={"P3"} state={teamState.p3} />
-                      <TeamStatDisplay teamStat={teamStats.p3} />
-                    </FlexRow>
-                  ) : null}
+                    {gameConfig.mode === "2p" || gameConfig.mode === "3p" ? (
+                      <FlexRow gap="3rem">
+                        <Team teamId={"P2"} state={teamState.p2} />
+                        <TeamStatDisplay teamStat={teamStats.p2} />
+                      </FlexRow>
+                    ) : null}
+                    {gameConfig.mode === "3p" ? (
+                      <FlexRow gap="3rem">
+                        <Team teamId={"P3"} state={teamState.p3} />
+                        <TeamStatDisplay teamStat={teamStats.p3} />
+                      </FlexRow>
+                    ) : null}
+                  </FlexCol>
                 </FlexCol>
-              </FlexCol>
-            </FlexRow>
-          </FlexColC>
-        </Page>
-      </TeamStateContext.Provider>
-    </AppStateContext.Provider>
+              </FlexRow>
+            </FlexColC>
+          </Page>
+        </TeamStateContext.Provider>
+      </AppStateContext.Provider>
+    </DndProvider>
   );
 };
