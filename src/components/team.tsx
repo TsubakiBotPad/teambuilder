@@ -1,6 +1,6 @@
 import { css } from "@emotion/css";
 import styled from "@emotion/styled";
-import { useContext } from "react";
+import { useContext, useMemo, useState } from "react";
 import { AiOutlineCaretDown } from "react-icons/ai";
 
 import { AppStateContext, PlayerState, TeamSlotState } from "../model/teamStateManager";
@@ -9,6 +9,7 @@ import { FlexCol, FlexColC, FlexRow, FlexRowC, H2 } from "../stylePrimitives";
 import { BadgeDisplay } from "./badge";
 import { Card } from "./card";
 import { Latents } from "./latent";
+import { computeTotalAwakeningsFromSlots } from "./teamStats/awakenings";
 
 type ColorProps = {
   color: string;
@@ -37,7 +38,6 @@ const TeamSlot = ({
   state: TeamSlotState;
   invert?: boolean;
 }) => {
-  const awakenings: AwokenSkills[] = [20, 27, 62, 59, 45]; // TODO: Populate this correctly
   //   const awakenings: AwokenSkills[] = []; // TODO: Populate this correctly
   const otherTeamColor = teamId === "P1" ? teamIdToColor["P2"] : teamIdToColor["P1"];
 
@@ -52,7 +52,7 @@ const TeamSlot = ({
       <ColorBG color={invert ? otherTeamColor : teamIdToColor[teamId]}>
         <FlexColC gap="0.25rem">
           <Card cardId={`${teamId}-Slot${slotId}-Base`} monsterId={state.baseId} />
-          <Latents cardId={`${teamId}-Slot${slotId}-Base`} latents={state.latents} awakenings={awakenings} />
+          <Latents cardId={`${teamId}-Slot${slotId}-Base`} latents={state.latents} teamSlot={state} />
         </FlexColC>
       </ColorBG>
     </FlexColC>

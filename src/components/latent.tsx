@@ -1,12 +1,13 @@
 import { css } from "@emotion/css";
 import styled from "@emotion/styled";
-import React, { useContext } from "react";
+import React, { useContext, useMemo, useState } from "react";
 
 import { PadAssetImage } from "../model/padAssets";
-import { AppStateContext } from "../model/teamStateManager";
+import { AppStateContext, TeamSlotState } from "../model/teamStateManager";
 import { AWO_RES_LATENT_TO_AWO_MAP, LATENTS_ID_TO_NAME } from "../model/types/latents";
 import { AwokenSkills } from "../model/types/monster";
 import { FlexRow } from "../stylePrimitives";
+import { computeTotalAwakeningsFromSlots } from "./teamStats/awakenings";
 
 type LatentEmptyProps = {
   hide: boolean;
@@ -90,15 +91,17 @@ const SixSlotLatent = ({
 export const Latents = ({
   cardId,
   latents,
-  awakenings,
+  teamSlot,
   hide
 }: {
   cardId: string;
   latents: number[];
-  awakenings: AwokenSkills[];
+  teamSlot: TeamSlotState;
   hide?: boolean;
 }) => {
   const { setCardSlotSelected, setLatentModalIsOpen } = useContext(AppStateContext);
+  const [a2, setA2] = useState([] as number[]);
+
   const latentsBySize = latents.reduce((d, num) => {
     const idx = Math.floor((num as any) / 100);
     if (!d[idx]) {
@@ -113,7 +116,7 @@ export const Latents = ({
   const sixSlotLatentName = LATENTS_ID_TO_NAME[latentId];
   const requiredAwakening = AWO_RES_LATENT_TO_AWO_MAP[latentId];
 
-  const opacity = awakenings.includes(requiredAwakening) ? 0 : 1;
+  const opacity = a2.includes(requiredAwakening) ? 0 : 1;
 
   const hasSixSlot = !!sixSlotLatentName;
 
@@ -122,6 +125,16 @@ export const Latents = ({
     .sort((a, b) => {
       return b - a;
     });
+
+  useMemo(() => {
+    const f = async () => {
+      if (hasSixSlot) {
+        const a = await computeTotalAwakeningsFromSlots([teamSlot]);
+        setA2(Object.keys(a).map((b) => parseInt(b)));
+      }
+    };
+    f();
+  }, [teamSlot]);
 
   return latents.length !== 0 ? (
     hide ? (
