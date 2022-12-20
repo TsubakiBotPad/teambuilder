@@ -16,7 +16,7 @@ export const BadgeDisplay = ({ badgeName, onClick }: { badgeName: string; onClic
           position: relative;
           width: 16px;
           height: 16px;
-          left: -47%;
+          left: -50%;
         `}
       >
         {badgeName ? <PadAssetImage assetName={`${badgeName}badge`} height={16} /> : null}
