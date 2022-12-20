@@ -60,7 +60,7 @@ export const BadgeSelectorModal = ({ isOpen }: { isOpen: boolean }) => {
           <H2>{playerSelected}-Badge</H2>
           <FlexColC>
             <FlexRow wrap="wrap" gap="0.25rem">
-              {BADGE_NAMES.map((name) => {
+              {BADGE_NAMES.map((name, i) => {
                 return (
                   <div
                     className={css`
@@ -70,6 +70,7 @@ export const BadgeSelectorModal = ({ isOpen }: { isOpen: boolean }) => {
                       align-items: center;
                       padding: 2px;
                     `}
+                    key={name + i}
                   >
                     <PadAssetImage
                       assetName={`${name}badge`}

@@ -155,7 +155,9 @@ export const CardSelectorModal = ({ isOpen }: { isOpen: boolean }) => {
           `}
         >
           <FlexCol gap="0.5rem">
-            <H2>{cardSlotSelected}</H2>
+            <H2>
+              {cardSlotSelected.teamId}-{cardSlotSelected.slotId}-{cardSlotSelected.use}
+            </H2>
             <FlexColC gap="0.5rem">
               <CardQueryInput
                 type="text"

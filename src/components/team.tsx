@@ -3,7 +3,7 @@ import styled from "@emotion/styled";
 import { useContext } from "react";
 import { AiOutlineCaretDown } from "react-icons/ai";
 
-import { AppStateContext, PlayerState, TeamSlotState } from "../model/teamStateManager";
+import { AppStateContext, PlayerState, TeamSlotState, TeamState } from "../model/teamStateManager";
 import { FlexCol, FlexColC, FlexRow, FlexRowC, H2 } from "../stylePrimitives";
 import { BadgeDisplay } from "./badge";
 import { Card } from "./card";
@@ -20,9 +20,9 @@ const ColorBG = styled.div<ColorProps>`
 `;
 
 const teamIdToColor: { [key in string]: string } = {
-  P1: "pink",
-  P2: "lightblue",
-  P3: "lightgreen"
+  p1: "pink",
+  p2: "lightblue",
+  p3: "lightgreen"
 };
 
 const TeamSlot = ({
@@ -31,70 +31,48 @@ const TeamSlot = ({
   state,
   invert
 }: {
-  teamId: string;
+  teamId: keyof TeamState;
   slotId: string;
   state: TeamSlotState;
   invert?: boolean;
 }) => {
-  //   const awakenings: AwokenSkills[] = []; // TODO: Populate this correctly
-  const otherTeamColor = teamId === "P1" ? teamIdToColor["P2"] : teamIdToColor["P1"];
+  const otherTeamColor = teamId === "p1" ? teamIdToColor["p2"] : teamIdToColor["p1"];
+  const componentId = { teamId: teamId, slotId: `teamSlot${slotId}` as keyof PlayerState };
 
   return (
     <FlexColC>
       <ColorBG color={"#f0f0f0"}>
-        <Card cardId={`${teamId}-Slot${slotId}-Assist`} monsterId={state.assistId} />
+        <Card componentId={{ ...componentId, use: "assist" }} monsterId={state.assistId} />
       </ColorBG>
       <FlexRowC>
         <AiOutlineCaretDown />
       </FlexRowC>
       <ColorBG color={invert ? otherTeamColor : teamIdToColor[teamId]}>
         <FlexColC gap="0.25rem">
-          <Card cardId={`${teamId}-Slot${slotId}-Base`} monsterId={state.baseId} />
-          <Latents cardId={`${teamId}-Slot${slotId}-Base`} latents={state.latents} teamSlot={state} />
+          <Card componentId={{ ...componentId, use: "base" }} monsterId={state.baseId} />
+          <Latents componentId={{ ...componentId, use: "latent" }} latents={state.latents} teamSlot={state} />
         </FlexColC>
       </ColorBG>
     </FlexColC>
   );
 };
 
-export const Team = ({ teamId, state }: { teamId: string; state: PlayerState }) => {
+export const Team = ({ teamId, state }: { teamId: keyof TeamState; state: PlayerState }) => {
   const { gameConfig, setPlayerSelected, setBadgeModalIsOpen } = useContext(AppStateContext);
-
-  if (gameConfig.mode === "2p") {
-    if (teamId === "P1") {
-    }
-    return (
-      <FlexCol gap="0.25rem">
-        <H2>{teamId}</H2>
-        <FlexRow>
-          <TeamSlot teamId={teamId} slotId={"1"} state={state.teamSlot1} />
-          <TeamSlot teamId={teamId} slotId={"2"} state={state.teamSlot2} />
-          <TeamSlot teamId={teamId} slotId={"3"} state={state.teamSlot3} />
-          <TeamSlot teamId={teamId} slotId={"4"} state={state.teamSlot4} />
-          <TeamSlot teamId={teamId} slotId={"5"} state={state.teamSlot5} />
-          <div
-            className={css`
-              margin-left: 0.5rem;
-            `}
-          >
-            <TeamSlot teamId={teamId} slotId={"6"} state={state.teamSlot6} invert={true} />
-          </div>
-        </FlexRow>
-      </FlexCol>
-    );
-  }
 
   return (
     <FlexCol gap="0.25rem">
       <FlexRowC gap="0.5rem">
         <H2>{teamId}</H2>
-        <BadgeDisplay
-          onClick={() => {
-            setPlayerSelected(teamId.toLocaleLowerCase());
-            setBadgeModalIsOpen(true);
-          }}
-          badgeName={state.badgeId}
-        />
+        {gameConfig.mode !== "2p" ? (
+          <BadgeDisplay
+            onClick={() => {
+              setPlayerSelected(teamId.toLocaleLowerCase());
+              setBadgeModalIsOpen(true);
+            }}
+            badgeName={state.badgeId}
+          />
+        ) : null}
       </FlexRowC>
       <FlexRow>
         <TeamSlot teamId={teamId} slotId={"1"} state={state.teamSlot1} />
@@ -102,7 +80,17 @@ export const Team = ({ teamId, state }: { teamId: string; state: PlayerState }) 
         <TeamSlot teamId={teamId} slotId={"3"} state={state.teamSlot3} />
         <TeamSlot teamId={teamId} slotId={"4"} state={state.teamSlot4} />
         <TeamSlot teamId={teamId} slotId={"5"} state={state.teamSlot5} />
-        <TeamSlot teamId={teamId} slotId={"6"} state={state.teamSlot6} />
+        {gameConfig.mode === "2p" ? (
+          <div
+            className={css`
+              margin-left: 0.5rem;
+            `}
+          >
+            <TeamSlot teamId={teamId} slotId={"6"} state={state.teamSlot6} invert={true} />
+          </div>
+        ) : (
+          <TeamSlot teamId={teamId} slotId={"6"} state={state.teamSlot6} />
+        )}
       </FlexRow>
     </FlexCol>
   );

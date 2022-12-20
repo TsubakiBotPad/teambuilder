@@ -1,95 +1,96 @@
 import { css } from "@emotion/css";
 import styled from "@emotion/styled";
-import React, { useContext, useState } from "react";
-import { AiFillCloseCircle } from "react-icons/ai";
+import { useContext } from "react";
+import { useDrag, useDrop } from "react-dnd";
 
 import { BASE_ICON_URL } from "../model/images";
-import { AppStateContext } from "../model/teamStateManager";
+import { AppStateContext, copyCard, swapCards, TeamStateContext } from "../model/teamStateManager";
 import { DraggableTypes } from "../pages/padteambuilder";
 import { leftPad } from "./generic/leftPad";
-import { useDrag } from "react-dnd";
+import { TeamComponentId } from "./id";
 
-type CardEmptyProps = {
-  hide: boolean;
-};
+interface DropResult {
+  dropEffect: string;
+  target: TeamComponentId;
+}
 
-const CardEmpty = styled.div<CardEmptyProps>`
-  background-color: ${(props) => (props.hide ? "transparent" : "#fefefe")};
+const CardEmpty = styled.div`
+  background-color: "#fefefe";
   width: 5rem;
   height: 5rem;
-  border: 2px dotted ${(props) => (props.hide ? "transparent" : "#aaa")};
+  border: 2px dotted #aaa;
   box-sizing: border-box;
 `;
 
 type CardSelectedType = {
   monsterId: number;
-  hide: boolean;
 };
 
 const CardSelected = styled.div<CardSelectedType>`
-  background: ${(props) => (props.hide ? "" : `url("${BASE_ICON_URL}${leftPad(props.monsterId, 5)}.png")`)};
+  background: ${(props) => `url("${BASE_ICON_URL}${leftPad(props.monsterId, 5)}.png")`};
   background-size: cover;
   width: 5rem;
   height: 5rem;
 `;
 
-export const Card = ({ cardId, monsterId, hide }: { cardId: string; monsterId: number; hide?: boolean }) => {
+export const Card = ({ componentId, monsterId }: { componentId: Partial<TeamComponentId>; monsterId: number }) => {
   const { setModalIsOpen, setCardSlotSelected } = useContext(AppStateContext);
-  const [hover, setHover] = useState(false);
+  const { teamState, setTeamState } = useContext(TeamStateContext);
 
-  const [{ isDragging }, drag] = useDrag(() => ({
+  const [, drag] = useDrag(() => ({
     type: DraggableTypes.card,
-    collect: (monitor) => ({
-      isDragging: !!monitor.isDragging()
-    })
+    item: { cardId: componentId },
+    end(item, monitor) {
+      const dropResult = monitor.getDropResult() as DropResult;
+      if (dropResult.dropEffect === "copy") {
+        copyCard(teamState, setTeamState, componentId, dropResult.target);
+      } else {
+        swapCards(teamState, setTeamState, componentId, dropResult.target);
+      }
+    }
   }));
 
+  const [, drop] = useDrop(
+    () => ({
+      accept: DraggableTypes.card,
+      drop: (item, monitor) => {
+        return {
+          target: componentId
+        };
+      },
+      collect: (monitor) => ({
+        isOver: !!monitor.isOver(),
+        x: monitor.getItem()
+      })
+    }),
+    [componentId]
+  );
+
   return (
-    <div ref={drag}>
-      {monsterId !== 0 ? (
-        <CardSelected
-          monsterId={monsterId}
-          onClick={
-            !hide
-              ? () => {
-                  setCardSlotSelected(cardId);
-                  setModalIsOpen(true);
-                }
-              : () => {}
-          }
-          hide={!!hide}
-          onMouseOver={() => {
-            setHover(true);
-          }}
-          onMouseOut={() => {
-            setHover(false);
-          }}
-        >
-          {hover ? (
-            <div
-              className={css`
-                position: relative;
-                top: -10%;
-                left: 85%;
-              `}
-            >
-              <AiFillCloseCircle color="white" />
-            </div>
-          ) : null}
-        </CardSelected>
-      ) : (
-        <CardEmpty
-          onClick={
-            !hide
-              ? () => {
-                  setCardSlotSelected(cardId);
-                  setModalIsOpen(true);
-                }
-              : () => {}
-          }
-          hide={!!hide}
-        />
-      )}
+    <div
+      ref={drag}
+      className={css`
+        cursor: grab;
+      `}
+    >
+      <div ref={drop}>
+        {monsterId !== 0 ? (
+          <CardSelected
+            monsterId={monsterId}
+            onClick={() => {
+              setCardSlotSelected(componentId);
+              setModalIsOpen(true);
+            }}
+          />
+        ) : (
+          <CardEmpty
+            onClick={() => {
+              setCardSlotSelected(componentId);
+              setModalIsOpen(true);
+            }}
+          />
+        )}
+      </div>
     </div>
   );
 };

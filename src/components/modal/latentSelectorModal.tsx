@@ -64,22 +64,25 @@ export const LatentSelectorModal = ({ isOpen }: { isOpen: boolean }) => {
             padding: 1rem;
           `}
         >
-          <H2>{cardSlotSelected}-Latents</H2>
+          <H2>
+            {cardSlotSelected.teamId}-{cardSlotSelected.slotId}-Latents
+          </H2>
           <FlexColC>
             <FlexRow wrap={"wrap"}>
               <FlexCol gap="1rem">
-                {Object.entries(LATENTS_BY_SIZE).map(([n, names]) => {
+                {Object.entries(LATENTS_BY_SIZE).map(([n, names], j) => {
                   return (
-                    <FlexCol>
+                    <FlexCol key={n + j}>
                       <H3>{n}-slot</H3>
                       <FlexRow wrap="wrap">
-                        {names.map((n) => {
+                        {names.map((n, i) => {
                           return (
                             <PadAssetImage
                               assetName={n}
                               onClick={() => {
                                 handleAddLatent(n, selectedLatents, setSelectedLatents);
                               }}
+                              key={n + j + i}
                             />
                           );
                         })}
@@ -101,7 +104,7 @@ export const LatentSelectorModal = ({ isOpen }: { isOpen: boolean }) => {
                     const isSixSlot = Math.floor(i / 100) === 6;
                     if (isSixSlot) {
                       return (
-                        <div>
+                        <div key={"selectedLatent" + idx}>
                           <PadAssetImage
                             assetName={"6slotLatentBg"}
                             onClick={() => {
@@ -136,6 +139,7 @@ export const LatentSelectorModal = ({ isOpen }: { isOpen: boolean }) => {
                         className={css`
                           opacity: ${valid ? "1" : "0.5"};
                         `}
+                        key={"selectedLatent" + idx}
                       />
                     );
                   })}
@@ -144,7 +148,7 @@ export const LatentSelectorModal = ({ isOpen }: { isOpen: boolean }) => {
               {MAX_LATENTS - currentSize !== 0 ? (
                 <FlexRow gap={"14px"}>
                   {Array.from(Array(MAX_LATENTS - currentSize).keys()).map((i) => {
-                    return <PadAssetImage assetName="emptyLatent" height={31} />;
+                    return <PadAssetImage assetName="emptyLatent" height={31} key={"remainderLatents" + i} />;
                   })}
                 </FlexRow>
               ) : null}

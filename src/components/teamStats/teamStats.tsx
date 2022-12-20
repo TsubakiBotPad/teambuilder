@@ -37,7 +37,7 @@ export async function computeTeamStat(
   };
 }
 
-export const TeamStatDisplay = ({ teamStat }: { teamStat?: TeamStat }) => {
+export const TeamStatDisplay = ({ teamStat, keyP: keyPrefix }: { teamStat?: TeamStat; keyP: string }) => {
   if (!teamStat) {
     return <></>;
   }
@@ -61,9 +61,10 @@ export const TeamStatDisplay = ({ teamStat }: { teamStat?: TeamStat }) => {
             tt={teamStat.teamTypes}
             unbindablePct={teamStat.teamUnbindablePct}
             ah={teamStat.attributes}
+            keyP={keyPrefix}
           />
         </div>
-        <AwakeningStatsDisplay awakenings={teamStat.awakenings} />
+        <AwakeningStatsDisplay awakenings={teamStat.awakenings} keyPrefix={keyPrefix} />
       </div>
     </FlexCol>
   );

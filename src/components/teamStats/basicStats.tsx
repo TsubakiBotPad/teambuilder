@@ -179,12 +179,14 @@ export const TeamBasicStatsDisplay = ({
   tbs,
   tt,
   unbindablePct,
-  ah
+  ah,
+  keyP
 }: {
   tbs?: TeamBasicStats;
   tt?: TeamTypes;
   unbindablePct?: number;
   ah?: AttributeHistogram;
+  keyP: string;
 }) => {
   if (!tbs) {
     return <></>;
@@ -194,22 +196,24 @@ export const TeamBasicStatsDisplay = ({
     <FlexCol gap={"1rem"}>
       <table>
         <thead>
-          <th></th>
-          <th style={{ textAlign: "start", verticalAlign: "middle" }}>
-            <AwakeningImage awakeningId={AwokenSkills.AWOKENKILLER} width={23} />
-          </th>
-          <th style={{ textAlign: "start", verticalAlign: "middle" }}>
-            <div
-              className={css`
-                background: url("img/awoBind.webp") no-repeat;
-                background-size: contain;
-                height: 20px;
-                display: flex;
-                align-items: center;
-              `}
-            ></div>
-            {/* <img src="img/awoBind.webp" width={"20px"} /> */}
-          </th>
+          <tr>
+            <th></th>
+            <th style={{ textAlign: "start", verticalAlign: "middle" }}>
+              <AwakeningImage awakeningId={AwokenSkills.AWOKENKILLER} width={23} />
+            </th>
+            <th style={{ textAlign: "start", verticalAlign: "middle" }}>
+              <div
+                className={css`
+                  background: url("img/awoBind.webp") no-repeat;
+                  background-size: contain;
+                  height: 20px;
+                  display: flex;
+                  align-items: center;
+                `}
+              ></div>
+              {/* <img src="img/awoBind.webp" width={"20px"} /> */}
+            </th>
+          </tr>
         </thead>
         <tbody>
           <tr>
@@ -245,9 +249,13 @@ export const TeamBasicStatsDisplay = ({
               </TD>
               <TD>
                 <FlexRow>
-                  {tt.map((a) => {
+                  {tt.map((a, i) => {
                     return (
-                      <PadAssetImage assetName={`${MonsterType[a].toLocaleLowerCase().substring(0, 3)}t`} height={25} />
+                      <PadAssetImage
+                        assetName={`${MonsterType[a].toLocaleLowerCase().substring(0, 3)}t`}
+                        height={25}
+                        key={keyP + "Types" + i}
+                      />
                     );
                   })}
                 </FlexRow>
@@ -264,10 +272,10 @@ export const TeamBasicStatsDisplay = ({
               </TD>
               <TD>
                 <FlexRow gap={"0.25rem"}>
-                  {Object.entries(ah).map((a) => {
+                  {Object.entries(ah).map((a, i) => {
                     const attr = Attribute[a[0] as keyof {}].toLocaleLowerCase();
                     return (
-                      <span>
+                      <span key={keyP + attr + i}>
                         <AttrImg src={`img/orb${attr}.webp`} selected={a[1]} />
                       </span>
                     );

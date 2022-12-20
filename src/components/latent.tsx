@@ -3,10 +3,18 @@ import styled from "@emotion/styled";
 import React, { useContext, useMemo, useState } from "react";
 
 import { PadAssetImage } from "../model/padAssets";
-import { AppStateContext, TeamSlotState } from "../model/teamStateManager";
+import { AppStateContext, copyLatents, swapLatents, TeamSlotState, TeamStateContext } from "../model/teamStateManager";
 import { AWO_RES_LATENT_TO_AWO_MAP, LATENTS_ID_TO_NAME } from "../model/types/latents";
 import { FlexRow } from "../stylePrimitives";
 import { computeTotalAwakeningsFromSlots } from "./teamStats/awakenings";
+import { useDrag, useDrop } from "react-dnd";
+import { DraggableTypes } from "../pages/padteambuilder";
+import { TeamComponentId } from "./id";
+
+interface DropResult {
+  dropEffect: string;
+  target: TeamComponentId;
+}
 
 type LatentEmptyProps = {
   hide: boolean;
@@ -88,17 +96,19 @@ const SixSlotLatent = ({
 };
 
 export const Latents = ({
-  cardId,
+  componentId,
   latents,
   teamSlot,
   hide
 }: {
-  cardId: string;
+  componentId: Partial<TeamComponentId>;
   latents: number[];
   teamSlot: TeamSlotState;
   hide?: boolean;
 }) => {
   const { setCardSlotSelected, setLatentModalIsOpen } = useContext(AppStateContext);
+  const { teamState, setTeamState } = useContext(TeamStateContext);
+
   const [a2, setA2] = useState([] as number[]);
 
   const latentsBySize = latents.reduce((d, num) => {
@@ -135,53 +145,98 @@ export const Latents = ({
     f();
   }, [teamSlot, hasSixSlot]);
 
-  return latents.length !== 0 ? (
-    hide ? (
-      <></>
-    ) : (
-      <LatentSelected
-        onClick={
-          !hide
-            ? () => {
-                setCardSlotSelected(cardId);
-                setLatentModalIsOpen(true);
-              }
-            : () => {}
-        }
-      >
-        {hasSixSlot ? (
-          <>
-            <SixSlotLatent latentName={sixSlotLatentName} halfBreakDamage={false} opacity={opacity} />
-            <RemainderLatents>
-              {remainderLatents.map((a) => {
-                return <PadAssetImage assetName={LATENTS_ID_TO_NAME[a]} height={16} />;
-              })}
-            </RemainderLatents>
-          </>
-        ) : (
-          <FlexRow gap="3px" wrap="wrap">
-            {remainderLatents
-              .sort((a, b) => {
-                return b - a;
-              })
-              .map((a) => {
-                return <PadAssetImage assetName={LATENTS_ID_TO_NAME[a]} height={16} />;
-              })}
-          </FlexRow>
-        )}
-      </LatentSelected>
-    )
-  ) : (
-    <LatentEmpty
-      onClick={
-        !hide
-          ? () => {
-              setCardSlotSelected(cardId);
-              setLatentModalIsOpen(true);
-            }
-          : () => {}
+  const [, drag] = useDrag(() => ({
+    type: DraggableTypes.latent,
+    item: { cardId: componentId },
+    end(item, monitor) {
+      const dropResult = monitor.getDropResult() as DropResult;
+      if (dropResult.dropEffect === "copy") {
+        copyLatents(teamState, setTeamState, componentId, dropResult.target);
+      } else {
+        swapLatents(teamState, setTeamState, componentId, dropResult.target);
       }
-      hide={!!hide}
-    />
+    }
+  }));
+
+  const [{ isOver }, drop] = useDrop(
+    () => ({
+      accept: DraggableTypes.latent,
+      drop: (item, monitor) => {
+        return {
+          target: componentId
+        };
+      },
+      collect: (monitor) => ({
+        isOver: !!monitor.isOver(),
+        x: monitor.getItem()
+      })
+    }),
+    [componentId]
+  );
+
+  return (
+    <div ref={drag}>
+      <div
+        ref={drop}
+        className={css`
+          box-siding: border-box;
+          border: 2px solid ${isOver ? "yellow" : "transparent"};
+        `}
+      >
+        {latents.length !== 0 ? (
+          hide ? (
+            <></>
+          ) : (
+            <LatentSelected
+              onClick={
+                !hide
+                  ? () => {
+                      setCardSlotSelected({ ...componentId, use: "latent" });
+                      setLatentModalIsOpen(true);
+                    }
+                  : () => {}
+              }
+            >
+              {hasSixSlot ? (
+                <>
+                  <SixSlotLatent latentName={sixSlotLatentName} halfBreakDamage={false} opacity={opacity} />
+                  <RemainderLatents>
+                    {remainderLatents.map((a, i) => {
+                      return (
+                        <PadAssetImage assetName={LATENTS_ID_TO_NAME[a]} height={16} key={LATENTS_ID_TO_NAME[a] + i} />
+                      );
+                    })}
+                  </RemainderLatents>
+                </>
+              ) : (
+                <FlexRow gap="3px" wrap="wrap">
+                  {remainderLatents
+                    .sort((a, b) => {
+                      return b - a;
+                    })
+                    .map((a, i) => {
+                      return (
+                        <PadAssetImage assetName={LATENTS_ID_TO_NAME[a]} height={16} key={LATENTS_ID_TO_NAME[a] + i} />
+                      );
+                    })}
+                </FlexRow>
+              )}
+            </LatentSelected>
+          )
+        ) : (
+          <LatentEmpty
+            onClick={
+              !hide
+                ? () => {
+                    setCardSlotSelected({ ...componentId, use: "latent" });
+                    setLatentModalIsOpen(true);
+                  }
+                : () => {}
+            }
+            hide={!!hide}
+          />
+        )}
+      </div>
+    </div>
   );
 };

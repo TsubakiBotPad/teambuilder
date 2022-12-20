@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 import { debounce } from "lodash";
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { useNavigate, useParams } from "react-router-dom";
@@ -46,23 +46,28 @@ export const PadTeamBuilderPage = () => {
   const [teamName, setTeamName] = useState(parsedConfig.n);
   const [gameConfig, setGameConfig] = useState(parsedConfig.gc);
 
-  const updateUrl = debounce((config: Partial<ConfigData>) => {
-    const finalConfig = {
-      n: teamName,
-      ts: teamState,
-      gc: gameConfig,
-      ...config
-    };
-    console.log(serializeConfig(finalConfig));
-    navigate("/" + serializeConfig(finalConfig));
-  }, 250);
-
   const [teamStats, setTeamStats] = useState<TeamStats>({});
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [latentModalIsOpen, setLatentModalIsOpen] = useState(false);
   const [badgeModalIsOpen, setBadgeModalIsOpen] = useState(false);
   const [playerSelected, setPlayerSelected] = useState("");
-  const [cardSlotSelected, setCardSlotSelected] = useState("");
+  const [cardSlotSelected, setCardSlotSelected] = useState({});
+
+  var updateUrl = useRef(
+    debounce((config: Partial<ConfigData>) => {
+      const finalConfig = {
+        n: teamName,
+        ts: teamState,
+        gc: gameConfig,
+        ...config
+      };
+      navigate("/" + serializeConfig(finalConfig));
+    }, 250)
+  );
+
+  useEffect(() => {
+    updateUrl.current({ n: teamName, ts: teamState, gc: gameConfig });
+  }, [teamName, teamState, gameConfig]);
 
   useMemo(() => {
     const f = async () => {
@@ -74,10 +79,6 @@ export const PadTeamBuilderPage = () => {
     };
     f();
   }, [teamState, gameConfig]);
-
-  useMemo(() => {
-    updateUrl({ n: teamName, ts: teamState, gc: gameConfig });
-  }, [teamName, teamState, gameConfig, updateUrl]);
 
   return (
     <DndProvider backend={HTML5Backend}>
@@ -98,7 +99,7 @@ export const PadTeamBuilderPage = () => {
           setCardSlotSelected,
           playerSelected,
           setPlayerSelected,
-          updateUrl
+          updateUrl: updateUrl.current
         }}
       >
         <TeamStateContext.Provider value={{ teamState, setTeamState }}>
@@ -123,19 +124,19 @@ export const PadTeamBuilderPage = () => {
                   />
                   <FlexCol gap="1.5rem">
                     <FlexRow gap="3rem">
-                      <Team teamId={"P1"} state={teamState.p1} />
-                      <TeamStatDisplay teamStat={teamStats.p1} />
+                      <Team teamId={"p1"} state={teamState.p1} />
+                      <TeamStatDisplay teamStat={teamStats.p1} keyP="p1" />
                     </FlexRow>
                     {gameConfig.mode === "2p" || gameConfig.mode === "3p" ? (
                       <FlexRow gap="3rem">
-                        <Team teamId={"P2"} state={teamState.p2} />
-                        <TeamStatDisplay teamStat={teamStats.p2} />
+                        <Team teamId={"p2"} state={teamState.p2} />
+                        <TeamStatDisplay teamStat={teamStats.p2} keyP="p2" />
                       </FlexRow>
                     ) : null}
                     {gameConfig.mode === "3p" ? (
                       <FlexRow gap="3rem">
-                        <Team teamId={"P3"} state={teamState.p3} />
-                        <TeamStatDisplay teamStat={teamStats.p3} />
+                        <Team teamId={"p3"} state={teamState.p3} />
+                        <TeamStatDisplay teamStat={teamStats.p3} keyP="p3" />
                       </FlexRow>
                     ) : null}
                   </FlexCol>

@@ -160,13 +160,21 @@ export const AwakeningsToDisplay = [
   }
 ];
 
-export const AwakeningRowDisplay = ({ ah, asa }: { ah: AwakeningHistogram; asa: AwokenSkillAggregation[] }) => {
+export const AwakeningRowDisplay = ({
+  ah,
+  asa,
+  keyPrefix
+}: {
+  ah: AwakeningHistogram;
+  asa: AwokenSkillAggregation[];
+  keyPrefix: string;
+}) => {
   return (
     <>
-      {asa.map((b) => {
+      {asa.map((b, i) => {
         var numToDisplay = b.aggFunc ? b.aggFunc(ah) : ah[b.awokenSkill];
         return numToDisplay ? (
-          <FlexRowC gap="0.15rem">
+          <FlexRowC gap="0.15rem" key={keyPrefix + numToDisplay + i}>
             <AwakeningImage awakeningId={b.awokenSkill} />
             {b.percent ? ":" : "ⅹ"}
             <span>
@@ -174,15 +182,19 @@ export const AwakeningRowDisplay = ({ ah, asa }: { ah: AwakeningHistogram; asa: 
               {b.percent ? "%" : ""}
             </span>
           </FlexRowC>
-        ) : (
-          <></>
-        );
+        ) : null;
       })}
     </>
   );
 };
 
-export const AwakeningStatsDisplay = ({ awakenings }: { awakenings?: AwakeningHistogram }) => {
+export const AwakeningStatsDisplay = ({
+  awakenings,
+  keyPrefix
+}: {
+  awakenings?: AwakeningHistogram;
+  keyPrefix: string;
+}) => {
   if (!awakenings) {
     return <></>;
   }
@@ -196,16 +208,16 @@ export const AwakeningStatsDisplay = ({ awakenings }: { awakenings?: AwakeningHi
     >
       <FlexCol gap="0.75rem">
         <H3>Awakenings</H3>
-        {AwakeningsToDisplay.map((a) => {
+        {AwakeningsToDisplay.map((a, j) => {
           const data = a.data;
           return (
-            <FlexCol>
+            <FlexCol key={`${keyPrefix}awakenings${j}`}>
               <b>{a.header}</b>
               <FlexCol gap="0.35rem">
-                {data.map((b) => {
+                {data.map((b, i) => {
                   return (
-                    <FlexRowC gap="1rem">
-                      <AwakeningRowDisplay ah={ah} asa={b} />
+                    <FlexRowC gap="1rem" key={`${keyPrefix}awakenings${j}-${i}`}>
+                      <AwakeningRowDisplay ah={ah} asa={b} keyPrefix={keyPrefix} />
                     </FlexRowC>
                   );
                 })}

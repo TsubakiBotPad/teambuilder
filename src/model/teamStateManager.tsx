@@ -2,6 +2,7 @@ import { debounce, DebouncedFunc } from "lodash";
 import React from "react";
 
 import { GameConfig } from "../components/gameConfigSelector";
+import { TeamComponentId } from "../components/id";
 import { TeamStats } from "../components/teamStats/teamStats";
 import { ConfigData } from "./serializedUri";
 
@@ -85,8 +86,8 @@ interface AppState {
   setLatentModalIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
   badgeModalIsOpen: boolean;
   setBadgeModalIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  cardSlotSelected: string;
-  setCardSlotSelected: React.Dispatch<React.SetStateAction<string>>;
+  cardSlotSelected: Partial<TeamComponentId>;
+  setCardSlotSelected: React.Dispatch<React.SetStateAction<Partial<TeamComponentId>>>;
   playerSelected: string;
   setPlayerSelected: React.Dispatch<React.SetStateAction<string>>;
   updateUrl: DebouncedFunc<(config: Partial<ConfigData>) => void>;
@@ -104,7 +105,7 @@ const DEFAULT_APP_STATE: AppState = {
   setLatentModalIsOpen: () => {},
   badgeModalIsOpen: false,
   setBadgeModalIsOpen: () => {},
-  cardSlotSelected: "",
+  cardSlotSelected: {},
   setCardSlotSelected: () => {},
   playerSelected: "",
   setPlayerSelected: () => {},
@@ -114,16 +115,15 @@ const DEFAULT_APP_STATE: AppState = {
 export const AppStateContext = React.createContext(DEFAULT_APP_STATE);
 
 export async function setCard(
-  cardSlot: string,
+  cardSlot: Partial<TeamComponentId>,
   value: number,
   teamState: TeamState,
   setTeamState: React.Dispatch<React.SetStateAction<TeamState>>,
   gameConfig: GameConfig
 ) {
-  const parts = cardSlot.split("-");
-  const p = parts[0].toLowerCase() as keyof TeamState;
-  const s = `team${parts[1]}` as keyof PlayerState;
-  const c = (parts[2] === "Base" ? "baseId" : "assistId") as keyof TeamSlotState;
+  const p = cardSlot.teamId!;
+  const s = cardSlot.slotId!;
+  const c = `${cardSlot.use!}Id` as keyof TeamSlotState;
 
   var newTeamState = {
     ...teamState
@@ -139,14 +139,13 @@ export async function setCard(
 }
 
 export async function setCardLatents(
-  cardSlot: string,
+  cardSlot: Partial<TeamComponentId>,
   value: number[],
   teamState: TeamState,
   setTeamState: React.Dispatch<React.SetStateAction<TeamState>>
 ) {
-  const parts = cardSlot.split("-");
-  const p = parts[0].toLowerCase() as keyof TeamState;
-  const s = `team${parts[1]}` as keyof PlayerState;
+  const p = cardSlot.teamId!;
+  const s = cardSlot.slotId!;
   const c = "latents";
 
   var newTeamState = {
@@ -195,4 +194,93 @@ export function getTeamSlots(gameConfig: GameConfig, teamState: TeamState, playe
   }
 
   return slots;
+}
+
+export function copyLatents(
+  teamState: TeamState,
+  setTeamState: React.Dispatch<React.SetStateAction<TeamState>>,
+  s: Partial<TeamComponentId>,
+  t: Partial<TeamComponentId>
+) {
+  var newTeamState = {
+    ...teamState
+  };
+
+  const oT = teamState[s.teamId!];
+  const oS = oT[s.slotId!] as TeamSlotState;
+  const oSl = oS.latents;
+
+  (newTeamState[t.teamId!][t.slotId!] as TeamSlotState).latents = [...oSl];
+  setTeamState(newTeamState);
+}
+
+export function swapLatents(
+  teamState: TeamState,
+  setTeamState: React.Dispatch<React.SetStateAction<TeamState>>,
+  s: Partial<TeamComponentId>,
+  t: Partial<TeamComponentId>
+) {
+  var newTeamState = {
+    ...teamState
+  };
+
+  const oT = teamState[t.teamId!];
+  const oS = oT[t.slotId!] as TeamSlotState;
+  const oSl = oS.latents;
+
+  (newTeamState[t.teamId!][t.slotId!] as TeamSlotState).latents = [
+    ...(teamState[s.teamId!][s.slotId!] as TeamSlotState).latents
+  ];
+  (newTeamState[s.teamId!][s.slotId!] as TeamSlotState).latents = [...oSl];
+  setTeamState(newTeamState);
+}
+
+const USE_TO_USENAME = {
+  base: "baseId",
+  assist: "assistId",
+  latent: "latents"
+};
+
+export function swapCards(
+  teamState: TeamState,
+  setTeamState: React.Dispatch<React.SetStateAction<TeamState>>,
+  s: Partial<TeamComponentId>,
+  t: Partial<TeamComponentId>
+) {
+  const useNameS = USE_TO_USENAME[s.use!] as keyof TeamSlotState;
+  const useNameT = USE_TO_USENAME[t.use!] as keyof TeamSlotState;
+
+  var newTeamState = {
+    ...teamState
+  };
+
+  const oT = teamState[t.teamId!];
+  const oS = oT[t.slotId!] as TeamSlotState;
+  const oSu = oS[useNameT] as number;
+
+  (newTeamState[t.teamId!][t.slotId!] as TeamSlotState)[useNameT] = (teamState[s.teamId!][s.slotId!] as TeamSlotState)[
+    useNameS
+  ] as any;
+  (newTeamState[s.teamId!][s.slotId!] as TeamSlotState)[useNameS] = oSu as any;
+  setTeamState(newTeamState);
+}
+
+export function copyCard(
+  teamState: TeamState,
+  setTeamState: React.Dispatch<React.SetStateAction<TeamState>>,
+  s: Partial<TeamComponentId>,
+  t: Partial<TeamComponentId>
+) {
+  const useNameS = USE_TO_USENAME[s.use!] as keyof TeamSlotState;
+  const useNameT = USE_TO_USENAME[t.use!] as keyof TeamSlotState;
+
+  var newTeamState = {
+    ...teamState
+  };
+
+  (newTeamState[t.teamId!][t.slotId!] as TeamSlotState)[useNameT] = (teamState[s.teamId!][s.slotId!] as TeamSlotState)[
+    useNameS
+  ] as any;
+
+  setTeamState(newTeamState);
 }
