@@ -114,6 +114,18 @@ const DEFAULT_APP_STATE: AppState = {
 
 export const AppStateContext = React.createContext(DEFAULT_APP_STATE);
 
+function setTeamStateBetter(
+  teamState: TeamState,
+  setTeamState: React.Dispatch<React.SetStateAction<TeamState>>,
+  gameConfig: GameConfig
+) {
+  if (gameConfig.mode === "2p") {
+    teamState.p1.teamSlot6 = teamState.p2.teamSlot1;
+    teamState.p2.teamSlot6 = teamState.p1.teamSlot1;
+  }
+  setTeamState(teamState);
+}
+
 export async function setCard(
   cardSlot: Partial<TeamComponentId>,
   value: number,
@@ -129,13 +141,9 @@ export async function setCard(
     ...teamState
   };
 
-  if (gameConfig.mode === "2p") {
-    newTeamState.p1.teamSlot6 = newTeamState.p2.teamSlot1;
-    newTeamState.p2.teamSlot6 = newTeamState.p1.teamSlot1;
-  }
-
   (newTeamState[p][s] as TeamSlotState)[c] = value as any;
-  setTeamState(newTeamState);
+
+  setTeamStateBetter(newTeamState, setTeamState, gameConfig);
 }
 
 export async function setCardLatents(
@@ -242,6 +250,7 @@ const USE_TO_USENAME = {
 };
 
 export function swapCards(
+  gameConfig: GameConfig,
   teamState: TeamState,
   setTeamState: React.Dispatch<React.SetStateAction<TeamState>>,
   s: Partial<TeamComponentId>,
@@ -262,10 +271,11 @@ export function swapCards(
     useNameS
   ] as any;
   (newTeamState[s.teamId!][s.slotId!] as TeamSlotState)[useNameS] = oSu as any;
-  setTeamState(newTeamState);
+  setTeamStateBetter(newTeamState, setTeamState, gameConfig);
 }
 
 export function copyCard(
+  gameConfig: GameConfig,
   teamState: TeamState,
   setTeamState: React.Dispatch<React.SetStateAction<TeamState>>,
   s: Partial<TeamComponentId>,
@@ -283,4 +293,5 @@ export function copyCard(
   ] as any;
 
   setTeamState(newTeamState);
+  setTeamStateBetter(newTeamState, setTeamState, gameConfig);
 }

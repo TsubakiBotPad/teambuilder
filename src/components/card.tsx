@@ -34,24 +34,24 @@ const CardSelected = styled.div<CardSelectedType>`
 `;
 
 export const Card = ({ componentId, monsterId }: { componentId: Partial<TeamComponentId>; monsterId: number }) => {
-  const { setModalIsOpen, setCardSlotSelected } = useContext(AppStateContext);
+  const { setModalIsOpen, setCardSlotSelected, gameConfig } = useContext(AppStateContext);
   const { teamState, setTeamState } = useContext(TeamStateContext);
 
   const [, drag] = useDrag(() => ({
     type: DraggableTypes.card,
-    item: { cardId: componentId }
-    // end(item, monitor) {
-    //   debugger;
-    //   const dropResult = monitor.getDropResult() as DropResult;
-    //   if (!dropResult) {
-    //     return;
-    //   }
-    //   if (dropResult.dropEffect === "copy") {
-    //     copyCard(teamState, setTeamState, componentId, dropResult.target);
-    //   } else {
-    //     swapCards(teamState, setTeamState, componentId, dropResult.target);
-    //   }
-    // }
+    item: { cardId: componentId },
+    end(item, monitor) {
+      const dropResult = monitor.getDropResult() as DropResult;
+      if (!dropResult) {
+        return;
+      }
+
+      if (dropResult.dropEffect === "copy") {
+        copyCard(gameConfig, teamState, setTeamState, componentId, dropResult.target);
+      } else {
+        swapCards(gameConfig, teamState, setTeamState, componentId, dropResult.target);
+      }
+    }
   }));
 
   const [, drop] = useDrop(
