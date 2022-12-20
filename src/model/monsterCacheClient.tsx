@@ -12,6 +12,7 @@ export class MonsterCacheClient {
     if (monsterId === 0) {
       return undefined;
     }
+    debugger;
 
     if (monsterId in this.cache) {
       return this.cache[monsterId];
@@ -35,7 +36,7 @@ export class MonsterCacheClient {
 
     const j = await MonsterService.getManyById(needsQuery.map((a) => a.monsterId).join(","));
     j.monsters.forEach((m) => {
-      this.cache[m.monster_id] = new Promise<MonsterResponse>((a, b) => m);
+      this.cache[m.monster_id] = new Promise<MonsterResponse>((resolve, reject) => resolve(m));
     });
 
     return j;
@@ -44,7 +45,7 @@ export class MonsterCacheClient {
   public async teamBuilderQuery(query: string) {
     const j = await MonsterService.teamBuilderQuery(query);
     [j.monster, ...j.evolutions].forEach((m) => {
-      this.cache[m.monster_id] = new Promise<MonsterResponse>((a, b) => m);
+      this.cache[m.monster_id] = new Promise<MonsterResponse>((resolve, reject) => resolve(m));
     });
 
     return j;

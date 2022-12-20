@@ -39,15 +39,19 @@ export const Card = ({ componentId, monsterId }: { componentId: Partial<TeamComp
 
   const [, drag] = useDrag(() => ({
     type: DraggableTypes.card,
-    item: { cardId: componentId },
-    end(item, monitor) {
-      const dropResult = monitor.getDropResult() as DropResult;
-      if (dropResult.dropEffect === "copy") {
-        copyCard(teamState, setTeamState, componentId, dropResult.target);
-      } else {
-        swapCards(teamState, setTeamState, componentId, dropResult.target);
-      }
-    }
+    item: { cardId: componentId }
+    // end(item, monitor) {
+    //   debugger;
+    //   const dropResult = monitor.getDropResult() as DropResult;
+    //   if (!dropResult) {
+    //     return;
+    //   }
+    //   if (dropResult.dropEffect === "copy") {
+    //     copyCard(teamState, setTeamState, componentId, dropResult.target);
+    //   } else {
+    //     swapCards(teamState, setTeamState, componentId, dropResult.target);
+    //   }
+    // }
   }));
 
   const [, drop] = useDrop(
