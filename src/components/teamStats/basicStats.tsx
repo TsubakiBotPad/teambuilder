@@ -8,7 +8,7 @@ import { getTeamSlots, TeamSlotState, TeamState } from "../../model/teamStateMan
 import { computeLeaderSkill } from "../../model/types/leaderSkill";
 import { Attribute, AwokenSkills, MonsterType } from "../../model/types/monster";
 import { maxLevel, stat } from "../../model/types/stat";
-import { FlexCol, FlexRow } from "../../stylePrimitives";
+import { FlexCol, FlexRow, H3 } from "../../stylePrimitives";
 import { GameConfig } from "../gameConfigSelector";
 import { fixedDecimals } from "../generic/fixedDecimals";
 import { AttributeHistogram } from "./attributes";
@@ -194,6 +194,7 @@ export const TeamBasicStatsDisplay = ({
 
   return (
     <FlexCol gap={"1rem"}>
+      <H3>Stats</H3>
       <table>
         <thead>
           <tr>

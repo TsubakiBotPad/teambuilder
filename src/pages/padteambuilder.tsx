@@ -26,7 +26,8 @@ const TeamInput = styled.input`
 
 export const DraggableTypes = {
   card: "card",
-  latent: "latent"
+  latent: "latent",
+  slot: "slot"
 };
 
 export const PadTeamBuilderPage = () => {

@@ -54,7 +54,7 @@ export const Card = ({ componentId, monsterId }: { componentId: Partial<TeamComp
     }
   }));
 
-  const [, drop] = useDrop(
+  const [{ isOver }, drop] = useDrop(
     () => ({
       accept: DraggableTypes.card,
       drop: (item, monitor) => {
@@ -74,6 +74,8 @@ export const Card = ({ componentId, monsterId }: { componentId: Partial<TeamComp
     <div
       ref={drag}
       className={css`
+        box-siding: border-box;
+        border: 2px solid ${isOver ? "yellow" : "transparent"};
         cursor: grab;
       `}
     >

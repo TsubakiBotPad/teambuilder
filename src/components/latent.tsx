@@ -16,15 +16,11 @@ interface DropResult {
   target: TeamComponentId;
 }
 
-type LatentEmptyProps = {
-  hide: boolean;
-};
-
-const LatentEmpty = styled.div<LatentEmptyProps>`
-  background-color: ${(props) => (props.hide ? "transparent" : "#lightyellow")};
+const LatentEmpty = styled.div`
+  background-color: "lightyellow";
   width: 5rem;
   height: 2.14rem;
-  border: 2px dotted ${(props) => (props.hide ? "transparent" : "#aaa")};
+  border: 2px dotted #aaa;
   box-sizing: border-box;
 `;
 
@@ -98,13 +94,11 @@ const SixSlotLatent = ({
 export const Latents = ({
   componentId,
   latents,
-  teamSlot,
-  hide
+  teamSlot
 }: {
   componentId: Partial<TeamComponentId>;
   latents: number[];
   teamSlot: TeamSlotState;
-  hide?: boolean;
 }) => {
   const { setCardSlotSelected, setLatentModalIsOpen } = useContext(AppStateContext);
   const { teamState, setTeamState } = useContext(TeamStateContext);
@@ -175,65 +169,53 @@ export const Latents = ({
   );
 
   return (
-    <div ref={drag}>
-      <div
-        ref={drop}
-        className={css`
-          box-siding: border-box;
-          border: 2px solid ${isOver ? "yellow" : "transparent"};
-        `}
-      >
+    <div
+      ref={drag}
+      className={css`
+        box-siding: border-box;
+        border: 2px solid ${isOver ? "yellow" : "transparent"};
+        cursor: grab;
+      `}
+    >
+      <div ref={drop}>
         {latents.length !== 0 ? (
-          hide ? (
-            <></>
-          ) : (
-            <LatentSelected
-              onClick={
-                !hide
-                  ? () => {
-                      setCardSlotSelected({ ...componentId, use: "latent" });
-                      setLatentModalIsOpen(true);
-                    }
-                  : () => {}
-              }
-            >
-              {hasSixSlot ? (
-                <>
-                  <SixSlotLatent latentName={sixSlotLatentName} halfBreakDamage={false} opacity={opacity} />
-                  <RemainderLatents>
-                    {remainderLatents.map((a, i) => {
-                      return (
-                        <PadAssetImage assetName={LATENTS_ID_TO_NAME[a]} height={16} key={LATENTS_ID_TO_NAME[a] + i} />
-                      );
-                    })}
-                  </RemainderLatents>
-                </>
-              ) : (
-                <FlexRow gap="3px" wrap="wrap">
-                  {remainderLatents
-                    .sort((a, b) => {
-                      return b - a;
-                    })
-                    .map((a, i) => {
-                      return (
-                        <PadAssetImage assetName={LATENTS_ID_TO_NAME[a]} height={16} key={LATENTS_ID_TO_NAME[a] + i} />
-                      );
-                    })}
-                </FlexRow>
-              )}
-            </LatentSelected>
-          )
+          <LatentSelected
+            onClick={() => {
+              setCardSlotSelected({ ...componentId, use: "latent" });
+              setLatentModalIsOpen(true);
+            }}
+          >
+            {hasSixSlot ? (
+              <>
+                <SixSlotLatent latentName={sixSlotLatentName} halfBreakDamage={false} opacity={opacity} />
+                <RemainderLatents>
+                  {remainderLatents.map((a, i) => {
+                    return (
+                      <PadAssetImage assetName={LATENTS_ID_TO_NAME[a]} height={16} key={LATENTS_ID_TO_NAME[a] + i} />
+                    );
+                  })}
+                </RemainderLatents>
+              </>
+            ) : (
+              <FlexRow gap="3px" wrap="wrap">
+                {remainderLatents
+                  .sort((a, b) => {
+                    return b - a;
+                  })
+                  .map((a, i) => {
+                    return (
+                      <PadAssetImage assetName={LATENTS_ID_TO_NAME[a]} height={16} key={LATENTS_ID_TO_NAME[a] + i} />
+                    );
+                  })}
+              </FlexRow>
+            )}
+          </LatentSelected>
         ) : (
           <LatentEmpty
-            onClick={
-              !hide
-                ? () => {
-                    setCardSlotSelected({ ...componentId, use: "latent" });
-                    setLatentModalIsOpen(true);
-                  }
-                : () => {}
-            }
-            hide={!!hide}
+            onClick={() => {
+              setCardSlotSelected({ ...componentId, use: "latent" });
+              setLatentModalIsOpen(true);
+            }}
           />
         )}
       </div>

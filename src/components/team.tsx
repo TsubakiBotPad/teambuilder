@@ -1,22 +1,41 @@
 import { css } from "@emotion/css";
 import styled from "@emotion/styled";
 import { useContext } from "react";
+import { useDrag, useDrop } from "react-dnd";
 import { AiOutlineCaretDown } from "react-icons/ai";
+import { RxDotsHorizontal } from "react-icons/rx";
 
-import { AppStateContext, PlayerState, TeamSlotState, TeamState } from "../model/teamStateManager";
+import {
+  AppStateContext,
+  copySlot,
+  PlayerState,
+  swapSlot,
+  TeamSlotState,
+  TeamState,
+  TeamStateContext
+} from "../model/teamStateManager";
+import { DraggableTypes } from "../pages/padteambuilder";
 import { FlexCol, FlexColC, FlexRow, FlexRowC, H2 } from "../stylePrimitives";
 import { BadgeDisplay } from "./badge";
 import { Card } from "./card";
+import { TeamComponentId } from "./id";
 import { Latents } from "./latent";
+
+interface DropResult {
+  dropEffect: string;
+  target: TeamComponentId;
+}
 
 type ColorProps = {
   color: string;
+  darken?: boolean;
 };
 
 const ColorBG = styled.div<ColorProps>`
   background-color: ${(props) => props.color};
   padding: 0.5rem;
   line-height: 0;
+  ${(props) => (props.darken ? "filter: saturate(200%) brightness(1.2)" : "")};
 `;
 
 const teamIdToColor: { [key in string]: string } = {
@@ -24,6 +43,17 @@ const teamIdToColor: { [key in string]: string } = {
   p2: "lightblue",
   p3: "lightgreen"
 };
+
+const GrabDots = styled.div<ColorProps>`
+  height: 1rem;
+  color: #555;
+  cursor: grab;
+  background-color: ${(props) => props.color};
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  ${(props) => (props.darken ? "filter: saturate(200%) brightness(1.2)" : "")};
+`;
 
 const TeamSlot = ({
   teamId,
@@ -39,21 +69,67 @@ const TeamSlot = ({
   const otherTeamColor = teamId === "p1" ? teamIdToColor["p2"] : teamIdToColor["p1"];
   const componentId = { teamId: teamId, slotId: `teamSlot${slotId}` as keyof PlayerState };
 
+  const { gameConfig } = useContext(AppStateContext);
+  const { teamState, setTeamState } = useContext(TeamStateContext);
+
+  const [, drag] = useDrag(() => ({
+    type: DraggableTypes.slot,
+    item: { cardId: componentId },
+    end(item, monitor) {
+      const dropResult = monitor.getDropResult() as DropResult;
+      if (dropResult.dropEffect === "copy") {
+        copySlot(gameConfig, teamState, setTeamState, componentId, dropResult.target);
+      } else {
+        swapSlot(gameConfig, teamState, setTeamState, componentId, dropResult.target);
+      }
+    }
+  }));
+
+  const [{ isOver }, drop] = useDrop(
+    () => ({
+      accept: DraggableTypes.slot,
+      drop: (item, monitor) => {
+        return {
+          target: componentId
+        };
+      },
+      collect: (monitor) => ({
+        isOver: !!monitor.isOver(),
+        x: monitor.getItem()
+      })
+    }),
+    [componentId]
+  );
+
   return (
-    <FlexColC>
-      <ColorBG color={"#f0f0f0"}>
-        <Card componentId={{ ...componentId, use: "assist" }} monsterId={state.assistId} />
-      </ColorBG>
-      <FlexRowC>
-        <AiOutlineCaretDown />
-      </FlexRowC>
-      <ColorBG color={invert ? otherTeamColor : teamIdToColor[teamId]}>
-        <FlexColC gap="0.25rem">
-          <Card componentId={{ ...componentId, use: "base" }} monsterId={state.baseId} />
-          <Latents componentId={{ ...componentId, use: "latent" }} latents={state.latents} teamSlot={state} />
+    <div
+      ref={drag}
+      className={css`
+        box-siding: border-box;
+        cursor: grab;
+      `}
+    >
+      <div ref={drop}>
+        <FlexColC>
+          <ColorBG color={"#f0f0f0"} darken={isOver}>
+            <Card componentId={{ ...componentId, use: "assist" }} monsterId={state.assistId} />
+          </ColorBG>
+          <FlexRowC>
+            <AiOutlineCaretDown />
+          </FlexRowC>
+          <ColorBG color={invert ? otherTeamColor : teamIdToColor[teamId]} darken={isOver}>
+            <FlexColC gap="0.25rem">
+              <Card componentId={{ ...componentId, use: "base" }} monsterId={state.baseId} />
+              <Latents componentId={{ ...componentId, use: "latent" }} latents={state.latents} teamSlot={state} />
+            </FlexColC>
+          </ColorBG>
+          <GrabDots color={invert ? otherTeamColor : teamIdToColor[teamId]} darken={isOver}>
+            <RxDotsHorizontal />
+            <RxDotsHorizontal />
+          </GrabDots>
         </FlexColC>
-      </ColorBG>
-    </FlexColC>
+      </div>
+    </div>
   );
 };
 

@@ -119,9 +119,10 @@ function setTeamStateBetter(
   setTeamState: React.Dispatch<React.SetStateAction<TeamState>>,
   gameConfig: GameConfig
 ) {
+  debugger;
   if (gameConfig.mode === "2p") {
-    teamState.p1.teamSlot6 = teamState.p2.teamSlot1;
-    teamState.p2.teamSlot6 = teamState.p1.teamSlot1;
+    teamState.p1.teamSlot6 = { ...teamState.p2.teamSlot1, latents: [...teamState.p2.teamSlot1.latents] };
+    teamState.p2.teamSlot6 = { ...teamState.p1.teamSlot1, latents: [...teamState.p1.teamSlot1.latents] };
   }
   setTeamState(teamState);
 }
@@ -274,6 +275,27 @@ export function swapCards(
   setTeamStateBetter(newTeamState, setTeamState, gameConfig);
 }
 
+export function swapSlot(
+  gameConfig: GameConfig,
+  teamState: TeamState,
+  setTeamState: React.Dispatch<React.SetStateAction<TeamState>>,
+  s: Partial<TeamComponentId>,
+  t: Partial<TeamComponentId>
+) {
+  var newTeamState = {
+    ...teamState
+  };
+
+  const oT = teamState[t.teamId!];
+  const oS = oT[t.slotId!] as TeamSlotState;
+  const oSl = [...oS.latents];
+
+  const slot = teamState[s.teamId!][s.slotId!] as TeamSlotState;
+  (newTeamState[t.teamId!][t.slotId!] as TeamSlotState) = { ...slot, latents: [...slot.latents] };
+  (newTeamState[s.teamId!][s.slotId!] as TeamSlotState) = { ...oS, latents: oSl };
+  setTeamStateBetter(newTeamState, setTeamState, gameConfig);
+}
+
 export function copyCard(
   gameConfig: GameConfig,
   teamState: TeamState,
@@ -291,6 +313,24 @@ export function copyCard(
   (newTeamState[t.teamId!][t.slotId!] as TeamSlotState)[useNameT] = (teamState[s.teamId!][s.slotId!] as TeamSlotState)[
     useNameS
   ] as any;
+
+  setTeamState(newTeamState);
+  setTeamStateBetter(newTeamState, setTeamState, gameConfig);
+}
+
+export function copySlot(
+  gameConfig: GameConfig,
+  teamState: TeamState,
+  setTeamState: React.Dispatch<React.SetStateAction<TeamState>>,
+  s: Partial<TeamComponentId>,
+  t: Partial<TeamComponentId>
+) {
+  var newTeamState = {
+    ...teamState
+  };
+
+  const slot = teamState[s.teamId!][s.slotId!] as TeamSlotState;
+  (newTeamState[t.teamId!][t.slotId!] as TeamSlotState) = { ...slot, latents: [...slot.latents] };
 
   setTeamState(newTeamState);
   setTeamStateBetter(newTeamState, setTeamState, gameConfig);

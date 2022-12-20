@@ -12,7 +12,6 @@ export class MonsterCacheClient {
     if (monsterId === 0) {
       return undefined;
     }
-    debugger;
 
     if (monsterId in this.cache) {
       return this.cache[monsterId];
