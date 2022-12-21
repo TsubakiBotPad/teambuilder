@@ -144,6 +144,10 @@ export const Latents = ({
     item: { cardId: componentId },
     end(item, monitor) {
       const dropResult = monitor.getDropResult() as DropResult;
+      if (!dropResult) {
+        return;
+      }
+
       if (dropResult.dropEffect === "copy") {
         copyLatents(teamState, setTeamState, componentId, dropResult.target);
       } else {

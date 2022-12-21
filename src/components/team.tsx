@@ -72,18 +72,21 @@ const TeamSlot = ({
   const { gameConfig } = useContext(AppStateContext);
   const { teamState, setTeamState } = useContext(TeamStateContext);
 
-  const [, drag] = useDrag(() => ({
-    type: DraggableTypes.slot,
-    item: { cardId: componentId },
-    end(item, monitor) {
-      const dropResult = monitor.getDropResult() as DropResult;
-      if (dropResult.dropEffect === "copy") {
-        copySlot(gameConfig, teamState, setTeamState, componentId, dropResult.target);
-      } else {
-        swapSlot(gameConfig, teamState, setTeamState, componentId, dropResult.target);
+  const [, drag] = useDrag(
+    () => ({
+      type: DraggableTypes.slot,
+      item: { cardId: componentId },
+      end(item, monitor) {
+        const dropResult = monitor.getDropResult() as DropResult;
+        if (dropResult.dropEffect === "copy") {
+          copySlot(gameConfig, teamState, setTeamState, componentId, dropResult.target);
+        } else {
+          swapSlot(gameConfig, teamState, setTeamState, componentId, dropResult.target);
+        }
       }
-    }
-  }));
+    }),
+    [gameConfig]
+  );
 
   const [{ isOver }, drop] = useDrop(
     () => ({

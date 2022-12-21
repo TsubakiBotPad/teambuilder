@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 import { useContext } from "react";
 
-import { AppStateContext } from "../model/teamStateManager";
+import { AppStateContext, linkLeaders, TeamStateContext, unlinkLeaders } from "../model/teamStateManager";
 import { FlexRowC } from "../stylePrimitives";
 
 export interface GameConfig {
@@ -23,6 +23,7 @@ const FancyButton = styled.button<FancyButtonProps>`
 
 export const GameConfigSelector = () => {
   const { gameConfig, setGameConfig, updateUrl } = useContext(AppStateContext);
+  const { teamState, setTeamState } = useContext(TeamStateContext);
 
   return (
     <FlexRowC gap="0.25rem">
@@ -35,6 +36,7 @@ export const GameConfigSelector = () => {
           onClick={async () => {
             const newGameConfig = { mode: "1p" };
             setGameConfig(newGameConfig);
+            unlinkLeaders(teamState, setTeamState);
             updateUrl({ gc: newGameConfig });
           }}
         >
@@ -47,6 +49,7 @@ export const GameConfigSelector = () => {
           onClick={async () => {
             const newGameConfig = { mode: "2p" };
             setGameConfig(newGameConfig);
+            linkLeaders(teamState, setTeamState);
             updateUrl({ gc: newGameConfig });
           }}
         >
@@ -59,7 +62,7 @@ export const GameConfigSelector = () => {
           onClick={async () => {
             const newGameConfig = { mode: "3p" };
             setGameConfig(newGameConfig);
-
+            unlinkLeaders(teamState, setTeamState);
             updateUrl({ gc: newGameConfig });
           }}
         >
