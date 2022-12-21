@@ -45,17 +45,16 @@ const RemainderLatents = styled.div`
 const SixSlotLatent = ({
   latentName,
   halfBreakDamage,
-  opacity
+  valid
 }: {
   latentName: string;
   halfBreakDamage: boolean;
-  opacity: number;
+  valid: boolean;
 }) => {
   if (!latentName) {
     return <></>;
   }
 
-  halfBreakDamage = true;
   return (
     <div
       className={css`
@@ -64,7 +63,7 @@ const SixSlotLatent = ({
         background: url(img/6slotL.png);
         background-size: contain;
         background-repeat: no-repeat;
-        filter: grayscale(${opacity});
+        filter: grayscale(${valid ? 0 : 1});
       `}
     >
       <PadAssetImage
@@ -119,9 +118,10 @@ export const Latents = ({
   const sixSlotLatentName = LATENTS_ID_TO_NAME[latentId];
   const requiredAwakening = AWO_RES_LATENT_TO_AWO_MAP[latentId];
 
-  const opacity = a2.includes(requiredAwakening) ? 0 : 1;
+  const valid = a2.includes(requiredAwakening) || sixSlotLatentName === "dbl";
 
   const hasSixSlot = !!sixSlotLatentName;
+  const showHalfBreakDamage = sixSlotLatentName !== "dbl" && true; // teamSlot.baseId.level > 110;
 
   const remainderLatents = latents
     .filter((a) => Math.floor(a / 100) !== 6)
@@ -191,7 +191,7 @@ export const Latents = ({
           >
             {hasSixSlot ? (
               <>
-                <SixSlotLatent latentName={sixSlotLatentName} halfBreakDamage={false} opacity={opacity} />
+                <SixSlotLatent latentName={sixSlotLatentName} halfBreakDamage={showHalfBreakDamage} valid={valid} />
                 <RemainderLatents>
                   {remainderLatents.map((a, i) => {
                     return (

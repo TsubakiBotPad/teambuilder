@@ -49,7 +49,7 @@ export const LatentSelectorModal = ({ isOpen }: { isOpen: boolean }) => {
       setCurrentMonster(m);
     };
     f();
-  }, [teamState]);
+  }, [teamState, cardSlotSelected]);
 
   const maxLatents = currentMonster?.latent_slots ?? DEFAULT_MAX_LATENTS;
 

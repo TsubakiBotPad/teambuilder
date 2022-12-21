@@ -77,6 +77,7 @@ export const AWO_RES_LATENT_TO_AWO_MAP: { [key: number]: number } = {
   606: 27,
   607: 20,
   608: 62,
+  609: 0, // ANY
   610: 59,
   611: 45
   //612: 60 ASSIST CLEAR -> ELATTACK
