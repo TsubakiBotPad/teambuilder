@@ -1,10 +1,12 @@
 import { css } from "@emotion/css";
-import { useContext, useState } from "react";
+import { useContext, useMemo, useState } from "react";
 import Modal from "react-modal";
 
 import { breakpoint } from "../../breakpoints";
+import { MonsterResponse } from "../../client";
+import { monsterCacheClient } from "../../model/monsterCacheClient";
 import { PadAssetImage } from "../../model/padAssets";
-import { AppStateContext, setCardLatents, TeamStateContext } from "../../model/teamStateManager";
+import { AppStateContext, setCardLatents, TeamSlotState, TeamStateContext } from "../../model/teamStateManager";
 import { LATENTS_BY_SIZE, LATENTS_ID_TO_NAME, LATENTS_NAME_TO_ID } from "../../model/types/latents";
 import { BoundingBox, FlexCol, FlexColC, FlexRow, H2, H3 } from "../../stylePrimitives";
 import { ConfirmButton } from "../generic/confirmButton";
@@ -31,13 +33,25 @@ const overlayClassName = css`
   inset: 0;
 `;
 
-const MAX_LATENTS = 8;
+const DEFAULT_MAX_LATENTS = 6;
 
 export const LatentSelectorModal = ({ isOpen }: { isOpen: boolean }) => {
   const [selectedLatents, setSelectedLatents] = useState<number[]>([]);
   const { setLatentModalIsOpen, cardSlotSelected } = useContext(AppStateContext);
   const { teamState, setTeamState } = useContext(TeamStateContext);
   const [hoverClose, setHoverClose] = useState(false);
+  const [currentMonster, setCurrentMonster] = useState<MonsterResponse | undefined>(undefined);
+
+  useMemo(() => {
+    const f = async () => {
+      const monsterId = (teamState[cardSlotSelected.teamId!][cardSlotSelected.slotId!] as TeamSlotState).baseId;
+      const m = await monsterCacheClient.get(monsterId);
+      setCurrentMonster(m);
+    };
+    f();
+  }, [teamState]);
+
+  const maxLatents = currentMonster?.latent_slots ?? DEFAULT_MAX_LATENTS;
 
   const currentSize = selectedLatents.reduce((a, b) => {
     const s = Math.floor(b / 100);
@@ -80,7 +94,7 @@ export const LatentSelectorModal = ({ isOpen }: { isOpen: boolean }) => {
                             <PadAssetImage
                               assetName={n}
                               onClick={() => {
-                                handleAddLatent(n, selectedLatents, setSelectedLatents);
+                                handleAddLatent(n, maxLatents, selectedLatents, setSelectedLatents);
                               }}
                               key={n + j + i}
                             />
@@ -145,9 +159,9 @@ export const LatentSelectorModal = ({ isOpen }: { isOpen: boolean }) => {
                   })}
                 </FlexRow>
               ) : null}
-              {MAX_LATENTS - currentSize !== 0 ? (
+              {maxLatents - currentSize !== 0 ? (
                 <FlexRow gap={"14px"}>
-                  {Array.from(Array(MAX_LATENTS - currentSize).keys()).map((i) => {
+                  {Array.from(Array(maxLatents - currentSize).keys()).map((i) => {
                     return <PadAssetImage assetName="emptyLatent" height={31} key={"remainderLatents" + i} />;
                   })}
                 </FlexRow>
@@ -173,6 +187,7 @@ export const LatentSelectorModal = ({ isOpen }: { isOpen: boolean }) => {
 
 function handleAddLatent(
   name: string,
+  maxLatents: number,
   selectedLatents: number[],
   setSelectedLatents: React.Dispatch<React.SetStateAction<number[]>>
 ) {
@@ -184,7 +199,7 @@ function handleAddLatent(
     return a + s;
   }, 0);
 
-  if (currentSize + size <= MAX_LATENTS) {
+  if (currentSize + size <= maxLatents) {
     setSelectedLatents([...selectedLatents, id]);
   } else {
     // TODO: animate error
