@@ -33,8 +33,8 @@ export async function computeTeamBasicStats(
 
   var includeBadge = gameConfig.mode !== "2p";
 
-  const leader = await monsterCacheClient.get(slots[0].baseId);
-  const helper = await monsterCacheClient.get(slots[5].baseId);
+  const leader = await monsterCacheClient.get(slots[0].base.id);
+  const helper = await monsterCacheClient.get(slots[5].base.id);
   const ls = computeLeaderSkill(leader, helper);
 
   var { hpAcc, rcvAcc, hpNoAwoAcc, rcvNoAwoAcc } = await accumulateBasicStats(slots, gameConfig);
@@ -80,12 +80,12 @@ async function accumulateBasicStats(slots: TeamSlotState[], gameConfig: GameConf
   var rcvNoAwoAcc = 0;
 
   for (var s of slots) {
-    const m1b = await monsterCacheClient.get(s.baseId);
+    const m1b = await monsterCacheClient.get(s.base.id);
     if (!m1b) {
       continue;
     }
 
-    const m1a = await monsterCacheClient.get(s.assistId);
+    const m1a = await monsterCacheClient.get(s.assist.id);
 
     const plus = 297; // TODO: make config
     var is_plus_297 = false;

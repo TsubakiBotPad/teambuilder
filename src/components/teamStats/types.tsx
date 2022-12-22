@@ -9,7 +9,7 @@ export async function computeTypes(gameConfig: GameConfig, teamState: TeamState,
 
   var types: number[] = [];
   for (var s of slots) {
-    const m1b = await monsterCacheClient.get(s.baseId);
+    const m1b = await monsterCacheClient.get(s.base.id);
     if (!m1b) {
       continue;
     }

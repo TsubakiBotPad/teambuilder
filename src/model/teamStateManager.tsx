@@ -6,9 +6,15 @@ import { TeamComponentId } from "../components/id";
 import { TeamStats } from "../components/teamStats/teamStats";
 import { ConfigData } from "./serializedUri";
 
+export interface TeamCardInfo {
+  id: number;
+  level: number;
+  sa?: number;
+}
+
 export interface TeamSlotState {
-  baseId: number;
-  assistId: number;
+  base: TeamCardInfo;
+  assist: TeamCardInfo;
   latents: number[];
 }
 
@@ -30,8 +36,8 @@ export interface TeamState {
 
 export const DEFAULT_TEAM_SLOT_STATE = () => {
   return {
-    baseId: 0,
-    assistId: 0,
+    base: { id: 0, level: 0 },
+    assist: { id: 0, level: 0 },
     latents: []
   };
 };
@@ -123,13 +129,14 @@ export async function setCard(
 ) {
   const p = cardSlot.teamId!;
   const s = cardSlot.slotId!;
-  const c = `${cardSlot.use!}Id` as keyof TeamSlotState;
+  const c = `${cardSlot.use!}` as keyof TeamSlotState;
 
   var newTeamState = {
     ...teamState
   };
 
-  (newTeamState[p][s] as TeamSlotState)[c] = value as any;
+  const card = (newTeamState[p][s] as TeamSlotState)[c] as TeamCardInfo;
+  (newTeamState[p][s] as TeamSlotState)[c] = { ...card, id: value } as any;
 
   setTeamState(newTeamState);
 }
@@ -232,8 +239,8 @@ export function swapLatents(
 }
 
 const USE_TO_USENAME = {
-  base: "baseId",
-  assist: "assistId",
+  base: "base",
+  assist: "assist",
   latent: "latents"
 };
 
@@ -253,12 +260,11 @@ export function swapCards(
 
   const oT = teamState[t.teamId!];
   const oS = oT[t.slotId!] as TeamSlotState;
-  const tempCard = oS[useNameT] as number;
+  const tempCard = oS[useNameT] as TeamCardInfo;
 
-  const sourceCard = (teamState[s.teamId!][s.slotId!] as TeamSlotState)[useNameS] as any;
-
-  (newTeamState[t.teamId!][t.slotId!] as TeamSlotState)[useNameT] = sourceCard;
-  (newTeamState[s.teamId!][s.slotId!] as TeamSlotState)[useNameS] = tempCard as any;
+  const sourceCard = (teamState[s.teamId!][s.slotId!] as TeamSlotState)[useNameS] as TeamCardInfo;
+  (newTeamState[t.teamId!][t.slotId!] as TeamSlotState)[useNameT] = { ...sourceCard } as any;
+  (newTeamState[s.teamId!][s.slotId!] as TeamSlotState)[useNameS] = { ...tempCard } as any;
 
   setTeamState(newTeamState);
 }
@@ -275,12 +281,11 @@ export function swapSlot(
   };
 
   const oT = teamState[t.teamId!];
-  const oS = oT[t.slotId!] as TeamSlotState;
-  const oSl = [...oS.latents];
+  const tempSlot = oT[t.slotId!] as TeamSlotState;
 
   const slot = teamState[s.teamId!][s.slotId!] as TeamSlotState;
-  (newTeamState[t.teamId!][t.slotId!] as TeamSlotState) = { ...slot, latents: [...slot.latents] };
-  (newTeamState[s.teamId!][s.slotId!] as TeamSlotState) = { ...oS, latents: oSl };
+  (newTeamState[t.teamId!][t.slotId!] as TeamSlotState) = slot;
+  (newTeamState[s.teamId!][s.slotId!] as TeamSlotState) = tempSlot;
 
   setTeamState(newTeamState);
 }
@@ -299,9 +304,8 @@ export function copyCard(
     ...teamState
   };
 
-  (newTeamState[t.teamId!][t.slotId!] as TeamSlotState)[useNameT] = (teamState[s.teamId!][s.slotId!] as TeamSlotState)[
-    useNameS
-  ] as any;
+  var targetCard = (newTeamState[t.teamId!][t.slotId!] as TeamSlotState)[useNameT] as TeamCardInfo;
+  (teamState[s.teamId!][s.slotId!] as TeamSlotState)[useNameS] = { ...targetCard } as any;
 
   setTeamState(newTeamState);
 }
@@ -318,7 +322,11 @@ export function copySlot(
   };
 
   const slot = teamState[s.teamId!][s.slotId!] as TeamSlotState;
-  (newTeamState[t.teamId!][t.slotId!] as TeamSlotState) = { ...slot, latents: [...slot.latents] };
+  (newTeamState[t.teamId!][t.slotId!] as TeamSlotState) = {
+    base: { ...slot.base },
+    assist: { ...slot.assist },
+    latents: [...slot.latents]
+  };
 
   setTeamState(newTeamState);
 }

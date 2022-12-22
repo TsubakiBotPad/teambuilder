@@ -12,13 +12,13 @@ export type AwakeningHistogram = { [key: string]: number };
 export async function computeTotalAwakeningsFromSlots(slots: TeamSlotState[]) {
   const totalAwakenings = [];
   for (const slot of slots) {
-    const m1b = await monsterCacheClient.get(slot.baseId);
+    const m1b = await monsterCacheClient.get(slot.base.id);
     const m1b_contrib = m1b?.awakenings.filter((a) => !a.is_super).map((a) => a.awoken_skill_id);
     if (m1b_contrib) {
       totalAwakenings.push(...m1b_contrib);
     }
 
-    const m1a = await monsterCacheClient.get(slot.assistId);
+    const m1a = await monsterCacheClient.get(slot.assist.id);
     const m1a_contrib = m1a?.awakenings.map((a) => a.awoken_skill_id);
     if (m1a_contrib && m1a_contrib.includes(AwokenSkills.EQUIP)) {
       totalAwakenings.push(...m1a_contrib);

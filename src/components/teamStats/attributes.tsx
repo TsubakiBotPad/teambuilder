@@ -24,7 +24,7 @@ export async function computeAttributes(gameConfig: GameConfig, teamState: TeamS
   }, {} as { [key in number]: boolean });
 
   for (var s of slots) {
-    const m1b = await monsterCacheClient.get(s.baseId);
+    const m1b = await monsterCacheClient.get(s.base.id);
 
     if (m1b?.attr1 !== undefined && m1b.attr1 in attrs) {
       attrs[m1b.attr1] = true;
