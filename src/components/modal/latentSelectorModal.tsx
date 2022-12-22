@@ -44,8 +44,12 @@ export const LatentSelectorModal = ({ isOpen }: { isOpen: boolean }) => {
 
   useMemo(() => {
     const f = async () => {
-      const monsterId = (teamState[cardSlotSelected.teamId!][cardSlotSelected.slotId!] as TeamSlotState).base;
-      const m = await monsterCacheClient.get(monsterId.id);
+      if (!cardSlotSelected || !cardSlotSelected.teamId || !cardSlotSelected.slotId) {
+        return;
+      }
+
+      const monster = teamState[cardSlotSelected.teamId!][cardSlotSelected.slotId!] as TeamSlotState;
+      const m = await monsterCacheClient.get(monster.base.id);
       setCurrentMonster(m);
     };
     f();
