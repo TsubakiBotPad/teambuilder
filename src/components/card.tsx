@@ -3,9 +3,12 @@ import styled from "@emotion/styled";
 import { useContext } from "react";
 import { useDrag, useDrop } from "react-dnd";
 
-import { BASE_ICON_URL } from "../model/images";
+import { AwakeningImage, BASE_ICON_URL } from "../model/images";
+import { PadAssetImage } from "../model/padAssets";
 import { AppStateContext, copyCard, swapCards, TeamStateContext } from "../model/teamStateManager";
+import { AwokenSkills } from "../model/types/monster";
 import { DraggableTypes } from "../pages/padteambuilder";
+import { FlexCol, FlexRow } from "../stylePrimitives";
 import { leftPad } from "./generic/leftPad";
 import { TeamComponentId } from "./id";
 
@@ -39,10 +42,31 @@ const CardOverlayText = styled.div`
   color: #fff;
 `;
 
-const CardOverlaySpacer = styled.div`
+const LEVEL_TO_COLOR: { [key: number]: string } = {
+  99: "white",
+  110: "#85BCFF",
+  120: "#18F794"
+};
+
+const LevelText = ({ level }: { level: number }) => {
+  return (
+    <CardOverlayText>
+      <div
+        className={css`
+          color: ${LEVEL_TO_COLOR[level]};
+        `}
+      >
+        Lv{level}
+      </div>
+    </CardOverlayText>
+  );
+};
+
+const BottomOverlay = styled.div`
+  background-color: rgba(0, 0, 0, 0.6);
   display: flex;
   justify-content: space-between;
-  padding: 0 0.1rem;
+  padding: 0.1rem 0.15rem;
 `;
 
 export const Card = ({ componentId, monsterId }: { componentId: Partial<TeamComponentId>; monsterId: number }) => {
@@ -103,20 +127,40 @@ export const Card = ({ componentId, monsterId }: { componentId: Partial<TeamComp
                 setCardSlotSelected(componentId);
                 setModalIsOpen(true);
               }}
-            />
-            <div
-              className={css`
-                position: relative;
-                top: -0.75rem;
-                left: 0;
-                background-color: rgba(0, 0, 0, 0.75);
-              `}
             >
-              <CardOverlaySpacer>
-                <CardOverlayText>Lvl</CardOverlayText>
-                <CardOverlayText>#{monsterId}</CardOverlayText>
-              </CardOverlaySpacer>
-            </div>
+              <div>
+                <FlexRow
+                  justifyContent="space-between"
+                  className={css`
+                    padding: 0.15rem;
+                  `}
+                >
+                  <div
+                    className={css`
+                      color: yellow;
+                      -webkit-text-stroke: 0.5px black;
+                      font-weight: bold;
+                    `}
+                  >
+                    +297
+                  </div>
+                  <PadAssetImage assetName="jsf" height={20} />
+                </FlexRow>
+                <FlexRow justifyContent="flex-end">
+                  <AwakeningImage awakeningId={AwokenSkills.BLOBBOOST} width={23} />
+                </FlexRow>
+                <div
+                  className={css`
+                    padding-top: 1.13rem;
+                  `}
+                >
+                  <BottomOverlay>
+                    <LevelText level={120} />
+                    <CardOverlayText>#{monsterId}</CardOverlayText>
+                  </BottomOverlay>
+                </div>
+              </div>
+            </CardSelected>
           </>
         ) : (
           <CardEmpty

@@ -25,12 +25,13 @@ type FlexRowProps = {
   gap?: string;
   wrap?: string;
   center?: boolean;
+  justifyContent?: string;
 };
 
 export const FlexRow = styled.div<FlexRowProps>`
   display: flex;
   gap: ${(props) => (props.gap ? props.gap : "0")};
-  justify-content: ${(props) => (props.center ? "center" : "start")};
+  justify-content: ${(props) => (props.justifyContent ? props.justifyContent : props.center ? "center" : "start")};
   flex-wrap: ${(props) => (props.wrap ? props.wrap : "nowrap")};
 `;
 

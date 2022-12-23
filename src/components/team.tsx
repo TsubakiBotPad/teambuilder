@@ -21,6 +21,18 @@ import { Card } from "./card";
 import { TeamComponentId } from "./id";
 import { Latents } from "./latent";
 
+const CardOverlayText = styled.div`
+  font-size: 0.75rem;
+  font-weight: bold;
+  color: #fff;
+`;
+
+const CardOverlaySpacer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  padding: 0 0.1rem;
+`;
+
 interface DropResult {
   dropEffect: string;
   target: TeamComponentId;
@@ -34,7 +46,6 @@ type ColorProps = {
 const ColorBG = styled.div<ColorProps>`
   background-color: ${(props) => props.color};
   padding: 0.5rem;
-  line-height: 0;
   ${(props) => (props.darken ? "filter: saturate(200%) brightness(1.2)" : "")};
 `;
 
