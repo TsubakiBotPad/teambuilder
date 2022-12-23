@@ -33,6 +33,18 @@ const CardSelected = styled.div<CardSelectedType>`
   height: 5rem;
 `;
 
+const CardOverlayText = styled.div`
+  font-size: 0.75rem;
+  font-weight: bold;
+  color: #fff;
+`;
+
+const CardOverlaySpacer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  padding: 0 0.1rem;
+`;
+
 export const Card = ({ componentId, monsterId }: { componentId: Partial<TeamComponentId>; monsterId: number }) => {
   const { setModalIsOpen, setCardSlotSelected, gameConfig } = useContext(AppStateContext);
   const { teamState, setTeamState } = useContext(TeamStateContext);
@@ -84,13 +96,28 @@ export const Card = ({ componentId, monsterId }: { componentId: Partial<TeamComp
     >
       <div ref={drop}>
         {monsterId !== 0 ? (
-          <CardSelected
-            monsterId={monsterId}
-            onClick={() => {
-              setCardSlotSelected(componentId);
-              setModalIsOpen(true);
-            }}
-          />
+          <>
+            <CardSelected
+              monsterId={monsterId}
+              onClick={() => {
+                setCardSlotSelected(componentId);
+                setModalIsOpen(true);
+              }}
+            />
+            <div
+              className={css`
+                position: relative;
+                top: -0.75rem;
+                left: 0;
+                background-color: rgba(0, 0, 0, 0.75);
+              `}
+            >
+              <CardOverlaySpacer>
+                <CardOverlayText>Lvl</CardOverlayText>
+                <CardOverlayText>#{monsterId}</CardOverlayText>
+              </CardOverlaySpacer>
+            </div>
+          </>
         ) : (
           <CardEmpty
             onClick={() => {
