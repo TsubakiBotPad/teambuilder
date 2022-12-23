@@ -8,7 +8,7 @@ import { PadAssetImage } from "../model/padAssets";
 import { AppStateContext, copyCard, swapCards, TeamStateContext } from "../model/teamStateManager";
 import { AwokenSkills } from "../model/types/monster";
 import { DraggableTypes } from "../pages/padteambuilder";
-import { FlexCol, FlexRow } from "../stylePrimitives";
+import { FlexRow } from "../stylePrimitives";
 import { leftPad } from "./generic/leftPad";
 import { TeamComponentId } from "./id";
 
