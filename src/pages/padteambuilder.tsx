@@ -4,8 +4,10 @@ import React, { useEffect, useMemo, useRef, useState } from "react";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { useNavigate, useParams } from "react-router-dom";
+import { DefaultLevelSelector } from "../components/defaultLevelSelector";
 
 import { GameConfigSelector } from "../components/gameConfigSelector";
+import { LevelSelector } from "../components/levelSelector";
 import { BadgeSelectorModal } from "../components/modal/badgeSelectorModal";
 import { CardSelectorModal } from "../components/modal/cardSelectorModal";
 import { LatentSelectorModal } from "../components/modal/latentSelectorModal";
@@ -13,7 +15,7 @@ import { Team } from "../components/team";
 import { computeTeamStat, TeamStatDisplay, TeamStats } from "../components/teamStats/teamStats";
 import { ConfigData, deserializeConfig, serializeConfig } from "../model/serializedUri";
 import { AppStateContext, DEFAULT_GAME_CONFIG, DEFAULT_TEAM_STATE, TeamStateContext } from "../model/teamStateManager";
-import { FlexCol, FlexColC, FlexRow, H1, Page } from "../stylePrimitives";
+import { FlexCol, FlexColC, FlexRow, FlexRowC, H1, Page } from "../stylePrimitives";
 
 const maxPageWidth = "1440px";
 
@@ -107,7 +109,10 @@ export const PadTeamBuilderPage = () => {
           <Page maxWidth={maxPageWidth}>
             <FlexColC gap="1rem">
               <H1>PAD Team Builder</H1>
-              <GameConfigSelector />
+              <FlexRowC gap="1rem">
+                <GameConfigSelector />
+                <DefaultLevelSelector />
+              </FlexRowC>
             </FlexColC>
             <CardSelectorModal isOpen={modalIsOpen} />
             <LatentSelectorModal isOpen={latentModalIsOpen} />

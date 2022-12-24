@@ -11,6 +11,7 @@ import { BASE_ICON_URL } from "../../model/images";
 import { monsterCacheClient } from "../../model/monsterCacheClient";
 import { AppStateContext, setCard, TeamStateContext } from "../../model/teamStateManager";
 import { BoundingBox, FlexCol, FlexColC, FlexRowC, H2 } from "../../stylePrimitives";
+import { GameConfig } from "../gameConfigSelector";
 import { ConfirmButton } from "../generic/confirmButton";
 import { leftPad } from "../generic/leftPad";
 import { LevelSelector } from "../levelSelector";
@@ -89,9 +90,7 @@ const AlternateEvoImages = ({
             onClick={async (e) => {
               const monster = await monsterCacheClient.get(id);
               setSelectedMonster(monster);
-              if (!monster || (currentLevel > 99 && monster?.limit_mult === 0)) {
-                setCurrentLevel(99);
-              }
+              setCardLevel(gameConfig, monster, currentLevel, setCurrentLevel);
             }}
             onDoubleClick={() => {
               setCard(
@@ -148,7 +147,7 @@ export const CardSelectorModal = ({ isOpen }: { isOpen: boolean }) => {
   const [error, setError] = useState("");
   const [selectedMonster, setSelectedMonster] = useState<MonsterResponse | undefined>(undefined);
   const [hoverClose, setHoverClose] = useState(false);
-  const [currentLevel, setCurrentLevel] = useState(99);
+  const [currentLevel, setCurrentLevel] = useState(gameConfig.defaultCardLevel);
   const [currentSA, setCurrentSA] = useState<number | undefined>(undefined);
 
   return (
@@ -156,6 +155,9 @@ export const CardSelectorModal = ({ isOpen }: { isOpen: boolean }) => {
       isOpen={isOpen}
       contentLabel="Example Modal"
       shouldCloseOnOverlayClick={true}
+      onAfterOpen={() => {
+        setCardLevel(gameConfig, selectedMonster, currentLevel, setCurrentLevel);
+      }}
       onRequestClose={() => {
         setModalIsOpen(false);
       }}
@@ -250,3 +252,19 @@ export const CardSelectorModal = ({ isOpen }: { isOpen: boolean }) => {
     </Modal>
   );
 };
+
+function setCardLevel(
+  gameConfig: GameConfig,
+  monster: MonsterResponse | undefined,
+  currentLevel: number,
+  setCurrentLevel: React.Dispatch<React.SetStateAction<number>>
+) {
+  var maxCardLevel = 120;
+  const desiredCardLevel = gameConfig.defaultCardLevel;
+  if (!monster || (currentLevel >= 99 && monster?.limit_mult === 0)) {
+    maxCardLevel = 99;
+  }
+
+  debugger;
+  setCurrentLevel(desiredCardLevel > maxCardLevel ? maxCardLevel : desiredCardLevel);
+}

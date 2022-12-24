@@ -24,12 +24,12 @@ const FancyButton = styled.button<FancyButtonProps>`
 
 export const LevelSelector = ({
   currentLevel,
-  selectedMonster,
-  setLevel
+  setLevel,
+  selectedMonster
 }: {
   currentLevel: number;
-  selectedMonster: MonsterResponse | undefined;
   setLevel: (l: number) => void;
+  selectedMonster?: MonsterResponse;
 }) => {
   if (!selectedMonster) {
     return <></>;
