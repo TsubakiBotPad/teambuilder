@@ -89,6 +89,34 @@ export const AwakeningsToDisplay = [
       ]
     ]
   },
+
+  {
+    header: "Resist",
+    data: [
+      [
+        new AwokenSkillAggregation(AwokenSkills.POISONRES, totalResist("POISON"), true),
+        new AwokenSkillAggregation(AwokenSkills.BLINDRES, totalResist("BLIND"), true),
+        new AwokenSkillAggregation(AwokenSkills.JAMMERRES, totalResist("JAMM"), true),
+        new AwokenSkillAggregation(AwokenSkills.CLOUDRESIST, null),
+        new AwokenSkillAggregation(AwokenSkills.TAPERESIST, null)
+      ]
+    ]
+  },
+  {
+    header: "Utility",
+    data: [
+      [
+        new AwokenSkillAggregation(AwokenSkills.ELATTACK, null),
+        new AwokenSkillAggregation(AwokenSkills.ELSHIELD, null),
+        new AwokenSkillAggregation(AwokenSkills.CROSSATTACK, null),
+        new AwokenSkillAggregation(AwokenSkills.DUNGEONBONUS, null),
+        new AwokenSkillAggregation(AwokenSkills.FUA, null),
+        new AwokenSkillAggregation(AwokenSkills.SUPERFUA, null),
+        new AwokenSkillAggregation(AwokenSkills.BINDRECOVERY, null),
+        new AwokenSkillAggregation(AwokenSkills.GUARDBREAK, null)
+      ]
+    ]
+  },
   {
     header: "Offensive",
     data: [
@@ -131,33 +159,6 @@ export const AwakeningsToDisplay = [
         new AwokenSkillAggregation(AwokenSkills.ELATTACK, null),
         new AwokenSkillAggregation(AwokenSkills.CROSSATTACK, null),
         new AwokenSkillAggregation(AwokenSkills.BLOBBOOST, null)
-      ]
-    ]
-  },
-  {
-    header: "Resist",
-    data: [
-      [
-        new AwokenSkillAggregation(AwokenSkills.POISONRES, totalResist("POISON"), true),
-        new AwokenSkillAggregation(AwokenSkills.BLINDRES, totalResist("BLIND"), true),
-        new AwokenSkillAggregation(AwokenSkills.JAMMERRES, totalResist("JAMM"), true),
-        new AwokenSkillAggregation(AwokenSkills.CLOUDRESIST, null),
-        new AwokenSkillAggregation(AwokenSkills.TAPERESIST, null)
-      ]
-    ]
-  },
-  {
-    header: "Utility",
-    data: [
-      [
-        new AwokenSkillAggregation(AwokenSkills.ELATTACK, null),
-        new AwokenSkillAggregation(AwokenSkills.ELSHIELD, null),
-        new AwokenSkillAggregation(AwokenSkills.CROSSATTACK, null),
-        new AwokenSkillAggregation(AwokenSkills.DUNGEONBONUS, null),
-        new AwokenSkillAggregation(AwokenSkills.FUA, null),
-        new AwokenSkillAggregation(AwokenSkills.SUPERFUA, null),
-        new AwokenSkillAggregation(AwokenSkills.BINDRECOVERY, null),
-        new AwokenSkillAggregation(AwokenSkills.GUARDBREAK, null)
       ]
     ]
   }
