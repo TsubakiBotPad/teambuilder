@@ -82,3 +82,6 @@ export const AWO_RES_LATENT_TO_AWO_MAP: { [key: number]: number } = {
   611: 45
   //612: 60 ASSIST CLEAR -> ELATTACK
 };
+
+export const HALF_BREAK_DAMAGE_AWOS = ["ls", "vdp", "attr", "unm", "spn", "abs", "sb++", "cloudtape"];
+export const UNRESTRICTED_AWOS = ["psf", "jsf", "vdp", "attr"];

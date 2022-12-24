@@ -4,7 +4,12 @@ import React, { useContext, useMemo, useState } from "react";
 
 import { PadAssetImage } from "../model/padAssets";
 import { AppStateContext, copyLatents, swapLatents, TeamSlotState, TeamStateContext } from "../model/teamStateManager";
-import { AWO_RES_LATENT_TO_AWO_MAP, LATENTS_ID_TO_NAME } from "../model/types/latents";
+import {
+  AWO_RES_LATENT_TO_AWO_MAP,
+  HALF_BREAK_DAMAGE_AWOS,
+  LATENTS_ID_TO_NAME,
+  UNRESTRICTED_AWOS
+} from "../model/types/latents";
 import { FlexRow } from "../stylePrimitives";
 import { computeTotalAwakeningsFromSlots } from "./teamStats/awakenings";
 import { useDrag, useDrop } from "react-dnd";
@@ -102,7 +107,7 @@ export const Latents = ({
   const { setCardSlotSelected, setLatentModalIsOpen } = useContext(AppStateContext);
   const { teamState, setTeamState } = useContext(TeamStateContext);
 
-  const [a2, setA2] = useState([] as number[]);
+  const [monsterAwakenings, setMonsterAwakenings] = useState([] as number[]);
 
   const latentsBySize = latents.reduce((d, num) => {
     const idx = Math.floor((num as any) / 100);
@@ -118,10 +123,13 @@ export const Latents = ({
   const sixSlotLatentName = LATENTS_ID_TO_NAME[latentId];
   const requiredAwakening = AWO_RES_LATENT_TO_AWO_MAP[latentId];
 
-  const valid = a2.includes(requiredAwakening) || sixSlotLatentName === "dbl";
+  const valid =
+    UNRESTRICTED_AWOS.includes(sixSlotLatentName) ||
+    monsterAwakenings.includes(requiredAwakening) ||
+    (sixSlotLatentName === "dbl" && teamSlot.base.level > 110);
 
   const hasSixSlot = !!sixSlotLatentName;
-  const showHalfBreakDamage = sixSlotLatentName !== "dbl" && true; // teamSlot.baseId.level > 110;
+  const showHalfBreakDamage = HALF_BREAK_DAMAGE_AWOS.includes(sixSlotLatentName) && teamSlot.base.level > 110;
 
   const remainderLatents = latents
     .filter((a) => Math.floor(a / 100) !== 6)
@@ -133,7 +141,7 @@ export const Latents = ({
     const f = async () => {
       if (hasSixSlot) {
         const a = await computeTotalAwakeningsFromSlots([teamSlot]);
-        setA2(Object.keys(a).map((b) => parseInt(b)));
+        setMonsterAwakenings(Object.keys(a).map((b) => parseInt(b)));
       }
     };
     f();

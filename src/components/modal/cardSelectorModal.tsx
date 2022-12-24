@@ -269,6 +269,5 @@ function setCardLevel(
     maxCardLevel = 99;
   }
 
-  debugger;
   setCurrentLevel(desiredCardLevel > maxCardLevel ? maxCardLevel : desiredCardLevel);
 }
