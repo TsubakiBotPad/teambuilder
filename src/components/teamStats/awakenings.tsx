@@ -162,6 +162,20 @@ export const AwakeningsToDisplay = [
     ]
   }
 ];
+//bind, jammer, poison, tape, cloud, sbr, unbindable, cross, el, sb, te
+
+const ALWAYS_SHOW_AWOKENSKILLS = [
+  AwokenSkills.ELATTACK,
+  AwokenSkills.CROSSATTACK,
+  AwokenSkills.POISONRES,
+  AwokenSkills.BLINDRES,
+  AwokenSkills.JAMMERRES,
+  AwokenSkills.CLOUDRESIST,
+  AwokenSkills.TAPERESIST,
+  AwokenSkills.SKILLBOOST,
+  AwokenSkills.SKILLBINDRES,
+  AwokenSkills.EXTMOVE
+];
 
 export const AwakeningRowDisplay = ({
   ah,
@@ -176,12 +190,13 @@ export const AwakeningRowDisplay = ({
     <>
       {asa.map((b, i) => {
         var numToDisplay = b.aggFunc ? b.aggFunc(ah) : ah[b.awokenSkill];
-        return numToDisplay ? (
+        const shouldShow = ALWAYS_SHOW_AWOKENSKILLS.includes(b.awokenSkill) || numToDisplay;
+        return shouldShow ? (
           <FlexRowC gap="0.15rem" key={keyPrefix + numToDisplay + i}>
             <AwakeningImage awakeningId={b.awokenSkill} />
             {b.percent ? ":" : "ⅹ"}
             <span>
-              {numToDisplay}
+              {numToDisplay ?? 0}
               {b.percent ? "%" : ""}
             </span>
           </FlexRowC>

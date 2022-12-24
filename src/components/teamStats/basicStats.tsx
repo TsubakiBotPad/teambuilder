@@ -287,7 +287,7 @@ export const TeamBasicStatsDisplay = ({
           ) : (
             <></>
           )}
-          {unbindablePct ? (
+          {unbindablePct !== undefined ? (
             <tr>
               <TD>
                 <b>!Bind</b>
