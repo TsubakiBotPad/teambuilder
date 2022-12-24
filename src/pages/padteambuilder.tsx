@@ -12,7 +12,7 @@ import { LatentSelectorModal } from "../components/modal/latentSelectorModal";
 import { Team } from "../components/team";
 import { computeTeamStat, TeamStatDisplay, TeamStats } from "../components/teamStats/teamStats";
 import { ConfigData, deserializeConfig, serializeConfig } from "../model/serializedUri";
-import { AppStateContext, DEFAULT_TEAM_STATE, TeamStateContext } from "../model/teamStateManager";
+import { AppStateContext, DEFAULT_GAME_CONFIG, DEFAULT_TEAM_STATE, TeamStateContext } from "../model/teamStateManager";
 import { FlexCol, FlexColC, FlexRow, H1, Page } from "../stylePrimitives";
 
 const maxPageWidth = "1440px";
@@ -40,7 +40,7 @@ export const PadTeamBuilderPage = () => {
     : {
         n: "",
         ts: DEFAULT_TEAM_STATE,
-        gc: { mode: "3p" }
+        gc: DEFAULT_GAME_CONFIG
       };
 
   const [teamState, setTeamState] = useState(parsedConfig.ts);

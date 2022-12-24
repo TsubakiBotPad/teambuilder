@@ -114,14 +114,14 @@ const TeamSlot = ({
       <div ref={drop}>
         <FlexColC>
           <ColorBG color={"#f0f0f0"} darken={isOver}>
-            <Card componentId={{ ...componentId, use: "assist" }} monsterId={state.assist.id} />
+            <Card componentId={{ ...componentId, use: "assist" }} monster={state.assist} />
           </ColorBG>
           <FlexRowC>
             <AiOutlineCaretDown />
           </FlexRowC>
           <ColorBG color={invert ? otherTeamColor : teamIdToColor[teamId]} darken={isOver}>
             <FlexColC gap="0.25rem">
-              <Card componentId={{ ...componentId, use: "base" }} monsterId={state.base.id} />
+              <Card componentId={{ ...componentId, use: "base" }} monster={state.base} />
               <Latents componentId={{ ...componentId, use: "latent" }} latents={state.latents} teamSlot={state} />
             </FlexColC>
           </ColorBG>

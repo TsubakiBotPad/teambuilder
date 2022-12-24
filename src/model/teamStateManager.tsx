@@ -72,6 +72,11 @@ export const DEFAULT_TEAM_STATE: TeamState = {
   }
 };
 
+export const DEFAULT_GAME_CONFIG: GameConfig = {
+  mode: "3p",
+  defaultCardLevel: 120
+};
+
 interface ITeamStateContext {
   teamState: TeamState;
   setTeamState: React.Dispatch<React.SetStateAction<TeamState>>;
@@ -100,7 +105,7 @@ interface AppState {
 }
 
 const DEFAULT_APP_STATE: AppState = {
-  gameConfig: { mode: "3p" },
+  gameConfig: DEFAULT_GAME_CONFIG,
   setGameConfig: () => {},
   teamName: "",
   teamStats: {},
@@ -136,7 +141,11 @@ export async function setCard(
   };
 
   const card = (newTeamState[p][s] as TeamSlotState)[c] as TeamCardInfo;
-  (newTeamState[p][s] as TeamSlotState)[c] = { ...card, id: value } as any;
+  (newTeamState[p][s] as TeamSlotState)[c] = {
+    ...card,
+    id: value,
+    level: card.level !== 0 ? card.level : DEFAULT_GAME_CONFIG.defaultCardLevel
+  } as any;
 
   setTeamState(newTeamState);
 }

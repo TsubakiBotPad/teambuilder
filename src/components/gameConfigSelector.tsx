@@ -6,6 +6,7 @@ import { FlexRowC } from "../stylePrimitives";
 
 export interface GameConfig {
   mode: string;
+  defaultCardLevel: number;
 }
 
 type FancyButtonProps = {
@@ -34,7 +35,7 @@ export const GameConfigSelector = () => {
           backgroundColorUnfocused="pink"
           focused={gameConfig.mode === "1p"}
           onClick={async () => {
-            const newGameConfig = { mode: "1p" };
+            const newGameConfig = { ...gameConfig, mode: "1p" };
             setGameConfig(newGameConfig);
             unlinkLeaders(teamState, setTeamState);
             updateUrl({ gc: newGameConfig });
@@ -47,7 +48,7 @@ export const GameConfigSelector = () => {
           backgroundColorUnfocused="lightblue"
           focused={gameConfig.mode === "2p"}
           onClick={async () => {
-            const newGameConfig = { mode: "2p" };
+            const newGameConfig = { ...gameConfig, mode: "2p" };
             setGameConfig(newGameConfig);
             linkLeaders(teamState, setTeamState);
             updateUrl({ gc: newGameConfig });
@@ -60,7 +61,7 @@ export const GameConfigSelector = () => {
           backgroundColorUnfocused="lightgreen"
           focused={gameConfig.mode === "3p"}
           onClick={async () => {
-            const newGameConfig = { mode: "3p" };
+            const newGameConfig = { ...gameConfig, mode: "3p" };
             setGameConfig(newGameConfig);
             unlinkLeaders(teamState, setTeamState);
             updateUrl({ gc: newGameConfig });

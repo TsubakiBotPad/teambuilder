@@ -1,11 +1,13 @@
 import { css } from "@emotion/css";
 import styled from "@emotion/styled";
-import { useContext } from "react";
+import { useContext, useMemo, useState } from "react";
 import { useDrag, useDrop } from "react-dnd";
+import { MonsterResponse } from "../client";
 
 import { AwakeningImage, BASE_ICON_URL } from "../model/images";
+import { monsterCacheClient } from "../model/monsterCacheClient";
 import { PadAssetImage } from "../model/padAssets";
-import { AppStateContext, copyCard, swapCards, TeamStateContext } from "../model/teamStateManager";
+import { AppStateContext, copyCard, swapCards, TeamCardInfo, TeamStateContext } from "../model/teamStateManager";
 import { AwokenSkills } from "../model/types/monster";
 import { DraggableTypes } from "../pages/padteambuilder";
 import { FlexRow } from "../stylePrimitives";
@@ -69,9 +71,22 @@ const BottomOverlay = styled.div`
   padding: 0.1rem 0.15rem;
 `;
 
-export const Card = ({ componentId, monsterId }: { componentId: Partial<TeamComponentId>; monsterId: number }) => {
+export const Card = ({ componentId, monster }: { componentId: Partial<TeamComponentId>; monster: TeamCardInfo }) => {
   const { setModalIsOpen, setCardSlotSelected, gameConfig } = useContext(AppStateContext);
   const { teamState, setTeamState } = useContext(TeamStateContext);
+  const [currentMonster, setCurrentMonster] = useState<MonsterResponse | undefined>(undefined);
+
+  useMemo(() => {
+    const f = async () => {
+      if (!monster || !monster.id) {
+        return;
+      }
+
+      const m = await monsterCacheClient.get(monster.id);
+      setCurrentMonster(m);
+    };
+    f();
+  }, [monster]);
 
   const [, drag] = useDrag(
     () => ({
@@ -119,10 +134,10 @@ export const Card = ({ componentId, monsterId }: { componentId: Partial<TeamComp
       `}
     >
       <div ref={drop}>
-        {monsterId !== 0 ? (
+        {monster.id !== 0 ? (
           <>
             <CardSelected
-              monsterId={monsterId}
+              monsterId={monster.id}
               onClick={() => {
                 setCardSlotSelected(componentId);
                 setModalIsOpen(true);
@@ -139,7 +154,7 @@ export const Card = ({ componentId, monsterId }: { componentId: Partial<TeamComp
                     className={css`
                       color: yellow;
                       -webkit-text-stroke: 0.5px black;
-                      font-weight: bold;
+                      font-weight: 1000;
                     `}
                   >
                     +297
@@ -155,8 +170,8 @@ export const Card = ({ componentId, monsterId }: { componentId: Partial<TeamComp
                   `}
                 >
                   <BottomOverlay>
-                    <LevelText level={120} />
-                    <CardOverlayText>#{monsterId}</CardOverlayText>
+                    <LevelText level={monster.level} />
+                    <CardOverlayText>#{monster.id}</CardOverlayText>
                   </BottomOverlay>
                 </div>
               </div>
