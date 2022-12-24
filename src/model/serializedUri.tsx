@@ -2,12 +2,12 @@ import { Buffer } from "buffer";
 
 import { GameConfig } from "../components/gameConfigSelector";
 import { TeamState } from "./teamStateManager";
-
+import JSONCrush from "jsoncrush";
 export type ConfigData = { n: string; ts: TeamState; gc: GameConfig };
 
 export const serializeConfig = ({ n: teamName, ts: teamState, gc: gameConfig }: ConfigData): string => {
   const y = JSON.stringify({ n: teamName, ts: teamState, gc: gameConfig });
-  const z = Buffer.from(y).toString("base64");
+  const z = JSONCrush.crush(y);
 
   return z;
 };
@@ -39,7 +39,7 @@ export const serializeConfig = ({ n: teamName, ts: teamState, gc: gameConfig }: 
 // }
 
 export const deserializeConfig = (serialized: string): ConfigData => {
-  const x = Buffer.from(serialized, "base64").toString();
+  const x = JSONCrush.uncrush(serialized);
   const y = JSON.parse(x);
   return y;
 };
