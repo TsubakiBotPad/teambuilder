@@ -9,9 +9,8 @@ import { AwakeningImage, BASE_ICON_URL } from "../model/images";
 import { monsterCacheClient } from "../model/monsterCacheClient";
 import { PadAssetImage } from "../model/padAssets";
 import { AppStateContext, copyCard, swapCards, TeamCardInfo, TeamStateContext } from "../model/teamStateManager";
-import { AwokenSkills } from "../model/types/monster";
 import { DraggableTypes } from "../pages/padteambuilder";
-import { FlexRow } from "../stylePrimitives";
+import { FlexColC } from "../stylePrimitives";
 import { leftPad } from "./generic/leftPad";
 import { TeamComponentId } from "./id";
 
@@ -32,11 +31,12 @@ type CardSelectedType = {
   monsterId: number;
 };
 
-const CardSelected = styled.div<CardSelectedType>`
+const CardSelectedImage = styled.div<CardSelectedType>`
   background: ${(props) => `url("${BASE_ICON_URL}${leftPad(props.monsterId, 5)}.png")`};
   background-size: cover;
   width: 5rem;
   height: 5rem;
+  position: relative;
 `;
 
 const CardOverlayText = styled.div`
@@ -65,6 +65,65 @@ const BottomOverlay = styled.div`
   justify-content: space-between;
   padding: 0.1rem 0.15rem;
 `;
+
+const CardSelected = ({ monster, componentId }: { componentId: Partial<TeamComponentId>; monster: TeamCardInfo }) => {
+  const { setModalIsOpen, setCardSlotSelected, gameConfig } = useContext(AppStateContext);
+
+  return (
+    <CardSelectedImage
+      monsterId={monster.id}
+      onClick={() => {
+        setCardSlotSelected(componentId);
+        setModalIsOpen(true);
+      }}
+    >
+      {/* +297 */}
+      <div
+        className={css`
+          color: yellow;
+          -webkit-text-stroke: 0.5px black;
+          font-weight: 1000;
+          position: absolute;
+          padding: 0.15rem;
+        `}
+      >
+        +297
+      </div>
+
+      {/* Right Corner */}
+      <div
+        className={css`
+          position: absolute;
+          right: 0;
+          top: 0;
+          padding: 0.15rem;
+          & div:not(:last-child) {
+            margin-bottom: 0.15rem;
+          }
+        `}
+      >
+        <FlexColC>
+          <PadAssetImage assetName="jsf" height={20} />
+          <div>{monster.sa ? <AwakeningImage awakeningId={monster.sa} width={23} /> : null}</div>
+        </FlexColC>
+      </div>
+
+      {/* Bottom Info */}
+      <div
+        className={css`
+          position: absolute;
+          bottom: 0%;
+          width: 100%;
+        `}
+      >
+        <BottomOverlay>
+          <LevelText level={monster.level} />
+          <CardOverlayText>#{monster.id}</CardOverlayText>
+        </BottomOverlay>
+      </div>
+    </CardSelectedImage>
+  );
+};
 
 export const Card = ({ componentId, monster }: { componentId: Partial<TeamComponentId>; monster: TeamCardInfo }) => {
   const { setModalIsOpen, setCardSlotSelected, gameConfig } = useContext(AppStateContext);
@@ -130,54 +189,7 @@ export const Card = ({ componentId, monster }: { componentId: Partial<TeamCompon
     >
       <div ref={drop}>
         {monster.id !== 0 ? (
-          <>
-            <CardSelected
-              monsterId={monster.id}
-              onClick={() => {
-                setCardSlotSelected(componentId);
-                setModalIsOpen(true);
-              }}
-            >
-              <div>
-                <FlexRow
-                  justifyContent="space-between"
-                  className={css`
-                    padding: 0.15rem;
-                  `}
-                >
-                  <div
-                    className={css`
-                      color: yellow;
-                      -webkit-text-stroke: 0.5px black;
-                      font-weight: 1000;
-                    `}
-                  >
-                    +297
-                  </div>
-                  <PadAssetImage assetName="jsf" height={20} />
-                </FlexRow>
-                <FlexRow justifyContent="flex-end">
-                  {monster.sa ? (
-                    <AwakeningImage awakeningId={monster.sa} width={23} />
-                  ) : (
-                    <div style={{ zIndex: -1 }}>
-                      <AwakeningImage awakeningId={AwokenSkills.BLOBBOOST} width={23} />
-                    </div>
-                  )}
-                </FlexRow>
-                <div
-                  className={css`
-                    padding-top: 1.13rem;
-                  `}
-                >
-                  <BottomOverlay>
-                    <LevelText level={monster.level} />
-                    <CardOverlayText>#{monster.id}</CardOverlayText>
-                  </BottomOverlay>
-                </div>
-              </div>
-            </CardSelected>
-          </>
+          <CardSelected monster={monster} componentId={componentId} />
         ) : (
           <CardEmpty
             onClick={() => {

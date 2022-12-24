@@ -1,4 +1,5 @@
 import { css } from "@emotion/css";
+import { useState } from "react";
 
 import { MonsterResponse } from "../client";
 import { AwakeningImage } from "../model/images";
@@ -31,18 +32,18 @@ export const SuperAwakeningSelector = ({
       <FlexRowC>
         {superAwakenings.length > 0 ? (
           <FlexRow gap="0.25rem">
-            {superAwakenings.map((a, i) => (
+            {superAwakenings.map((a) => (
               <div
                 className={css`
-                  border: 2px solid ${currentSA === i ? "#555" : "#fff"};
+                  border: 2px solid ${currentSA === a.awoken_skill_id ? "#555" : "#fff"};
                   box-sizing: border-box;
-                  opacity: ${currentSA === i ? "1" : "0.75"};
+                  opacity: ${currentSA === a.awoken_skill_id ? "1" : "0.75"};
                 `}
                 onClick={() => {
-                  setSA(i);
+                  setSA(a.awoken_skill_id);
                 }}
               >
-                <AwakeningImage key={a.awakening_id} awakeningId={a.awoken_skill_id} />
+                <AwakeningImage key={a.awoken_skill_id} awakeningId={a.awoken_skill_id} />
               </div>
             ))}
           </FlexRow>
