@@ -127,7 +127,7 @@ export const AppStateContext = React.createContext(DEFAULT_APP_STATE);
 
 export async function setCard(
   cardSlot: Partial<TeamComponentId>,
-  value: number,
+  cardInfo: TeamCardInfo,
   teamState: TeamState,
   setTeamState: React.Dispatch<React.SetStateAction<TeamState>>,
   gameConfig: GameConfig
@@ -143,8 +143,7 @@ export async function setCard(
   const card = (newTeamState[p][s] as TeamSlotState)[c] as TeamCardInfo;
   (newTeamState[p][s] as TeamSlotState)[c] = {
     ...card,
-    id: value,
-    level: card.level !== 0 ? card.level : DEFAULT_GAME_CONFIG.defaultCardLevel
+    ...cardInfo
   } as any;
 
   setTeamState(newTeamState);

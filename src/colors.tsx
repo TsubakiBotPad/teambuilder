@@ -2,7 +2,10 @@ export enum ColorKey {
   PRIMARY = "PRIMARY",
   BACKGROUND = "BACKGROUND",
   BACKGROUND2 = "BACKGROUND2",
-  HR = "HR"
+  HR = "HR",
+  LEVEL_99 = "LEVEL_99",
+  LEVEL_110 = "LEVEL_110",
+  LEVEL_120 = "LEVEL_120"
 }
 
 export type ColorPalette = {
@@ -189,7 +192,10 @@ export const DARK_COLORS: ColorPalette = {
   PRIMARY: "#000",
   BACKGROUND: GRAY_RANGE[0],
   BACKGROUND2: GRAY_RANGE[0],
-  HR: GRAY_RANGE[900]
+  HR: GRAY_RANGE[900],
+  LEVEL_99: "#fff",
+  LEVEL_110: "#85BCFF",
+  LEVEL_120: "#18F794"
 };
 
 export function getColor(colorKey: keyof ColorPalette) {

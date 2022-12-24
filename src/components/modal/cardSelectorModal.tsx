@@ -13,6 +13,8 @@ import { AppStateContext, setCard, TeamStateContext } from "../../model/teamStat
 import { BoundingBox, FlexCol, FlexColC, FlexRowC, H2 } from "../../stylePrimitives";
 import { ConfirmButton } from "../generic/confirmButton";
 import { leftPad } from "../generic/leftPad";
+import { LevelSelector } from "../levelSelector";
+import { SuperAwakeningSelector } from "../superAwakeningSelector";
 import { CardInfo } from "./cardInfo";
 import { ModalCloseButton } from "./common";
 
@@ -85,7 +87,13 @@ const AlternateEvoImages = ({
               setSelectedMonster(monster);
             }}
             onDoubleClick={() => {
-              setCard(cardSlotSelected, selectedMonster!.monster_id, teamState, setTeamState, gameConfig);
+              setCard(
+                cardSlotSelected,
+                { id: selectedMonster!.monster_id, level: gameConfig.defaultCardLevel, sa: 0 },
+                teamState,
+                setTeamState,
+                gameConfig
+              );
               setModalIsOpen(false);
             }}
             selected={selectedMonster ? id === selectedMonster.monster_id : false}
@@ -133,6 +141,8 @@ export const CardSelectorModal = ({ isOpen }: { isOpen: boolean }) => {
   const [error, setError] = useState("");
   const [selectedMonster, setSelectedMonster] = useState<MonsterResponse | undefined>(undefined);
   const [hoverClose, setHoverClose] = useState(false);
+  const [currentLevel, setCurrentLevel] = useState(99);
+  const [currentSA, setCurrentSA] = useState<number | undefined>(undefined);
 
   return (
     <Modal
@@ -166,24 +176,39 @@ export const CardSelectorModal = ({ isOpen }: { isOpen: boolean }) => {
                   debouncedOnChange(e, setQueriedId, setAltEvoIds, setSelectedMonster, setError);
                 }}
               />
-
-              {error ? <span>{error}</span> : <></>}
-              {!error ? (
-                <AlternateEvoImages
-                  ids={altEvoIds}
-                  selectedMonster={selectedMonster}
-                  setSelectedMonster={setSelectedMonster}
-                />
-              ) : (
-                <></>
-              )}
+              <AlternateEvoImages
+                ids={altEvoIds}
+                selectedMonster={selectedMonster}
+                setSelectedMonster={setSelectedMonster}
+              />
+              <LevelSelector
+                currentLevel={currentLevel}
+                selectedMonster={selectedMonster}
+                setLevel={(n: number) => {
+                  setCurrentLevel(n);
+                }}
+              />
+              <SuperAwakeningSelector
+                currentSA={currentSA}
+                selectedMonster={selectedMonster}
+                setSA={(n: number) => {
+                  setCurrentSA(n);
+                }}
+              />
+              {error ? <span>{error}</span> : null}
             </FlexColC>
 
             <FlexColC>
               <FlexRowC gap="0.25rem">
                 <ConfirmButton
                   onClick={() => {
-                    setCard(cardSlotSelected, selectedMonster!.monster_id, teamState, setTeamState, gameConfig);
+                    setCard(
+                      cardSlotSelected,
+                      { id: selectedMonster!.monster_id, level: currentLevel, sa: currentSA },
+                      teamState,
+                      setTeamState,
+                      gameConfig
+                    );
                     setModalIsOpen(false);
                   }}
                 >
@@ -191,7 +216,7 @@ export const CardSelectorModal = ({ isOpen }: { isOpen: boolean }) => {
                 </ConfirmButton>
                 <ConfirmButton
                   onClick={() => {
-                    setCard(cardSlotSelected, 0, teamState, setTeamState, gameConfig);
+                    setCard(cardSlotSelected, { id: 0, level: 0, sa: 0 }, teamState, setTeamState, gameConfig);
                     setModalIsOpen(false);
                   }}
                 >

@@ -64,7 +64,7 @@ export const CardInfo = ({ monster: m }: { monster: MonsterResponse }) => {
             </FlexRowC>
           </FlexRowC>
         </FlexCol>
-        <img src={`${BASE_ICON_URL}${leftPad(m.monster_id, 5)}.png`} alt="monster" />
+        <img src={`${BASE_ICON_URL}${leftPad(m.monster_id, 5)}.png`} alt="monster" height={"100%"} />
       </div>
 
       <FlexRow gap="5rem">

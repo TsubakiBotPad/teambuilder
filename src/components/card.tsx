@@ -2,8 +2,9 @@ import { css } from "@emotion/css";
 import styled from "@emotion/styled";
 import { useContext, useMemo, useState } from "react";
 import { useDrag, useDrop } from "react-dnd";
-import { MonsterResponse } from "../client";
 
+import { MonsterResponse } from "../client";
+import { ColorKey, getColor } from "../colors";
 import { AwakeningImage, BASE_ICON_URL } from "../model/images";
 import { monsterCacheClient } from "../model/monsterCacheClient";
 import { PadAssetImage } from "../model/padAssets";
@@ -44,18 +45,12 @@ const CardOverlayText = styled.div`
   color: #fff;
 `;
 
-const LEVEL_TO_COLOR: { [key: number]: string } = {
-  99: "white",
-  110: "#85BCFF",
-  120: "#18F794"
-};
-
 const LevelText = ({ level }: { level: number }) => {
   return (
     <CardOverlayText>
       <div
         className={css`
-          color: ${LEVEL_TO_COLOR[level]};
+          color: ${getColor(`LEVEL_${level}` as ColorKey)};
         `}
       >
         Lv{level}
@@ -162,7 +157,13 @@ export const Card = ({ componentId, monster }: { componentId: Partial<TeamCompon
                   <PadAssetImage assetName="jsf" height={20} />
                 </FlexRow>
                 <FlexRow justifyContent="flex-end">
-                  <AwakeningImage awakeningId={AwokenSkills.BLOBBOOST} width={23} />
+                  {monster.sa ? (
+                    <AwakeningImage awakeningId={monster.sa} width={23} />
+                  ) : (
+                    <div style={{ zIndex: -1 }}>
+                      <AwakeningImage awakeningId={AwokenSkills.BLOBBOOST} width={23} />
+                    </div>
+                  )}
                 </FlexRow>
                 <div
                   className={css`
