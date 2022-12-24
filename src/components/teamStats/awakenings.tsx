@@ -17,6 +17,9 @@ export async function computeTotalAwakeningsFromSlots(slots: TeamSlotState[]) {
     if (m1b_contrib) {
       totalAwakenings.push(...m1b_contrib);
     }
+    if (slot.base.sa) {
+      totalAwakenings.push(slot.base.sa);
+    }
 
     const m1a = await monsterCacheClient.get(slot.assist.id);
     const m1a_contrib = m1a?.awakenings.map((a) => a.awoken_skill_id);

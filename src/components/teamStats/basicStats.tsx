@@ -7,7 +7,7 @@ import { PadAssetImage } from "../../model/padAssets";
 import { getTeamSlots, TeamSlotState, TeamState } from "../../model/teamStateManager";
 import { computeLeaderSkill } from "../../model/types/leaderSkill";
 import { Attribute, AwokenSkills, MonsterType } from "../../model/types/monster";
-import { maxLevel, stat } from "../../model/types/stat";
+import { stat } from "../../model/types/stat";
 import { FlexCol, FlexRow, H3 } from "../../stylePrimitives";
 import { GameConfig } from "../gameConfigSelector";
 import { fixedDecimals } from "../generic/fixedDecimals";
@@ -95,26 +95,26 @@ async function accumulateBasicStats(slots: TeamSlotState[], gameConfig: GameConf
       is_plus_297 = true;
     }
 
-    const lv = maxLevel(m1b); // TODO: make config
     const multiplayer = gameConfig.mode !== "1p";
 
     const hp = Math.round(
       stat({
         monster_model: m1b,
         key: "hp",
-        lv: lv,
+        lv: s.base.level,
         plus: plusArr[0],
         inherit: false,
         is_plus_297: is_plus_297,
         multiplayer: multiplayer,
-        inherited_monster: m1a
+        inherited_monster: m1a,
+        inherited_monster_lvl: s.assist.level
       })
     );
     const rcv = Math.round(
       stat({
         monster_model: m1b,
         key: "rcv",
-        lv: lv,
+        lv: s.base.level,
         plus: plusArr[2],
         inherit: false,
         is_plus_297: is_plus_297,
@@ -130,7 +130,7 @@ async function accumulateBasicStats(slots: TeamSlotState[], gameConfig: GameConf
       stat({
         monster_model: m1b,
         key: "hp",
-        lv: lv,
+        lv: s.base.level,
         plus: plusArr[0],
         inherit: false,
         is_plus_297: is_plus_297,
@@ -143,7 +143,7 @@ async function accumulateBasicStats(slots: TeamSlotState[], gameConfig: GameConf
       stat({
         monster_model: m1b,
         key: "rcv",
-        lv: lv,
+        lv: s.base.level,
         plus: plusArr[2],
         inherit: false,
         is_plus_297: is_plus_297,

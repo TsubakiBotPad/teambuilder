@@ -1,12 +1,10 @@
 import { css } from "@emotion/css";
 import styled from "@emotion/styled";
-import { useContext, useMemo, useState } from "react";
+import { useContext } from "react";
 import { useDrag, useDrop } from "react-dnd";
 
-import { MonsterResponse } from "../client";
 import { ColorKey, getColor } from "../colors";
 import { AwakeningImage, BASE_ICON_URL } from "../model/images";
-import { monsterCacheClient } from "../model/monsterCacheClient";
 import { PadAssetImage } from "../model/padAssets";
 import { AppStateContext, copyCard, swapCards, TeamCardInfo, TeamStateContext } from "../model/teamStateManager";
 import { DraggableTypes } from "../pages/padteambuilder";
@@ -67,7 +65,7 @@ const BottomOverlay = styled.div`
 `;
 
 const CardSelected = ({ monster, componentId }: { componentId: Partial<TeamComponentId>; monster: TeamCardInfo }) => {
-  const { setModalIsOpen, setCardSlotSelected, gameConfig } = useContext(AppStateContext);
+  const { setModalIsOpen, setCardSlotSelected } = useContext(AppStateContext);
 
   return (
     <CardSelectedImage
@@ -128,19 +126,6 @@ const CardSelected = ({ monster, componentId }: { componentId: Partial<TeamCompo
 export const Card = ({ componentId, monster }: { componentId: Partial<TeamComponentId>; monster: TeamCardInfo }) => {
   const { setModalIsOpen, setCardSlotSelected, gameConfig } = useContext(AppStateContext);
   const { teamState, setTeamState } = useContext(TeamStateContext);
-  const [currentMonster, setCurrentMonster] = useState<MonsterResponse | undefined>(undefined);
-
-  useMemo(() => {
-    const f = async () => {
-      if (!monster || !monster.id) {
-        return;
-      }
-
-      const m = await monsterCacheClient.get(monster.id);
-      setCurrentMonster(m);
-    };
-    f();
-  }, [monster]);
 
   const [, drag] = useDrag(
     () => ({

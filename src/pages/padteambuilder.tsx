@@ -4,10 +4,9 @@ import React, { useEffect, useMemo, useRef, useState } from "react";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { useNavigate, useParams } from "react-router-dom";
-import { DefaultLevelSelector } from "../components/defaultLevelSelector";
 
+import { DefaultLevelSelector } from "../components/defaultLevelSelector";
 import { GameConfigSelector } from "../components/gameConfigSelector";
-import { LevelSelector } from "../components/levelSelector";
 import { BadgeSelectorModal } from "../components/modal/badgeSelectorModal";
 import { CardSelectorModal } from "../components/modal/cardSelectorModal";
 import { LatentSelectorModal } from "../components/modal/latentSelectorModal";

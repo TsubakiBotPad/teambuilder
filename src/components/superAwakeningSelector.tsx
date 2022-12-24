@@ -1,5 +1,4 @@
 import { css } from "@emotion/css";
-import { useState } from "react";
 
 import { MonsterResponse } from "../client";
 import { AwakeningImage } from "../model/images";

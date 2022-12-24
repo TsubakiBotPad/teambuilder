@@ -69,13 +69,15 @@ const AlternateEvoImages = ({
   selectedMonster,
   setSelectedMonster,
   currentLevel,
-  setCurrentLevel
+  setCurrentLevel,
+  setCurrentSA
 }: {
   ids: number[];
   selectedMonster: MonsterResponse | undefined;
   setSelectedMonster: React.Dispatch<React.SetStateAction<MonsterResponse | undefined>>;
   currentLevel: number;
   setCurrentLevel: React.Dispatch<React.SetStateAction<number>>;
+  setCurrentSA: React.Dispatch<React.SetStateAction<number | undefined>>;
 }) => {
   const { cardSlotSelected, setModalIsOpen, gameConfig } = useContext(AppStateContext);
   const { teamState, setTeamState } = useContext(TeamStateContext);
@@ -91,6 +93,7 @@ const AlternateEvoImages = ({
               const monster = await monsterCacheClient.get(id);
               setSelectedMonster(monster);
               setCardLevel(gameConfig, monster, currentLevel, setCurrentLevel);
+              setCurrentSA(undefined);
             }}
             onDoubleClick={() => {
               setCard(
@@ -191,6 +194,7 @@ export const CardSelectorModal = ({ isOpen }: { isOpen: boolean }) => {
                 setSelectedMonster={setSelectedMonster}
                 currentLevel={currentLevel}
                 setCurrentLevel={setCurrentLevel}
+                setCurrentSA={setCurrentSA}
               />
               <LevelSelector
                 currentLevel={currentLevel}
