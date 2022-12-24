@@ -191,6 +191,7 @@ export const AwakeningRowDisplay = ({
       {asa.map((b, i) => {
         var numToDisplay = b.aggFunc ? b.aggFunc(ah) : ah[b.awokenSkill];
         const shouldShow = ALWAYS_SHOW_AWOKENSKILLS.includes(b.awokenSkill) || numToDisplay;
+
         return shouldShow ? (
           <FlexRowC gap="0.15rem" key={keyPrefix + numToDisplay + i}>
             <AwakeningImage awakeningId={b.awokenSkill} />

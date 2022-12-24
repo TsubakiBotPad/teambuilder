@@ -1,8 +1,8 @@
-import { Buffer } from "buffer";
+import JSONCrush from "jsoncrush";
 
 import { GameConfig } from "../components/gameConfigSelector";
 import { TeamState } from "./teamStateManager";
-import JSONCrush from "jsoncrush";
+
 export type ConfigData = { n: string; ts: TeamState; gc: GameConfig };
 
 export const serializeConfig = ({ n: teamName, ts: teamState, gc: gameConfig }: ConfigData): string => {
