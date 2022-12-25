@@ -5,7 +5,6 @@ import { useDrag, useDrop } from "react-dnd";
 
 import { ColorKey, getColor } from "../colors";
 import { AwakeningImage, BASE_ICON_URL } from "../model/images";
-import { PadAssetImage } from "../model/padAssets";
 import { AppStateContext, copyCard, swapCards, TeamCardInfo, TeamStateContext } from "../model/teamStateManager";
 import { DraggableTypes } from "../pages/padteambuilder";
 import { FlexColC } from "../stylePrimitives";
@@ -101,7 +100,7 @@ const CardSelected = ({ monster, componentId }: { componentId: Partial<TeamCompo
         `}
       >
         <FlexColC gap={"0.25rem"}>
-          <img src={"img/awoInheritable.png"} width={"20px"} />
+          <img src={"img/awoInheritable.png"} width={"20px"} alt="awokenStar" />
           <div>{monster.sa ? <AwakeningImage awakeningId={monster.sa} width={22} /> : null}</div>
         </FlexColC>
       </div>
