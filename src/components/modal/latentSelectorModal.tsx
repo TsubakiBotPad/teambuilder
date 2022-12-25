@@ -51,7 +51,9 @@ export const LatentSelectorModal = ({ isOpen }: { isOpen: boolean }) => {
 
       const monster = teamState[cardSlotSelected.teamId!][cardSlotSelected.slotId!] as TeamSlotState;
       const m = await monsterCacheClient.get(monster.base.id);
+
       setCurrentMonster(m);
+      setSelectedLatents(monster.latents);
     };
     f();
   }, [teamState, cardSlotSelected]);
@@ -166,7 +168,7 @@ export const LatentSelectorModal = ({ isOpen }: { isOpen: boolean }) => {
               ) : null}
               {maxLatents - currentSize !== 0 ? (
                 <FlexRow gap={"14px"}>
-                  {Array.from(Array(maxLatents - currentSize).keys()).map((i) => {
+                  {Array.from(Array(maxLatents - currentSize > 0 ? maxLatents - currentSize : 0).keys()).map((i) => {
                     return <PadAssetImage assetName="emptyLatent" height={31} key={"remainderLatents" + i} />;
                   })}
                 </FlexRow>

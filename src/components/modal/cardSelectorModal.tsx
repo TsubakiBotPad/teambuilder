@@ -32,7 +32,9 @@ const handleInputChange = async (
   setQueriedId: React.Dispatch<React.SetStateAction<number>>,
   setAlternateEvoIds: React.Dispatch<React.SetStateAction<number[]>>,
   setSelectedMonster: React.Dispatch<React.SetStateAction<MonsterResponse | undefined>>,
-  setError: React.Dispatch<React.SetStateAction<string>>
+  setError: React.Dispatch<React.SetStateAction<string>>,
+  gameConfig: GameConfig,
+  setCurrentLevel: React.Dispatch<React.SetStateAction<number | undefined>>
 ) => {
   try {
     if (query.length > 0) {
@@ -41,6 +43,7 @@ const handleInputChange = async (
       setAlternateEvoIds(ret.evolutions.map((a) => a.monster_id));
       setSelectedMonster(ret.monster);
       setError("");
+      setCurrentLevel(gameConfig.defaultCardLevel);
     }
   } catch (e) {
     if (e instanceof ApiError) {
@@ -131,9 +134,25 @@ const overlayClassName = css`
   inset: 0;
 `;
 
-const f = async (e: any, setQueriedId: any, setAltEvoIds: any, setSelectedMonster: any, setError: any) => {
+const f = async (
+  e: any,
+  setQueriedId: any,
+  setAltEvoIds: any,
+  setSelectedMonster: any,
+  setError: any,
+  gameConfig: any,
+  setCurrentLevel: any
+) => {
   e.preventDefault();
-  await handleInputChange(e.target.value, setQueriedId, setAltEvoIds, setSelectedMonster, setError);
+  await handleInputChange(
+    e.target.value,
+    setQueriedId,
+    setAltEvoIds,
+    setSelectedMonster,
+    setError,
+    gameConfig,
+    setCurrentLevel
+  );
 };
 
 const debouncedOnChange = debounce(f, 300);
@@ -199,7 +218,15 @@ export const CardSelectorModal = ({ isOpen }: { isOpen: boolean }) => {
                 type="text"
                 placeholder="Search id/name/query"
                 onChange={async (e) => {
-                  debouncedOnChange(e, setQueriedId, setAltEvoIds, setSelectedMonster, setError);
+                  debouncedOnChange(
+                    e,
+                    setQueriedId,
+                    setAltEvoIds,
+                    setSelectedMonster,
+                    setError,
+                    gameConfig,
+                    setCurrentLevel
+                  );
                 }}
               />
               <AlternateEvoImages
