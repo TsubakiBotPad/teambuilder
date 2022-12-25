@@ -173,6 +173,7 @@ const AttrImg = styled.img<AttrImgProps>`
 const TD = styled.td`
   padding: 0.1rem 1rem 0.1rem 0;
   vertical-align: middle;
+  text-align: right;
 `;
 
 export const TeamBasicStatsDisplay = ({
