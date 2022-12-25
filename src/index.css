@@ -1,10 +1,10 @@
 @import-normalize;
 
 body {
-  font-family: "Open Sans", sans-serif;
+  font-family: "Open Sans";
   font-size: 18px;
 
-  font-weight: 300;
+  font-weight: 400;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

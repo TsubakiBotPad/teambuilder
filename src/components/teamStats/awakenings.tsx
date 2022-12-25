@@ -196,7 +196,7 @@ export const AwakeningRowDisplay = ({
         return shouldShow ? (
           <FlexRowC gap="0.15rem" key={keyPrefix + numToDisplay + i}>
             <AwakeningImage awakeningId={b.awokenSkill} />
-            {b.percent ? ":" : "ⅹ"}
+            {b.percent ? ":" : "x"}
             <span>
               {numToDisplay ?? 0}
               {b.percent ? "%" : ""}

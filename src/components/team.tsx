@@ -158,17 +158,13 @@ export const Team = ({ teamId, state }: { teamId: keyof TeamState; state: Player
         <TeamSlot teamId={teamId} slotId={"3"} state={state.teamSlot3} />
         <TeamSlot teamId={teamId} slotId={"4"} state={state.teamSlot4} />
         <TeamSlot teamId={teamId} slotId={"5"} state={state.teamSlot5} />
-        {gameConfig.mode === "2p" ? (
-          <div
-            className={css`
-              margin-left: 0.5rem;
-            `}
-          >
-            <TeamSlot teamId={teamId} slotId={"6"} state={state.teamSlot6} invert={true} />
-          </div>
-        ) : (
-          <TeamSlot teamId={teamId} slotId={"6"} state={state.teamSlot6} />
-        )}
+        <div
+          className={css`
+            margin-left: 0.5rem;
+          `}
+        >
+          <TeamSlot teamId={teamId} slotId={"6"} state={state.teamSlot6} invert={gameConfig.mode === "2p"} />
+        </div>
       </FlexRow>
     </FlexCol>
   );
