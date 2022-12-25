@@ -1,3 +1,4 @@
+import { css } from "@emotion/css";
 import styled from "@emotion/styled";
 import { debounce } from "lodash";
 import React, { useEffect, useMemo, useRef, useState } from "react";
@@ -144,6 +145,15 @@ export const PadTeamBuilderPage = () => {
                         <TeamStatDisplay teamStat={teamStats.p3} keyP="p3" />
                       </FlexRow>
                     ) : null}
+                    <textarea
+                      rows={15}
+                      cols={10}
+                      className={css`
+                        width: 48%;
+                      `}
+                    >
+                      Type some notes here. Text is not saved when you share the link yet.
+                    </textarea>
                   </FlexCol>
                 </FlexCol>
               </FlexRow>
