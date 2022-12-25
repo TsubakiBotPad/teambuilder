@@ -1,4 +1,3 @@
-import { useRef } from "react";
 import { HashRouter, Route, Routes } from "react-router-dom";
 
 import { PadTeamBuilderPage } from "./pages/padteambuilder";
