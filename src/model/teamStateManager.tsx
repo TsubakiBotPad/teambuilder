@@ -140,6 +140,11 @@ export async function setCard(
     ...teamState
   };
 
+  // Remove SA if level < 110
+  if (cardInfo.level < 110) {
+    cardInfo.sa = undefined;
+  }
+
   const card = (newTeamState[p][s] as TeamSlotState)[c] as TeamCardInfo;
   (newTeamState[p][s] as TeamSlotState)[c] = {
     ...card,

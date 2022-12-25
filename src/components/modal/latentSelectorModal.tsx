@@ -8,9 +8,10 @@ import { monsterCacheClient } from "../../model/monsterCacheClient";
 import { PadAssetImage } from "../../model/padAssets";
 import { AppStateContext, setCardLatents, TeamSlotState, TeamStateContext } from "../../model/teamStateManager";
 import { LATENTS_BY_SIZE, LATENTS_ID_TO_NAME, LATENTS_NAME_TO_ID } from "../../model/types/latents";
-import { BoundingBox, FlexCol, FlexColC, FlexRow, H2, H3 } from "../../stylePrimitives";
-import { ConfirmButton } from "../generic/confirmButton";
+import { BoundingBox, FlexCol, FlexColC, FlexRow, FlexRowC, H2, H3 } from "../../stylePrimitives";
+import { ConfirmButton, RemoveButton } from "../generic/confirmButton";
 import { ModalCloseButton } from "./common";
+import { IoIosCheckmarkCircle, IoIosRemoveCircle } from "react-icons/io";
 
 const modalClassName = css`
   border: 0;
@@ -85,7 +86,7 @@ export const LatentSelectorModal = ({ isOpen }: { isOpen: boolean }) => {
           <H2>
             {cardSlotSelected.teamId}-{cardSlotSelected.slotId}-Latents
           </H2>
-          <FlexColC>
+          <FlexColC gap="2rem">
             <FlexRow wrap={"wrap"}>
               <FlexCol gap="1rem">
                 {Object.entries(LATENTS_BY_SIZE).map(([n, names], j) => {
@@ -110,8 +111,6 @@ export const LatentSelectorModal = ({ isOpen }: { isOpen: boolean }) => {
                 })}
               </FlexCol>
             </FlexRow>
-
-            <br />
             <FlexRow gap={"14px"}>
               {selectedLatents.length !== 0 ? (
                 <FlexRow gap={"14px"}>
@@ -122,7 +121,7 @@ export const LatentSelectorModal = ({ isOpen }: { isOpen: boolean }) => {
                     const isSixSlot = Math.floor(i / 100) === 6;
                     if (isSixSlot) {
                       return (
-                        <div key={"selectedLatent" + idx}>
+                        <div key={"selectedLatent" + idx} className={css``}>
                           <PadAssetImage
                             assetName={"6slotLatentBg"}
                             onClick={() => {
@@ -131,18 +130,20 @@ export const LatentSelectorModal = ({ isOpen }: { isOpen: boolean }) => {
                             }}
                             className={css`
                               opacity: ${valid ? "1" : "0.5"};
-                            `}
-                          />
-                          <div
-                            className={css`
                               position: relative;
-                              top: -50%;
-                              left: 45%;
-                              width: 0;
                             `}
                           >
-                            <PadAssetImage assetName={`${name}latentbase`} />
-                          </div>
+                            <div
+                              className={css`
+                                position: absolute;
+                                top: 0;
+                                left: 45%;
+                                height: 0;
+                              `}
+                            >
+                              <PadAssetImage assetName={`${name}latentbase`} />
+                            </div>
+                          </PadAssetImage>
                         </div>
                       );
                     }
@@ -171,17 +172,23 @@ export const LatentSelectorModal = ({ isOpen }: { isOpen: boolean }) => {
                 </FlexRow>
               ) : null}
             </FlexRow>
-            <br />
-            <FlexColC>
+            <FlexRowC gap="1rem">
               <ConfirmButton
                 onClick={() => {
                   setCardLatents(cardSlotSelected, selectedLatents, teamState, setTeamState);
                   setLatentModalIsOpen(false);
                 }}
               >
-                Use Latents
+                <IoIosCheckmarkCircle /> Confirm
               </ConfirmButton>
-            </FlexColC>
+              <RemoveButton
+                onClick={() => {
+                  setSelectedLatents([]);
+                }}
+              >
+                <IoIosRemoveCircle /> Clear
+              </RemoveButton>
+            </FlexRowC>
           </FlexColC>
         </div>
       </BoundingBox>

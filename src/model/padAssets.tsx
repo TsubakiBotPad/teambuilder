@@ -161,7 +161,6 @@ const PadAssetImg = styled.div<SpriteProps>`
   background-size: ${(props) => props.backgroundSize};
   width: ${(props) => props.width};
   height: ${(props) => props.height};
-  zindex: ${(props) => props.zIndex};
 `;
 
 export const PadAssetImage = ({
@@ -169,13 +168,13 @@ export const PadAssetImage = ({
   onClick,
   className,
   height: desiredHeight,
-  zIndex
+  children
 }: {
   assetName: string;
   onClick?: React.MouseEventHandler<HTMLImageElement>;
   className?: string;
   height?: number;
-  zIndex?: number;
+  children?: React.ReactNode;
 }) => {
   const c = ASSET_NAME_TO_SPRITE_PROPS[assetName];
   if (!c) {
@@ -198,7 +197,8 @@ export const PadAssetImage = ({
       scale={1}
       onClick={onClick}
       className={className}
-      zIndex={zIndex ?? 0}
-    />
+    >
+      {children}
+    </PadAssetImg>
   );
 };

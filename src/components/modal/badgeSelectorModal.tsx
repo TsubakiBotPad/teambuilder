@@ -6,9 +6,10 @@ import { breakpoint } from "../../breakpoints";
 import { PadAssetImage } from "../../model/padAssets";
 import { AppStateContext, setPlayerBadge, TeamStateContext } from "../../model/teamStateManager";
 import { BADGE_NAMES } from "../../model/types/badges";
-import { BoundingBox, FlexColC, FlexRow, H2 } from "../../stylePrimitives";
-import { ConfirmButton } from "../generic/confirmButton";
+import { BoundingBox, FlexColC, FlexRow, FlexRowC, H2 } from "../../stylePrimitives";
+import { ConfirmButton, RemoveButton } from "../generic/confirmButton";
 import { ModalCloseButton } from "./common";
+import { IoIosRemoveCircle, IoIosCheckmarkCircle } from "react-icons/io";
 
 const modalClassName = css`
   border: 0;
@@ -83,18 +84,23 @@ export const BadgeSelectorModal = ({ isOpen }: { isOpen: boolean }) => {
                 );
               })}
             </FlexRow>
-
-            <br />
-            <FlexColC>
+            <FlexRowC gap="1rem">
               <ConfirmButton
                 onClick={() => {
                   setPlayerBadge(playerSelected as any, selectedBadge, teamState, setTeamState);
                   setBadgeModalIsOpen(false);
                 }}
               >
-                Use Badge
+                <IoIosCheckmarkCircle /> Confirm
               </ConfirmButton>
-            </FlexColC>
+              <RemoveButton
+                onClick={() => {
+                  setSelectedBadge("");
+                }}
+              >
+                <IoIosRemoveCircle /> Clear
+              </RemoveButton>
+            </FlexRowC>
           </FlexColC>
         </div>
       </BoundingBox>

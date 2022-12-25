@@ -1,4 +1,3 @@
-import { css } from "@emotion/css";
 import styled from "@emotion/styled";
 
 import { MonsterResponse } from "../client";
@@ -27,7 +26,7 @@ export const LevelSelector = ({
   setLevel,
   selectedMonster
 }: {
-  currentLevel: number;
+  currentLevel: number | undefined;
   setLevel: (l: number) => void;
   selectedMonster?: MonsterResponse;
 }) => {
@@ -36,50 +35,41 @@ export const LevelSelector = ({
   }
 
   return (
-    <FlexRowC
-      gap="0.25rem"
-      className={css`
-        font-size: 0.75rem;
-        font-weight: 400;
-      `}
-    >
-      <span>Lv: </span>
-      <FlexRowC>
-        <FancyButton
-          backgroundColorFocused="#666"
-          backgroundColorUnfocused="#eee"
-          focused={currentLevel === 99}
-          onClick={() => {
-            setLevel(99);
-          }}
-        >
-          99
-        </FancyButton>
-        {selectedMonster.limit_mult !== 0 ? (
-          <>
-            <FancyButton
-              backgroundColorFocused="blue"
-              backgroundColorUnfocused="lightblue"
-              focused={currentLevel === 110}
-              onClick={() => {
-                setLevel(110);
-              }}
-            >
-              110
-            </FancyButton>
-            <FancyButton
-              backgroundColorFocused="green"
-              backgroundColorUnfocused="lightgreen"
-              focused={currentLevel === 120}
-              onClick={() => {
-                setLevel(120);
-              }}
-            >
-              120
-            </FancyButton>
-          </>
-        ) : null}
-      </FlexRowC>
+    <FlexRowC>
+      <FancyButton
+        backgroundColorFocused="#666"
+        backgroundColorUnfocused="#eee"
+        focused={currentLevel === 99}
+        onClick={() => {
+          setLevel(99);
+        }}
+      >
+        99
+      </FancyButton>
+      {selectedMonster.limit_mult !== 0 ? (
+        <>
+          <FancyButton
+            backgroundColorFocused="blue"
+            backgroundColorUnfocused="lightblue"
+            focused={currentLevel === 110}
+            onClick={() => {
+              setLevel(110);
+            }}
+          >
+            110
+          </FancyButton>
+          <FancyButton
+            backgroundColorFocused="green"
+            backgroundColorUnfocused="lightgreen"
+            focused={currentLevel === 120}
+            onClick={() => {
+              setLevel(120);
+            }}
+          >
+            120
+          </FancyButton>
+        </>
+      ) : null}
     </FlexRowC>
   );
 };

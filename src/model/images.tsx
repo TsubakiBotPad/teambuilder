@@ -6,7 +6,6 @@ export type SpriteProps = {
   width: string;
   height: string;
   scale: number;
-  zIndex: number;
 };
 
 const AwoImg = styled.div<SpriteProps>`
@@ -40,7 +39,6 @@ export const AwakeningImage = ({ awakeningId, width: desiredWidth }: { awakening
       backgroundPosition={`-${topPos * scale}px -${leftPos * scale}px`}
       backgroundSize={`${imgWidth * scale}px ${imgHeight * scale}px`}
       scale={scale}
-      zIndex={0}
     />
   );
 };
@@ -74,7 +72,6 @@ export const TypeImage = ({ typeId, width: desiredWidth }: { typeId: number; wid
       backgroundPosition={`-${topPos * scale}px -${leftPos * scale}px`}
       backgroundSize={`${imgWidth * scale}px ${imgHeight * scale}px`}
       scale={scale}
-      zIndex={0}
     />
   );
 };

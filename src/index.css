@@ -16,3 +16,7 @@ code {
 b {
   font-weight: 500;
 }
+
+td {
+  vertical-align:middle;
+}

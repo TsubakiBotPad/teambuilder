@@ -119,3 +119,20 @@ export const BoundingBox = styled.div<BoundingBoxProps>`
     min-width: ${(props) => props.minWidthM ?? "0%"};
   }
 `;
+
+export const TD = styled.td`
+  padding: 0.5rem 0.25rem;
+`;
+
+export const TDr = styled(TD)`
+  text-align: right;
+`;
+
+export const TDh = styled(TD)`
+  font-weight: 600;
+`;
+
+export const TDrh = styled(TD)`
+  font-weight: 600;
+  text-align: right;
+`;

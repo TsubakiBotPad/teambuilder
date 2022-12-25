@@ -3,6 +3,7 @@ import styled from "@emotion/styled";
 import { AxiosError } from "axios";
 import { debounce } from "lodash";
 import { useContext, useMemo, useState } from "react";
+import { IoIosCheckmarkCircle, IoIosRemoveCircle } from "react-icons/io";
 import Modal from "react-modal";
 
 import { breakpoint } from "../../breakpoints";
@@ -12,10 +13,8 @@ import { monsterCacheClient } from "../../model/monsterCacheClient";
 import { AppStateContext, setCard, TeamCardInfo, TeamSlotState, TeamStateContext } from "../../model/teamStateManager";
 import { BoundingBox, FlexCol, FlexColC, FlexRowC, H2 } from "../../stylePrimitives";
 import { GameConfig } from "../gameConfigSelector";
-import { ConfirmButton } from "../generic/confirmButton";
+import { ConfirmButton, RemoveButton } from "../generic/confirmButton";
 import { leftPad } from "../generic/leftPad";
-import { LevelSelector } from "../levelSelector";
-import { SuperAwakeningSelector } from "../superAwakeningSelector";
 import { CardInfo } from "./cardInfo";
 import { ModalCloseButton } from "./common";
 
@@ -68,15 +67,13 @@ const AlternateEvoImages = ({
   ids,
   selectedMonster,
   setSelectedMonster,
-  currentLevel,
   setCurrentLevel,
   setCurrentSA
 }: {
   ids: number[];
   selectedMonster: MonsterResponse | undefined;
   setSelectedMonster: React.Dispatch<React.SetStateAction<MonsterResponse | undefined>>;
-  currentLevel: number;
-  setCurrentLevel: React.Dispatch<React.SetStateAction<number>>;
+  setCurrentLevel: React.Dispatch<React.SetStateAction<number | undefined>>;
   setCurrentSA: React.Dispatch<React.SetStateAction<number | undefined>>;
 }) => {
   const { cardSlotSelected, setModalIsOpen, gameConfig } = useContext(AppStateContext);
@@ -92,7 +89,7 @@ const AlternateEvoImages = ({
             onClick={async (e) => {
               const monster = await monsterCacheClient.get(id);
               setSelectedMonster(monster);
-              setCardLevel(gameConfig, monster, currentLevel, setCurrentLevel);
+              setCardLevelForNewCard(gameConfig, monster, setCurrentLevel);
               setCurrentSA(undefined);
             }}
             onDoubleClick={() => {
@@ -150,7 +147,7 @@ export const CardSelectorModal = ({ isOpen }: { isOpen: boolean }) => {
   const [error, setError] = useState("");
   const [selectedMonster, setSelectedMonster] = useState<MonsterResponse | undefined>(undefined);
   const [hoverClose, setHoverClose] = useState(false);
-  const [currentLevel, setCurrentLevel] = useState(gameConfig.defaultCardLevel);
+  const [currentLevel, setCurrentLevel] = useState<number | undefined>(undefined);
   const [currentSA, setCurrentSA] = useState<number | undefined>(undefined);
 
   useMemo(() => {
@@ -162,6 +159,7 @@ export const CardSelectorModal = ({ isOpen }: { isOpen: boolean }) => {
       const monster = teamState[cardSlotSelected.teamId!][cardSlotSelected.slotId!] as TeamSlotState;
       const card = monster[cardSlotSelected.use!] as TeamCardInfo;
       const m = await monsterCacheClient.get(card.id);
+
       setSelectedMonster(m);
       setCurrentLevel(card.level);
       setCurrentSA(card.sa);
@@ -175,7 +173,7 @@ export const CardSelectorModal = ({ isOpen }: { isOpen: boolean }) => {
       contentLabel="Example Modal"
       shouldCloseOnOverlayClick={true}
       onAfterOpen={() => {
-        setCardLevel(gameConfig, selectedMonster, currentLevel, setCurrentLevel);
+        setCardLevelForExistingCard(gameConfig, selectedMonster, currentLevel, setCurrentLevel);
       }}
       onRequestClose={() => {
         setModalIsOpen(false);
@@ -208,51 +206,32 @@ export const CardSelectorModal = ({ isOpen }: { isOpen: boolean }) => {
                 ids={altEvoIds}
                 selectedMonster={selectedMonster}
                 setSelectedMonster={setSelectedMonster}
-                currentLevel={currentLevel}
                 setCurrentLevel={setCurrentLevel}
                 setCurrentSA={setCurrentSA}
-              />
-              <LevelSelector
-                currentLevel={currentLevel}
-                selectedMonster={selectedMonster}
-                setLevel={(n: number) => {
-                  setCurrentLevel(n);
-                }}
-              />
-              <SuperAwakeningSelector
-                currentSA={currentSA}
-                selectedMonster={selectedMonster}
-                setSA={(n: number) => {
-                  setCurrentSA(n);
-                }}
               />
               {error ? <span>{error}</span> : null}
             </FlexColC>
 
             <FlexColC>
-              <FlexRowC gap="0.25rem">
+              <FlexRowC gap="1rem">
                 <ConfirmButton
                   onClick={() => {
-                    setCard(
-                      cardSlotSelected,
-                      { id: selectedMonster!.monster_id, level: currentLevel, sa: currentSA },
-                      teamState,
-                      setTeamState,
-                      gameConfig
-                    );
+                    var cardInfo = selectedMonster
+                      ? { id: selectedMonster!.monster_id, level: currentLevel ?? 99, sa: currentSA }
+                      : { id: 0, level: 0, sa: 0 };
+                    setCard(cardSlotSelected, cardInfo, teamState, setTeamState, gameConfig);
                     setModalIsOpen(false);
                   }}
                 >
-                  Use Card
+                  <IoIosCheckmarkCircle /> Confirm
                 </ConfirmButton>
-                <ConfirmButton
+                <RemoveButton
                   onClick={() => {
-                    setCard(cardSlotSelected, { id: 0, level: 0, sa: 0 }, teamState, setTeamState, gameConfig);
-                    setModalIsOpen(false);
+                    setSelectedMonster(undefined);
                   }}
                 >
-                  Remove
-                </ConfirmButton>
+                  <IoIosRemoveCircle /> Clear
+                </RemoveButton>
               </FlexRowC>
             </FlexColC>
 
@@ -264,7 +243,17 @@ export const CardSelectorModal = ({ isOpen }: { isOpen: boolean }) => {
                 box-shadow: 2px 2px #888888;
               `}
             >
-              {selectedMonster ? <CardInfo monster={selectedMonster} /> : <FlexColC>Monster Details</FlexColC>}
+              {selectedMonster ? (
+                <CardInfo
+                  monster={selectedMonster}
+                  currentSA={currentSA}
+                  setCurrentSA={setCurrentSA}
+                  currentLevel={currentLevel}
+                  setCurrentLevel={setCurrentLevel}
+                />
+              ) : (
+                <FlexColC>No card selected</FlexColC>
+              )}
             </FlexCol>
           </FlexCol>
         </div>
@@ -273,17 +262,32 @@ export const CardSelectorModal = ({ isOpen }: { isOpen: boolean }) => {
   );
 };
 
-function setCardLevel(
+function setCardLevelForExistingCard(
   gameConfig: GameConfig,
   monster: MonsterResponse | undefined,
-  currentLevel: number,
-  setCurrentLevel: React.Dispatch<React.SetStateAction<number>>
+  currentLevel: number | undefined,
+  setCurrentLevel: React.Dispatch<React.SetStateAction<number | undefined>>
 ) {
-  var maxCardLevel = 120;
-  const desiredCardLevel = gameConfig.defaultCardLevel;
-  if (!monster || (currentLevel >= 99 && monster?.limit_mult === 0)) {
-    maxCardLevel = 99;
+  var maxCardLevel = 99;
+  if (monster && monster?.limit_mult !== 0) {
+    maxCardLevel = 120;
   }
 
-  setCurrentLevel(desiredCardLevel > maxCardLevel ? maxCardLevel : desiredCardLevel);
+  const levelToDisplay = Math.min(maxCardLevel, currentLevel ?? maxCardLevel);
+  setCurrentLevel(levelToDisplay);
+}
+
+function setCardLevelForNewCard(
+  gameConfig: GameConfig,
+  monster: MonsterResponse | undefined,
+  setCurrentLevel: React.Dispatch<React.SetStateAction<number | undefined>>
+) {
+  var maxCardLevel = 99;
+  const desiredCardLevel = gameConfig.defaultCardLevel;
+  if (monster && monster?.limit_mult !== 0) {
+    maxCardLevel = 120;
+  }
+
+  const levelToDisplay = Math.min(desiredCardLevel, maxCardLevel);
+  setCurrentLevel(levelToDisplay);
 }
