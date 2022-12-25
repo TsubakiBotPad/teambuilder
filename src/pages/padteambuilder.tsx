@@ -1,10 +1,11 @@
 import { css } from "@emotion/css";
 import styled from "@emotion/styled";
 import { debounce } from "lodash";
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useContext, useEffect, useMemo, useRef, useState } from "react";
 import { exportComponentAsPNG } from "react-component-export-image";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
+import { BsImage } from "react-icons/bs";
 import { useNavigate, useParams } from "react-router-dom";
 
 import { DefaultLevelSelector } from "../components/defaultLevelSelector";
@@ -17,7 +18,6 @@ import { computeTeamStat, TeamStatDisplay, TeamStats } from "../components/teamS
 import { ConfigData, deserializeConfig, serializeConfig } from "../model/serializedUri";
 import { AppStateContext, DEFAULT_GAME_CONFIG, DEFAULT_TEAM_STATE, TeamStateContext } from "../model/teamStateManager";
 import { FlexCol, FlexColC, FlexRow, FlexRowC, H1, Page } from "../stylePrimitives";
-import { BsImage } from "react-icons/bs";
 
 const maxPageWidth = "1440px";
 
@@ -34,17 +34,89 @@ export const DraggableTypes = {
   slot: "slot"
 };
 
+const TeamBuilderContent = React.forwardRef((props, ref) => {
+  const { gameConfig, setTeamName, teamName, teamStats } = useContext(AppStateContext);
+  const { teamState } = useContext(TeamStateContext);
+
+  return (
+    <FlexColC ref={ref as any}>
+      <FlexRow gap="1rem">
+        <FlexCol>
+          <TeamInput
+            placeholder="Team Title"
+            size={35}
+            value={teamName}
+            onChange={(e) => {
+              setTeamName(e.target.value);
+            }}
+          />
+          <FlexCol gap="1.5rem">
+            <FlexRow gap="3rem">
+              <Team teamId={"p1"} state={teamState.p1} />
+              <TeamStatDisplay teamStat={teamStats.p1} keyP="p1" />
+            </FlexRow>
+            {gameConfig.mode === "2p" || gameConfig.mode === "3p" ? (
+              <FlexRow gap="3rem">
+                <Team teamId={"p2"} state={teamState.p2} />
+                <TeamStatDisplay teamStat={teamStats.p2} keyP="p2" />
+              </FlexRow>
+            ) : null}
+            {gameConfig.mode === "3p" ? (
+              <FlexRow gap="3rem">
+                <Team teamId={"p3"} state={teamState.p3} />
+                <TeamStatDisplay teamStat={teamStats.p3} keyP="p3" />
+              </FlexRow>
+            ) : null}
+            <textarea
+              rows={15}
+              cols={10}
+              className={css`
+                width: 48%;
+              `}
+              defaultValue="Type some notes here. Text is not saved when you share the link yet."
+            />
+          </FlexCol>
+        </FlexCol>
+      </FlexRow>
+    </FlexColC>
+  );
+});
+
+const PadTeamBuilderPageInner = React.forwardRef((props, ref) => {
+  const { modalIsOpen, latentModalIsOpen, badgeModalIsOpen } = useContext(AppStateContext);
+  return (
+    <Page maxWidth={maxPageWidth}>
+      <FlexColC gap="1rem">
+        <H1>PAD Team Builder</H1>
+        <FlexRowC gap="2rem">
+          <GameConfigSelector />
+          <DefaultLevelSelector />
+          <FlexRowC gap="0.25rem">
+            Export:
+            <button
+              onClick={() => exportComponentAsPNG(ref as any)}
+              className={css`
+                box-shadow: 1px 1px #ccc;
+                border: 1px solid black;
+                padding: 0 0.1rem;
+              `}
+            >
+              <BsImage />
+            </button>
+          </FlexRowC>
+        </FlexRowC>
+      </FlexColC>
+      <CardSelectorModal isOpen={modalIsOpen} />
+      <LatentSelectorModal isOpen={latentModalIsOpen} />
+      <BadgeSelectorModal isOpen={badgeModalIsOpen} />
+      <TeamBuilderContent ref={ref} />
+    </Page>
+  );
+});
+
 export const PadTeamBuilderPage = () => {
   const ref = useRef();
 
-  return (
-    <div ref={ref as any}>
-      <PadTeamBuilderPageInner ref={ref} />
-    </div>
-  );
-};
-
-const PadTeamBuilderPageInner = React.forwardRef((props, ref) => {
   const params = useParams();
   const navigate = useNavigate();
   const { config } = params;
@@ -99,6 +171,7 @@ const PadTeamBuilderPageInner = React.forwardRef((props, ref) => {
       <AppStateContext.Provider
         value={{
           teamName,
+          setTeamName,
           gameConfig,
           setGameConfig,
           teamStats,
@@ -117,74 +190,11 @@ const PadTeamBuilderPageInner = React.forwardRef((props, ref) => {
         }}
       >
         <TeamStateContext.Provider value={{ teamState, setTeamState }}>
-          <Page maxWidth={maxPageWidth}>
-            <FlexColC gap="1rem">
-              <H1>PAD Team Builder</H1>
-              <FlexRowC gap="2rem">
-                <GameConfigSelector />
-                <DefaultLevelSelector />
-                <FlexRowC gap="0.25rem">
-                  Export:
-                  <button
-                    onClick={() => exportComponentAsPNG(ref as any)}
-                    className={css`
-                      box-shadow: 1px 1px #ccc;
-                      border: 1px solid black;
-                      padding: 0 0.1rem;
-                    `}
-                  >
-                    <BsImage />
-                  </button>
-                </FlexRowC>
-              </FlexRowC>
-            </FlexColC>
-            <CardSelectorModal isOpen={modalIsOpen} />
-            <LatentSelectorModal isOpen={latentModalIsOpen} />
-            <BadgeSelectorModal isOpen={badgeModalIsOpen} />
-            <FlexColC>
-              <FlexRow gap="1rem">
-                <FlexCol>
-                  <TeamInput
-                    placeholder="Team Title"
-                    size={35}
-                    value={teamName}
-                    onChange={(e) => {
-                      setTeamName(e.target.value);
-                    }}
-                  />
-                  <FlexCol gap="1.5rem">
-                    <FlexRow gap="3rem">
-                      <Team teamId={"p1"} state={teamState.p1} />
-                      <TeamStatDisplay teamStat={teamStats.p1} keyP="p1" />
-                    </FlexRow>
-                    {gameConfig.mode === "2p" || gameConfig.mode === "3p" ? (
-                      <FlexRow gap="3rem">
-                        <Team teamId={"p2"} state={teamState.p2} />
-                        <TeamStatDisplay teamStat={teamStats.p2} keyP="p2" />
-                      </FlexRow>
-                    ) : null}
-                    {gameConfig.mode === "3p" ? (
-                      <FlexRow gap="3rem">
-                        <Team teamId={"p3"} state={teamState.p3} />
-                        <TeamStatDisplay teamStat={teamStats.p3} keyP="p3" />
-                      </FlexRow>
-                    ) : null}
-                    <textarea
-                      rows={15}
-                      cols={10}
-                      className={css`
-                        width: 48%;
-                      `}
-                    >
-                      Type some notes here. Text is not saved when you share the link yet.
-                    </textarea>
-                  </FlexCol>
-                </FlexCol>
-              </FlexRow>
-            </FlexColC>
-          </Page>
+          <div ref={ref as any}>
+            <PadTeamBuilderPageInner ref={ref} />
+          </div>
         </TeamStateContext.Provider>
       </AppStateContext.Provider>
     </DndProvider>
   );
-});
+};

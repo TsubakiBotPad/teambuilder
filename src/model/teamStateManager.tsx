@@ -89,6 +89,7 @@ interface AppState {
   gameConfig: GameConfig;
   setGameConfig: React.Dispatch<React.SetStateAction<GameConfig>>;
   teamName: string;
+  setTeamName: React.Dispatch<React.SetStateAction<string>>;
   setTeamStats: React.Dispatch<React.SetStateAction<TeamStats>>;
   teamStats: TeamStats;
   modalIsOpen: boolean;
@@ -108,6 +109,7 @@ const DEFAULT_APP_STATE: AppState = {
   gameConfig: DEFAULT_GAME_CONFIG,
   setGameConfig: () => {},
   teamName: "",
+  setTeamName: () => {},
   teamStats: {},
   setTeamStats: () => {},
   modalIsOpen: false,
@@ -317,8 +319,8 @@ export function copyCard(
     ...teamState
   };
 
-  var targetCard = (newTeamState[t.teamId!][t.slotId!] as TeamSlotState)[useNameT] as TeamCardInfo;
-  (teamState[s.teamId!][s.slotId!] as TeamSlotState)[useNameS] = { ...targetCard } as any;
+  var sourceCard = (teamState[s.teamId!][s.slotId!] as TeamSlotState)[useNameS] as TeamCardInfo;
+  (newTeamState[t.teamId!][t.slotId!] as TeamSlotState)[useNameT] = { ...sourceCard } as any;
 
   setTeamState(newTeamState);
 }
