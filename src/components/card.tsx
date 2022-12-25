@@ -137,9 +137,9 @@ export const Card = ({ componentId, monster }: { componentId: Partial<TeamCompon
         }
 
         if (dropResult.dropEffect === "copy") {
-          copyCard(gameConfig, teamState, setTeamState, componentId, dropResult.target);
+          copyCard(teamState, setTeamState, componentId, dropResult.target);
         } else {
-          swapCards(gameConfig, teamState, setTeamState, componentId, dropResult.target);
+          swapCards(teamState, setTeamState, componentId, dropResult.target);
         }
       }
     }),

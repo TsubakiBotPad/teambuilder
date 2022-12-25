@@ -78,9 +78,9 @@ const TeamSlot = ({
       end(item, monitor) {
         const dropResult = monitor.getDropResult() as DropResult;
         if (dropResult.dropEffect === "copy") {
-          copySlot(gameConfig, teamState, setTeamState, componentId, dropResult.target);
+          copySlot(teamState, setTeamState, componentId, dropResult.target);
         } else {
-          swapSlot(gameConfig, teamState, setTeamState, componentId, dropResult.target);
+          swapSlot(teamState, setTeamState, componentId, dropResult.target);
         }
       }
     }),

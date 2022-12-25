@@ -260,7 +260,6 @@ const USE_TO_USENAME = {
 };
 
 export function swapCards(
-  gameConfig: GameConfig,
   teamState: TeamState,
   setTeamState: React.Dispatch<React.SetStateAction<TeamState>>,
   s: Partial<TeamComponentId>,
@@ -285,7 +284,6 @@ export function swapCards(
 }
 
 export function swapSlot(
-  gameConfig: GameConfig,
   teamState: TeamState,
   setTeamState: React.Dispatch<React.SetStateAction<TeamState>>,
   s: Partial<TeamComponentId>,
@@ -306,7 +304,6 @@ export function swapSlot(
 }
 
 export function copyCard(
-  gameConfig: GameConfig,
   teamState: TeamState,
   setTeamState: React.Dispatch<React.SetStateAction<TeamState>>,
   s: Partial<TeamComponentId>,
@@ -326,7 +323,6 @@ export function copyCard(
 }
 
 export function copySlot(
-  gameConfig: GameConfig,
   teamState: TeamState,
   setTeamState: React.Dispatch<React.SetStateAction<TeamState>>,
   s: Partial<TeamComponentId>,
