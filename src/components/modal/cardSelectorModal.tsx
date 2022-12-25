@@ -2,14 +2,14 @@ import { css } from "@emotion/css";
 import styled from "@emotion/styled";
 import { AxiosError } from "axios";
 import { debounce } from "lodash";
-import { useContext, useState } from "react";
+import { useContext, useMemo, useState } from "react";
 import Modal from "react-modal";
 
 import { breakpoint } from "../../breakpoints";
 import { ApiError, MonsterResponse } from "../../client";
 import { BASE_ICON_URL } from "../../model/images";
 import { monsterCacheClient } from "../../model/monsterCacheClient";
-import { AppStateContext, setCard, TeamStateContext } from "../../model/teamStateManager";
+import { AppStateContext, setCard, TeamCardInfo, TeamSlotState, TeamStateContext } from "../../model/teamStateManager";
 import { BoundingBox, FlexCol, FlexColC, FlexRowC, H2 } from "../../stylePrimitives";
 import { GameConfig } from "../gameConfigSelector";
 import { ConfirmButton } from "../generic/confirmButton";
@@ -152,6 +152,22 @@ export const CardSelectorModal = ({ isOpen }: { isOpen: boolean }) => {
   const [hoverClose, setHoverClose] = useState(false);
   const [currentLevel, setCurrentLevel] = useState(gameConfig.defaultCardLevel);
   const [currentSA, setCurrentSA] = useState<number | undefined>(undefined);
+
+  useMemo(() => {
+    const f = async () => {
+      if (!cardSlotSelected || !cardSlotSelected.teamId || !cardSlotSelected.slotId) {
+        return;
+      }
+
+      const monster = teamState[cardSlotSelected.teamId!][cardSlotSelected.slotId!] as TeamSlotState;
+      const card = monster[cardSlotSelected.use!] as TeamCardInfo;
+      const m = await monsterCacheClient.get(card.id);
+      setSelectedMonster(m);
+      setCurrentLevel(card.level);
+      setCurrentSA(card.sa);
+    };
+    f();
+  }, [teamState, cardSlotSelected]);
 
   return (
     <Modal

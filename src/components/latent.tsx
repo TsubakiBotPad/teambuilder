@@ -193,7 +193,7 @@ export const Latents = ({
         {latents.length !== 0 ? (
           <LatentSelected
             onClick={() => {
-              setCardSlotSelected({ ...componentId, use: "latent" });
+              setCardSlotSelected({ ...componentId, use: "latents" });
               setLatentModalIsOpen(true);
             }}
           >
@@ -225,7 +225,7 @@ export const Latents = ({
         ) : (
           <LatentEmpty
             onClick={() => {
-              setCardSlotSelected({ ...componentId, use: "latent" });
+              setCardSlotSelected({ ...componentId, use: "latents" });
               setLatentModalIsOpen(true);
             }}
           />

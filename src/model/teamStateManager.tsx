@@ -249,7 +249,7 @@ export function swapLatents(
 const USE_TO_USENAME = {
   base: "base",
   assist: "assist",
-  latent: "latents"
+  latents: "latents"
 };
 
 export function swapCards(

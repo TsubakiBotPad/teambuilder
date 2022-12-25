@@ -122,7 +122,7 @@ const TeamSlot = ({
           <ColorBG color={invert ? otherTeamColor : teamIdToColor[teamId]} darken={isOver}>
             <FlexColC gap="0.25rem">
               <Card componentId={{ ...componentId, use: "base" }} monster={state.base} />
-              <Latents componentId={{ ...componentId, use: "latent" }} latents={state.latents} teamSlot={state} />
+              <Latents componentId={{ ...componentId, use: "latents" }} latents={state.latents} teamSlot={state} />
             </FlexColC>
           </ColorBG>
           <GrabDots color={invert ? otherTeamColor : teamIdToColor[teamId]} darken={isOver}>
