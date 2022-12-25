@@ -43,7 +43,9 @@ const handleInputChange = async (
       setAlternateEvoIds(ret.evolutions.map((a) => a.monster_id));
       setSelectedMonster(ret.monster);
       setError("");
-      setCurrentLevel(gameConfig.defaultCardLevel);
+
+      const level = ret.monster.limit_mult !== 0 ? gameConfig.defaultCardLevel : 99;
+      setCurrentLevel(level);
     }
   } catch (e) {
     if (e instanceof ApiError) {
