@@ -100,9 +100,9 @@ const CardSelected = ({ monster, componentId }: { componentId: Partial<TeamCompo
           }
         `}
       >
-        <FlexColC>
-          <PadAssetImage assetName="jsf" height={20} />
-          <div>{monster.sa ? <AwakeningImage awakeningId={monster.sa} width={23} /> : null}</div>
+        <FlexColC gap={"0.25rem"}>
+          <img src={"img/awoInheritable.png"} width={"20px"} />
+          <div>{monster.sa ? <AwakeningImage awakeningId={monster.sa} width={22} /> : null}</div>
         </FlexColC>
       </div>
 
