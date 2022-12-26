@@ -16,7 +16,13 @@ import { LatentSelectorModal } from "../components/modal/latentSelectorModal";
 import { TeamBlock } from "../components/team";
 import { computeTeamStat, TeamStats } from "../components/teamStats/teamStats";
 import { ConfigData, deserializeConfig, serializeConfig } from "../model/serializedUri";
-import { AppStateContext, DEFAULT_GAME_CONFIG, DEFAULT_TEAM_STATE, TeamStateContext } from "../model/teamStateManager";
+import {
+  AppStateContext,
+  DEFAULT_GAME_CONFIG,
+  DEFAULT_TEAM_STATE,
+  linkLeaders,
+  TeamStateContext
+} from "../model/teamStateManager";
 import { FlexCol, FlexColC, FlexRow, FlexRowC, H1, Page } from "../stylePrimitives";
 
 const maxPageWidth = "1440px";
@@ -157,6 +163,12 @@ export const PadTeamBuilderPage = () => {
     };
     f();
   }, [teamState, gameConfig]);
+
+  useMemo(() => {
+    if (gameConfig.mode === "2p") {
+      linkLeaders(teamState, setTeamState);
+    }
+  }, [gameConfig]);
 
   return (
     <DndProvider backend={HTML5Backend}>
