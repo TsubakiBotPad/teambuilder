@@ -103,6 +103,8 @@ interface AppState {
   playerSelected: string;
   setPlayerSelected: React.Dispatch<React.SetStateAction<string>>;
   updateUrl: DebouncedFunc<(config: Partial<ConfigData>) => void>;
+  instructions?: string;
+  setInstructions: React.Dispatch<React.SetStateAction<string | undefined>>;
 }
 
 const DEFAULT_APP_STATE: AppState = {
@@ -122,7 +124,9 @@ const DEFAULT_APP_STATE: AppState = {
   setCardSlotSelected: () => {},
   playerSelected: "",
   setPlayerSelected: () => {},
-  updateUrl: debounce(() => {})
+  updateUrl: debounce(() => {}),
+  instructions: "",
+  setInstructions: () => {}
 };
 
 export const AppStateContext = React.createContext(DEFAULT_APP_STATE);

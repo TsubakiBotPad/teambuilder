@@ -35,7 +35,7 @@ export const DraggableTypes = {
 };
 
 const TeamBuilderContent = React.forwardRef((props, ref) => {
-  const { gameConfig, setTeamName, teamName, teamStats } = useContext(AppStateContext);
+  const { gameConfig, setTeamName, teamName, teamStats, instructions, setInstructions } = useContext(AppStateContext);
   const { teamState } = useContext(TeamStateContext);
 
   return (
@@ -74,6 +74,10 @@ const TeamBuilderContent = React.forwardRef((props, ref) => {
                 width: 48%;
               `}
               defaultValue="Type some notes here. Text is not saved when you share the link yet."
+              value={instructions}
+              onChange={(e) => {
+                setInstructions(e.target.value);
+              }}
             />
           </FlexCol>
         </FlexCol>
@@ -138,10 +142,12 @@ export const PadTeamBuilderPage = () => {
   const [badgeModalIsOpen, setBadgeModalIsOpen] = useState(false);
   const [playerSelected, setPlayerSelected] = useState("");
   const [cardSlotSelected, setCardSlotSelected] = useState({});
+  const [instructions, setInstructions] = useState<string | undefined>(undefined);
 
   var updateUrl = useRef(
     debounce((config: Partial<ConfigData>) => {
       const finalConfig = {
+        in: instructions,
         n: teamName,
         ts: teamState,
         gc: gameConfig,
@@ -152,8 +158,8 @@ export const PadTeamBuilderPage = () => {
   );
 
   useEffect(() => {
-    updateUrl.current({ n: teamName, ts: teamState, gc: gameConfig });
-  }, [teamName, teamState, gameConfig]);
+    updateUrl.current({ n: teamName, ts: teamState, gc: gameConfig, in: instructions });
+  }, [teamName, teamState, gameConfig, instructions]);
 
   useMemo(() => {
     const f = async () => {
@@ -186,7 +192,9 @@ export const PadTeamBuilderPage = () => {
           setCardSlotSelected,
           playerSelected,
           setPlayerSelected,
-          updateUrl: updateUrl.current
+          updateUrl: updateUrl.current,
+          instructions,
+          setInstructions
         }}
       >
         <TeamStateContext.Provider value={{ teamState, setTeamState }}>
