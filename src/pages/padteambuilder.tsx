@@ -153,7 +153,6 @@ export const PadTeamBuilderPage = () => {
 
   useEffect(() => {
     updateUrl.current({ n: teamName, ts: teamState, gc: gameConfig, in: instructions });
-    debugger;
   }, [teamName, teamState, gameConfig, instructions]);
 
   useMemo(() => {

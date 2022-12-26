@@ -60,7 +60,7 @@ function totalDoubleAwakening(one: string, two: string) {
   return (h: AwakeningHistogram) => {
     const k1 = AwokenSkills[one as any];
     const k2 = AwokenSkills[two as any];
-    return h[k1] ?? 0 + 2 * (h[k2] ?? 0);
+    return (h[k1] ?? 0) + 2 * (h[k2] ?? 0);
   };
 }
 
