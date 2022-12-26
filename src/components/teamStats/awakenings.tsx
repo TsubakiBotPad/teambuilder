@@ -223,10 +223,18 @@ export const AwakeningStatsDisplay = ({
   return (
     <FlexCol
       className={css`
-        width: 100%;
+        border: solid 1px #aaa;
+        box-shadow: 1px 1px #ccc;
+        padding: 0rem 2rem 0rem 2rem;
+        height: 100%;
       `}
     >
-      <FlexCol gap="0.75rem">
+      <FlexCol
+        gap="0.75rem"
+        className={css`
+          margin: 1rem 0;
+        `}
+      >
         <H3>Awakenings</H3>
         {AwakeningsToDisplay.map((a, j) => {
           const data = a.data;
@@ -246,19 +254,6 @@ export const AwakeningStatsDisplay = ({
           );
         })}
       </FlexCol>
-
-      {/* {Object.entries(awakenings).map(([idStr, count]) => {
-        const id = parseInt(idStr);
-        const awoName = AwokenSkills[id];
-
-        return (
-          <FlexRowC>
-            <AwakeningImage awakeningId={id} />
-            <span>{id}</span>
-            <span>: {count}</span>
-          </FlexRowC>
-        );
-      })} */}
     </FlexCol>
   );
 };

@@ -53,17 +53,16 @@ export const TeamStatDisplay = ({ teamStat, keyP: keyPrefix }: { teamStat?: Team
           display: flex;
           justify-content: space-between;
           gap: 3rem;
+          height: 100%;
         `}
       >
-        <div>
-          <TeamBasicStatsDisplay
-            tbs={teamStat.teamBasicStats}
-            tt={teamStat.teamTypes}
-            unbindablePct={teamStat.teamUnbindablePct}
-            ah={teamStat.attributes}
-            keyP={keyPrefix}
-          />
-        </div>
+        <TeamBasicStatsDisplay
+          tbs={teamStat.teamBasicStats}
+          tt={teamStat.teamTypes}
+          unbindablePct={teamStat.teamUnbindablePct}
+          ah={teamStat.attributes}
+          keyP={keyPrefix}
+        />
         <AwakeningStatsDisplay awakenings={teamStat.awakenings} keyPrefix={keyPrefix} />
       </div>
     </FlexCol>

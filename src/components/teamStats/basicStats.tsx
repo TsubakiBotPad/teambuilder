@@ -194,112 +194,126 @@ export const TeamBasicStatsDisplay = ({
   }
 
   return (
-    <FlexCol gap={"1rem"}>
-      <H3>Stats</H3>
-      <table>
-        <thead>
-          <tr>
-            <th></th>
-            <th style={{ textAlign: "start", verticalAlign: "middle" }}>
-              <AwakeningImage awakeningId={AwokenSkills.AWOKENKILLER} width={23} />
-            </th>
-            <th style={{ textAlign: "start", verticalAlign: "middle" }}>
-              <div
-                className={css`
-                  background: url("img/awoBind.webp") no-repeat;
-                  background-size: contain;
-                  height: 20px;
-                  display: flex;
-                  align-items: center;
-                `}
-              ></div>
-              {/* <img src="img/awoBind.webp" width={"20px"} /> */}
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <TD>
-              <b>HP</b>
-            </TD>
-            <TD>{fixedDecimals(tbs.hp, 0)}</TD>
-            <TD>{fixedDecimals(tbs.hpNoAwo, 0)}</TD>
-          </tr>
-          <tr>
-            <TD>
-              <b>eHP</b>
-            </TD>
-            <TD>{fixedDecimals(tbs.ehp, 0)}</TD>
-            <TD>{fixedDecimals(tbs.ehpNoAwo, 0)}</TD>
-          </tr>
-          <tr>
-            <TD>
-              <b>RCV</b>
-            </TD>
-            <TD>{fixedDecimals(tbs.rcv, 0)}</TD>
-            <TD>{fixedDecimals(tbs.rcvNoAwo, 0)}</TD>
-          </tr>
-        </tbody>
-      </table>
+    <div
+      className={css`
+        border: solid 1px #aaa;
+        box-shadow: 1px 1px #ccc;
+        padding: 0rem 2rem 0rem 2rem;
+        height: 100%;
+      `}
+    >
+      <FlexCol
+        gap={"0.5rem"}
+        className={css`
+          margin: 1rem 0;
+        `}
+      >
+        <H3>Stats</H3>
+        <table>
+          <thead>
+            <tr>
+              <th></th>
+              <th style={{ textAlign: "start", verticalAlign: "middle" }}>
+                <AwakeningImage awakeningId={AwokenSkills.AWOKENKILLER} width={23} />
+              </th>
+              <th style={{ textAlign: "start", verticalAlign: "middle" }}>
+                <div
+                  className={css`
+                    background: url("img/awoBind.webp") no-repeat;
+                    background-size: contain;
+                    height: 20px;
+                    display: flex;
+                    align-items: center;
+                  `}
+                ></div>
+                {/* <img src="img/awoBind.webp" width={"20px"} /> */}
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <TD>
+                <b>HP</b>
+              </TD>
+              <TD>{fixedDecimals(tbs.hp, 0)}</TD>
+              <TD>{fixedDecimals(tbs.hpNoAwo, 0)}</TD>
+            </tr>
+            <tr>
+              <TD>
+                <b>eHP</b>
+              </TD>
+              <TD>{fixedDecimals(tbs.ehp, 0)}</TD>
+              <TD>{fixedDecimals(tbs.ehpNoAwo, 0)}</TD>
+            </tr>
+            <tr>
+              <TD>
+                <b>RCV</b>
+              </TD>
+              <TD>{fixedDecimals(tbs.rcv, 0)}</TD>
+              <TD>{fixedDecimals(tbs.rcvNoAwo, 0)}</TD>
+            </tr>
+          </tbody>
+        </table>
 
-      <table>
-        <tbody>
-          {tt ? (
-            <tr>
-              <TD>
-                <b>Types</b>
-              </TD>
-              <TD>
-                <FlexRow>
-                  {tt.map((a, i) => {
-                    return (
-                      <PadAssetImage
-                        assetName={`${MonsterType[a].toLocaleLowerCase().substring(0, 3)}t`}
-                        height={25}
-                        key={keyP + "Types" + i}
-                      />
-                    );
-                  })}
-                </FlexRow>
-              </TD>
-            </tr>
-          ) : (
-            <></>
-          )}
+        <table>
+          <tbody>
+            {tt ? (
+              <tr>
+                <TD>
+                  <b>Types</b>
+                </TD>
+                <TD>
+                  <FlexRow>
+                    {tt.map((a, i) => {
+                      return (
+                        <PadAssetImage
+                          assetName={`${MonsterType[a].toLocaleLowerCase().substring(0, 3)}t`}
+                          height={25}
+                          key={keyP + "Types" + i}
+                        />
+                      );
+                    })}
+                  </FlexRow>
+                </TD>
+              </tr>
+            ) : (
+              <></>
+            )}
 
-          {ah ? (
-            <tr>
-              <TD>
-                <b>Attr</b>
-              </TD>
-              <TD>
-                <FlexRow gap={"0.25rem"}>
-                  {Object.entries(ah).map((a, i) => {
-                    const attr = Attribute[a[0] as keyof {}].toLocaleLowerCase();
-                    return (
-                      <span key={keyP + attr + i}>
-                        <AttrImg src={`img/orb${attr}.webp`} selected={a[1]} />
-                      </span>
-                    );
-                  })}
-                </FlexRow>
-              </TD>
-            </tr>
-          ) : (
-            <></>
-          )}
-          {unbindablePct !== undefined ? (
-            <tr>
-              <TD>
-                <b>!Bind</b>
-              </TD>
-              <TD>{fixedDecimals(unbindablePct, 0)}%</TD>
-            </tr>
-          ) : (
-            <></>
-          )}
-        </tbody>
-      </table>
-    </FlexCol>
+            {ah ? (
+              <tr>
+                <TD>
+                  <b>Attr</b>
+                </TD>
+                <TD>
+                  <FlexRow gap={"0.25rem"}>
+                    {Object.entries(ah).map((a, i) => {
+                      const attr = Attribute[a[0] as keyof {}].toLocaleLowerCase();
+                      return (
+                        <span key={keyP + attr + i}>
+                          <AttrImg src={`img/orb${attr}.webp`} selected={a[1]} />
+                        </span>
+                      );
+                    })}
+                  </FlexRow>
+                </TD>
+              </tr>
+            ) : (
+              <></>
+            )}
+            {unbindablePct !== undefined ? (
+              <tr>
+                <TD>
+                  <b>!Bind</b>
+                </TD>
+                <TD>{fixedDecimals(unbindablePct, 0)}%</TD>
+              </tr>
+            ) : (
+              <></>
+            )}
+          </tbody>
+        </table>
+      </FlexCol>
+    </div>
   );
 };

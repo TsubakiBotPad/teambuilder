@@ -28,6 +28,12 @@ const TeamInput = styled.input`
   padding: 0.25rem 0.5rem 0.25rem 0;
 `;
 
+const TeamRow = styled(FlexRow)`
+  border: solid 1px #aaa;
+  padding: 0.5rem;
+  gap: 3rem;
+`;
+
 export const DraggableTypes = {
   card: "card",
   latent: "latent",
@@ -51,21 +57,21 @@ const TeamBuilderContent = React.forwardRef((props, ref) => {
             }}
           />
           <FlexCol gap="1.5rem">
-            <FlexRow gap="3rem">
+            <TeamRow>
               <Team teamId={"p1"} state={teamState.p1} />
               <TeamStatDisplay teamStat={teamStats.p1} keyP="p1" />
-            </FlexRow>
+            </TeamRow>
             {gameConfig.mode === "2p" || gameConfig.mode === "3p" ? (
-              <FlexRow gap="3rem">
+              <TeamRow>
                 <Team teamId={"p2"} state={teamState.p2} />
                 <TeamStatDisplay teamStat={teamStats.p2} keyP="p2" />
-              </FlexRow>
+              </TeamRow>
             ) : null}
             {gameConfig.mode === "3p" ? (
-              <FlexRow gap="3rem">
+              <TeamRow>
                 <Team teamId={"p3"} state={teamState.p3} />
                 <TeamStatDisplay teamStat={teamStats.p3} keyP="p3" />
-              </FlexRow>
+              </TeamRow>
             ) : null}
             <textarea
               rows={15}
