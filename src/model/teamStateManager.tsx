@@ -142,22 +142,18 @@ export async function setCard(
   const s = cardSlot.slotId!;
   const c = `${cardSlot.use!}` as keyof TeamSlotState;
 
-  var newTeamState = {
-    ...teamState
-  };
-
   // Remove SA if level < 110
   if (cardInfo.level < 110) {
     cardInfo.sa = undefined;
   }
 
-  const card = (newTeamState[p][s] as TeamSlotState)[c] as TeamCardInfo;
-  (newTeamState[p][s] as TeamSlotState)[c] = {
+  const card = (teamState[p][s] as TeamSlotState)[c] as TeamCardInfo;
+  (teamState[p][s] as TeamSlotState)[c] = {
     ...card,
     ...cardInfo
   } as any;
 
-  setTeamState(newTeamState);
+  setTeamState(teamState);
 }
 
 export async function setCardLatents(
@@ -170,12 +166,8 @@ export async function setCardLatents(
   const s = cardSlot.slotId!;
   const c = "latents";
 
-  var newTeamState = {
-    ...teamState
-  };
-
-  (newTeamState[p][s] as TeamSlotState)[c] = [...value];
-  setTeamState(newTeamState);
+  (teamState[p][s] as TeamSlotState)[c] = [...value];
+  setTeamState(teamState);
 }
 
 export async function setPlayerBadge(
@@ -184,12 +176,8 @@ export async function setPlayerBadge(
   teamState: TeamState,
   setTeamState: React.Dispatch<React.SetStateAction<TeamState>>
 ) {
-  var newTeamState = {
-    ...teamState
-  };
-
-  newTeamState[playerId as keyof TeamState].badgeId = value;
-  setTeamState(newTeamState);
+  teamState[playerId as keyof TeamState].badgeId = value;
+  setTeamState(teamState);
 }
 
 export function getTeamSlots(gameConfig: GameConfig, teamState: TeamState, playerId: keyof TeamState) {
@@ -224,16 +212,13 @@ export function copyLatents(
   s: Partial<TeamComponentId>,
   t: Partial<TeamComponentId>
 ) {
-  var newTeamState = {
-    ...teamState
-  };
-
   const oT = teamState[s.teamId!];
   const oS = oT[s.slotId!] as TeamSlotState;
   const oSl = oS.latents;
 
-  (newTeamState[t.teamId!][t.slotId!] as TeamSlotState).latents = [...oSl];
-  setTeamState(newTeamState);
+  const latents = (teamState[t.teamId!][t.slotId!] as TeamSlotState).latents;
+  latents.splice(0, latents.length, ...oSl);
+  setTeamState(teamState);
 }
 
 export function swapLatents(
@@ -242,19 +227,15 @@ export function swapLatents(
   s: Partial<TeamComponentId>,
   t: Partial<TeamComponentId>
 ) {
-  var newTeamState = {
-    ...teamState
-  };
-
   const oT = teamState[t.teamId!];
   const oS = oT[t.slotId!] as TeamSlotState;
   const oSl = oS.latents;
 
-  (newTeamState[t.teamId!][t.slotId!] as TeamSlotState).latents = [
+  (teamState[t.teamId!][t.slotId!] as TeamSlotState).latents = [
     ...(teamState[s.teamId!][s.slotId!] as TeamSlotState).latents
   ];
-  (newTeamState[s.teamId!][s.slotId!] as TeamSlotState).latents = [...oSl];
-  setTeamState(newTeamState);
+  (teamState[s.teamId!][s.slotId!] as TeamSlotState).latents = [...oSl];
+  setTeamState(teamState);
 }
 
 const USE_TO_USENAME = {
@@ -272,19 +253,15 @@ export function swapCards(
   const useNameS = USE_TO_USENAME[s.use!] as keyof TeamSlotState;
   const useNameT = USE_TO_USENAME[t.use!] as keyof TeamSlotState;
 
-  var newTeamState = {
-    ...teamState
-  };
-
   const oT = teamState[t.teamId!];
   const oS = oT[t.slotId!] as TeamSlotState;
   const tempCard = oS[useNameT] as TeamCardInfo;
 
   const sourceCard = (teamState[s.teamId!][s.slotId!] as TeamSlotState)[useNameS] as TeamCardInfo;
-  (newTeamState[t.teamId!][t.slotId!] as TeamSlotState)[useNameT] = { ...sourceCard } as any;
-  (newTeamState[s.teamId!][s.slotId!] as TeamSlotState)[useNameS] = { ...tempCard } as any;
+  (teamState[t.teamId!][t.slotId!] as TeamSlotState)[useNameT] = { ...sourceCard } as any;
+  (teamState[s.teamId!][s.slotId!] as TeamSlotState)[useNameS] = { ...tempCard } as any;
 
-  setTeamState(newTeamState);
+  setTeamState(teamState);
 }
 
 export function swapSlot(
@@ -293,18 +270,34 @@ export function swapSlot(
   s: Partial<TeamComponentId>,
   t: Partial<TeamComponentId>
 ) {
-  var newTeamState = {
-    ...teamState
-  };
-
   const oT = teamState[t.teamId!];
   const tempSlot = oT[t.slotId!] as TeamSlotState;
+  const tempVal: TeamSlotState = {
+    base: { ...tempSlot.base },
+    assist: { ...tempSlot.assist },
+    latents: [...tempSlot.latents]
+  };
 
   const slot = teamState[s.teamId!][s.slotId!] as TeamSlotState;
-  (newTeamState[t.teamId!][t.slotId!] as TeamSlotState) = slot;
-  (newTeamState[s.teamId!][s.slotId!] as TeamSlotState) = tempSlot;
+  var targetSlot = teamState[t.teamId!][t.slotId!] as TeamSlotState;
+  targetSlot.base.id = slot.base.id;
+  targetSlot.base.level = slot.base.level;
+  targetSlot.base.sa = slot.base.sa;
+  targetSlot.assist.id = slot.assist.id;
+  targetSlot.assist.level = slot.assist.level;
+  targetSlot.assist.sa = slot.assist.sa;
+  targetSlot.latents.splice(0, targetSlot.latents.length, ...slot.latents);
 
-  setTeamState(newTeamState);
+  const sourceSlot = teamState[s.teamId!][s.slotId!] as TeamSlotState;
+  sourceSlot.base.id = tempVal.base.id;
+  sourceSlot.base.level = tempVal.base.level;
+  sourceSlot.base.sa = tempVal.base.sa;
+  sourceSlot.assist.id = tempVal.assist.id;
+  sourceSlot.assist.level = tempVal.assist.level;
+  sourceSlot.assist.sa = tempVal.assist.sa;
+  sourceSlot.latents.splice(0, sourceSlot.latents.length, ...tempVal.latents);
+
+  setTeamState(teamState);
 }
 
 export function copyCard(
@@ -321,7 +314,10 @@ export function copyCard(
   };
 
   var sourceCard = (teamState[s.teamId!][s.slotId!] as TeamSlotState)[useNameS] as TeamCardInfo;
-  (newTeamState[t.teamId!][t.slotId!] as TeamSlotState)[useNameT] = { ...sourceCard } as any;
+  var targetCard = (newTeamState[t.teamId!][t.slotId!] as TeamSlotState)[useNameT] as TeamCardInfo;
+  targetCard.id = sourceCard.id;
+  targetCard.level = sourceCard.level;
+  targetCard.sa = sourceCard.sa;
 
   setTeamState(newTeamState);
 }
@@ -337,11 +333,14 @@ export function copySlot(
   };
 
   const slot = teamState[s.teamId!][s.slotId!] as TeamSlotState;
-  (newTeamState[t.teamId!][t.slotId!] as TeamSlotState) = {
-    base: { ...slot.base },
-    assist: { ...slot.assist },
-    latents: [...slot.latents]
-  };
+  const targetSlot = newTeamState[t.teamId!][t.slotId!] as TeamSlotState;
+  targetSlot.base.id = slot.base.id;
+  targetSlot.base.level = slot.base.level;
+  targetSlot.base.sa = slot.base.sa;
+  targetSlot.assist.id = slot.assist.id;
+  targetSlot.assist.level = slot.assist.level;
+  targetSlot.assist.sa = slot.assist.sa;
+  targetSlot.latents.splice(0, targetSlot.latents.length, ...slot.latents);
 
   setTeamState(newTeamState);
 }
@@ -353,7 +352,7 @@ export function linkLeaders(teamState: TeamState, setTeamState: React.Dispatch<R
 
   newTeamState.p2.teamSlot6 = teamState.p1.teamSlot1;
   newTeamState.p1.teamSlot6 = teamState.p2.teamSlot1;
-
+  debugger;
   setTeamState(newTeamState);
 }
 
