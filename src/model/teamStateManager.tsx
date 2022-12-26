@@ -153,7 +153,7 @@ export async function setCard(
     ...cardInfo
   } as any;
 
-  setTeamState(teamState);
+  setTeamState({ ...teamState });
 }
 
 export async function setCardLatents(
@@ -167,7 +167,7 @@ export async function setCardLatents(
   const c = "latents";
 
   (teamState[p][s] as TeamSlotState)[c] = [...value];
-  setTeamState(teamState);
+  setTeamState({ ...teamState });
 }
 
 export async function setPlayerBadge(
@@ -177,7 +177,7 @@ export async function setPlayerBadge(
   setTeamState: React.Dispatch<React.SetStateAction<TeamState>>
 ) {
   teamState[playerId as keyof TeamState].badgeId = value;
-  setTeamState(teamState);
+  setTeamState({ ...teamState });
 }
 
 export function getTeamSlots(gameConfig: GameConfig, teamState: TeamState, playerId: keyof TeamState) {
@@ -218,7 +218,7 @@ export function copyLatents(
 
   const latents = (teamState[t.teamId!][t.slotId!] as TeamSlotState).latents;
   latents.splice(0, latents.length, ...oSl);
-  setTeamState(teamState);
+  setTeamState({ ...teamState });
 }
 
 export function swapLatents(
@@ -235,7 +235,7 @@ export function swapLatents(
     ...(teamState[s.teamId!][s.slotId!] as TeamSlotState).latents
   ];
   (teamState[s.teamId!][s.slotId!] as TeamSlotState).latents = [...oSl];
-  setTeamState(teamState);
+  setTeamState({ ...teamState });
 }
 
 const USE_TO_USENAME = {
@@ -261,7 +261,7 @@ export function swapCards(
   (teamState[t.teamId!][t.slotId!] as TeamSlotState)[useNameT] = { ...sourceCard } as any;
   (teamState[s.teamId!][s.slotId!] as TeamSlotState)[useNameS] = { ...tempCard } as any;
 
-  setTeamState(teamState);
+  setTeamState({ ...teamState });
 }
 
 export function swapSlot(
@@ -297,7 +297,7 @@ export function swapSlot(
   sourceSlot.assist.sa = tempVal.assist.sa;
   sourceSlot.latents.splice(0, sourceSlot.latents.length, ...tempVal.latents);
 
-  setTeamState(teamState);
+  setTeamState({ ...teamState });
 }
 
 export function copyCard(
@@ -309,17 +309,13 @@ export function copyCard(
   const useNameS = USE_TO_USENAME[s.use!] as keyof TeamSlotState;
   const useNameT = USE_TO_USENAME[t.use!] as keyof TeamSlotState;
 
-  var newTeamState = {
-    ...teamState
-  };
-
   var sourceCard = (teamState[s.teamId!][s.slotId!] as TeamSlotState)[useNameS] as TeamCardInfo;
-  var targetCard = (newTeamState[t.teamId!][t.slotId!] as TeamSlotState)[useNameT] as TeamCardInfo;
+  var targetCard = (teamState[t.teamId!][t.slotId!] as TeamSlotState)[useNameT] as TeamCardInfo;
   targetCard.id = sourceCard.id;
   targetCard.level = sourceCard.level;
   targetCard.sa = sourceCard.sa;
 
-  setTeamState(newTeamState);
+  setTeamState({ ...teamState });
 }
 
 export function copySlot(
@@ -328,12 +324,8 @@ export function copySlot(
   s: Partial<TeamComponentId>,
   t: Partial<TeamComponentId>
 ) {
-  var newTeamState = {
-    ...teamState
-  };
-
   const slot = teamState[s.teamId!][s.slotId!] as TeamSlotState;
-  const targetSlot = newTeamState[t.teamId!][t.slotId!] as TeamSlotState;
+  const targetSlot = teamState[t.teamId!][t.slotId!] as TeamSlotState;
   targetSlot.base.id = slot.base.id;
   targetSlot.base.level = slot.base.level;
   targetSlot.base.sa = slot.base.sa;
@@ -342,18 +334,20 @@ export function copySlot(
   targetSlot.assist.sa = slot.assist.sa;
   targetSlot.latents.splice(0, targetSlot.latents.length, ...slot.latents);
 
-  setTeamState(newTeamState);
+  setTeamState({ ...teamState });
 }
 
 export function linkLeaders(teamState: TeamState, setTeamState: React.Dispatch<React.SetStateAction<TeamState>>) {
-  var newTeamState = {
-    ...teamState
-  };
+  teamState.p2.teamSlot6 = teamState.p1.teamSlot1;
+  teamState.p1.teamSlot6 = teamState.p2.teamSlot1;
+  setTeamState({ ...teamState });
+}
 
-  newTeamState.p2.teamSlot6 = teamState.p1.teamSlot1;
-  newTeamState.p1.teamSlot6 = teamState.p2.teamSlot1;
-  debugger;
-  setTeamState(newTeamState);
+export function linkLeadersNoSet(teamState: TeamState) {
+  teamState.p2.teamSlot6 = teamState.p1.teamSlot1;
+  teamState.p1.teamSlot6 = teamState.p2.teamSlot1;
+
+  return teamState;
 }
 
 export function unlinkLeaders(teamState: TeamState, setTeamState: React.Dispatch<React.SetStateAction<TeamState>>) {
@@ -364,5 +358,5 @@ export function unlinkLeaders(teamState: TeamState, setTeamState: React.Dispatch
   newTeamState.p2.teamSlot6 = { ...teamState.p1.teamSlot1, latents: [...teamState.p1.teamSlot1.latents] };
   newTeamState.p1.teamSlot6 = { ...teamState.p2.teamSlot1, latents: [...teamState.p2.teamSlot1.latents] };
 
-  setTeamState(newTeamState);
+  setTeamState({ ...teamState });
 }

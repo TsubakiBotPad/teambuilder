@@ -20,7 +20,7 @@ import {
   AppStateContext,
   DEFAULT_GAME_CONFIG,
   DEFAULT_TEAM_STATE,
-  linkLeaders,
+  linkLeadersNoSet,
   TeamStateContext
 } from "../model/teamStateManager";
 import { FlexCol, FlexColC, FlexRow, FlexRowC, H1, Page } from "../stylePrimitives";
@@ -124,9 +124,11 @@ export const PadTeamBuilderPage = () => {
         in: "Type notes here!"
       };
 
-  const [teamState, setTeamState] = useState(parsedConfig.ts);
   const [teamName, setTeamName] = useState(parsedConfig.n);
   const [gameConfig, setGameConfig] = useState(parsedConfig.gc);
+  const [teamState, setTeamState] = useState(
+    parsedConfig.gc.mode === "2p" ? linkLeadersNoSet(parsedConfig.ts) : parsedConfig.ts
+  );
 
   const [teamStats, setTeamStats] = useState<TeamStats>({});
   const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -151,6 +153,7 @@ export const PadTeamBuilderPage = () => {
 
   useEffect(() => {
     updateUrl.current({ n: teamName, ts: teamState, gc: gameConfig, in: instructions });
+    debugger;
   }, [teamName, teamState, gameConfig, instructions]);
 
   useMemo(() => {
@@ -163,12 +166,6 @@ export const PadTeamBuilderPage = () => {
     };
     f();
   }, [teamState, gameConfig]);
-
-  useMemo(() => {
-    if (gameConfig.mode === "2p") {
-      linkLeaders(teamState, setTeamState);
-    }
-  }, [gameConfig]);
 
   return (
     <DndProvider backend={HTML5Backend}>
