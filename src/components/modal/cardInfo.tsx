@@ -163,11 +163,15 @@ export const CardInfo = ({
       <FlexCol>
         <b>
           <FlexRowC gap="0.25rem">
-            Active Skill ({m.active_skill.cooldown_turns_max} <HiOutlineArrowNarrowRight />{" "}
-            {m.active_skill.cooldown_turns_min})
+            Active Skill{" "}
+            {m.active_skill
+              ? `(${m.active_skill.cooldown_turns_max} ${(<HiOutlineArrowNarrowRight />)} ${
+                  m.active_skill.cooldown_turns_min
+                })`
+              : null}
           </FlexRowC>
         </b>
-        <span>{m.active_skill.desc_en}</span>
+        <span>{m.active_skill ? m.active_skill.desc_en : "None"}</span>
       </FlexCol>
       <FlexCol>
         <b>

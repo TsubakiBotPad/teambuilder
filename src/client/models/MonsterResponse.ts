@@ -11,8 +11,8 @@ import type { Series } from "./Series";
 import type { StatValues } from "./StatValues";
 
 export type MonsterResponse = {
-  active_skill: ActiveSkill;
-  active_skill_id: number;
+  active_skill?: ActiveSkill;
+  active_skill_id?: number;
   all_series: Array<Series>;
   atk_max: number;
   atk_min: number;
