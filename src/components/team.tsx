@@ -168,7 +168,7 @@ export const TeamBlock = ({ playerId, shouldShow }: { playerId: keyof TeamState;
   const { gameConfig, teamStats, setPlayerSelected, setBadgeModalIsOpen } = useContext(AppStateContext);
   const { teamState } = useContext(TeamStateContext);
 
-  return (
+  return shouldShow ? (
     <FlexCol gap="0.25rem">
       <FlexRowC gap="0.5rem">
         <H2>{playerId}</H2>
@@ -182,12 +182,12 @@ export const TeamBlock = ({ playerId, shouldShow }: { playerId: keyof TeamState;
           />
         ) : null}
       </FlexRowC>
-      {shouldShow ? (
-        <TeamRow>
-          <Team teamId={playerId} state={teamState[playerId]} />
-          <TeamStatDisplay teamStat={teamStats[playerId]} keyP={playerId} />
-        </TeamRow>
-      ) : null}
+      <TeamRow>
+        <Team teamId={playerId} state={teamState[playerId]} />
+        <TeamStatDisplay teamStat={teamStats[playerId]} keyP={playerId} />
+      </TeamRow>
     </FlexCol>
+  ) : (
+    <></>
   );
 };

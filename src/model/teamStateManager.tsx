@@ -74,7 +74,7 @@ export const DEFAULT_TEAM_STATE: TeamState = {
 
 export const DEFAULT_GAME_CONFIG: GameConfig = {
   mode: "1p",
-  defaultCardLevel: 110
+  defaultCardLevel: 120
 };
 
 interface ITeamStateContext {

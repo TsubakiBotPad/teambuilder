@@ -57,9 +57,8 @@ const TeamBuilderContent = React.forwardRef((props, ref) => {
               rows={15}
               cols={10}
               className={css`
-                width: 48%;
+                width: 50%;
               `}
-              defaultValue="Type notes here!"
               value={instructions}
               onChange={(e) => {
                 setInstructions(e.target.value);
@@ -115,7 +114,8 @@ export const PadTeamBuilderPage = () => {
     : {
         n: "",
         ts: DEFAULT_TEAM_STATE,
-        gc: DEFAULT_GAME_CONFIG
+        gc: DEFAULT_GAME_CONFIG,
+        in: "Type notes here!"
       };
 
   const [teamState, setTeamState] = useState(parsedConfig.ts);
@@ -128,7 +128,7 @@ export const PadTeamBuilderPage = () => {
   const [badgeModalIsOpen, setBadgeModalIsOpen] = useState(false);
   const [playerSelected, setPlayerSelected] = useState("");
   const [cardSlotSelected, setCardSlotSelected] = useState({});
-  const [instructions, setInstructions] = useState<string | undefined>(undefined);
+  const [instructions, setInstructions] = useState<string | undefined>(parsedConfig.in);
 
   var updateUrl = useRef(
     debounce((config: Partial<ConfigData>) => {
