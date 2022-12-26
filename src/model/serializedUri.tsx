@@ -12,13 +12,13 @@ export const serializeConfig = ({
   in: instructions
 }: ConfigData): string => {
   const y = JSON.stringify({ n: teamName, ts: teamState, gc: gameConfig, in: instructions });
-  const z = JSONCrush.crush(y);
+  const z = encodeURIComponent(JSONCrush.crush(y));
 
   return z;
 };
 
 export const deserializeConfig = (serialized: string): ConfigData => {
-  const x = JSONCrush.uncrush(serialized);
+  const x = JSONCrush.uncrush(decodeURIComponent(serialized));
   const y = JSON.parse(x);
   return y;
 };
