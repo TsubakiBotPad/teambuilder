@@ -2,7 +2,7 @@ import { css } from "@emotion/css";
 import styled from "@emotion/styled";
 import { AxiosError } from "axios";
 import { debounce } from "lodash";
-import { useContext, useMemo, useState } from "react";
+import { useContext, useMemo, useRef, useState } from "react";
 import { IoIosCheckmarkCircle, IoIosRemoveCircle } from "react-icons/io";
 import Modal from "react-modal";
 
@@ -170,6 +170,7 @@ export const CardSelectorModal = ({ isOpen }: { isOpen: boolean }) => {
   const [hoverClose, setHoverClose] = useState(false);
   const [currentLevel, setCurrentLevel] = useState<number | undefined>(undefined);
   const [currentSA, setCurrentSA] = useState<number | undefined>(undefined);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   useMemo(() => {
     const f = async () => {
@@ -195,6 +196,9 @@ export const CardSelectorModal = ({ isOpen }: { isOpen: boolean }) => {
       shouldCloseOnOverlayClick={true}
       onAfterOpen={() => {
         setCardLevelForExistingCard(gameConfig, selectedMonster, currentLevel, setCurrentLevel);
+        if (inputRef && inputRef.current) {
+          inputRef.current.focus();
+        }
       }}
       onRequestClose={() => {
         setModalIsOpen(false);
@@ -217,6 +221,7 @@ export const CardSelectorModal = ({ isOpen }: { isOpen: boolean }) => {
             </H2>
             <FlexColC gap="0.5rem">
               <CardQueryInput
+                ref={inputRef}
                 type="text"
                 placeholder="Search id/name/query"
                 onChange={async (e) => {
