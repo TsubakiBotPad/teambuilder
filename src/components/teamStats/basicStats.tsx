@@ -198,35 +198,38 @@ export const TeamBasicStatsDisplay = ({
       className={css`
         border: solid 1px #aaa;
         box-shadow: 1px 1px #ccc;
-        padding: 0rem 2rem 0rem 2rem;
+        padding: 0 1rem;
         height: 100%;
       `}
     >
       <FlexCol
         gap={"0.5rem"}
         className={css`
-          margin: 1rem 0;
+          margin: 0.5rem 0;
         `}
       >
-        <H3>Stats</H3>
+        <H3
+          className={css`
+            text-align: center;
+          `}
+        >
+          Stats
+        </H3>
         <table>
           <thead>
             <tr>
               <th></th>
-              <th style={{ textAlign: "start", verticalAlign: "middle" }}>
+              <th style={{ verticalAlign: "middle" }}>
                 <AwakeningImage awakeningId={AwokenSkills.AWOKENKILLER} width={23} />
               </th>
-              <th style={{ textAlign: "start", verticalAlign: "middle" }}>
+              <th style={{ verticalAlign: "middle", textAlign: "end" }}>
                 <div
                   className={css`
                     background: url("img/awoBind.webp") no-repeat;
                     background-size: contain;
                     height: 20px;
-                    display: flex;
-                    align-items: center;
                   `}
                 ></div>
-                {/* <img src="img/awoBind.webp" width={"20px"} /> */}
               </th>
             </tr>
           </thead>

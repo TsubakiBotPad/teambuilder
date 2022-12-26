@@ -4,7 +4,7 @@ import { AwakeningImage } from "../../model/images";
 import { monsterCacheClient } from "../../model/monsterCacheClient";
 import { getTeamSlots, TeamSlotState, TeamState } from "../../model/teamStateManager";
 import { AwokenSkills } from "../../model/types/monster";
-import { FlexCol, FlexRowC, H3 } from "../../stylePrimitives";
+import { FlexCol, FlexRow, FlexRowC, H3 } from "../../stylePrimitives";
 import { GameConfig } from "../gameConfigSelector";
 
 export type AwakeningHistogram = { [key: string]: number };
@@ -118,7 +118,7 @@ export const AwakeningsToDisplay = [
     ]
   },
   {
-    header: "Offensive",
+    header: "Offense",
     data: [
       [
         new AwokenSkillAggregation(AwokenSkills.REDROW, null),
@@ -156,8 +156,6 @@ export const AwakeningsToDisplay = [
       [
         new AwokenSkillAggregation(AwokenSkills.COMBOORB, null),
         new AwokenSkillAggregation(AwokenSkills.TPA, totalDoubleAwakening("TPA", "TPAPLUS")),
-        new AwokenSkillAggregation(AwokenSkills.ELATTACK, null),
-        new AwokenSkillAggregation(AwokenSkills.CROSSATTACK, null),
         new AwokenSkillAggregation(AwokenSkills.BLOBBOOST, null)
       ]
     ]
@@ -188,23 +186,29 @@ export const AwakeningRowDisplay = ({
   keyPrefix: string;
 }) => {
   return (
-    <>
+    <FlexCol gap={"0.1rem"}>
       {asa.map((b, i) => {
         var numToDisplay = b.aggFunc ? b.aggFunc(ah) : ah[b.awokenSkill];
-        const shouldShow = ALWAYS_SHOW_AWOKENSKILLS.includes(b.awokenSkill) || numToDisplay;
-
+        const val = numToDisplay ?? 0;
+        const shouldShow = (ALWAYS_SHOW_AWOKENSKILLS.includes(b.awokenSkill) || numToDisplay) as boolean;
         return shouldShow ? (
           <FlexRowC gap="0.15rem" key={keyPrefix + numToDisplay + i}>
-            <AwakeningImage awakeningId={b.awokenSkill} />
+            <div
+              className={css`
+                opacity: ${numToDisplay ? 1 : 0.5};
+              `}
+            >
+              <AwakeningImage awakeningId={b.awokenSkill} />
+            </div>
             {b.percent ? ":" : "x"}
             <span>
-              {numToDisplay ?? 0}
+              {val}
               {b.percent ? "%" : ""}
             </span>
           </FlexRowC>
         ) : null;
       })}
-    </>
+    </FlexCol>
   );
 };
 
@@ -225,34 +229,62 @@ export const AwakeningStatsDisplay = ({
       className={css`
         border: solid 1px #aaa;
         box-shadow: 1px 1px #ccc;
-        padding: 0rem 2rem 0rem 2rem;
+        padding: 0 1rem;
         height: 100%;
+        width: 100%;
       `}
     >
       <FlexCol
         gap="0.75rem"
         className={css`
-          margin: 1rem 0;
+          margin: 0.5rem 0;
         `}
       >
-        <H3>Awakenings</H3>
-        {AwakeningsToDisplay.map((a, j) => {
-          const data = a.data;
-          return (
-            <FlexCol key={`${keyPrefix}awakenings${j}`}>
-              <b>{a.header}</b>
-              <FlexCol gap="0.35rem">
-                {data.map((b, i) => {
-                  return (
-                    <FlexRowC gap="1rem" key={`${keyPrefix}awakenings${j}-${i}`}>
-                      <AwakeningRowDisplay ah={ah} asa={b} keyPrefix={keyPrefix} />
-                    </FlexRowC>
-                  );
-                })}
+        <H3
+          className={css`
+            text-align: center;
+          `}
+        >
+          Awakenings
+        </H3>
+        <FlexRow>
+          {AwakeningsToDisplay.map((a, j) => {
+            const data = a.data;
+            return (
+              <FlexCol
+                className={css`
+                  &:not(:first-child) {
+                    border-left: 1px solid rgba(0, 0, 0, 0.25);
+                  }
+
+                  padding: 0 0.5rem;
+
+                  &:first-child {
+                    padding-left: 0;
+                  }
+                  &:last-child {
+                    padding-right: 0;
+                  }
+                `}
+              >
+                <div
+                  className={css`
+                    // font-weight: bold;
+                    margin-bottom: 0.5rem;
+                    text-align: center;
+                  `}
+                >
+                  {a.header}
+                </div>
+                <FlexRow className={css``} gap="0.5rem" key={`${keyPrefix}awakenings${j}`}>
+                  {data.map((b, i) => {
+                    return <AwakeningRowDisplay ah={ah} asa={b} keyPrefix={keyPrefix} />;
+                  })}
+                </FlexRow>
               </FlexCol>
-            </FlexCol>
-          );
-        })}
+            );
+          })}
+        </FlexRow>
       </FlexCol>
     </FlexCol>
   );

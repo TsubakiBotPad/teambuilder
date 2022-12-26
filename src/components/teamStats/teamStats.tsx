@@ -1,7 +1,4 @@
-import { css } from "@emotion/css";
-
 import { TeamState } from "../../model/teamStateManager";
-import { FlexCol } from "../../stylePrimitives";
 import { GameConfig } from "../gameConfigSelector";
 import { AttributeHistogram, computeAttributes } from "./attributes";
 import { AwakeningHistogram, AwakeningStatsDisplay, computeTotalAwakenings } from "./awakenings";
@@ -43,28 +40,15 @@ export const TeamStatDisplay = ({ teamStat, keyP: keyPrefix }: { teamStat?: Team
   }
 
   return (
-    <FlexCol
-      className={css`
-        width: 100%;
-      `}
-    >
-      <div
-        className={css`
-          display: flex;
-          justify-content: space-between;
-          gap: 3rem;
-          height: 100%;
-        `}
-      >
-        <TeamBasicStatsDisplay
-          tbs={teamStat.teamBasicStats}
-          tt={teamStat.teamTypes}
-          unbindablePct={teamStat.teamUnbindablePct}
-          ah={teamStat.attributes}
-          keyP={keyPrefix}
-        />
-        <AwakeningStatsDisplay awakenings={teamStat.awakenings} keyPrefix={keyPrefix} />
-      </div>
-    </FlexCol>
+    <>
+      <TeamBasicStatsDisplay
+        tbs={teamStat.teamBasicStats}
+        tt={teamStat.teamTypes}
+        unbindablePct={teamStat.teamUnbindablePct}
+        ah={teamStat.attributes}
+        keyP={keyPrefix}
+      />
+      <AwakeningStatsDisplay awakenings={teamStat.awakenings} keyPrefix={keyPrefix} />
+    </>
   );
 };

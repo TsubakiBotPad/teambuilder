@@ -20,6 +20,7 @@ import { BadgeDisplay } from "./badge";
 import { Card } from "./card";
 import { TeamComponentId } from "./id";
 import { Latents } from "./latent";
+import { TeamStatDisplay } from "./teamStats/teamStats";
 
 interface DropResult {
   dropEffect: string;
@@ -135,23 +136,11 @@ const TeamSlot = ({
   );
 };
 
-export const Team = ({ teamId, state }: { teamId: keyof TeamState; state: PlayerState }) => {
-  const { gameConfig, setPlayerSelected, setBadgeModalIsOpen } = useContext(AppStateContext);
+const Team = ({ teamId, state }: { teamId: keyof TeamState; state: PlayerState }) => {
+  const { gameConfig } = useContext(AppStateContext);
 
   return (
     <FlexCol gap="0.25rem">
-      <FlexRowC gap="0.5rem">
-        <H2>{teamId}</H2>
-        {gameConfig.mode !== "2p" ? (
-          <BadgeDisplay
-            onClick={() => {
-              setPlayerSelected(teamId.toLocaleLowerCase());
-              setBadgeModalIsOpen(true);
-            }}
-            badgeName={state.badgeId}
-          />
-        ) : null}
-      </FlexRowC>
       <FlexRow>
         <TeamSlot teamId={teamId} slotId={"1"} state={state.teamSlot1} />
         <TeamSlot teamId={teamId} slotId={"2"} state={state.teamSlot2} />
@@ -166,6 +155,39 @@ export const Team = ({ teamId, state }: { teamId: keyof TeamState; state: Player
           <TeamSlot teamId={teamId} slotId={"6"} state={state.teamSlot6} invert={gameConfig.mode === "2p"} />
         </div>
       </FlexRow>
+    </FlexCol>
+  );
+};
+
+const TeamRow = styled(FlexRow)`
+  padding: 0.5rem;
+  gap: 2rem;
+`;
+
+export const TeamBlock = ({ playerId, shouldShow }: { playerId: keyof TeamState; shouldShow: boolean }) => {
+  const { gameConfig, teamStats, setPlayerSelected, setBadgeModalIsOpen } = useContext(AppStateContext);
+  const { teamState } = useContext(TeamStateContext);
+
+  return (
+    <FlexCol gap="0.25rem">
+      <FlexRowC gap="0.5rem">
+        <H2>{playerId}</H2>
+        {gameConfig.mode !== "2p" ? (
+          <BadgeDisplay
+            onClick={() => {
+              setPlayerSelected(playerId);
+              setBadgeModalIsOpen(true);
+            }}
+            badgeName={teamState[playerId].badgeId}
+          />
+        ) : null}
+      </FlexRowC>
+      {shouldShow ? (
+        <TeamRow>
+          <Team teamId={playerId} state={teamState[playerId]} />
+          <TeamStatDisplay teamStat={teamStats[playerId]} keyP={playerId} />
+        </TeamRow>
+      ) : null}
     </FlexCol>
   );
 };

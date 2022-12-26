@@ -35,5 +35,8 @@ export async function computeTeamUnbindablePct(
     count += cardBindRes >= 1 ? 1 : 0;
   }
 
+  if (filledSlots === 0) {
+    return 0;
+  }
   return (count / filledSlots) * 100;
 }

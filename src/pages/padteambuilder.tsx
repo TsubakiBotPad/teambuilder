@@ -13,8 +13,8 @@ import { GameConfigSelector } from "../components/gameConfigSelector";
 import { BadgeSelectorModal } from "../components/modal/badgeSelectorModal";
 import { CardSelectorModal } from "../components/modal/cardSelectorModal";
 import { LatentSelectorModal } from "../components/modal/latentSelectorModal";
-import { Team } from "../components/team";
-import { computeTeamStat, TeamStatDisplay, TeamStats } from "../components/teamStats/teamStats";
+import { TeamBlock } from "../components/team";
+import { computeTeamStat, TeamStats } from "../components/teamStats/teamStats";
 import { ConfigData, deserializeConfig, serializeConfig } from "../model/serializedUri";
 import { AppStateContext, DEFAULT_GAME_CONFIG, DEFAULT_TEAM_STATE, TeamStateContext } from "../model/teamStateManager";
 import { FlexCol, FlexColC, FlexRow, FlexRowC, H1, Page } from "../stylePrimitives";
@@ -28,12 +28,6 @@ const TeamInput = styled.input`
   padding: 0.25rem 0.5rem 0.25rem 0;
 `;
 
-const TeamRow = styled(FlexRow)`
-  border: solid 1px #aaa;
-  padding: 0.5rem;
-  gap: 3rem;
-`;
-
 export const DraggableTypes = {
   card: "card",
   latent: "latent",
@@ -41,8 +35,7 @@ export const DraggableTypes = {
 };
 
 const TeamBuilderContent = React.forwardRef((props, ref) => {
-  const { gameConfig, setTeamName, teamName, teamStats, instructions, setInstructions } = useContext(AppStateContext);
-  const { teamState } = useContext(TeamStateContext);
+  const { gameConfig, setTeamName, teamName, instructions, setInstructions } = useContext(AppStateContext);
 
   return (
     <FlexColC ref={ref as any}>
@@ -57,22 +50,9 @@ const TeamBuilderContent = React.forwardRef((props, ref) => {
             }}
           />
           <FlexCol gap="1.5rem">
-            <TeamRow>
-              <Team teamId={"p1"} state={teamState.p1} />
-              <TeamStatDisplay teamStat={teamStats.p1} keyP="p1" />
-            </TeamRow>
-            {gameConfig.mode === "2p" || gameConfig.mode === "3p" ? (
-              <TeamRow>
-                <Team teamId={"p2"} state={teamState.p2} />
-                <TeamStatDisplay teamStat={teamStats.p2} keyP="p2" />
-              </TeamRow>
-            ) : null}
-            {gameConfig.mode === "3p" ? (
-              <TeamRow>
-                <Team teamId={"p3"} state={teamState.p3} />
-                <TeamStatDisplay teamStat={teamStats.p3} keyP="p3" />
-              </TeamRow>
-            ) : null}
+            <TeamBlock playerId="p1" shouldShow={true} />
+            <TeamBlock playerId="p2" shouldShow={gameConfig.mode === "2p" || gameConfig.mode === "3p"} />
+            <TeamBlock playerId="p3" shouldShow={gameConfig.mode === "3p"} />
             <textarea
               rows={15}
               cols={10}
@@ -92,7 +72,7 @@ const TeamBuilderContent = React.forwardRef((props, ref) => {
   );
 });
 
-const PadTeamBuilderPageInner = React.forwardRef((props, ref) => {
+const PadTeamBuilderPageContainer = React.forwardRef((props, ref) => {
   const { modalIsOpen, latentModalIsOpen, badgeModalIsOpen } = useContext(AppStateContext);
   return (
     <Page maxWidth={maxPageWidth}>
@@ -205,7 +185,7 @@ export const PadTeamBuilderPage = () => {
       >
         <TeamStateContext.Provider value={{ teamState, setTeamState }}>
           <div ref={ref as any}>
-            <PadTeamBuilderPageInner ref={ref} />
+            <PadTeamBuilderPageContainer ref={ref} />
           </div>
         </TeamStateContext.Provider>
       </AppStateContext.Provider>
