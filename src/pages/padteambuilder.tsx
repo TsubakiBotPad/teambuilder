@@ -73,7 +73,7 @@ const TeamBuilderContent = React.forwardRef((props, ref) => {
               className={css`
                 width: 48%;
               `}
-              defaultValue="Type some notes here. Text is not saved when you share the link yet."
+              defaultValue="Type notes here!"
               value={instructions}
               onChange={(e) => {
                 setInstructions(e.target.value);
