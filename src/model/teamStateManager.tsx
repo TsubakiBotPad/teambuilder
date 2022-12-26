@@ -184,13 +184,14 @@ export function getTeamSlots(gameConfig: GameConfig, teamState: TeamState, playe
   var slots = [];
   const playerState = teamState[playerId];
   if (gameConfig.mode === "2p") {
+    debugger;
     slots = [
       teamState.p1.teamSlot1,
       playerState.teamSlot2,
       playerState.teamSlot3,
       playerState.teamSlot4,
       playerState.teamSlot5,
-      teamState.p2.teamSlot6
+      teamState.p2.teamSlot1
     ];
   } else {
     slots = [
