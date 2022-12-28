@@ -86,7 +86,7 @@ const PadTeamBuilderPageContainer = React.forwardRef((props, ref) => {
         <FlexRowC gap="2rem">
           <GameConfigSelector />
           <DefaultLevelSelector />
-          <FlexRowC gap="0.25rem" className={css`cursor:pointer`}>
+          <FlexRowC gap="0.25rem">
           Export: 
             <button
               onClick={() => exportComponentAsPNG(ref as any)}
@@ -94,6 +94,7 @@ const PadTeamBuilderPageContainer = React.forwardRef((props, ref) => {
                 box-shadow: 1px 1px #ccc;
                 border: 1px solid black;
                 padding: 0 0.1rem;
+                cursor: pointer;
               `}
             >
               <BsImage />
