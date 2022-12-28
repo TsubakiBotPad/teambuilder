@@ -94,6 +94,7 @@ const PadTeamBuilderPageContainer = React.forwardRef((props, ref) => {
                 box-shadow: 1px 1px #ccc;
                 border: 1px solid black;
                 padding: 0 0.1rem;
+                cursor: pointer;
               `}
             >
               <BsImage />
