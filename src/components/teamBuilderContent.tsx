@@ -6,8 +6,6 @@ import { useContext } from "react";
 import { AppStateContext } from "../model/teamStateManager";
 import { FlexCol, FlexColC, FlexRow, FlexRowC } from "../stylePrimitives";
 import { TeamBlock } from "./team";
-import { AwakeningStatsDisplay } from "./teamStats/awakenings";
-import { TeamBasicStatsDisplay } from "./teamStats/basicStats";
 import { TeamSharedStatsDisplay } from "./teamStats/teamStats2p";
 
 const TeamInput = styled.input`
@@ -87,54 +85,6 @@ export const TeamBuilderContent2P = () => {
         </FlexCol>
         {teamStat1 && teamStat2 ? (
           <FlexRowC gap="1rem">
-            <FlexColC gap="2rem">
-              <FlexCol gap="2rem">
-                <div
-                  className={css`
-                    border: 1px solid #aaa;
-                  `}
-                >
-                  <TeamBasicStatsDisplay
-                    tbs={teamStat1.teamBasicStats}
-                    tt={teamStat1.teamTypes}
-                    unbindablePct={teamStat1.teamUnbindablePct}
-                    ah={teamStat1.attributes}
-                    keyP={"p1"}
-                    is2P
-                  />
-                  <div
-                    className={css`
-                      border-top: 1px solid #aaa;
-                      margin: 0 0.5rem;
-                    `}
-                  >
-                    <AwakeningStatsDisplay awakenings={teamStat1.awakenings} keyPrefix={"p1"} />
-                  </div>
-                </div>
-                <div
-                  className={css`
-                    border: 1px solid #aaa;
-                  `}
-                >
-                  <TeamBasicStatsDisplay
-                    tbs={teamStat2.teamBasicStats}
-                    tt={teamStat2.teamTypes}
-                    unbindablePct={teamStat2.teamUnbindablePct}
-                    ah={teamStat2.attributes}
-                    keyP={"p2"}
-                    is2P
-                  />
-                  <div
-                    className={css`
-                      border-top: 1px solid #aaa;
-                      margin: 0 0.5rem;
-                    `}
-                  >
-                    <AwakeningStatsDisplay awakenings={teamStat2.awakenings} keyPrefix={"p2"} />
-                  </div>
-                </div>
-              </FlexCol>
-            </FlexColC>
             <FlexColC>
               <span>Shared</span>
               <div

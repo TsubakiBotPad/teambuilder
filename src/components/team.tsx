@@ -167,12 +167,12 @@ const TeamRow = styled(FlexRow)`
 export const TeamBlock = ({ playerId, shouldShow }: { playerId: keyof TeamState; shouldShow: boolean }) => {
   const { gameConfig, teamStats, setPlayerSelected, setBadgeModalIsOpen } = useContext(AppStateContext);
   const { teamState } = useContext(TeamStateContext);
-
+  const is2P = gameConfig.mode === "2p";
   return shouldShow ? (
     <FlexCol gap="0.25rem">
       <FlexRowC gap="0.5rem">
         <H2>{playerId}</H2>
-        {gameConfig.mode !== "2p" ? (
+        {!is2P ? (
           <BadgeDisplay
             onClick={() => {
               setPlayerSelected(playerId);
@@ -184,7 +184,7 @@ export const TeamBlock = ({ playerId, shouldShow }: { playerId: keyof TeamState;
       </FlexRowC>
       <TeamRow>
         <Team teamId={playerId} state={teamState[playerId]} />
-        {gameConfig.mode !== "2p" ? <TeamStatDisplay teamStat={teamStats[playerId]} keyP={playerId} /> : null}
+        <TeamStatDisplay teamStat={teamStats[playerId]} keyP={playerId} is2P={is2P} />
       </TeamRow>
     </FlexCol>
   ) : (

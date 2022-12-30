@@ -248,6 +248,7 @@ export const TeamBasicStatsDisplay = ({
       className={css`
         padding: 0 0.5rem;
         font-size: 16px;
+        min-width: 26.5rem;
       `}
     >
       <FlexCol
