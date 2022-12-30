@@ -7,7 +7,7 @@ import {
   computeSharedAwakenings,
   computeTotalAwakenings
 } from "./awakenings";
-import { computeTeamBasicStats, TeamBasicStats, TeamBasicStatsDisplay } from "./basicStats";
+import { computeTeamBasicStats, computeTeamBasicStats2P, TeamBasicStats, TeamBasicStatsDisplay } from "./basicStats";
 import { computeTypes, TeamTypes } from "./types";
 import { computeTeamUnbindablePct } from "./unbindable";
 
@@ -24,6 +24,7 @@ export interface TeamStat {
   teamTypes?: TeamTypes;
   teamUnbindablePct?: number;
   teamBasicStats?: TeamBasicStats;
+  sharedBasicStats?: TeamBasicStats;
 }
 
 export async function computeTeamStat(
@@ -37,7 +38,8 @@ export async function computeTeamStat(
     attributes: await computeAttributes(gameConfig, teamState, player),
     teamTypes: await computeTypes(gameConfig, teamState, player),
     teamUnbindablePct: await computeTeamUnbindablePct(gameConfig, teamState, player),
-    teamBasicStats: await computeTeamBasicStats(gameConfig, teamState, player)
+    teamBasicStats: await computeTeamBasicStats(gameConfig, teamState, player),
+    sharedBasicStats: await computeTeamBasicStats2P(gameConfig, teamState)
   };
 }
 
@@ -54,8 +56,9 @@ export const TeamStatDisplay = ({ teamStat, keyP: keyPrefix }: { teamStat?: Team
         unbindablePct={teamStat.teamUnbindablePct}
         ah={teamStat.attributes}
         keyP={keyPrefix}
+        border
       />
-      <AwakeningStatsDisplay awakenings={teamStat.awakenings} keyPrefix={keyPrefix} />
+      <AwakeningStatsDisplay awakenings={teamStat.awakenings} keyPrefix={keyPrefix} border />
     </>
   );
 };

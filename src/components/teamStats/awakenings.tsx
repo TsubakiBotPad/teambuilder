@@ -4,7 +4,7 @@ import { AwakeningImage } from "../../model/images";
 import { monsterCacheClient } from "../../model/monsterCacheClient";
 import { get2PTeamSlots, getTeamSlots, TeamSlotState, TeamState } from "../../model/teamStateManager";
 import { AwokenSkills } from "../../model/types/monster";
-import { FlexCol, FlexRow, FlexRowC } from "../../stylePrimitives";
+import { FlexCol, FlexColC, FlexRow, FlexRowC } from "../../stylePrimitives";
 import { GameConfig } from "../gameConfigSelector";
 
 export type AwakeningHistogram = { [key: string]: number };
@@ -85,6 +85,30 @@ function totalResist(resist: string) {
   };
 }
 
+export const AwakeningsToDisplay2PShared = [
+  {
+    header: "Shared",
+    data: [
+      [
+        new AwokenSkillAggregation(AwokenSkills.SKILLBOOST, totalDoubleAwakening("SKILLBOOST", "SKILLBOOSTPLUS")),
+        new AwokenSkillAggregation(AwokenSkills.SKILLBINDRES, null)
+      ]
+    ]
+  },
+  {
+    header: "Resist",
+    data: [
+      [
+        new AwokenSkillAggregation(AwokenSkills.POISONRES, totalResist("POISON"), true),
+        new AwokenSkillAggregation(AwokenSkills.BLINDRES, totalResist("BLIND"), true),
+        new AwokenSkillAggregation(AwokenSkills.JAMMERRES, totalResist("JAMM"), true),
+        new AwokenSkillAggregation(AwokenSkills.CLOUDRESIST, null),
+        new AwokenSkillAggregation(AwokenSkills.TAPERESIST, null)
+      ]
+    ]
+  }
+];
+
 export const AwakeningsToDisplay = [
   {
     header: "Static",
@@ -146,6 +170,7 @@ export const AwakeningsToDisplay = [
           totalDoubleAwakening("ENHANCEDLIGHT", "ENHANCEDLIGHTPLUS")
         ),
         new AwokenSkillAggregation(AwokenSkills.ENHANCEDDARK, totalDoubleAwakening("ENHANCEDDARK", "ENHANCEDDARKPLUS")),
+        new AwokenSkillAggregation(AwokenSkills.ENHANCEDHEAL, totalDoubleAwakening("ENHANCEDHEAL", "ENHANCEDHEALPLUS")),
         new AwokenSkillAggregation(AwokenSkills.REDCOMBOCOUNT, null),
         new AwokenSkillAggregation(AwokenSkills.BLUECOMBOCOUNT, null),
         new AwokenSkillAggregation(AwokenSkills.GREENCOMBOCOUNT, null),
@@ -160,9 +185,7 @@ export const AwakeningsToDisplay = [
         new AwokenSkillAggregation(AwokenSkills.ATTR4BOOST, null),
         new AwokenSkillAggregation(AwokenSkills.ATTR5BOOST, null),
         new AwokenSkillAggregation(AwokenSkills.HP80ORMORE, null),
-        new AwokenSkillAggregation(AwokenSkills.HP50ORLESS, null)
-      ],
-      [
+        new AwokenSkillAggregation(AwokenSkills.HP50ORLESS, null),
         new AwokenSkillAggregation(AwokenSkills.COMBOORB, null),
         new AwokenSkillAggregation(AwokenSkills.TPA, totalDoubleAwakening("TPA", "TPAPLUS")),
         new AwokenSkillAggregation(AwokenSkills.BLOBBOOST, null)
@@ -170,9 +193,8 @@ export const AwakeningsToDisplay = [
     ]
   }
 ];
-//bind, jammer, poison, tape, cloud, sbr, unbindable, cross, el, sb, te
 
-const ALWAYS_SHOW_AWOKENSKILLS = [
+export const ALWAYS_SHOW_AWOKENSKILLS = [
   AwokenSkills.ELATTACK,
   AwokenSkills.CROSSATTACK,
   AwokenSkills.POISONRES,
@@ -223,6 +245,72 @@ export const AwakeningRowDisplay = ({
 
 export const AwakeningStatsDisplay = ({
   awakenings,
+  keyPrefix,
+  border
+}: {
+  awakenings?: AwakeningHistogram;
+  keyPrefix: string;
+  border?: boolean;
+}) => {
+  if (!awakenings) {
+    return <></>;
+  }
+
+  const ah = awakenings;
+  return (
+    <FlexCol
+      className={css`
+        ${border ? "border: solid 1px #aaa;" : ""};
+        ${border ? "box-shadow: 1px 1px #ccc;" : ""};
+        padding: 0.5rem 0.25rem;
+      `}
+    >
+      <FlexCol gap="0.75rem">
+        <FlexRow>
+          {AwakeningsToDisplay.map((a, j) => {
+            const data = a.data;
+            return (
+              <FlexCol
+                className={css`
+                  &:not(:first-child) {
+                    border-left: 1px solid rgba(0, 0, 0, 0.25);
+                  }
+
+                  padding: 0 0.5rem;
+
+                  &:first-child {
+                    padding-left: 0;
+                  }
+                  &:last-child {
+                    padding-right: 0;
+                  }
+                `}
+              >
+                <div
+                  className={css`
+                    // font-weight: bold;
+                    margin-bottom: 0.5rem;
+                    text-align: center;
+                  `}
+                >
+                  {a.header}
+                </div>
+                <FlexRow gap="0.5rem" key={`${keyPrefix}awakenings${j}`}>
+                  {data.map((b, i) => {
+                    return <AwakeningRowDisplay ah={ah} asa={b} keyPrefix={keyPrefix} />;
+                  })}
+                </FlexRow>
+              </FlexCol>
+            );
+          })}
+        </FlexRow>
+      </FlexCol>
+    </FlexCol>
+  );
+};
+
+export const AwakeningStatsDisplay2P = ({
+  awakenings,
   keyPrefix
 }: {
   awakenings?: AwakeningHistogram;
@@ -234,13 +322,10 @@ export const AwakeningStatsDisplay = ({
 
   const ah = awakenings;
   return (
-    <FlexCol
+    <FlexColC
       className={css`
-        border: solid 1px #aaa;
         box-shadow: 1px 1px #ccc;
         padding: 0 1rem;
-        height: 100%;
-        width: 100%;
       `}
     >
       <FlexCol
@@ -250,7 +335,7 @@ export const AwakeningStatsDisplay = ({
         `}
       >
         <FlexRow>
-          {AwakeningsToDisplay.map((a, j) => {
+          {AwakeningsToDisplay2PShared.map((a, j) => {
             const data = a.data;
             return (
               <FlexCol
@@ -288,6 +373,6 @@ export const AwakeningStatsDisplay = ({
           })}
         </FlexRow>
       </FlexCol>
-    </FlexCol>
+    </FlexColC>
   );
 };

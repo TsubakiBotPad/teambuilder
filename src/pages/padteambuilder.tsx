@@ -1,5 +1,4 @@
 import { css } from "@emotion/css";
-import styled from "@emotion/styled";
 import { debounce } from "lodash";
 import React, { useContext, useEffect, useMemo, useRef, useState } from "react";
 import { exportComponentAsPNG } from "react-component-export-image";
@@ -13,7 +12,7 @@ import { GameConfigSelector } from "../components/gameConfigSelector";
 import { BadgeSelectorModal } from "../components/modal/badgeSelectorModal";
 import { CardSelectorModal } from "../components/modal/cardSelectorModal";
 import { LatentSelectorModal } from "../components/modal/latentSelectorModal";
-import { TeamBlock } from "../components/team";
+import { TeamBuilderContent } from "../components/teamBuilderContent";
 import { computeTeamStat, TeamStats } from "../components/teamStats/teamStats";
 import { ConfigData, deserializeConfig, serializeConfig } from "../model/serializedUri";
 import {
@@ -23,59 +22,15 @@ import {
   linkLeadersNoSet,
   TeamStateContext
 } from "../model/teamStateManager";
-import { FlexCol, FlexColC, FlexRow, FlexRowC, H1, Page } from "../stylePrimitives";
+import { FlexColC, FlexRowC, H1, Page } from "../stylePrimitives";
 
 const maxPageWidth = "1440px";
-
-const TeamInput = styled.input`
-  border: 0;
-  font-size: 1.75rem;
-  font-weight: 600;
-  padding: 0.25rem 0.5rem 0.25rem 0;
-`;
 
 export const DraggableTypes = {
   card: "card",
   latent: "latent",
   slot: "slot"
 };
-
-const TeamBuilderContent = React.forwardRef((props, ref) => {
-  const { gameConfig, setTeamName, teamName, instructions, setInstructions } = useContext(AppStateContext);
-
-  return (
-    <FlexColC ref={ref as any}>
-      <FlexRow gap="1rem">
-        <FlexCol>
-          <TeamInput
-            placeholder="Team Title"
-            size={35}
-            value={teamName}
-            onChange={(e) => {
-              setTeamName(e.target.value);
-            }}
-          />
-          <FlexCol gap="1.5rem">
-            <TeamBlock playerId="p1" shouldShow={true} />
-            <TeamBlock playerId="p2" shouldShow={gameConfig.mode === "2p" || gameConfig.mode === "3p"} />
-            <TeamBlock playerId="p3" shouldShow={gameConfig.mode === "3p"} />
-            <textarea
-              rows={15}
-              cols={10}
-              className={css`
-                width: 50%;
-              `}
-              value={instructions}
-              onChange={(e) => {
-                setInstructions(e.target.value);
-              }}
-            />
-          </FlexCol>
-        </FlexCol>
-      </FlexRow>
-    </FlexColC>
-  );
-});
 
 const PadTeamBuilderPageContainer = React.forwardRef((props, ref) => {
   const { modalIsOpen, latentModalIsOpen, badgeModalIsOpen } = useContext(AppStateContext);

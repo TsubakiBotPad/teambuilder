@@ -309,7 +309,6 @@ function setCardLevelForExistingCard(
   setCurrentLevel: React.Dispatch<React.SetStateAction<number | undefined>>
 ) {
   var maxCardLevel = 99;
-  debugger;
   if (monster) {
     if (monster?.limit_mult !== 0) {
       maxCardLevel = 120;

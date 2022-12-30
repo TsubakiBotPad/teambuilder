@@ -4,7 +4,7 @@ import styled from "@emotion/styled";
 import { AwakeningImage } from "../../model/images";
 import { monsterCacheClient } from "../../model/monsterCacheClient";
 import { PadAssetImage } from "../../model/padAssets";
-import { getTeamSlots, TeamSlotState, TeamState } from "../../model/teamStateManager";
+import { get2PTeamSlots, getTeamSlots, TeamSlotState, TeamState } from "../../model/teamStateManager";
 import { computeLeaderSkill } from "../../model/types/leaderSkill";
 import { Attribute, AwokenSkills, MonsterType } from "../../model/types/monster";
 import { stat } from "../../model/types/stat";
@@ -15,6 +15,29 @@ import { AttributeHistogram } from "./attributes";
 import { computeTotalAwakeningsFromSlots } from "./awakenings";
 import { TeamTypes } from "./types";
 
+const TD = styled.td`
+  padding: 0 1rem 0 0;
+  vertical-align: middle;
+  text-align: right;
+`;
+
+const TH = styled.th`
+  padding: 0rem 0rem;
+  vertical-align: middle;
+  text-align: center;
+`;
+
+type AttrImgProps = {
+  selected: boolean;
+};
+
+const AttrImg = styled.img<AttrImgProps>`
+  width: 20px;
+  opacity: ${(props) => (props.selected ? "1" : "0.25")};
+  border: ${(props) => (props.selected ? "1px solid gray" : "0")};
+  border-radius: ${(props) => (props.selected ? "1000px" : "0")};
+`;
+
 export interface TeamBasicStats {
   hp: number;
   rcv: number;
@@ -22,6 +45,46 @@ export interface TeamBasicStats {
   hpNoAwo: number;
   rcvNoAwo: number;
   ehpNoAwo: number;
+}
+
+export async function computeTeamBasicStats2P(gameConfig: GameConfig, teamState: TeamState): Promise<TeamBasicStats> {
+  if (gameConfig.mode !== "2p") {
+    return {
+      hp: 0,
+      rcv: 0,
+      ehp: 0,
+      hpNoAwo: 0,
+      rcvNoAwo: 0,
+      ehpNoAwo: 0
+    };
+  }
+
+  var slots = get2PTeamSlots(teamState);
+
+  const leader = await monsterCacheClient.get(slots[0].base.id);
+  const helper = await monsterCacheClient.get(slots[5].base.id);
+  const ls = computeLeaderSkill(leader, helper);
+
+  var { hpAcc, rcvAcc, hpNoAwoAcc, rcvNoAwoAcc } = await accumulateBasicStats(slots, gameConfig);
+
+  const awakenings = await computeTotalAwakeningsFromSlots(slots);
+  const numTeamHp = awakenings[AwokenSkills.ENHTEAMHP] ?? 0;
+  const numTeamRcv = awakenings[AwokenSkills.ENHTEAMRCV] ?? 0;
+
+  var hpBadgeMult = 1;
+  var rcvBadgeMult = 1;
+
+  hpAcc *= 1 + 0.05 * numTeamHp * hpBadgeMult;
+  rcvAcc *= 1 + 0.2 * numTeamRcv * rcvBadgeMult;
+
+  return {
+    hp: hpAcc,
+    rcv: rcvAcc,
+    ehp: ls.ehp * hpAcc,
+    hpNoAwo: hpNoAwoAcc,
+    rcvNoAwo: rcvNoAwoAcc,
+    ehpNoAwo: ls.ehp * hpNoAwoAcc
+  };
 }
 
 export async function computeTeamBasicStats(
@@ -159,35 +222,22 @@ async function accumulateBasicStats(slots: TeamSlotState[], gameConfig: GameConf
   return { hpAcc, rcvAcc, hpNoAwoAcc, rcvNoAwoAcc };
 }
 
-type AttrImgProps = {
-  selected: boolean;
-};
-
-const AttrImg = styled.img<AttrImgProps>`
-  width: 20px;
-  opacity: ${(props) => (props.selected ? "1" : "0.25")};
-  border: ${(props) => (props.selected ? "1px solid gray" : "0")};
-  border-radius: ${(props) => (props.selected ? "1000px" : "0")};
-`;
-
-const TD = styled.td`
-  padding: 0.1rem 1rem 0.1rem 0;
-  vertical-align: middle;
-  text-align: right;
-`;
-
 export const TeamBasicStatsDisplay = ({
   tbs,
   tt,
   unbindablePct,
   ah,
-  keyP
+  keyP,
+  is2P,
+  border
 }: {
   tbs?: TeamBasicStats;
   tt?: TeamTypes;
   unbindablePct?: number;
   ah?: AttributeHistogram;
   keyP: string;
+  is2P?: boolean;
+  border?: boolean;
 }) => {
   if (!tbs) {
     return <></>;
@@ -196,10 +246,9 @@ export const TeamBasicStatsDisplay = ({
   return (
     <div
       className={css`
-        border: solid 1px #aaa;
-        box-shadow: 1px 1px #ccc;
+        ${border ? "border: solid 1px #aaa;" : ""}
+        ${border ? "box-shadow: 1px 1px #ccc;" : ""}
         padding: 0 1rem;
-        height: 100%;
       `}
     >
       <FlexCol
@@ -212,35 +261,44 @@ export const TeamBasicStatsDisplay = ({
           <thead>
             <tr>
               <th></th>
-              <th style={{ verticalAlign: "middle" }}>
-                <AwakeningImage awakeningId={AwokenSkills.AWOKENKILLER} width={23} />
-              </th>
-              <th style={{ verticalAlign: "middle", textAlign: "end" }}>
-                <div
-                  className={css`
-                    background: url("img/awoBind.webp") no-repeat;
-                    background-size: contain;
-                    height: 20px;
-                  `}
-                ></div>
-              </th>
+              <TH>
+                <FlexRow justifyContent="flex-end" style={{ paddingRight: "1rem" }}>
+                  <AwakeningImage awakeningId={AwokenSkills.AWOKENKILLER} width={23} />
+                </FlexRow>
+              </TH>
+              <TH>
+                <FlexRow justifyContent="flex-end" style={{ paddingRight: "1rem" }}>
+                  <div
+                    className={css`
+                      background: url("img/awoBind.webp") no-repeat;
+                      background-size: contain;
+                      height: 20px;
+                      width: 20px;
+                    `}
+                  />
+                </FlexRow>
+              </TH>
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <TD>
-                <b>HP</b>
-              </TD>
-              <TD>{fixedDecimals(tbs.hp, 0)}</TD>
-              <TD>{fixedDecimals(tbs.hpNoAwo, 0)}</TD>
-            </tr>
-            <tr>
-              <TD>
-                <b>eHP</b>
-              </TD>
-              <TD>{fixedDecimals(tbs.ehp, 0)}</TD>
-              <TD>{fixedDecimals(tbs.ehpNoAwo, 0)}</TD>
-            </tr>
+            {!is2P ? (
+              <>
+                <tr>
+                  <TD>
+                    <b>HP</b>
+                  </TD>
+                  <TD>{fixedDecimals(tbs.hp, 0)}</TD>
+                  <TD>{fixedDecimals(tbs.hpNoAwo, 0)}</TD>
+                </tr>
+                <tr>
+                  <TD>
+                    <b>eHP</b>
+                  </TD>
+                  <TD>{fixedDecimals(tbs.ehp, 0)}</TD>
+                  <TD>{fixedDecimals(tbs.ehpNoAwo, 0)}</TD>
+                </tr>
+              </>
+            ) : null}
             <tr>
               <TD>
                 <b>RCV</b>
@@ -302,7 +360,7 @@ export const TeamBasicStatsDisplay = ({
                 <TD>
                   <b>!Bind</b>
                 </TD>
-                <TD>{fixedDecimals(unbindablePct, 0)}%</TD>
+                <td>{fixedDecimals(unbindablePct, 0)}%</td>
               </tr>
             ) : (
               <></>

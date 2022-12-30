@@ -184,7 +184,7 @@ export const TeamBlock = ({ playerId, shouldShow }: { playerId: keyof TeamState;
       </FlexRowC>
       <TeamRow>
         <Team teamId={playerId} state={teamState[playerId]} />
-        <TeamStatDisplay teamStat={teamStats[playerId]} keyP={playerId} />
+        {gameConfig.mode !== "2p" ? <TeamStatDisplay teamStat={teamStats[playerId]} keyP={playerId} /> : null}
       </TeamRow>
     </FlexCol>
   ) : (
