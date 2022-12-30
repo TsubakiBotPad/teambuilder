@@ -175,9 +175,9 @@ export const AwakeningsToDisplay = [
         new AwokenSkillAggregation(AwokenSkills.BLUECOMBOCOUNT, null),
         new AwokenSkillAggregation(AwokenSkills.GREENCOMBOCOUNT, null),
         new AwokenSkillAggregation(AwokenSkills.LIGHTCOMBOCOUNT, null),
-        new AwokenSkillAggregation(AwokenSkills.DARKCOMBOCOUNT, null)
-      ],
-      [
+        new AwokenSkillAggregation(AwokenSkills.DARKCOMBOCOUNT, null),
+        // ],
+        // [
         new AwokenSkillAggregation(AwokenSkills.ENHCOMBO7C, null),
         new AwokenSkillAggregation(AwokenSkills.ENHCOMBO10C, null),
         new AwokenSkillAggregation(AwokenSkills.VDP, null),
@@ -217,7 +217,14 @@ export const AwakeningRowDisplay = ({
   keyPrefix: string;
 }) => {
   return (
-    <FlexCol gap={"0.1rem"}>
+    <FlexCol
+      gap={"0.1rem 1rem"}
+      wrap="wrap"
+      className={css`
+        height: 9rem;
+        width: 100%;
+      `}
+    >
       {asa.map((b, i) => {
         var numToDisplay = b.aggFunc ? b.aggFunc(ah) : ah[b.awokenSkill];
         const val = numToDisplay ?? 0;
@@ -260,8 +267,6 @@ export const AwakeningStatsDisplay = ({
   return (
     <FlexCol
       className={css`
-        ${border ? "border: solid 1px #aaa;" : ""};
-        ${border ? "box-shadow: 1px 1px #ccc;" : ""};
         padding: 0.5rem 0.25rem;
       `}
     >
@@ -288,9 +293,9 @@ export const AwakeningStatsDisplay = ({
               >
                 <div
                   className={css`
-                    // font-weight: bold;
                     margin-bottom: 0.5rem;
                     text-align: center;
+                    font-size: 16px;
                   `}
                 >
                   {a.header}
@@ -324,7 +329,6 @@ export const AwakeningStatsDisplay2P = ({
   return (
     <FlexColC
       className={css`
-        box-shadow: 1px 1px #ccc;
         padding: 0 1rem;
       `}
     >

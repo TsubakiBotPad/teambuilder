@@ -32,7 +32,7 @@ type AttrImgProps = {
 };
 
 const AttrImg = styled.img<AttrImgProps>`
-  width: 20px;
+  width: 16px;
   opacity: ${(props) => (props.selected ? "1" : "0.25")};
   border: ${(props) => (props.selected ? "1px solid gray" : "0")};
   border-radius: ${(props) => (props.selected ? "1000px" : "0")};
@@ -246,9 +246,8 @@ export const TeamBasicStatsDisplay = ({
   return (
     <div
       className={css`
-        ${border ? "border: solid 1px #aaa;" : ""}
-        ${border ? "box-shadow: 1px 1px #ccc;" : ""}
-        padding: 0 1rem;
+        padding: 0 0.5rem;
+        font-size: 16px;
       `}
     >
       <FlexCol
@@ -257,116 +256,123 @@ export const TeamBasicStatsDisplay = ({
           margin: 0.5rem 0;
         `}
       >
-        <table>
-          <thead>
-            <tr>
-              <th></th>
-              <TH>
-                <FlexRow justifyContent="flex-end" style={{ paddingRight: "1rem" }}>
-                  <AwakeningImage awakeningId={AwokenSkills.AWOKENKILLER} width={23} />
-                </FlexRow>
-              </TH>
-              <TH>
-                <FlexRow justifyContent="flex-end" style={{ paddingRight: "1rem" }}>
-                  <div
-                    className={css`
-                      background: url("img/awoBind.webp") no-repeat;
-                      background-size: contain;
-                      height: 20px;
-                      width: 20px;
-                    `}
-                  />
-                </FlexRow>
-              </TH>
-            </tr>
-          </thead>
-          <tbody>
-            {!is2P ? (
-              <>
+        <FlexRow gap="2.5rem" justifyContent="space-between">
+          <table>
+            <thead>
+              <tr>
+                <th></th>
+                <TH>
+                  <FlexRow justifyContent="flex-end" style={{ paddingRight: "1rem" }}>
+                    <AwakeningImage awakeningId={AwokenSkills.AWOKENKILLER} width={23} />
+                  </FlexRow>
+                </TH>
+                <TH>
+                  <FlexRow justifyContent="flex-end" style={{ paddingRight: "1rem" }}>
+                    <div
+                      className={css`
+                        background: url("img/awoBind.webp") no-repeat;
+                        background-size: contain;
+                        height: 20px;
+                        width: 20px;
+                      `}
+                    />
+                  </FlexRow>
+                </TH>
+              </tr>
+            </thead>
+            <tbody>
+              {!is2P ? (
+                <>
+                  <tr>
+                    <TD>
+                      <b>HP</b>
+                    </TD>
+                    <TD>{fixedDecimals(tbs.hp, 0)}</TD>
+                    <TD>{fixedDecimals(tbs.hpNoAwo, 0)}</TD>
+                  </tr>
+                  <tr>
+                    <TD>
+                      <b>eHP</b>
+                    </TD>
+                    <TD>{fixedDecimals(tbs.ehp, 0)}</TD>
+                    <TD>{fixedDecimals(tbs.ehpNoAwo, 0)}</TD>
+                  </tr>
+                </>
+              ) : null}
+              <tr>
+                <TD>
+                  <b>RCV</b>
+                </TD>
+                <TD>{fixedDecimals(tbs.rcv, 0)}</TD>
+                <TD>{fixedDecimals(tbs.rcvNoAwo, 0)}</TD>
+              </tr>
+            </tbody>
+          </table>
+
+          <table>
+            <tbody>
+              {tt ? (
                 <tr>
                   <TD>
-                    <b>HP</b>
+                    <b>Types</b>
                   </TD>
-                  <TD>{fixedDecimals(tbs.hp, 0)}</TD>
-                  <TD>{fixedDecimals(tbs.hpNoAwo, 0)}</TD>
+                  <TD>
+                    <FlexRow
+                      wrap="wrap"
+                      className={css`
+                        width: 7rem;
+                      `}
+                    >
+                      {tt.map((a, i) => {
+                        return (
+                          <PadAssetImage
+                            assetName={`${MonsterType[a].toLocaleLowerCase().substring(0, 3)}t`}
+                            height={22}
+                            key={keyP + "Types" + i}
+                          />
+                        );
+                      })}
+                    </FlexRow>
+                  </TD>
                 </tr>
+              ) : (
+                <></>
+              )}
+
+              {ah ? (
                 <tr>
                   <TD>
-                    <b>eHP</b>
+                    <b>Attr</b>
                   </TD>
-                  <TD>{fixedDecimals(tbs.ehp, 0)}</TD>
-                  <TD>{fixedDecimals(tbs.ehpNoAwo, 0)}</TD>
+                  <TD>
+                    <FlexRow gap={"0.25rem"}>
+                      {Object.entries(ah).map((a, i) => {
+                        const attr = Attribute[a[0] as keyof {}].toLocaleLowerCase();
+                        return (
+                          <span key={keyP + attr + i}>
+                            <AttrImg src={`img/orb${attr}.webp`} selected={a[1]} />
+                          </span>
+                        );
+                      })}
+                    </FlexRow>
+                  </TD>
                 </tr>
-              </>
-            ) : null}
-            <tr>
-              <TD>
-                <b>RCV</b>
-              </TD>
-              <TD>{fixedDecimals(tbs.rcv, 0)}</TD>
-              <TD>{fixedDecimals(tbs.rcvNoAwo, 0)}</TD>
-            </tr>
-          </tbody>
-        </table>
-
-        <table>
-          <tbody>
-            {tt ? (
-              <tr>
-                <TD>
-                  <b>Types</b>
-                </TD>
-                <TD>
-                  <FlexRow>
-                    {tt.map((a, i) => {
-                      return (
-                        <PadAssetImage
-                          assetName={`${MonsterType[a].toLocaleLowerCase().substring(0, 3)}t`}
-                          height={25}
-                          key={keyP + "Types" + i}
-                        />
-                      );
-                    })}
-                  </FlexRow>
-                </TD>
-              </tr>
-            ) : (
-              <></>
-            )}
-
-            {ah ? (
-              <tr>
-                <TD>
-                  <b>Attr</b>
-                </TD>
-                <TD>
-                  <FlexRow gap={"0.25rem"}>
-                    {Object.entries(ah).map((a, i) => {
-                      const attr = Attribute[a[0] as keyof {}].toLocaleLowerCase();
-                      return (
-                        <span key={keyP + attr + i}>
-                          <AttrImg src={`img/orb${attr}.webp`} selected={a[1]} />
-                        </span>
-                      );
-                    })}
-                  </FlexRow>
-                </TD>
-              </tr>
-            ) : (
-              <></>
-            )}
-            {unbindablePct !== undefined ? (
-              <tr>
-                <TD>
-                  <b>!Bind</b>
-                </TD>
-                <td>{fixedDecimals(unbindablePct, 0)}%</td>
-              </tr>
-            ) : (
-              <></>
-            )}
-          </tbody>
-        </table>
+              ) : (
+                <></>
+              )}
+              {unbindablePct !== undefined ? (
+                <tr>
+                  <TD>
+                    <b>!Bind</b>
+                  </TD>
+                  <td>{fixedDecimals(unbindablePct, 0)}%</td>
+                </tr>
+              ) : (
+                <></>
+              )}
+            </tbody>
+          </table>
+        </FlexRow>
       </FlexCol>
     </div>
   );

@@ -1,4 +1,6 @@
+import { css } from "@emotion/css";
 import { TeamState } from "../../model/teamStateManager";
+import { FlexCol } from "../../stylePrimitives";
 import { GameConfig } from "../gameConfigSelector";
 import { AttributeHistogram, computeAttributes } from "./attributes";
 import {
@@ -49,16 +51,26 @@ export const TeamStatDisplay = ({ teamStat, keyP: keyPrefix }: { teamStat?: Team
   }
 
   return (
-    <>
+    <FlexCol
+      className={css`
+        border: 1px solid #ccc;
+      `}
+    >
       <TeamBasicStatsDisplay
         tbs={teamStat.teamBasicStats}
         tt={teamStat.teamTypes}
         unbindablePct={teamStat.teamUnbindablePct}
         ah={teamStat.attributes}
         keyP={keyPrefix}
-        border
       />
-      <AwakeningStatsDisplay awakenings={teamStat.awakenings} keyPrefix={keyPrefix} border />
-    </>
+      <div
+        className={css`
+          border-top: 1px solid #ccc;
+          margin: 0 0.5rem;
+        `}
+      >
+        <AwakeningStatsDisplay awakenings={teamStat.awakenings} keyPrefix={keyPrefix} />
+      </div>
+    </FlexCol>
   );
 };

@@ -16,9 +16,9 @@ export const H3 = styled.h3`
   font-weight: 600;
 `;
 
-type FlexProps = {
+type FlexColProps = {
   gap?: string;
-  wrap?: boolean;
+  wrap?: string;
 };
 
 type FlexRowProps = {
@@ -48,10 +48,11 @@ export const RespRow = styled.div<FlexRowProps>`
   justify-content: ${(props) => (props.center ? "center" : "start")};
 `;
 
-export const FlexCol = styled.div<FlexProps>`
+export const FlexCol = styled.div<FlexColProps>`
   display: flex;
   flex-direction: column;
   gap: ${(props) => (props.gap ? props.gap : "0")};
+  ${(props) => (props.wrap ? `flex-wrap: ${props.wrap};` : "")}
 `;
 
 export const FlexColC = styled(FlexCol)`
