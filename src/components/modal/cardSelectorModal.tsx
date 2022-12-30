@@ -266,6 +266,8 @@ export const CardSelectorModal = ({ isOpen }: { isOpen: boolean }) => {
                 <RemoveButton
                   onClick={() => {
                     setSelectedMonster(undefined);
+                    setCard(cardSlotSelected, { id: 0, level: 0, sa: 0 }, teamState, setTeamState, gameConfig);
+                    setModalIsOpen(false);
                   }}
                 >
                   <IoIosRemoveCircle /> Clear
