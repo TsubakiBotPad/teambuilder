@@ -253,7 +253,7 @@ export const CardSelectorModal = ({ isOpen }: { isOpen: boolean }) => {
                     var cardInfo = selectedMonster
                       ? {
                           id: selectedMonster!.monster_id,
-                          level: Math.min(selectedMonster!.level, currentLevel ?? 99),
+                          level: currentLevel ?? 99,
                           sa: currentSA
                         }
                       : { id: 0, level: 0, sa: 0 };
@@ -308,9 +308,14 @@ function setCardLevelForExistingCard(
   currentLevel: number | undefined,
   setCurrentLevel: React.Dispatch<React.SetStateAction<number | undefined>>
 ) {
-  var maxCardLevel = monster?.level ?? 99;
-  if (monster && monster?.limit_mult !== 0) {
-    maxCardLevel = 120;
+  var maxCardLevel = 99;
+  debugger;
+  if (monster) {
+    if (monster?.limit_mult !== 0) {
+      maxCardLevel = 120;
+    } else if (monster.level < 99) {
+      maxCardLevel = monster.level;
+    }
   }
 
   const levelToDisplay = Math.min(maxCardLevel, currentLevel ?? maxCardLevel);
@@ -322,10 +327,14 @@ function setCardLevelForNewCard(
   monster: MonsterResponse | undefined,
   setCurrentLevel: React.Dispatch<React.SetStateAction<number | undefined>>
 ) {
-  var maxCardLevel = monster?.level ?? 99;
+  var maxCardLevel = 99;
   const desiredCardLevel = gameConfig.defaultCardLevel;
-  if (monster && monster?.limit_mult !== 0) {
-    maxCardLevel = 120;
+  if (monster) {
+    if (monster?.limit_mult !== 0) {
+      maxCardLevel = 120;
+    } else if (monster.level < 99) {
+      maxCardLevel = monster.level;
+    }
   }
 
   const levelToDisplay = Math.min(desiredCardLevel, maxCardLevel);
