@@ -1,7 +1,12 @@
 import { TeamState } from "../../model/teamStateManager";
 import { GameConfig } from "../gameConfigSelector";
 import { AttributeHistogram, computeAttributes } from "./attributes";
-import { AwakeningHistogram, AwakeningStatsDisplay, computeTotalAwakenings } from "./awakenings";
+import {
+  AwakeningHistogram,
+  AwakeningStatsDisplay,
+  computeSharedAwakenings,
+  computeTotalAwakenings
+} from "./awakenings";
 import { computeTeamBasicStats, TeamBasicStats, TeamBasicStatsDisplay } from "./basicStats";
 import { computeTypes, TeamTypes } from "./types";
 import { computeTeamUnbindablePct } from "./unbindable";
@@ -14,6 +19,7 @@ export interface TeamStats {
 
 export interface TeamStat {
   awakenings?: AwakeningHistogram;
+  sharedAwakenings?: AwakeningHistogram;
   attributes?: AttributeHistogram;
   teamTypes?: TeamTypes;
   teamUnbindablePct?: number;
@@ -27,6 +33,7 @@ export async function computeTeamStat(
 ): Promise<TeamStat> {
   return {
     awakenings: await computeTotalAwakenings(gameConfig, teamState, player),
+    sharedAwakenings: await computeSharedAwakenings(gameConfig, teamState, player),
     attributes: await computeAttributes(gameConfig, teamState, player),
     teamTypes: await computeTypes(gameConfig, teamState, player),
     teamUnbindablePct: await computeTeamUnbindablePct(gameConfig, teamState, player),

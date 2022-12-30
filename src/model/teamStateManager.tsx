@@ -206,6 +206,21 @@ export function getTeamSlots(gameConfig: GameConfig, teamState: TeamState, playe
   return slots;
 }
 
+export function get2PTeamSlots(teamState: TeamState) {
+  return [
+    teamState.p1.teamSlot1,
+    teamState.p1.teamSlot2,
+    teamState.p1.teamSlot3,
+    teamState.p1.teamSlot4,
+    teamState.p1.teamSlot5,
+    teamState.p2.teamSlot1,
+    teamState.p2.teamSlot2,
+    teamState.p2.teamSlot3,
+    teamState.p2.teamSlot4,
+    teamState.p2.teamSlot5
+  ];
+}
+
 export function copyLatents(
   teamState: TeamState,
   setTeamState: React.Dispatch<React.SetStateAction<TeamState>>,

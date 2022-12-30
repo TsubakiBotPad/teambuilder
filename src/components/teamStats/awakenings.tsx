@@ -2,7 +2,7 @@ import { css } from "@emotion/css";
 
 import { AwakeningImage } from "../../model/images";
 import { monsterCacheClient } from "../../model/monsterCacheClient";
-import { getTeamSlots, TeamSlotState, TeamState } from "../../model/teamStateManager";
+import { get2PTeamSlots, getTeamSlots, TeamSlotState, TeamState } from "../../model/teamStateManager";
 import { AwokenSkills } from "../../model/types/monster";
 import { FlexCol, FlexRow, FlexRowC, H3 } from "../../stylePrimitives";
 import { GameConfig } from "../gameConfigSelector";
@@ -40,7 +40,16 @@ export async function computeTotalAwakeningsFromSlots(slots: TeamSlotState[]) {
 }
 
 export async function computeTotalAwakenings(gameConfig: GameConfig, teamState: TeamState, playerId: keyof TeamState) {
-  const slots = getTeamSlots(gameConfig, teamState, playerId);
+  var slots = getTeamSlots(gameConfig, teamState, playerId);
+  return computeTotalAwakeningsFromSlots(slots);
+}
+
+export async function computeSharedAwakenings(gameConfig: GameConfig, teamState: TeamState, playerId: keyof TeamState) {
+  if (gameConfig.mode !== "2p") {
+    return {} as AwakeningHistogram;
+  }
+
+  var slots = get2PTeamSlots(teamState);
   return computeTotalAwakeningsFromSlots(slots);
 }
 
@@ -240,13 +249,6 @@ export const AwakeningStatsDisplay = ({
           margin: 0.5rem 0;
         `}
       >
-        <H3
-          className={css`
-            text-align: center;
-          `}
-        >
-          Awakenings
-        </H3>
         <FlexRow>
           {AwakeningsToDisplay.map((a, j) => {
             const data = a.data;

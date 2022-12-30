@@ -208,13 +208,6 @@ export const TeamBasicStatsDisplay = ({
           margin: 0.5rem 0;
         `}
       >
-        <H3
-          className={css`
-            text-align: center;
-          `}
-        >
-          Stats
-        </H3>
         <table>
           <thead>
             <tr>

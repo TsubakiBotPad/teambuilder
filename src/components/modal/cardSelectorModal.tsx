@@ -44,7 +44,7 @@ const handleInputChange = async (
       setSelectedMonster(ret.monster);
       setError("");
 
-      const level = ret.monster.limit_mult !== 0 ? gameConfig.defaultCardLevel : 99;
+      const level = ret.monster.limit_mult !== 0 ? gameConfig.defaultCardLevel : ret.monster.level;
       setCurrentLevel(level);
     }
   } catch (e) {
@@ -251,7 +251,11 @@ export const CardSelectorModal = ({ isOpen }: { isOpen: boolean }) => {
                 <ConfirmButton
                   onClick={() => {
                     var cardInfo = selectedMonster
-                      ? { id: selectedMonster!.monster_id, level: currentLevel ?? 99, sa: currentSA }
+                      ? {
+                          id: selectedMonster!.monster_id,
+                          level: Math.min(selectedMonster!.level, currentLevel ?? 99),
+                          sa: currentSA
+                        }
                       : { id: 0, level: 0, sa: 0 };
                     setCard(cardSlotSelected, cardInfo, teamState, setTeamState, gameConfig);
                     setModalIsOpen(false);
@@ -302,7 +306,7 @@ function setCardLevelForExistingCard(
   currentLevel: number | undefined,
   setCurrentLevel: React.Dispatch<React.SetStateAction<number | undefined>>
 ) {
-  var maxCardLevel = 99;
+  var maxCardLevel = monster?.level ?? 99;
   if (monster && monster?.limit_mult !== 0) {
     maxCardLevel = 120;
   }
@@ -316,7 +320,7 @@ function setCardLevelForNewCard(
   monster: MonsterResponse | undefined,
   setCurrentLevel: React.Dispatch<React.SetStateAction<number | undefined>>
 ) {
-  var maxCardLevel = 99;
+  var maxCardLevel = monster?.level ?? 99;
   const desiredCardLevel = gameConfig.defaultCardLevel;
   if (monster && monster?.limit_mult !== 0) {
     maxCardLevel = 120;
