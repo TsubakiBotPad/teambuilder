@@ -4,7 +4,7 @@ import { AwakeningImage } from "../../model/images";
 import { monsterCacheClient } from "../../model/monsterCacheClient";
 import { get2PTeamSlots, getTeamSlots, TeamSlotState, TeamState } from "../../model/teamStateManager";
 import { AwokenSkills } from "../../model/types/monster";
-import { FlexCol, FlexRow, FlexRowC, H3 } from "../../stylePrimitives";
+import { FlexCol, FlexRow, FlexRowC } from "../../stylePrimitives";
 import { GameConfig } from "../gameConfigSelector";
 
 export type AwakeningHistogram = { [key: string]: number };
