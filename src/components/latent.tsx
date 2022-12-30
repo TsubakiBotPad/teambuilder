@@ -104,10 +104,11 @@ export const Latents = ({
   latents: number[];
   teamSlot: TeamSlotState;
 }) => {
-  const { setCardSlotSelected, setLatentModalIsOpen } = useContext(AppStateContext);
+  const { gameConfig, setCardSlotSelected, setLatentModalIsOpen } = useContext(AppStateContext);
   const { teamState, setTeamState } = useContext(TeamStateContext);
 
   const [monsterAwakenings, setMonsterAwakenings] = useState([] as number[]);
+  const not2P = gameConfig.mode !== "2p";
 
   const latentsBySize = latents.reduce((d, num) => {
     const idx = Math.floor((num as any) / 100);
@@ -140,12 +141,12 @@ export const Latents = ({
   useMemo(() => {
     const f = async () => {
       if (hasSixSlot) {
-        const a = await computeTotalAwakeningsFromSlots([teamSlot]);
+        const a = await computeTotalAwakeningsFromSlots([teamSlot], not2P);
         setMonsterAwakenings(Object.keys(a).map((b) => parseInt(b)));
       }
     };
     f();
-  }, [teamSlot, hasSixSlot]);
+  }, [teamSlot, hasSixSlot, not2P]);
 
   const [, drag] = useDrag(() => ({
     type: DraggableTypes.latent,

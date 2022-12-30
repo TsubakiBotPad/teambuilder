@@ -14,6 +14,7 @@ import { CardSelectorModal } from "../components/modal/cardSelectorModal";
 import { LatentSelectorModal } from "../components/modal/latentSelectorModal";
 import { TeamBuilderContent } from "../components/teamBuilderContent";
 import { computeTeamStat, TeamStats } from "../components/teamStats/teamStats";
+import { iStr, Language } from "../i18n/i18n";
 import { ConfigData, deserializeConfig, serializeConfig } from "../model/serializedUri";
 import {
   AppStateContext,
@@ -33,16 +34,16 @@ export const DraggableTypes = {
 };
 
 const PadTeamBuilderPageContainer = React.forwardRef((props, ref) => {
-  const { modalIsOpen, latentModalIsOpen, badgeModalIsOpen } = useContext(AppStateContext);
+  const { language, modalIsOpen, latentModalIsOpen, badgeModalIsOpen } = useContext(AppStateContext);
   return (
     <Page maxWidth={maxPageWidth}>
       <FlexColC gap="1rem">
-        <H1>PAD Team Builder</H1>
+        <H1>{iStr("applicationTitle", language, "PAD Team Builder")}</H1>
         <FlexRowC gap="2rem">
           <GameConfigSelector />
           <DefaultLevelSelector />
           <FlexRowC gap="0.25rem">
-            Export:
+            {iStr("export", language)}:
             <button
               onClick={() => exportComponentAsPNG(ref as any)}
               className={css`
@@ -77,11 +78,13 @@ export const PadTeamBuilderPage = () => {
         n: "",
         ts: DEFAULT_TEAM_STATE,
         gc: DEFAULT_GAME_CONFIG,
-        in: "Type notes here!"
+        in: iStr("notes", "en", "Type notes here!"),
+        l: "en" as Language
       };
 
   const [teamName, setTeamName] = useState(parsedConfig.n);
   const [gameConfig, setGameConfig] = useState(parsedConfig.gc);
+  const [language, setLanguage] = useState(parsedConfig.l);
   const [teamState, setTeamState] = useState(
     parsedConfig.gc.mode === "2p" ? linkLeadersNoSet(parsedConfig.ts) : parsedConfig.ts
   );
@@ -101,6 +104,7 @@ export const PadTeamBuilderPage = () => {
         n: teamName,
         ts: teamState,
         gc: gameConfig,
+        l: language,
         ...config
       };
       navigate("/" + serializeConfig(finalConfig));
@@ -144,7 +148,8 @@ export const PadTeamBuilderPage = () => {
           setPlayerSelected,
           updateUrl: updateUrl.current,
           instructions,
-          setInstructions
+          setInstructions,
+          language
         }}
       >
         <TeamStateContext.Provider value={{ teamState, setTeamState }}>

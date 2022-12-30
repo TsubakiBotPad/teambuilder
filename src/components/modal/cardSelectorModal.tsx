@@ -8,6 +8,7 @@ import Modal from "react-modal";
 
 import { breakpoint } from "../../breakpoints";
 import { ApiError, MonsterResponse } from "../../client";
+import { iStr } from "../../i18n/i18n";
 import { BASE_ICON_URL } from "../../model/images";
 import { monsterCacheClient } from "../../model/monsterCacheClient";
 import { AppStateContext, setCard, TeamCardInfo, TeamSlotState, TeamStateContext } from "../../model/teamStateManager";
@@ -160,7 +161,7 @@ const f = async (
 const debouncedOnChange = debounce(f, 300);
 
 export const CardSelectorModal = ({ isOpen }: { isOpen: boolean }) => {
-  const { setModalIsOpen, cardSlotSelected, gameConfig } = useContext(AppStateContext);
+  const { setModalIsOpen, cardSlotSelected, gameConfig, language } = useContext(AppStateContext);
   const { teamState, setTeamState } = useContext(TeamStateContext);
 
   const [, setQueriedId] = useState(0);
@@ -217,13 +218,13 @@ export const CardSelectorModal = ({ isOpen }: { isOpen: boolean }) => {
         >
           <FlexCol gap="0.5rem">
             <H2>
-              {cardSlotSelected.teamId}-{cardSlotSelected.slotId}-{cardSlotSelected.use}
+              {cardSlotSelected.teamId}-{iStr(cardSlotSelected.slotId, language)}-{iStr(cardSlotSelected.use, language)}
             </H2>
             <FlexColC gap="0.5rem">
               <CardQueryInput
                 ref={inputRef}
                 type="text"
-                placeholder="Search id/name/query"
+                placeholder={iStr("search", language)}
                 onChange={async (e) => {
                   debouncedOnChange(
                     e,
@@ -261,7 +262,7 @@ export const CardSelectorModal = ({ isOpen }: { isOpen: boolean }) => {
                     setModalIsOpen(false);
                   }}
                 >
-                  <IoIosCheckmarkCircle /> Confirm
+                  <IoIosCheckmarkCircle /> {iStr("confirm", language)}
                 </ConfirmButton>
                 <RemoveButton
                   onClick={() => {
@@ -270,7 +271,7 @@ export const CardSelectorModal = ({ isOpen }: { isOpen: boolean }) => {
                     setModalIsOpen(false);
                   }}
                 >
-                  <IoIosRemoveCircle /> Clear
+                  <IoIosRemoveCircle /> {iStr("clear", language)}
                 </RemoveButton>
               </FlexRowC>
             </FlexColC>
@@ -292,7 +293,7 @@ export const CardSelectorModal = ({ isOpen }: { isOpen: boolean }) => {
                   setCurrentLevel={setCurrentLevel}
                 />
               ) : (
-                <FlexColC>No card selected</FlexColC>
+                <FlexColC>{iStr("noCardSelected", language)}</FlexColC>
               )}
             </FlexCol>
           </FlexCol>

@@ -1,5 +1,6 @@
 import styled from "@emotion/styled";
 import { useContext } from "react";
+import { iStr } from "../i18n/i18n";
 
 import { AppStateContext, linkLeaders, TeamStateContext, unlinkLeaders } from "../model/teamStateManager";
 import { FlexRowC } from "../stylePrimitives";
@@ -23,12 +24,12 @@ const FancyButton = styled.button<FancyButtonProps>`
 `;
 
 export const GameConfigSelector = () => {
-  const { gameConfig, setGameConfig, updateUrl } = useContext(AppStateContext);
+  const { language, gameConfig, setGameConfig, updateUrl } = useContext(AppStateContext);
   const { teamState, setTeamState } = useContext(TeamStateContext);
 
   return (
     <FlexRowC gap="0.25rem">
-      <span>Game Mode:</span>
+      <span>{iStr("gameMode", language)}:</span>
       <FlexRowC>
         <FancyButton
           backgroundColorFocused="red"

@@ -1,15 +1,17 @@
 import { css } from "@emotion/css";
+import { useContext } from "react";
+import { iStr } from "../../i18n/i18n";
 
 import { AwakeningImage } from "../../model/images";
 import { monsterCacheClient } from "../../model/monsterCacheClient";
-import { get2PTeamSlots, getTeamSlots, TeamSlotState, TeamState } from "../../model/teamStateManager";
+import { AppStateContext, get2PTeamSlots, getTeamSlots, TeamSlotState, TeamState } from "../../model/teamStateManager";
 import { AwokenSkills } from "../../model/types/monster";
 import { FlexCol, FlexColC, FlexRow, FlexRowC } from "../../stylePrimitives";
 import { GameConfig } from "../gameConfigSelector";
 
 export type AwakeningHistogram = { [key: string]: number };
 
-export async function computeTotalAwakeningsFromSlots(slots: TeamSlotState[]) {
+export async function computeTotalAwakeningsFromSlots(slots: TeamSlotState[], includeSA: boolean) {
   const totalAwakenings = [];
   for (const slot of slots) {
     const m1b = await monsterCacheClient.get(slot.base.id);
@@ -17,7 +19,7 @@ export async function computeTotalAwakeningsFromSlots(slots: TeamSlotState[]) {
     if (m1b_contrib) {
       totalAwakenings.push(...m1b_contrib);
     }
-    if (slot.base.sa) {
+    if (includeSA && slot.base.sa) {
       totalAwakenings.push(slot.base.sa);
     }
 
@@ -41,7 +43,7 @@ export async function computeTotalAwakeningsFromSlots(slots: TeamSlotState[]) {
 
 export async function computeTotalAwakenings(gameConfig: GameConfig, teamState: TeamState, playerId: keyof TeamState) {
   var slots = getTeamSlots(gameConfig, teamState, playerId);
-  return computeTotalAwakeningsFromSlots(slots);
+  return computeTotalAwakeningsFromSlots(slots, gameConfig.mode !== "2p");
 }
 
 export async function computeSharedAwakenings(gameConfig: GameConfig, teamState: TeamState, playerId: keyof TeamState) {
@@ -50,7 +52,7 @@ export async function computeSharedAwakenings(gameConfig: GameConfig, teamState:
   }
 
   var slots = get2PTeamSlots(teamState);
-  return computeTotalAwakeningsFromSlots(slots);
+  return computeTotalAwakeningsFromSlots(slots, false);
 }
 
 export class AwokenSkillAggregation {
@@ -87,7 +89,7 @@ function totalResist(resist: string) {
 
 export const AwakeningsToDisplay2PShared = [
   {
-    header: "Shared",
+    header: "shared",
     data: [
       [
         new AwokenSkillAggregation(AwokenSkills.SKILLBOOST, totalDoubleAwakening("SKILLBOOST", "SKILLBOOSTPLUS")),
@@ -96,7 +98,7 @@ export const AwakeningsToDisplay2PShared = [
     ]
   },
   {
-    header: "Resist",
+    header: "resist",
     data: [
       [
         new AwokenSkillAggregation(AwokenSkills.POISONRES, totalResist("POISON"), true),
@@ -111,7 +113,7 @@ export const AwakeningsToDisplay2PShared = [
 
 export const AwakeningsToDisplay = [
   {
-    header: "Static",
+    header: "static",
     data: [
       [
         new AwokenSkillAggregation(AwokenSkills.SKILLBOOST, totalDoubleAwakening("SKILLBOOST", "SKILLBOOSTPLUS")),
@@ -124,7 +126,7 @@ export const AwakeningsToDisplay = [
   },
 
   {
-    header: "Resist",
+    header: "resist",
     data: [
       [
         new AwokenSkillAggregation(AwokenSkills.POISONRES, totalResist("POISON"), true),
@@ -136,7 +138,7 @@ export const AwakeningsToDisplay = [
     ]
   },
   {
-    header: "Utility",
+    header: "utility",
     data: [
       [
         new AwokenSkillAggregation(AwokenSkills.ELATTACK, null),
@@ -151,7 +153,7 @@ export const AwakeningsToDisplay = [
     ]
   },
   {
-    header: "Offense",
+    header: "offense",
     data: [
       [
         new AwokenSkillAggregation(AwokenSkills.REDROW, null),
@@ -259,6 +261,8 @@ export const AwakeningStatsDisplay = ({
   keyPrefix: string;
   border?: boolean;
 }) => {
+  const { language } = useContext(AppStateContext);
+
   if (!awakenings) {
     return <></>;
   }
@@ -274,6 +278,7 @@ export const AwakeningStatsDisplay = ({
         <FlexRow>
           {AwakeningsToDisplay.map((a, j) => {
             const data = a.data;
+            debugger;
             return (
               <FlexCol
                 className={css`
@@ -298,7 +303,7 @@ export const AwakeningStatsDisplay = ({
                     font-size: 16px;
                   `}
                 >
-                  {a.header}
+                  {iStr(a.header, language, "Header")}
                 </div>
                 <FlexRow gap="0.5rem" key={`${keyPrefix}awakenings${j}`}>
                   {data.map((b, i) => {

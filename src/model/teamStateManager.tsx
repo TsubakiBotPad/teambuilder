@@ -4,6 +4,7 @@ import React from "react";
 import { GameConfig } from "../components/gameConfigSelector";
 import { TeamComponentId } from "../components/id";
 import { TeamStats } from "../components/teamStats/teamStats";
+import { Language } from "../i18n/i18n";
 import { ConfigData } from "./serializedUri";
 
 export interface TeamCardInfo {
@@ -87,6 +88,7 @@ export const TeamStateContext = React.createContext(DEFAULT_TEAM_STATE_CONTEXT);
 
 interface AppState {
   gameConfig: GameConfig;
+  language: Language;
   setGameConfig: React.Dispatch<React.SetStateAction<GameConfig>>;
   teamName: string;
   setTeamName: React.Dispatch<React.SetStateAction<string>>;
@@ -109,6 +111,7 @@ interface AppState {
 
 const DEFAULT_APP_STATE: AppState = {
   gameConfig: DEFAULT_GAME_CONFIG,
+  language: "en",
   setGameConfig: () => {},
   teamName: "",
   setTeamName: () => {},

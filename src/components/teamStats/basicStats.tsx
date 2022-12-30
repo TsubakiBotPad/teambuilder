@@ -1,10 +1,12 @@
 import { css } from "@emotion/css";
 import styled from "@emotion/styled";
+import { useContext } from "react";
+import { iStr } from "../../i18n/i18n";
 
 import { AwakeningImage } from "../../model/images";
 import { monsterCacheClient } from "../../model/monsterCacheClient";
 import { PadAssetImage } from "../../model/padAssets";
-import { get2PTeamSlots, getTeamSlots, TeamSlotState, TeamState } from "../../model/teamStateManager";
+import { AppStateContext, get2PTeamSlots, getTeamSlots, TeamSlotState, TeamState } from "../../model/teamStateManager";
 import { computeLeaderSkill } from "../../model/types/leaderSkill";
 import { Attribute, AwokenSkills, MonsterType } from "../../model/types/monster";
 import { stat } from "../../model/types/stat";
@@ -67,7 +69,7 @@ export async function computeTeamBasicStats2P(gameConfig: GameConfig, teamState:
 
   var { hpAcc, rcvAcc, hpNoAwoAcc, rcvNoAwoAcc } = await accumulateBasicStats(slots, gameConfig);
 
-  const awakenings = await computeTotalAwakeningsFromSlots(slots);
+  const awakenings = await computeTotalAwakeningsFromSlots(slots, false);
   const numTeamHp = awakenings[AwokenSkills.ENHTEAMHP] ?? 0;
   const numTeamRcv = awakenings[AwokenSkills.ENHTEAMRCV] ?? 0;
 
@@ -94,7 +96,7 @@ export async function computeTeamBasicStats(
 ): Promise<TeamBasicStats> {
   const slots = getTeamSlots(gameConfig, teamState, playerId);
 
-  var includeBadge = gameConfig.mode !== "2p";
+  var not2P = gameConfig.mode !== "2p";
 
   const leader = await monsterCacheClient.get(slots[0].base.id);
   const helper = await monsterCacheClient.get(slots[5].base.id);
@@ -102,7 +104,7 @@ export async function computeTeamBasicStats(
 
   var { hpAcc, rcvAcc, hpNoAwoAcc, rcvNoAwoAcc } = await accumulateBasicStats(slots, gameConfig);
 
-  const awakenings = await computeTotalAwakeningsFromSlots(slots);
+  const awakenings = await computeTotalAwakeningsFromSlots(slots, not2P);
   const numTeamHp = awakenings[AwokenSkills.ENHTEAMHP] ?? 0;
   const numTeamRcv = awakenings[AwokenSkills.ENHTEAMRCV] ?? 0;
 
@@ -110,7 +112,7 @@ export async function computeTeamBasicStats(
   var rcvBadgeMult = 1;
 
   var playerBadgeId = teamState[playerId].badgeId;
-  if (includeBadge) {
+  if (not2P) {
     if (playerBadgeId === "hpbadge") {
       hpBadgeMult = 1.05;
     } else if (playerBadgeId === "hp+badge") {
@@ -239,6 +241,7 @@ export const TeamBasicStatsDisplay = ({
   is2P?: boolean;
   border?: boolean;
 }) => {
+  const { language } = useContext(AppStateContext);
   if (!tbs) {
     return <></>;
   }
@@ -315,7 +318,7 @@ export const TeamBasicStatsDisplay = ({
               {tt ? (
                 <tr>
                   <TD>
-                    <b>Types</b>
+                    <b>{iStr("types", language)}</b>
                   </TD>
                   <TD>
                     <FlexRow
@@ -343,7 +346,7 @@ export const TeamBasicStatsDisplay = ({
               {ah ? (
                 <tr>
                   <TD>
-                    <b>Attr</b>
+                    <b>{iStr("attributes", language)}</b>
                   </TD>
                   <TD>
                     <FlexRow gap={"0.25rem"}>
@@ -364,7 +367,7 @@ export const TeamBasicStatsDisplay = ({
               {unbindablePct !== undefined ? (
                 <tr>
                   <TD>
-                    <b>!Bind</b>
+                    <b>{iStr("unbindable", language)}</b>
                   </TD>
                   <td>{fixedDecimals(unbindablePct, 0)}%</td>
                 </tr>

@@ -64,8 +64,8 @@ const BottomOverlay = styled.div`
 `;
 
 const CardSelected = ({ monster, componentId }: { componentId: Partial<TeamComponentId>; monster: TeamCardInfo }) => {
-  const { setModalIsOpen, setCardSlotSelected } = useContext(AppStateContext);
-
+  const { gameConfig, setModalIsOpen, setCardSlotSelected } = useContext(AppStateContext);
+  const not2P = gameConfig.mode !== "2p";
   return (
     <CardSelectedImage
       monsterId={monster.id}
@@ -101,7 +101,7 @@ const CardSelected = ({ monster, componentId }: { componentId: Partial<TeamCompo
       >
         <FlexColC gap={"0.25rem"}>
           <img src={"img/awoInheritable.png"} width={"20px"} alt="awokenStar" />
-          <div>{monster.sa ? <AwakeningImage awakeningId={monster.sa} width={22} /> : null}</div>
+          <div>{not2P && monster.sa ? <AwakeningImage awakeningId={monster.sa} width={22} /> : null}</div>
         </FlexColC>
       </div>
 

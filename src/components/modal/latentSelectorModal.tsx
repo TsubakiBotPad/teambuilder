@@ -12,6 +12,7 @@ import { BoundingBox, FlexCol, FlexColC, FlexRow, FlexRowC, H2, H3 } from "../..
 import { ConfirmButton, RemoveButton } from "../generic/confirmButton";
 import { ModalCloseButton } from "./common";
 import { IoIosCheckmarkCircle, IoIosRemoveCircle } from "react-icons/io";
+import { iStr } from "../../i18n/i18n";
 
 const modalClassName = css`
   border: 0;
@@ -38,7 +39,7 @@ const DEFAULT_MAX_LATENTS = 6;
 
 export const LatentSelectorModal = ({ isOpen }: { isOpen: boolean }) => {
   const [selectedLatents, setSelectedLatents] = useState<number[]>([]);
-  const { setLatentModalIsOpen, cardSlotSelected } = useContext(AppStateContext);
+  const { language, setLatentModalIsOpen, cardSlotSelected } = useContext(AppStateContext);
   const { teamState, setTeamState } = useContext(TeamStateContext);
   const [hoverClose, setHoverClose] = useState(false);
   const [currentMonster, setCurrentMonster] = useState<MonsterResponse | undefined>(undefined);
@@ -86,7 +87,7 @@ export const LatentSelectorModal = ({ isOpen }: { isOpen: boolean }) => {
           `}
         >
           <H2>
-            {cardSlotSelected.teamId}-{cardSlotSelected.slotId}-Latents
+            {cardSlotSelected.teamId}-{iStr(cardSlotSelected.slotId, language)}-{iStr("latents", language)}
           </H2>
           <FlexColC gap="2rem">
             <FlexRow wrap={"wrap"}>
@@ -94,7 +95,9 @@ export const LatentSelectorModal = ({ isOpen }: { isOpen: boolean }) => {
                 {Object.entries(LATENTS_BY_SIZE).map(([n, names], j) => {
                   return (
                     <FlexCol key={n + j}>
-                      <H3>{n}-slot</H3>
+                      <H3>
+                        {n}-{iStr("latentSlot", language)}
+                      </H3>
                       <FlexRow wrap="wrap">
                         {names.map((n, i) => {
                           return (
@@ -181,14 +184,14 @@ export const LatentSelectorModal = ({ isOpen }: { isOpen: boolean }) => {
                   setLatentModalIsOpen(false);
                 }}
               >
-                <IoIosCheckmarkCircle /> Confirm
+                <IoIosRemoveCircle /> {iStr("confirm", language)}
               </ConfirmButton>
               <RemoveButton
                 onClick={() => {
                   setSelectedLatents([]);
                 }}
               >
-                <IoIosRemoveCircle /> Clear
+                <IoIosRemoveCircle /> {iStr("clear", language)}
               </RemoveButton>
             </FlexRowC>
           </FlexColC>

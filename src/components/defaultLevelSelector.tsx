@@ -1,5 +1,6 @@
 import styled from "@emotion/styled";
 import { useContext } from "react";
+import { iStr } from "../i18n/i18n";
 import { AppStateContext } from "../model/teamStateManager";
 
 import { FlexRowC } from "../stylePrimitives";
@@ -23,10 +24,10 @@ const FancyButton = styled.button<FancyButtonProps>`
 `;
 
 export const DefaultLevelSelector = () => {
-  const { gameConfig, setGameConfig } = useContext(AppStateContext);
+  const { language, gameConfig, setGameConfig } = useContext(AppStateContext);
   return (
     <FlexRowC gap="0.25rem">
-      <span>Default Lv: </span>
+      <span>{iStr("defaultLevel", language)}:</span>
       <FlexRowC>
         <FancyButton
           backgroundColorFocused="#666"

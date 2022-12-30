@@ -10,6 +10,7 @@ import { BoundingBox, FlexColC, FlexRow, FlexRowC, H2 } from "../../stylePrimiti
 import { ConfirmButton, RemoveButton } from "../generic/confirmButton";
 import { ModalCloseButton } from "./common";
 import { IoIosRemoveCircle, IoIosCheckmarkCircle } from "react-icons/io";
+import { iStr } from "../../i18n/i18n";
 
 const modalClassName = css`
   border: 0;
@@ -34,7 +35,7 @@ const overlayClassName = css`
 
 export const BadgeSelectorModal = ({ isOpen }: { isOpen: boolean }) => {
   const [selectedBadge, setSelectedBadge] = useState<string>("");
-  const { setBadgeModalIsOpen, playerSelected } = useContext(AppStateContext);
+  const { language, setBadgeModalIsOpen, playerSelected } = useContext(AppStateContext);
   const { teamState, setTeamState } = useContext(TeamStateContext);
   const [hoverClose, setHoverClose] = useState(false);
 
@@ -58,7 +59,9 @@ export const BadgeSelectorModal = ({ isOpen }: { isOpen: boolean }) => {
             padding: 1rem;
           `}
         >
-          <H2>{playerSelected}-Badge</H2>
+          <H2>
+            {playerSelected}-{iStr("badge", language)}
+          </H2>
           <FlexColC>
             <FlexRow wrap="wrap" gap="0.25rem">
               {BADGE_NAMES.map((name, i) => {
@@ -91,14 +94,14 @@ export const BadgeSelectorModal = ({ isOpen }: { isOpen: boolean }) => {
                   setBadgeModalIsOpen(false);
                 }}
               >
-                <IoIosCheckmarkCircle /> Confirm
+                <IoIosCheckmarkCircle /> {iStr("confirm", language)}
               </ConfirmButton>
               <RemoveButton
                 onClick={() => {
                   setSelectedBadge("");
                 }}
               >
-                <IoIosRemoveCircle /> Clear
+                <IoIosRemoveCircle /> {iStr("clear", language)}
               </RemoveButton>
             </FlexRowC>
           </FlexColC>

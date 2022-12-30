@@ -2,6 +2,7 @@ import { css } from "@emotion/css";
 import styled from "@emotion/styled";
 import React from "react";
 import { useContext } from "react";
+import { iStr } from "../i18n/i18n";
 
 import { AppStateContext } from "../model/teamStateManager";
 import { FlexCol, FlexColC, FlexRow, FlexRowC } from "../stylePrimitives";
@@ -16,14 +17,14 @@ const TeamInput = styled.input`
 `;
 
 export const TeamBuilderContent = React.forwardRef((props, ref) => {
-  const { gameConfig, setTeamName, teamName } = useContext(AppStateContext);
+  const { gameConfig, setTeamName, teamName, language } = useContext(AppStateContext);
 
   return (
     <FlexColC ref={ref as any}>
       <FlexRow gap="1rem">
         <FlexCol>
           <TeamInput
-            placeholder="Team Title"
+            placeholder={iStr("teamName", language)}
             size={35}
             value={teamName}
             onChange={(e) => {
