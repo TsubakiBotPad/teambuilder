@@ -284,7 +284,7 @@ export const TeamBasicStatsDisplay = ({
                 <TH>
                   <div
                     className={css`
-                      background: url("img/awoBind.webp") no-repeat;
+                      background: url("img/awoBind.png") no-repeat;
                       background-size: contain;
                       height: 20px;
                       width: 20px;
