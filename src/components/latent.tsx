@@ -1,7 +1,9 @@
 import { css } from "@emotion/css";
 import styled from "@emotion/styled";
 import React, { useContext, useMemo, useState } from "react";
+import { useDrag, useDrop } from "react-dnd";
 
+import { monsterCacheClient } from "../model/monsterCacheClient";
 import { PadAssetImage } from "../model/padAssets";
 import { AppStateContext, copyLatents, swapLatents, TeamSlotState, TeamStateContext } from "../model/teamStateManager";
 import {
@@ -10,11 +12,10 @@ import {
   LATENTS_ID_TO_NAME,
   UNRESTRICTED_AWOS
 } from "../model/types/latents";
-import { FlexRow } from "../stylePrimitives";
-import { computeTotalAwakeningsFromSlots } from "./teamStats/awakenings";
-import { useDrag, useDrop } from "react-dnd";
 import { DraggableTypes } from "../pages/padteambuilder";
+import { FlexRow } from "../stylePrimitives";
 import { TeamComponentId } from "./id";
+import { computeTotalAwakeningsFromSlots } from "./teamStats/awakenings";
 
 interface DropResult {
   dropEffect: string;
@@ -35,6 +36,7 @@ const LatentSelected = styled(FlexRow)`
   height: 2.14rem;
   flex-wrap: wrap;
   gap: 0px 2px;
+  position: relative;
 `;
 
 const RemainderLatents = styled.div`
@@ -108,6 +110,8 @@ export const Latents = ({
   const { teamState, setTeamState } = useContext(TeamStateContext);
 
   const [monsterAwakenings, setMonsterAwakenings] = useState([] as number[]);
+  const [hasError, setHasError] = useState(false);
+
   const not2P = gameConfig.mode !== "2p";
 
   const latentsBySize = latents.reduce((d, num) => {
@@ -140,13 +144,30 @@ export const Latents = ({
 
   useMemo(() => {
     const f = async () => {
+      if (teamState) {
+        // This is here just to get rid of the useMemo warning.
+      }
+      if (teamSlot.base.id > 0) {
+        const m = await monsterCacheClient.get(teamSlot.base.id);
+        if (m) {
+          const numSlots = m!.latent_slots;
+          const latentSize = teamSlot.latents.reduce((d, num) => {
+            const size = Math.floor((num as any) / 100);
+            return d + size;
+          }, 0);
+          setHasError(latentSize > numSlots);
+        }
+      } else if (teamSlot.base.id === 0) {
+        setHasError(false);
+      }
+
       if (hasSixSlot) {
         const a = await computeTotalAwakeningsFromSlots([teamSlot], not2P);
         setMonsterAwakenings(Object.keys(a).map((b) => parseInt(b)));
       }
     };
     f();
-  }, [teamSlot, hasSixSlot, not2P]);
+  }, [teamState, teamSlot, hasSixSlot, not2P, setHasError]);
 
   const [, drag] = useDrag(() => ({
     type: DraggableTypes.latent,
@@ -222,6 +243,16 @@ export const Latents = ({
                   })}
               </FlexRow>
             )}
+            <div
+              className={css`
+                position: absolute;
+                top: -17%;
+                left: 85%;
+                width: 1rem;
+              `}
+            >
+              {hasError ? <img src="img/warning.png" width={"17rem"} alt="warn" /> : null}
+            </div>
           </LatentSelected>
         ) : (
           <LatentEmpty

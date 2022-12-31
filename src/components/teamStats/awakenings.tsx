@@ -306,7 +306,7 @@ export const AwakeningStatsDisplay = ({
                 </div>
                 <FlexRow gap="0.5rem" key={`${keyPrefix}awakenings${j}`}>
                   {data.map((b, i) => {
-                    return <AwakeningRowDisplay ah={ah} asa={b} keyPrefix={keyPrefix} />;
+                    return <AwakeningRowDisplay ah={ah} asa={b} keyPrefix={keyPrefix + i} />;
                   })}
                 </FlexRow>
               </FlexCol>

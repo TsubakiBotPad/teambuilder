@@ -38,7 +38,9 @@ export const GameConfigSelector = () => {
           onClick={async () => {
             const newGameConfig = { ...gameConfig, mode: "1p" };
             setGameConfig(newGameConfig);
-            unlinkLeaders(teamState, setTeamState);
+            if (gameConfig.mode === "2p") {
+              unlinkLeaders(teamState, setTeamState);
+            }
             updateUrl({ gc: newGameConfig });
           }}
         >
@@ -64,7 +66,9 @@ export const GameConfigSelector = () => {
           onClick={async () => {
             const newGameConfig = { ...gameConfig, mode: "3p" };
             setGameConfig(newGameConfig);
-            unlinkLeaders(teamState, setTeamState);
+            if (gameConfig.mode === "2p") {
+              unlinkLeaders(teamState, setTeamState);
+            }
             updateUrl({ gc: newGameConfig });
           }}
         >
