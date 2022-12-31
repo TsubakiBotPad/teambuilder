@@ -386,7 +386,7 @@ export const TeamBasicStatsDisplay = ({
               )}
               <tr>
                 <TD>
-                  <b>Latent</b>
+                  <b>{iStr("latents", language)}</b>
                 </TD>
                 <td>
                   <FlexRow gap="0.1rem">

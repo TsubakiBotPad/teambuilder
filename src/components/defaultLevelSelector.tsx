@@ -21,6 +21,7 @@ const FancyButton = styled.button<FancyButtonProps>`
   color: ${(props) => (props.focused ? "#fff" : "#000")};
   border: ${(props) => (props.focused ? "2px solid #555" : "0")};
   padding: 0.25rem 0.5rem;
+  cursor: pointer;
 `;
 
 export const DefaultLevelSelector = () => {

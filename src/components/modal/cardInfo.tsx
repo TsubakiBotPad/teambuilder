@@ -23,7 +23,7 @@ const LeaderSkillText = ({ monster: m }: { monster: MonsterResponse }) => {
   const { hp, atk, rcv, resist, ehp, combos, fua } = computeLeaderSkill(m, m);
   return (
     <>
-      [{hp}/{atk}/{rcv}
+      [{hp} / {atk} / {rcv}
       {resist ? ` ${fixedDecimals(resist * 100)}%` : ""}] [{fixedDecimals(ehp)}x eHP] {combos ? `[+${combos}c]` : ""}{" "}
       {fua ? `[${fua} fua]` : ""}
     </>
@@ -67,7 +67,7 @@ export const CardInfo = ({
       >
         <FlexCol gap="0.25rem">
           <H3>
-            [{m.monster_id}] {m.name_en}
+            [{m.monster_id}] {language === "ja" ? m.name_ja : m.name_en}
           </H3>
           <b>{m.types.map((a) => MonsterType[a]).join("/")}</b>
           <table
@@ -122,20 +122,20 @@ export const CardInfo = ({
 
       <FlexRow gap="5rem" justifyContent="space-between">
         <FlexCol>
-          <b>{m.is_inheritable ? "" : "Not "}Inheritable</b>
+          <b>{m.is_inheritable ? iStr("inheritable", language) : iStr("notInheritable", language)}</b>
           <span>
-            <b>Rarity</b> {m.rarity}
+            <b>{iStr("rarity", language)}</b> {m.rarity}
           </span>
           <span>
-            <b>Cost</b> {m.cost}
+            <b>{iStr("cost", language)}</b> {m.cost}
           </span>
-          <b>{m.series["name_en"]}</b>
+          <b>{language === "ja" ? m.series["name_ja"] : m.series["name_en"]}</b>
         </FlexCol>
         <FlexCol>
           <table>
             <thead>
               <tr>
-                <TH>Stats</TH>
+                <TH>{iStr("stats", language)}</TH>
                 <th>Lv {maxLevel(m)}, +297</th>
               </tr>
             </thead>
@@ -181,7 +181,7 @@ export const CardInfo = ({
         <span>
           {m.active_skill
             ? language === "ja"
-              ? m.active_skill.name_ja
+              ? m.active_skill.desc_ja
               : m.active_skill.desc_en
             : iStr("none", language)}
         </span>
@@ -193,7 +193,7 @@ export const CardInfo = ({
         <span>
           {m.leader_skill
             ? language === "ja"
-              ? m.leader_skill.name_ja
+              ? m.leader_skill.desc_ja
               : m.leader_skill.desc_en
             : iStr("none", language)}
         </span>

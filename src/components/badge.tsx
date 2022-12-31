@@ -7,6 +7,7 @@ export const BadgeDisplay = ({ badgeName, onClick }: { badgeName: string; onClic
       className={css`
         display: flex;
         align-items: center;
+        cursor: pointer;
       `}
       onClick={onClick}
     >

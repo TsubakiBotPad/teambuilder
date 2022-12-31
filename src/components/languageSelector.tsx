@@ -16,7 +16,7 @@ type FancyButtonProps = {
 };
 
 const FancyButton = styled.button<FancyButtonProps>`
-  // border: ${(props) => (props.focused ? "1px solid #555" : "0")};
+  cursor: pointer;
 `;
 
 const flagClassname = (focused: boolean) => {
@@ -37,7 +37,7 @@ export const LanguageSelector = () => {
           setLanguage("en");
         }}
       >
-        <US title="United States" className={flagClassname(language === "en")} />
+        <US title="English" className={flagClassname(language === "en")} />
       </FancyButton>
       <FancyButton
         focused={language === "ja"}
@@ -45,7 +45,7 @@ export const LanguageSelector = () => {
           setLanguage("ja");
         }}
       >
-        <JP title="Japan" className={flagClassname(language === "ja")} />
+        <JP title="日本語" className={flagClassname(language === "ja")} />
       </FancyButton>
     </FlexRowC>
   );
