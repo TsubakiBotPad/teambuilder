@@ -235,7 +235,7 @@ export const AwakeningRowDisplay = ({
           <FlexRowC gap="0.15rem" key={keyPrefix + numToDisplay + i}>
             <div
               className={css`
-                opacity: ${numToDisplay ? 1 : 0.5};
+                opacity: ${numToDisplay ? 1 : 0.6};
               `}
             >
               <AwakeningImage awakeningId={b.awokenSkill} />
