@@ -10,11 +10,12 @@ import { AppStateContext, get2PTeamSlots, getTeamSlots, TeamSlotState, TeamState
 import { computeLeaderSkill } from "../../model/types/leaderSkill";
 import { Attribute, AwokenSkills, MonsterType } from "../../model/types/monster";
 import { stat } from "../../model/types/stat";
-import { FlexCol, FlexRow } from "../../stylePrimitives";
+import { FlexCol, FlexColC, FlexRow, FlexRowC } from "../../stylePrimitives";
 import { GameConfig } from "../gameConfigSelector";
 import { fixedDecimals } from "../generic/fixedDecimals";
 import { AttributeHistogram } from "./attributes";
 import { computeTotalAwakeningsFromSlots } from "./awakenings";
+import { LatentInfo } from "./latents";
 import { TeamTypes } from "./types";
 
 const TD = styled.td`
@@ -45,6 +46,12 @@ const AttrImg = styled.img<AttrImgProps>`
   border: ${(props) => (props.selected ? "1px solid gray" : "0")};
   border-radius: ${(props) => (props.selected ? "1000px" : "0")};
 `;
+
+const latentClassname = (focused: boolean) => {
+  return css`
+    opacity: ${focused ? 1 : 0.4};
+  `;
+};
 
 export interface TeamBasicStats {
   hp: number;
@@ -235,6 +242,7 @@ export const TeamBasicStatsDisplay = ({
   tt,
   unbindablePct,
   ah,
+  tl,
   keyP,
   is2P,
   border
@@ -243,6 +251,7 @@ export const TeamBasicStatsDisplay = ({
   tt?: TeamTypes;
   unbindablePct?: number;
   ah?: AttributeHistogram;
+  tl?: LatentInfo;
   keyP: string;
   is2P?: boolean;
   border?: boolean;
@@ -324,7 +333,6 @@ export const TeamBasicStatsDisplay = ({
               </tr>
             </tbody>
           </table>
-
           <table>
             <tbody>
               {tt ? (
@@ -376,6 +384,17 @@ export const TeamBasicStatsDisplay = ({
               ) : (
                 <></>
               )}
+              <tr>
+                <TD>
+                  <b>Latent</b>
+                </TD>
+                <td>
+                  <FlexRow gap="0.1rem">
+                    <PadAssetImage assetName="psf" height={20} className={latentClassname(!!tl?.psf)} />
+                    <PadAssetImage assetName="jsf" height={20} className={latentClassname(!!tl?.jsf)} />
+                  </FlexRow>
+                </td>
+              </tr>
               {unbindablePct !== undefined ? (
                 <tr>
                   <TD>
@@ -384,7 +403,7 @@ export const TeamBasicStatsDisplay = ({
                         float: right;
                       `}
                       awakeningId={AwokenSkills.UNBINDABLE}
-                      width={23}
+                      width={22}
                     />
                   </TD>
                   <td>{fixedDecimals(unbindablePct, 0)}%</td>

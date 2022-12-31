@@ -57,7 +57,10 @@ export const LATENTS_ID_TO_NAME: { [key: number]: string } = {
 export const LATENTS_NAME_TO_ID: { [key: string]: number } = Object.fromEntries(
   Object.entries(LATENTS_ID_TO_NAME)
     .slice(2)
-    .map((a) => a.reverse())
+    .map((a) => {
+      const r = a.reverse();
+      return [r[0], parseInt(r[1])];
+    })
 );
 
 export const LATENTS_BY_SIZE: { [key: number]: string[] } = Object.entries(LATENTS_ID_TO_NAME)

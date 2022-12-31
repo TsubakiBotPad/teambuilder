@@ -92,7 +92,6 @@ export const PadTeamBuilderPage = () => {
   const [teamState, setTeamState] = useState(
     parsedConfig.gc.mode === "2p" ? linkLeadersNoSet(parsedConfig.ts) : parsedConfig.ts
   );
-
   const [teamStats, setTeamStats] = useState<TeamStats>({});
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [latentModalIsOpen, setLatentModalIsOpen] = useState(false);

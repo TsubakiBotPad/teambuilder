@@ -10,6 +10,7 @@ import {
   computeTotalAwakenings
 } from "./awakenings";
 import { computeTeamBasicStats, computeTeamBasicStats2P, TeamBasicStats, TeamBasicStatsDisplay } from "./basicStats";
+import { computeLatents, computeLatents2P, LatentInfo, LatentInfoShared } from "./latents";
 import { computeTypes, TeamTypes } from "./types";
 import { computeTeamUnbindablePct } from "./unbindable";
 
@@ -27,6 +28,8 @@ export interface TeamStat {
   teamUnbindablePct?: number;
   teamBasicStats?: TeamBasicStats;
   sharedBasicStats?: TeamBasicStats;
+  teamLatents?: LatentInfo;
+  sharedTeamLatents?: LatentInfoShared;
 }
 
 export async function computeTeamStat(
@@ -41,7 +44,9 @@ export async function computeTeamStat(
     teamTypes: await computeTypes(gameConfig, teamState, player),
     teamUnbindablePct: await computeTeamUnbindablePct(gameConfig, teamState, player),
     teamBasicStats: await computeTeamBasicStats(gameConfig, teamState, player),
-    sharedBasicStats: await computeTeamBasicStats2P(gameConfig, teamState)
+    sharedBasicStats: await computeTeamBasicStats2P(gameConfig, teamState),
+    teamLatents: await computeLatents(gameConfig, teamState, player),
+    sharedTeamLatents: await computeLatents2P(gameConfig, teamState)
   };
 }
 
@@ -61,6 +66,7 @@ export const TeamStatDisplay = ({ teamStat, keyP, is2P }: { teamStat?: TeamStat;
         tt={teamStat.teamTypes}
         unbindablePct={teamStat.teamUnbindablePct}
         ah={teamStat.attributes}
+        tl={teamStat.teamLatents}
         keyP={keyP}
         is2P={is2P}
       />

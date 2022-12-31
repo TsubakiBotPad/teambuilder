@@ -39,7 +39,7 @@ export const DEFAULT_TEAM_SLOT_STATE = () => {
   return {
     base: { id: 0, level: 0 },
     assist: { id: 0, level: 0 },
-    latents: []
+    latents: [] as number[]
   };
 };
 

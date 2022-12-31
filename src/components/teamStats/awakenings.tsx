@@ -223,8 +223,9 @@ export const AwakeningRowDisplay = ({
       gap={"0.1rem 1rem"}
       wrap="wrap"
       className={css`
-        height: 9rem;
+        height: 8rem;
         width: 100%;
+        font-size: 16px;
       `}
     >
       {asa.map((b, i) => {
@@ -238,7 +239,7 @@ export const AwakeningRowDisplay = ({
                 opacity: ${numToDisplay ? 1 : 0.6};
               `}
             >
-              <AwakeningImage awakeningId={b.awokenSkill} />
+              <AwakeningImage awakeningId={b.awokenSkill} width={23} />
             </div>
             {b.percent ? ":" : "x"}
             <span>
