@@ -39,5 +39,6 @@
   "activeSkill": "Active Skill",
   "leaderSkill": "Leader Skill",
   "none": "None",
-  "slots": "Slots"
+  "slots": "Slots",
+  "surges": "Surges"
 }

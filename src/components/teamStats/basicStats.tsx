@@ -386,7 +386,7 @@ export const TeamBasicStatsDisplay = ({
               )}
               <tr>
                 <TD>
-                  <b>{iStr("latents", language)}</b>
+                  <b>{iStr("surges", language)}</b>
                 </TD>
                 <td>
                   <FlexRow gap="0.1rem">

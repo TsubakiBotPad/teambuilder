@@ -7,7 +7,7 @@
   "types": "タイプ",
   "attributes": "属性",
   "unbindable": "バインド耐性",
-  "shared": "共有",
+  "shared": "共有能力",
   "static": "一般",
   "resist": "耐性",
   "utility": "ユーティリティ",
@@ -39,5 +39,6 @@
   "activeSkill": "スキル",
   "leaderSkill": "リーダースキル",
   "none": "None",
-  "slots": "slot"
+  "slots": "slot",
+  "surges": "Surges"
 }

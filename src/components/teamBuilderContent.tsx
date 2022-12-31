@@ -71,7 +71,7 @@ export const TeamBuilderContent1n3P = () => {
 };
 
 export const TeamBuilderContent2P = () => {
-  const { gameConfig, teamStats, instructions, setInstructions } = useContext(AppStateContext);
+  const { gameConfig, language, teamStats, instructions, setInstructions } = useContext(AppStateContext);
 
   const teamStat1 = teamStats.p1;
   const teamStat2 = teamStats.p2;
@@ -88,7 +88,7 @@ export const TeamBuilderContent2P = () => {
         {teamStat1 && teamStat2 ? (
           <FlexRowC gap="1rem">
             <FlexColC>
-              <span>Shared</span>
+              <span>{iStr("shared", language)}</span>
               <div
                 className={css`
                   border: solid 1px #aaa;

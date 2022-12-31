@@ -92,7 +92,7 @@ export const TeamSharedStatsDisplay = ({
           </tbody>
         </table>
       </div>
-      <AwakeningStatsDisplay2P awakenings={sAwo} keyPrefix={"shared"} />
+      <AwakeningStatsDisplay2P awakenings={sAwo} keyPrefix={"shared2p"} />
     </FlexColC>
   );
 };
@@ -123,17 +123,15 @@ export const AwakeningStatsDisplay2P = ({
       >
         <FlexRow>
           {AwakeningsToDisplay2PShared.map((a, j) => {
-            const data = a.data;
             return (
               <FlexCol
+                key={`${keyPrefix}awakenings${j}`}
                 className={css`
                   padding: 0 0.5rem;
                 `}
               >
-                <FlexRow className={css``} gap="0.5rem" key={`${keyPrefix}awakenings${j}`}>
-                  {data.map((b, i) => {
-                    return <AwakeningRowDisplay ah={ah} asa={b} keyPrefix={keyPrefix} />;
-                  })}
+                <FlexRow className={css``} gap="0.5rem">
+                  <AwakeningRowDisplay ah={ah} asa={a.data} keyPrefix={keyPrefix + a.header + j} />
                 </FlexRow>
               </FlexCol>
             );
