@@ -82,7 +82,7 @@ export const PadTeamBuilderPage = () => {
         n: "",
         ts: DEFAULT_TEAM_STATE,
         gc: DEFAULT_GAME_CONFIG,
-        in: iStr("notes", "en", "Type notes here!"),
+        in: undefined,
         l: "en" as Language
       };
 

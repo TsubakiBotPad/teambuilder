@@ -40,7 +40,7 @@ export const TeamBuilderContent = React.forwardRef((props, ref) => {
 });
 
 export const TeamBuilderContent1n3P = () => {
-  const { gameConfig, instructions, setInstructions } = useContext(AppStateContext);
+  const { gameConfig, instructions, setInstructions, language } = useContext(AppStateContext);
 
   return (
     <FlexCol gap="1.5rem">
@@ -63,6 +63,7 @@ export const TeamBuilderContent1n3P = () => {
           onChange={(e) => {
             setInstructions(e.target.value);
           }}
+          placeholder={iStr("notesPlaceholder", language)}
         />
       </div>
     </FlexCol>
