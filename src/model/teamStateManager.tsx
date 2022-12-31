@@ -88,8 +88,9 @@ export const TeamStateContext = React.createContext(DEFAULT_TEAM_STATE_CONTEXT);
 
 interface AppState {
   gameConfig: GameConfig;
-  language: Language;
   setGameConfig: React.Dispatch<React.SetStateAction<GameConfig>>;
+  language: Language;
+  setLanguage: React.Dispatch<React.SetStateAction<Language>>;
   teamName: string;
   setTeamName: React.Dispatch<React.SetStateAction<string>>;
   setTeamStats: React.Dispatch<React.SetStateAction<TeamStats>>;
@@ -111,8 +112,9 @@ interface AppState {
 
 const DEFAULT_APP_STATE: AppState = {
   gameConfig: DEFAULT_GAME_CONFIG,
-  language: "en",
   setGameConfig: () => {},
+  language: "en",
+  setLanguage: () => {},
   teamName: "",
   setTeamName: () => {},
   teamStats: {},

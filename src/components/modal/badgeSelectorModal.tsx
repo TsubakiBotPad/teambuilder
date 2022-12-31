@@ -11,6 +11,7 @@ import { ConfirmButton, RemoveButton } from "../generic/confirmButton";
 import { ModalCloseButton } from "./common";
 import { IoIosRemoveCircle, IoIosCheckmarkCircle } from "react-icons/io";
 import { iStr } from "../../i18n/i18n";
+import { BsDot } from "react-icons/bs";
 
 const modalClassName = css`
   border: 0;
@@ -60,7 +61,11 @@ export const BadgeSelectorModal = ({ isOpen }: { isOpen: boolean }) => {
           `}
         >
           <H2>
-            {playerSelected}-{iStr("badge", language)}
+            <FlexRowC>
+              {playerSelected}
+              <BsDot />
+              {iStr("badge", language)}
+            </FlexRowC>
           </H2>
           <FlexColC>
             <FlexRow wrap="wrap" gap="0.25rem">

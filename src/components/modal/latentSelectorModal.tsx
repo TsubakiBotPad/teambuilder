@@ -13,6 +13,7 @@ import { LATENTS_BY_SIZE, LATENTS_ID_TO_NAME, LATENTS_NAME_TO_ID } from "../../m
 import { BoundingBox, FlexCol, FlexColC, FlexRow, FlexRowC, H2, H3 } from "../../stylePrimitives";
 import { ConfirmButton, RemoveButton } from "../generic/confirmButton";
 import { ModalCloseButton } from "./common";
+import { BsDot } from "react-icons/bs";
 
 const modalClassName = css`
   border: 0;
@@ -87,7 +88,13 @@ export const LatentSelectorModal = ({ isOpen }: { isOpen: boolean }) => {
           `}
         >
           <H2>
-            {cardSlotSelected.teamId}-{iStr(cardSlotSelected.slotId, language)}-{iStr("latents", language)}
+            <FlexRowC>
+              {cardSlotSelected.teamId}
+              <BsDot />
+              {iStr(cardSlotSelected.slotId, language)}
+              <BsDot />
+              {iStr("latents", language)}
+            </FlexRowC>
           </H2>
           <FlexColC gap="2rem">
             <FlexRow wrap={"wrap"}>

@@ -9,6 +9,7 @@ import { useNavigate, useParams } from "react-router-dom";
 
 import { DefaultLevelSelector } from "../components/defaultLevelSelector";
 import { GameConfigSelector } from "../components/gameConfigSelector";
+import { LanguageSelector } from "../components/languageSelector";
 import { BadgeSelectorModal } from "../components/modal/badgeSelectorModal";
 import { CardSelectorModal } from "../components/modal/cardSelectorModal";
 import { LatentSelectorModal } from "../components/modal/latentSelectorModal";
@@ -38,7 +39,10 @@ const PadTeamBuilderPageContainer = React.forwardRef((props, ref) => {
   return (
     <Page maxWidth={maxPageWidth}>
       <FlexColC gap="1rem">
-        <H1>{iStr("applicationTitle", language, "PAD Team Builder")}</H1>
+        <FlexRowC gap="1rem">
+          <H1>{iStr("applicationTitle", language, "PAD Team Builder")}</H1>
+          <LanguageSelector />
+        </FlexRowC>
         <FlexRowC gap="2rem">
           <GameConfigSelector />
           <DefaultLevelSelector />
@@ -84,7 +88,7 @@ export const PadTeamBuilderPage = () => {
 
   const [teamName, setTeamName] = useState(parsedConfig.n);
   const [gameConfig, setGameConfig] = useState(parsedConfig.gc);
-  const [language] = useState(parsedConfig.l);
+  const [language, setLanguage] = useState(parsedConfig.l);
   const [teamState, setTeamState] = useState(
     parsedConfig.gc.mode === "2p" ? linkLeadersNoSet(parsedConfig.ts) : parsedConfig.ts
   );
@@ -149,7 +153,8 @@ export const PadTeamBuilderPage = () => {
           updateUrl: updateUrl.current,
           instructions,
           setInstructions,
-          language
+          language,
+          setLanguage
         }}
       >
         <TeamStateContext.Provider value={{ teamState, setTeamState }}>

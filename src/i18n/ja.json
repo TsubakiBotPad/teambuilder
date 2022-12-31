@@ -38,6 +38,6 @@
   "killers": "Killers",
   "activeSkill": "スキル",
   "leaderSkill": "リーダースキル",
-  "none": "",
-  "slots": ""
+  "none": "None",
+  "slots": "slot"
 }

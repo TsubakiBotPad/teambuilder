@@ -17,6 +17,7 @@
     "ajv": "^6.12.6",
     "axios": "^1.2.1",
     "buffer": "^6.0.3",
+    "country-flag-icons": "^1.5.5",
     "husky": "^8.0.1",
     "json5": "^2.2.1",
     "jsoncrush": "^1.1.8",

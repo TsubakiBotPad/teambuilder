@@ -18,6 +18,7 @@ import { ConfirmButton, RemoveButton } from "../generic/confirmButton";
 import { leftPad } from "../generic/leftPad";
 import { CardInfo } from "./cardInfo";
 import { ModalCloseButton } from "./common";
+import { BsDot } from "react-icons/bs";
 
 const CardQueryInput = styled.input`
   border: 1px solid gray;
@@ -218,7 +219,13 @@ export const CardSelectorModal = ({ isOpen }: { isOpen: boolean }) => {
         >
           <FlexCol gap="0.5rem">
             <H2>
-              {cardSlotSelected.teamId}-{iStr(cardSlotSelected.slotId, language)}-{iStr(cardSlotSelected.use, language)}
+              <FlexRowC>
+                {cardSlotSelected.teamId}
+                <BsDot />
+                {iStr(cardSlotSelected.slotId, language)}
+                <BsDot />
+                {iStr(cardSlotSelected.use, language)}
+              </FlexRowC>
             </H2>
             <FlexColC gap="0.5rem">
               <CardQueryInput
