@@ -1,4 +1,3 @@
-import { monsterCacheClient } from "../../model/monsterCacheClient";
 import { get2PTeamSlots, getTeamSlots, TeamState } from "../../model/teamStateManager";
 import { GameConfig } from "../gameConfigSelector";
 
@@ -50,7 +49,7 @@ export function computeLatents2P(gameConfig: GameConfig, teamState: TeamState): 
   const slots = get2PTeamSlots(teamState);
   var psf = false;
   var jsf = false;
-  var ls = 0;
+
   for (var i = 0; i < slots.length; i++) {
     const s = slots[i];
     if (s.latents.includes(601)) {
