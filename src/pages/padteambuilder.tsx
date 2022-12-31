@@ -84,7 +84,7 @@ export const PadTeamBuilderPage = () => {
 
   const [teamName, setTeamName] = useState(parsedConfig.n);
   const [gameConfig, setGameConfig] = useState(parsedConfig.gc);
-  const [language, setLanguage] = useState(parsedConfig.l);
+  const [language] = useState(parsedConfig.l);
   const [teamState, setTeamState] = useState(
     parsedConfig.gc.mode === "2p" ? linkLeadersNoSet(parsedConfig.ts) : parsedConfig.ts
   );

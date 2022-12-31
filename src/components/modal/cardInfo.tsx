@@ -1,10 +1,13 @@
 import { css } from "@emotion/css";
 import styled from "@emotion/styled";
+import { useContext } from "react";
 import { HiOutlineArrowNarrowRight } from "react-icons/hi";
 
 import { MonsterResponse } from "../../client";
+import { iStr } from "../../i18n/i18n";
 import { AwakeningImage, BASE_ICON_URL } from "../../model/images";
 import { PadAssetImage } from "../../model/padAssets";
+import { AppStateContext } from "../../model/teamStateManager";
 import { computeLeaderSkill } from "../../model/types/leaderSkill";
 import { getKillers, MonsterType } from "../../model/types/monster";
 import { maxLevel } from "../../model/types/stat";
@@ -52,6 +55,7 @@ export const CardInfo = ({
   currentLevel: number | undefined;
   setCurrentLevel: React.Dispatch<React.SetStateAction<number | undefined>>;
 }) => {
+  const { language } = useContext(AppStateContext);
   const superAwakenings = m.awakenings.filter((a) => a.is_super);
   return (
     <>
@@ -152,7 +156,9 @@ export const CardInfo = ({
           </table>
         </FlexCol>
         <FlexCol gap="0.25rem">
-          <b>Killers [{m.latent_slots} slots]</b>
+          <b>
+            {iStr("killers", language)} [{m.latent_slots} {iStr("slots", language)}]
+          </b>
           <FlexRowC>
             {getKillers(m).map((a) => (
               <PadAssetImage assetName={`${a.substring(0, 3).toLocaleLowerCase()}t`} height={25} />
@@ -163,21 +169,34 @@ export const CardInfo = ({
       <FlexCol>
         <b>
           <FlexRowC gap="0.25rem">
-            Active Skill{" "}
-            {m.active_skill
-              ? `(${m.active_skill.cooldown_turns_max} ${(<HiOutlineArrowNarrowRight />)} ${
-                  m.active_skill.cooldown_turns_min
-                })`
-              : null}
+            {iStr("activeSkill", language)}{" "}
+            {m.active_skill ? (
+              <FlexRowC gap="0.25rem">
+                ({m.active_skill.cooldown_turns_max} {<HiOutlineArrowNarrowRight />} {m.active_skill.cooldown_turns_min}
+                )
+              </FlexRowC>
+            ) : null}
           </FlexRowC>
         </b>
-        <span>{m.active_skill ? m.active_skill.desc_en : "None"}</span>
+        <span>
+          {m.active_skill
+            ? language === "ja"
+              ? m.active_skill.name_ja
+              : m.active_skill.desc_en
+            : iStr("none", language)}
+        </span>
       </FlexCol>
       <FlexCol>
         <b>
-          Leader Skill <LeaderSkillText monster={m} />
+          {iStr("leaderSkill", language)} <LeaderSkillText monster={m} />
         </b>
-        <span>{m.leader_skill ? m.leader_skill.desc_en : "None"}</span>
+        <span>
+          {m.leader_skill
+            ? language === "ja"
+              ? m.leader_skill.name_ja
+              : m.leader_skill.desc_en
+            : iStr("none", language)}
+        </span>
       </FlexCol>
     </>
   );

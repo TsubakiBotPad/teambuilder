@@ -1,9 +1,11 @@
 import { css } from "@emotion/css";
 import { useContext, useMemo, useState } from "react";
+import { IoIosRemoveCircle } from "react-icons/io";
 import Modal from "react-modal";
 
 import { breakpoint } from "../../breakpoints";
 import { MonsterResponse } from "../../client";
+import { iStr } from "../../i18n/i18n";
 import { monsterCacheClient } from "../../model/monsterCacheClient";
 import { PadAssetImage } from "../../model/padAssets";
 import { AppStateContext, setCardLatents, TeamSlotState, TeamStateContext } from "../../model/teamStateManager";
@@ -11,8 +13,6 @@ import { LATENTS_BY_SIZE, LATENTS_ID_TO_NAME, LATENTS_NAME_TO_ID } from "../../m
 import { BoundingBox, FlexCol, FlexColC, FlexRow, FlexRowC, H2, H3 } from "../../stylePrimitives";
 import { ConfirmButton, RemoveButton } from "../generic/confirmButton";
 import { ModalCloseButton } from "./common";
-import { IoIosCheckmarkCircle, IoIosRemoveCircle } from "react-icons/io";
-import { iStr } from "../../i18n/i18n";
 
 const modalClassName = css`
   border: 0;

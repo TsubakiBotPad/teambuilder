@@ -21,7 +21,7 @@
   "latents": "latents",
   "search": "Search id/name/query",
   "noCardSelected": "No card selected",
-  "latentSlot": "latent",
+  "latentSlot": "slot",
   "awakening": "awakening",
   "badge": "badge",
   "teamSlot1": "teamSlot1",
@@ -29,5 +29,15 @@
   "teamSlot3": "teamSlot3",
   "teamSlot4": "teamSlot4",
   "teamSlot5": "teamSlot5",
-  "teamSlot6": "teamSlot6"
+  "teamSlot6": "teamSlot6",
+  "inheritable": "Inheritable",
+  "notInheritable": "Not Inheritable",
+  "rarity": "Rarity",
+  "cost": "Cost",
+  "stats": "Stats",
+  "killers": "Killers",
+  "activeSkill": "Active Skill",
+  "leaderSkill": "Leader Skill",
+  "none": "None",
+  "slots": "Slots"
 }
