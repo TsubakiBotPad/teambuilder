@@ -55,7 +55,7 @@ export const CardInfo = ({
   currentLevel: number | undefined;
   setCurrentLevel: React.Dispatch<React.SetStateAction<number | undefined>>;
 }) => {
-  const { language } = useContext(AppStateContext);
+  const { gameConfig, language } = useContext(AppStateContext);
   const superAwakenings = m.awakenings.filter((a) => a.is_super);
   return (
     <>
@@ -100,7 +100,7 @@ export const CardInfo = ({
                   />
                 </td>
               </tr>
-              {superAwakenings.length > 0 && currentLevel && currentLevel > 99 ? (
+              {gameConfig.mode !== "2p" && superAwakenings.length > 0 && currentLevel && currentLevel > 99 ? (
                 <tr>
                   <TDh>SA</TDh>
                   <td>
