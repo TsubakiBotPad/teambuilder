@@ -23,6 +23,12 @@ const TD = styled.td`
   text-align: right;
 `;
 
+const TD2 = styled.td`
+  padding: 0 1rem 0.1rem 0;
+  vertical-align: middle;
+  text-align: right;
+`;
+
 const TH = styled.th`
   padding: 0rem 0rem;
   vertical-align: middle;
@@ -266,21 +272,27 @@ export const TeamBasicStatsDisplay = ({
               <tr>
                 <th></th>
                 <TH>
-                  <FlexRow justifyContent="flex-end" style={{ paddingRight: "1rem" }}>
-                    <AwakeningImage awakeningId={AwokenSkills.AWOKENKILLER} width={23} />
-                  </FlexRow>
+                  <AwakeningImage
+                    className={css`
+                      margin-right: 1rem;
+                      float: right;
+                    `}
+                    awakeningId={AwokenSkills.AWOKENKILLER}
+                    width={22}
+                  />
                 </TH>
                 <TH>
-                  <FlexRow justifyContent="flex-end" style={{ paddingRight: "1rem" }}>
-                    <div
-                      className={css`
-                        background: url("img/awoBind.webp") no-repeat;
-                        background-size: contain;
-                        height: 20px;
-                        width: 20px;
-                      `}
-                    />
-                  </FlexRow>
+                  <div
+                    className={css`
+                      background: url("img/awoBind.webp") no-repeat;
+                      background-size: contain;
+                      height: 20px;
+                      width: 20px;
+                      margin-right: 1rem;
+                      float: right;
+                      vertical-align: middle;
+                    `}
+                  />
                 </TH>
               </tr>
             </thead>
@@ -317,10 +329,10 @@ export const TeamBasicStatsDisplay = ({
             <tbody>
               {tt ? (
                 <tr>
-                  <TD>
+                  <TD2>
                     <b>{iStr("types", language)}</b>
-                  </TD>
-                  <TD>
+                  </TD2>
+                  <TD2>
                     <FlexRow
                       wrap="wrap"
                       className={css`
@@ -337,7 +349,7 @@ export const TeamBasicStatsDisplay = ({
                         );
                       })}
                     </FlexRow>
-                  </TD>
+                  </TD2>
                 </tr>
               ) : (
                 <></>
@@ -345,10 +357,10 @@ export const TeamBasicStatsDisplay = ({
 
               {ah ? (
                 <tr>
-                  <TD>
+                  <TD2>
                     <b>{iStr("attributes", language)}</b>
-                  </TD>
-                  <TD>
+                  </TD2>
+                  <TD2>
                     <FlexRow gap={"0.25rem"}>
                       {Object.entries(ah).map((a, i) => {
                         const attr = Attribute[a[0] as keyof {}].toLocaleLowerCase();
@@ -359,7 +371,7 @@ export const TeamBasicStatsDisplay = ({
                         );
                       })}
                     </FlexRow>
-                  </TD>
+                  </TD2>
                 </tr>
               ) : (
                 <></>
@@ -367,7 +379,13 @@ export const TeamBasicStatsDisplay = ({
               {unbindablePct !== undefined ? (
                 <tr>
                   <TD>
-                    <b>{iStr("unbindable", language)}</b>
+                    <AwakeningImage
+                      className={css`
+                        float: right;
+                      `}
+                      awakeningId={AwokenSkills.UNBINDABLE}
+                      width={23}
+                    />
                   </TD>
                   <td>{fixedDecimals(unbindablePct, 0)}%</td>
                 </tr>

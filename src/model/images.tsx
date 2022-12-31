@@ -17,7 +17,15 @@ const AwoImg = styled.div<SpriteProps>`
   transform: scale(${(props) => props.scale});
 `;
 
-export const AwakeningImage = ({ awakeningId, width: desiredWidth }: { awakeningId: number; width?: number }) => {
+export const AwakeningImage = ({
+  awakeningId,
+  width: desiredWidth,
+  className
+}: {
+  awakeningId: number;
+  width?: number;
+  className?: string;
+}) => {
   const width = 25;
   const height = 25;
 
@@ -39,6 +47,7 @@ export const AwakeningImage = ({ awakeningId, width: desiredWidth }: { awakening
       backgroundPosition={`-${topPos * scale}px -${leftPos * scale}px`}
       backgroundSize={`${imgWidth * scale}px ${imgHeight * scale}px`}
       scale={scale}
+      className={className}
     />
   );
 };

@@ -278,7 +278,6 @@ export const AwakeningStatsDisplay = ({
         <FlexRow>
           {AwakeningsToDisplay.map((a, j) => {
             const data = a.data;
-            debugger;
             return (
               <FlexCol
                 className={css`
