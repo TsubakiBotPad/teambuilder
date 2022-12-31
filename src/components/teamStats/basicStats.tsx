@@ -1,8 +1,8 @@
 import { css } from "@emotion/css";
 import styled from "@emotion/styled";
 import { useContext } from "react";
-import { iStr } from "../../i18n/i18n";
 
+import { iStr } from "../../i18n/i18n";
 import { AwakeningImage } from "../../model/images";
 import { monsterCacheClient } from "../../model/monsterCacheClient";
 import { PadAssetImage } from "../../model/padAssets";
@@ -10,7 +10,7 @@ import { AppStateContext, get2PTeamSlots, getTeamSlots, TeamSlotState, TeamState
 import { computeLeaderSkill } from "../../model/types/leaderSkill";
 import { Attribute, AwokenSkills, MonsterType } from "../../model/types/monster";
 import { stat } from "../../model/types/stat";
-import { FlexCol, FlexColC, FlexRow, FlexRowC } from "../../stylePrimitives";
+import { FlexCol, FlexRow } from "../../stylePrimitives";
 import { GameConfig } from "../gameConfigSelector";
 import { fixedDecimals } from "../generic/fixedDecimals";
 import { AttributeHistogram } from "./attributes";
