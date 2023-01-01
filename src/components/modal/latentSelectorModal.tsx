@@ -87,7 +87,11 @@ export const LatentSelectorModal = ({ isOpen }: { isOpen: boolean }) => {
             padding: 1rem;
           `}
         >
-          <H2>
+          <H2
+            className={css`
+              margin-bottom: 1rem;
+            `}
+          >
             <FlexRowC>
               {cardSlotSelected.teamId}
               <BsDot />
@@ -103,7 +107,7 @@ export const LatentSelectorModal = ({ isOpen }: { isOpen: boolean }) => {
                   return (
                     <FlexCol key={n + j}>
                       <H3>
-                        {n}-{iStr("latentSlot", language)}
+                        {n}-{iStr("slots", language)}
                       </H3>
                       <FlexRow wrap="wrap">
                         {names.map((n, i) => {
