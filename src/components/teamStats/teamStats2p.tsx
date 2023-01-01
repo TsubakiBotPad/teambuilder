@@ -56,21 +56,27 @@ export const TeamSharedStatsDisplay = ({
             <tr>
               <th></th>
               <TH>
-                <FlexRow justifyContent="flex-end" style={{ paddingRight: "1rem" }}>
-                  <AwakeningImage awakeningId={AwokenSkills.AWOKENKILLER} width={23} />
-                </FlexRow>
+                <AwakeningImage
+                  className={css`
+                    margin-right: 1rem;
+                    float: right;
+                  `}
+                  awakeningId={AwokenSkills.AWOKENKILLER}
+                  width={22}
+                />
               </TH>
               <TH>
-                <FlexRow justifyContent="flex-end" style={{ paddingRight: "1rem" }}>
-                  <div
-                    className={css`
-                      background: url("img/awoBind.webp") no-repeat;
-                      background-size: contain;
-                      height: 20px;
-                      width: 20px;
-                    `}
-                  />
-                </FlexRow>
+                <div
+                  className={css`
+                    background: url("img/awoBind.png") no-repeat;
+                    background-size: contain;
+                    height: 20px;
+                    width: 20px;
+                    margin-right: 1rem;
+                    float: right;
+                    vertical-align: middle;
+                  `}
+                />
               </TH>
             </tr>
           </thead>
