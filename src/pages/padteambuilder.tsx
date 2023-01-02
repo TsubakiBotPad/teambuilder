@@ -8,6 +8,7 @@ import { BsImage } from "react-icons/bs";
 import { useNavigate, useParams } from "react-router-dom";
 
 import { DefaultLevelSelector } from "../components/defaultLevelSelector";
+import { Footer } from "../components/footer";
 import { GameConfigSelector } from "../components/gameConfigSelector";
 import { LanguageSelector } from "../components/languageSelector";
 import { BadgeSelectorModal } from "../components/modal/badgeSelectorModal";
@@ -83,7 +84,8 @@ export const PadTeamBuilderPage = () => {
         ts: DEFAULT_TEAM_STATE,
         gc: DEFAULT_GAME_CONFIG,
         in: undefined,
-        l: "en" as Language
+        l: "en" as Language,
+        a: undefined
       };
 
   const [teamName, setTeamName] = useState(parsedConfig.n);
@@ -99,6 +101,7 @@ export const PadTeamBuilderPage = () => {
   const [playerSelected, setPlayerSelected] = useState("");
   const [cardSlotSelected, setCardSlotSelected] = useState({});
   const [instructions, setInstructions] = useState<string | undefined>(parsedConfig.in);
+  const [author, setAuthor] = useState<string | undefined>(parsedConfig.a);
 
   var updateUrl = useRef(
     debounce((config: Partial<ConfigData>) => {
@@ -108,6 +111,7 @@ export const PadTeamBuilderPage = () => {
         ts: teamState,
         gc: gameConfig,
         l: language,
+        a: author,
         ...config
       };
       navigate("/" + serializeConfig(finalConfig));
@@ -115,8 +119,8 @@ export const PadTeamBuilderPage = () => {
   );
 
   useEffect(() => {
-    updateUrl.current({ n: teamName, ts: teamState, gc: gameConfig, in: instructions });
-  }, [teamName, teamState, gameConfig, instructions]);
+    updateUrl.current({ n: teamName, ts: teamState, gc: gameConfig, in: instructions, a: author });
+  }, [teamName, teamState, gameConfig, instructions, author]);
 
   useMemo(() => {
     const f = async () => {
@@ -153,13 +157,16 @@ export const PadTeamBuilderPage = () => {
           instructions,
           setInstructions,
           language,
-          setLanguage
+          setLanguage,
+          author,
+          setAuthor
         }}
       >
         <TeamStateContext.Provider value={{ teamState, setTeamState }}>
           <div ref={ref as any}>
             <PadTeamBuilderPageContainer ref={ref} />
           </div>
+          <Footer />
         </TeamStateContext.Provider>
       </AppStateContext.Provider>
     </DndProvider>

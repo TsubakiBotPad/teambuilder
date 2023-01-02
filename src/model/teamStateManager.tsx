@@ -108,6 +108,8 @@ interface AppState {
   updateUrl: DebouncedFunc<(config: Partial<ConfigData>) => void>;
   instructions?: string;
   setInstructions: React.Dispatch<React.SetStateAction<string | undefined>>;
+  author?: string;
+  setAuthor: React.Dispatch<React.SetStateAction<string | undefined>>;
 }
 
 const DEFAULT_APP_STATE: AppState = {
@@ -131,7 +133,9 @@ const DEFAULT_APP_STATE: AppState = {
   setPlayerSelected: () => {},
   updateUrl: debounce(() => {}),
   instructions: "",
-  setInstructions: () => {}
+  setInstructions: () => {},
+  author: "",
+  setAuthor: () => {}
 };
 
 export const AppStateContext = React.createContext(DEFAULT_APP_STATE);

@@ -2,10 +2,11 @@ import { css } from "@emotion/css";
 import styled from "@emotion/styled";
 import React from "react";
 import { useContext } from "react";
-import { iStr } from "../i18n/i18n";
 
+import { iStr } from "../i18n/i18n";
 import { AppStateContext } from "../model/teamStateManager";
 import { FlexCol, FlexColC, FlexRow, FlexRowC } from "../stylePrimitives";
+import { AuthorText } from "./authorText";
 import { TeamBlock } from "./team";
 import { TeamSharedStatsDisplay } from "./teamStats/teamStats2p";
 
@@ -17,8 +18,7 @@ const TeamInput = styled.input`
 `;
 
 export const TeamBuilderContent = React.forwardRef((props, ref) => {
-  const { gameConfig, setTeamName, teamName, language } = useContext(AppStateContext);
-
+  const { gameConfig, setTeamName, teamName, instructions, setInstructions, language } = useContext(AppStateContext);
   return (
     <FlexColC ref={ref as any}>
       <FlexRow gap="1rem">
@@ -33,6 +33,28 @@ export const TeamBuilderContent = React.forwardRef((props, ref) => {
           />
           {gameConfig.mode !== "2p" ? <TeamBuilderContent1n3P /> : null}
           {gameConfig.mode === "2p" ? <TeamBuilderContent2P /> : null}
+          <div
+            className={css`
+              padding-left: 0.5rem;
+              padding-top: 0.5rem;
+            `}
+          >
+            <FlexCol gap="0.25rem">
+              <AuthorText />
+              <textarea
+                rows={15}
+                cols={10}
+                className={css`
+                  width: 37.7rem;
+                `}
+                value={instructions}
+                onChange={(e) => {
+                  setInstructions(e.target.value);
+                }}
+                placeholder={iStr("notesPlaceholder", language)}
+              />
+            </FlexCol>
+          </div>
         </FlexCol>
       </FlexRow>
     </FlexColC>
@@ -40,38 +62,19 @@ export const TeamBuilderContent = React.forwardRef((props, ref) => {
 });
 
 export const TeamBuilderContent1n3P = () => {
-  const { gameConfig, instructions, setInstructions, language } = useContext(AppStateContext);
+  const { gameConfig } = useContext(AppStateContext);
 
   return (
     <FlexCol gap="1.5rem">
       <TeamBlock playerId="p1" shouldShow={true} />
       <TeamBlock playerId="p2" shouldShow={gameConfig.mode === "2p" || gameConfig.mode === "3p"} />
       <TeamBlock playerId="p3" shouldShow={gameConfig.mode === "3p"} />
-      <div
-        className={css`
-          padding-left: 0.5rem;
-          padding-top: 0.5rem;
-        `}
-      >
-        <textarea
-          rows={15}
-          cols={10}
-          className={css`
-            width: 37.7rem;
-          `}
-          value={instructions}
-          onChange={(e) => {
-            setInstructions(e.target.value);
-          }}
-          placeholder={iStr("notesPlaceholder", language)}
-        />
-      </div>
     </FlexCol>
   );
 };
 
 export const TeamBuilderContent2P = () => {
-  const { gameConfig, language, teamStats, instructions, setInstructions } = useContext(AppStateContext);
+  const { gameConfig, language, teamStats } = useContext(AppStateContext);
 
   const teamStat1 = teamStats.p1;
   const teamStat2 = teamStats.p2;
@@ -112,24 +115,6 @@ export const TeamBuilderContent2P = () => {
           </FlexRowC>
         ) : null}
       </FlexRow>
-      <div
-        className={css`
-          padding-left: 0.5rem;
-          padding-top: 0.5rem;
-        `}
-      >
-        <textarea
-          rows={15}
-          cols={10}
-          className={css`
-            width: 37.7rem;
-          `}
-          value={instructions}
-          onChange={(e) => {
-            setInstructions(e.target.value);
-          }}
-        />
-      </div>
     </FlexCol>
   );
 };

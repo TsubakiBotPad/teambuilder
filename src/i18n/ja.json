@@ -40,5 +40,6 @@
   "leaderSkill": "リーダースキル",
   "none": "なし",
   "slots": "枠",
-  "surges": "目覚め耐性"
+  "surges": "目覚め耐性",
+  "author": "@author"
 }

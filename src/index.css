@@ -20,3 +20,10 @@ b {
 td {
   vertical-align: middle;
 }
+
+/* [contenteditable][placeholder]:empty:before {
+  content: attr(placeholder);
+  position: absolute;
+  color: gray;
+  background-color: transparent;
+} */
