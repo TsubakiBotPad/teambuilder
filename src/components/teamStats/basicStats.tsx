@@ -185,7 +185,8 @@ async function accumulateBasicStats(slots: TeamSlotState[], gameConfig: GameConf
         is_plus_297: is_plus_297,
         multiplayer: multiplayer,
         inherited_monster: m1a,
-        inherited_monster_lvl: s.assist.level
+        inherited_monster_lvl: s.assist.level,
+        monsterLatents: s.latents
       })
     );
     const rcv = Math.round(
@@ -197,7 +198,8 @@ async function accumulateBasicStats(slots: TeamSlotState[], gameConfig: GameConf
         inherit: false,
         is_plus_297: is_plus_297,
         multiplayer: multiplayer,
-        inherited_monster: m1a
+        inherited_monster: m1a,
+        monsterLatents: s.latents
       })
     );
 
@@ -214,7 +216,8 @@ async function accumulateBasicStats(slots: TeamSlotState[], gameConfig: GameConf
         is_plus_297: is_plus_297,
         multiplayer: multiplayer,
         inherited_monster: m1a,
-        ignore_awakenings: true
+        ignore_awakenings: true,
+        monsterLatents: s.latents
       })
     );
     const rcvNoAwo = Math.round(
@@ -227,7 +230,8 @@ async function accumulateBasicStats(slots: TeamSlotState[], gameConfig: GameConf
         is_plus_297: is_plus_297,
         multiplayer: multiplayer,
         inherited_monster: m1a,
-        ignore_awakenings: true
+        ignore_awakenings: true,
+        monsterLatents: s.latents
       })
     );
 

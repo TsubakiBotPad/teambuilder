@@ -1,5 +1,6 @@
 import { MonsterResponse, StatValues } from "../../client";
 import { AwokenSkills } from "./monster";
+import { LATENTS_NAME_TO_ID } from "./latents";
 
 type StatType = "hp" | "atk" | "rcv";
 
@@ -100,6 +101,10 @@ function awakeningCount(monsterResponse: MonsterResponse, awokenSkillId: AwokenS
   return monsterResponse.awakenings.filter((a) => a.awoken_skill_id === awokenSkillId).length;
 }
 
+function latentCount(latents: number[], latentId: number) {
+  return latents.filter((a) => a === latentId).length;
+}
+
 export function stat({
   monster_model,
   key,
@@ -110,7 +115,8 @@ export function stat({
   multiplayer = false,
   inherited_monster,
   inherited_monster_lvl = 99,
-  ignore_awakenings = false
+  ignore_awakenings = false,
+  monsterLatents = []
 }: {
   monster_model: MonsterResponse;
   key: StatType;
@@ -122,6 +128,7 @@ export function stat({
   inherited_monster?: MonsterResponse;
   inherited_monster_lvl?: number;
   ignore_awakenings?: boolean;
+  monsterLatents?: number[];
 }) {
   // # TODO: deal with atk-, rcv-, and hp- awakenings
   // # PAD rounds stats from the start before any calculations
@@ -132,7 +139,16 @@ export function stat({
       num_hp_awakening: awakeningCount(monster_model, AwokenSkills.ENHANCEDHP),
       num_atk_awakening: awakeningCount(monster_model, AwokenSkills.ENHANCEDATK),
       num_rcv_awakening: awakeningCount(monster_model, AwokenSkills.ENHANCEDRCV),
-      num_voice_awakening: awakeningCount(monster_model, AwokenSkills.VOICE)
+      num_voice_awakening: awakeningCount(monster_model, AwokenSkills.VOICE),
+      num_hp: latentCount(monsterLatents, LATENTS_NAME_TO_ID["hp"]),
+      num_hpplus: latentCount(monsterLatents, LATENTS_NAME_TO_ID["hp+"]),
+      num_hpplus2: latentCount(monsterLatents, LATENTS_NAME_TO_ID["hp++"]),
+      num_atk: latentCount(monsterLatents, LATENTS_NAME_TO_ID["atk"]),
+      num_atkplus: latentCount(monsterLatents, LATENTS_NAME_TO_ID["atk+"]),
+      num_atkplus2: latentCount(monsterLatents, LATENTS_NAME_TO_ID["atk++"]),
+      num_rcv: latentCount(monsterLatents, LATENTS_NAME_TO_ID["rcv"]),
+      num_rcvplus: latentCount(monsterLatents, LATENTS_NAME_TO_ID["rcv+"]),
+      num_rcvplus2: latentCount(monsterLatents, LATENTS_NAME_TO_ID["rcv++"])
     });
     const latents = s_val * stat_latents.get_latent_multiplier(key);
     const stat_awakenings = stat_latents.get_awakening_addition(key);

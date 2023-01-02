@@ -39,6 +39,9 @@ export const LATENTS_ID_TO_NAME: { [key: number]: string } = {
   220: "lres+",
   221: "dres+",
   222: "te+",
+  223: "hp++",
+  224: "atk++",
+  225: "rcv++",
 
   // # SIX SLOTS
   601: "psf",
