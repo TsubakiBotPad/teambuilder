@@ -5,6 +5,7 @@ import { exportComponentAsPNG } from "react-component-export-image";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { BsImage } from "react-icons/bs";
+import { BiLink } from "react-icons/bi";
 import { useNavigate, useParams } from "react-router-dom";
 
 import { DefaultLevelSelector } from "../components/defaultLevelSelector";
@@ -18,6 +19,8 @@ import { TeamBuilderContent } from "../components/teamBuilderContent";
 import { computeTeamStat, TeamStats } from "../components/teamStats/teamStats";
 import { iStr, Language } from "../i18n/i18n";
 import { ConfigData, deserializeConfig, serializeConfig } from "../model/serializedUri";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import {
   AppStateContext,
   DEFAULT_GAME_CONFIG,
@@ -59,6 +62,20 @@ const PadTeamBuilderPageContainer = React.forwardRef((props, ref) => {
               `}
             >
               <BsImage />
+            </button>
+            <button
+              onClick={() => {
+                navigator.clipboard.writeText(window.location.href);
+                toast(iStr("linkCopied", language));
+              }}
+              className={css`
+                box-shadow: 1px 1px #ccc;
+                border: 1px solid black;
+                padding: 0 0.1rem;
+                cursor: pointer;
+              `}
+            >
+              <BiLink />
             </button>
           </FlexRowC>
         </FlexRowC>
@@ -163,6 +180,18 @@ export const PadTeamBuilderPage = () => {
         }}
       >
         <TeamStateContext.Provider value={{ teamState, setTeamState }}>
+          <ToastContainer
+            position="top-right"
+            autoClose={2000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss={false}
+            draggable={false}
+            pauseOnHover={false}
+            theme="light"
+          />
           <div ref={ref as any}>
             <PadTeamBuilderPageContainer ref={ref} />
           </div>

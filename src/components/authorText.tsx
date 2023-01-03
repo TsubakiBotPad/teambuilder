@@ -24,7 +24,7 @@ export const AuthorText = () => {
           margin-right: 0.1rem;
         `}
       >
-        Made by
+        Team by
       </span>
       <AuthorInput
         style={{
@@ -43,7 +43,7 @@ export const AuthorText = () => {
           margin-left: 0.1rem;
         `}
       >
-        & teambuilder.tsubakibot.com
+        with teambuilder.tsubakibot.com
       </span>
     </div>
   );

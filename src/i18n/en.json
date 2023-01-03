@@ -41,5 +41,6 @@
   "none": "None",
   "slots": "Slots",
   "surges": "Surges",
-  "author": "Author"
+  "author": "@author",
+  "linkCopied": "Link copied to clipboard!"
 }
