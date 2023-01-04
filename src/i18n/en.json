@@ -41,6 +41,7 @@
   "none": "None",
   "slots": "Slots",
   "surges": "Surges",
-  "author": "@author",
+  "author": "Team by @author",
+  "withTsubotki": ", with teambuilder.tsubakibot.com",
   "linkCopied": "Link copied to clipboard!"
 }

@@ -3,6 +3,7 @@ import styled from "@emotion/styled";
 import { useContext } from "react";
 
 import { ColorKey, getColor } from "../colors";
+import { iStr } from "../i18n/i18n";
 import { AppStateContext } from "../model/teamStateManager";
 
 const AuthorInput = styled.input`
@@ -15,7 +16,7 @@ const AuthorInput = styled.input`
 `;
 
 export const AuthorText = () => {
-  const { author, setAuthor } = useContext(AppStateContext);
+  const { author, setAuthor, language } = useContext(AppStateContext);
   return (
     <div>
       <span
@@ -24,7 +25,7 @@ export const AuthorText = () => {
           margin-right: 0.1rem;
         `}
       >
-        Team by
+        {iStr("author", language)}
       </span>
       <AuthorInput
         style={{
@@ -43,7 +44,7 @@ export const AuthorText = () => {
           margin-left: 0.1rem;
         `}
       >
-        with teambuilder.tsubakibot.com
+        {iStr("withTsubotki", language)}
       </span>
     </div>
   );
