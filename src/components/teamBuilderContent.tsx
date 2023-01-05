@@ -20,9 +20,9 @@ const TeamInput = styled.input`
 export const TeamBuilderContent = React.forwardRef((props, ref) => {
   const { gameConfig, setTeamName, teamName, instructions, setInstructions, language } = useContext(AppStateContext);
   return (
-    <FlexColC ref={ref as any}>
+    <FlexColC>
       <FlexRow gap="1rem">
-        <FlexCol>
+        <FlexCol ref={ref as any}>
           <TeamInput
             placeholder={iStr("teamName", language)}
             size={35}

@@ -192,9 +192,7 @@ export const PadTeamBuilderPage = () => {
             pauseOnHover={false}
             theme="light"
           />
-          <div ref={ref as any}>
-            <PadTeamBuilderPageContainer ref={ref} />
-          </div>
+          <PadTeamBuilderPageContainer ref={ref} />
           <Footer />
         </TeamStateContext.Provider>
       </AppStateContext.Provider>
