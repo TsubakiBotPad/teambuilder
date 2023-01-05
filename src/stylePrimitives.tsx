@@ -60,9 +60,7 @@ export const FlexColC = styled(FlexCol)`
 `;
 
 export const FlexColCResponsive = styled(FlexCol)`
-  @media screen and (min-width: 1500px) {
-    align-items: center;
-  }
+  align-items: safe center;
 `;
 
 type ColorProps = {
