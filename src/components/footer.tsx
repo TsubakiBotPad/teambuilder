@@ -20,6 +20,7 @@ export const Footer = () => {
           >
             PAD Team Builder is made with love by the Tsubotki team :3
           </span>
+
           <FlexRowC gap="1rem">
             <a href="https://www.buymeacoffee.com/maxjank">
               <img
@@ -41,6 +42,14 @@ export const Footer = () => {
               </a>
             </div>
           </FlexRowC>
+          <span
+            className={css`
+              font-size: 10px;
+            `}
+          >
+            Puzzle & Dragons related images are trademarks of GungHo Online Entertainment, Inc.
+            teambuilder.tsubakibot.com is a 3rd party site and has no affiliations with Gungho.
+          </span>
         </FlexColC>
       </div>
     </>
