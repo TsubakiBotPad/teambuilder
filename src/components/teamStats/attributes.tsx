@@ -4,7 +4,12 @@ import { GameConfig } from "../gameConfigSelector";
 
 export type AttributeHistogram = { [key: number]: boolean };
 
-export async function computeAttributes(gameConfig: GameConfig, teamState: TeamState, playerId: keyof TeamState) {
+export async function computeAttributes(
+  gameConfig: GameConfig,
+  teamState: TeamState,
+  playerId: keyof TeamState,
+  hasAssists: boolean
+) {
   const slots = getTeamSlots(gameConfig, teamState, playerId);
 
   /* python

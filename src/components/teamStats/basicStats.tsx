@@ -62,7 +62,11 @@ export interface TeamBasicStats {
   ehpNoAwo: number;
 }
 
-export async function computeTeamBasicStats2P(gameConfig: GameConfig, teamState: TeamState): Promise<TeamBasicStats> {
+export async function computeTeamBasicStats2P(
+  gameConfig: GameConfig,
+  teamState: TeamState,
+  hasAssists: boolean
+): Promise<TeamBasicStats> {
   if (gameConfig.mode !== "2p") {
     return {
       hp: 0,
@@ -82,7 +86,7 @@ export async function computeTeamBasicStats2P(gameConfig: GameConfig, teamState:
 
   var { hpAcc, rcvAcc, hpNoAwoAcc, rcvNoAwoAcc } = await accumulateBasicStats(slots, gameConfig);
 
-  const awakenings = await computeTotalAwakeningsFromSlots(slots, false);
+  const awakenings = await computeTotalAwakeningsFromSlots(slots, false, hasAssists);
   const numTeamHp = awakenings[AwokenSkills.ENHTEAMHP] ?? 0;
   const numTeamRcv = awakenings[AwokenSkills.ENHTEAMRCV] ?? 0;
 
@@ -105,7 +109,8 @@ export async function computeTeamBasicStats2P(gameConfig: GameConfig, teamState:
 export async function computeTeamBasicStats(
   gameConfig: GameConfig,
   teamState: TeamState,
-  playerId: keyof TeamState
+  playerId: keyof TeamState,
+  hasAssists: boolean
 ): Promise<TeamBasicStats> {
   const slots = getTeamSlots(gameConfig, teamState, playerId);
 
@@ -117,7 +122,7 @@ export async function computeTeamBasicStats(
 
   var { hpAcc, rcvAcc, hpNoAwoAcc, rcvNoAwoAcc } = await accumulateBasicStats(slots, gameConfig);
 
-  const awakenings = await computeTotalAwakeningsFromSlots(slots, not2P);
+  const awakenings = await computeTotalAwakeningsFromSlots(slots, not2P, hasAssists);
   const numTeamHp = awakenings[AwokenSkills.ENHTEAMHP] ?? 0;
   const numTeamRcv = awakenings[AwokenSkills.ENHTEAMRCV] ?? 0;
 

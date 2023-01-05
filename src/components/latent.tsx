@@ -162,7 +162,7 @@ export const Latents = ({
       }
 
       if (hasSixSlot) {
-        const a = await computeTotalAwakeningsFromSlots([teamSlot], not2P);
+        const a = await computeTotalAwakeningsFromSlots([teamSlot], not2P, true);
         setMonsterAwakenings(Object.keys(a).map((b) => parseInt(b)));
       }
     };

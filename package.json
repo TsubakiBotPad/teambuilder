@@ -70,6 +70,7 @@
   "devDependencies": {
     "@types/google.maps": "^3.50.2",
     "@types/react-color": "^3.0.6",
+    "@types/react-toastify": "^4.1.0",
     "@types/smooth-scroll": "^16.1.1"
   },
   "homepage": "http://teambuilder.tsubakibot.com/"

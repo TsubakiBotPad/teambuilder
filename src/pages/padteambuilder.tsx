@@ -23,6 +23,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import {
   AppStateContext,
+  DEFAULT_APP_STATE,
   DEFAULT_GAME_CONFIG,
   DEFAULT_TEAM_STATE,
   linkLeadersNoSet,
@@ -39,7 +40,8 @@ export const DraggableTypes = {
 };
 
 const PadTeamBuilderPageContainer = React.forwardRef((props, ref) => {
-  const { language, modalIsOpen, latentModalIsOpen, badgeModalIsOpen } = useContext(AppStateContext);
+  const { language, modalIsOpen, latentModalIsOpen, badgeModalIsOpen, statsTab, setStatsTab } =
+    useContext(AppStateContext);
   return (
     <Page maxWidth={maxPageWidth}>
       <FlexColC gap="1rem">
@@ -78,6 +80,21 @@ const PadTeamBuilderPageContainer = React.forwardRef((props, ref) => {
               <BiLink />
             </button>
           </FlexRowC>
+          <span
+            onClick={() => {
+              if (statsTab[0] === "main") {
+                setStatsTab(["no-assists", "no-assists", "no-assists"]);
+              } else {
+                setStatsTab(["main", "main", "main"]);
+              }
+              toast(statsTab[0] + ", " + statsTab[1]);
+            }}
+            className={css`
+              cursor: pointer;
+            `}
+          >
+            {iStr(statsTab[0] === "main" ? "showAssists" : "hideAssists", language)}
+          </span>
         </FlexRowC>
       </FlexColC>
       <CardSelectorModal isOpen={modalIsOpen} />
@@ -119,6 +136,7 @@ export const PadTeamBuilderPage = () => {
   const [cardSlotSelected, setCardSlotSelected] = useState({});
   const [instructions, setInstructions] = useState<string | undefined>(parsedConfig.in);
   const [author, setAuthor] = useState<string | undefined>(parsedConfig.a);
+  const [statsTab, setStatsTab] = useState(DEFAULT_APP_STATE.statsTab);
 
   var updateUrl = useRef(
     debounce((config: Partial<ConfigData>) => {
@@ -142,9 +160,9 @@ export const PadTeamBuilderPage = () => {
   useMemo(() => {
     const f = async () => {
       setTeamStats({
-        p1: await computeTeamStat(teamState, gameConfig, "p1"),
-        p2: await computeTeamStat(teamState, gameConfig, "p2"),
-        p3: await computeTeamStat(teamState, gameConfig, "p3")
+        p1: await computeTeamStat(teamState, gameConfig, "p1", statsTab[0] !== "main"),
+        p2: await computeTeamStat(teamState, gameConfig, "p2", statsTab[1] !== "main"),
+        p3: await computeTeamStat(teamState, gameConfig, "p3", statsTab[2] !== "main")
       });
     };
     f();
@@ -176,7 +194,9 @@ export const PadTeamBuilderPage = () => {
           language,
           setLanguage,
           author,
-          setAuthor
+          setAuthor,
+          statsTab,
+          setStatsTab
         }}
       >
         <TeamStateContext.Provider value={{ teamState, setTeamState }}>

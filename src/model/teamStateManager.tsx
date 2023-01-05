@@ -110,9 +110,11 @@ interface AppState {
   setInstructions: React.Dispatch<React.SetStateAction<string | undefined>>;
   author?: string;
   setAuthor: React.Dispatch<React.SetStateAction<string | undefined>>;
+  statsTab: string[];
+  setStatsTab: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
-const DEFAULT_APP_STATE: AppState = {
+export const DEFAULT_APP_STATE: AppState = {
   gameConfig: DEFAULT_GAME_CONFIG,
   setGameConfig: () => {},
   language: "en",
@@ -135,7 +137,9 @@ const DEFAULT_APP_STATE: AppState = {
   instructions: "",
   setInstructions: () => {},
   author: "",
-  setAuthor: () => {}
+  setAuthor: () => {},
+  statsTab: ["main", "main", "main"],
+  setStatsTab: () => {}
 };
 
 export const AppStateContext = React.createContext(DEFAULT_APP_STATE);
