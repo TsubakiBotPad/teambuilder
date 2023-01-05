@@ -28,7 +28,7 @@ import {
   linkLeadersNoSet,
   TeamStateContext
 } from "../model/teamStateManager";
-import { FlexColC, FlexRowC, H1, Page } from "../stylePrimitives";
+import { FlexColC, FlexColCResponsive, FlexRowC, H1, Page } from "../stylePrimitives";
 
 const maxPageWidth = "1440px";
 
@@ -42,7 +42,7 @@ const PadTeamBuilderPageContainer = React.forwardRef((props, ref) => {
   const { language, modalIsOpen, latentModalIsOpen, badgeModalIsOpen } = useContext(AppStateContext);
   return (
     <Page maxWidth={maxPageWidth}>
-      <FlexColC gap="1rem">
+      <FlexColCResponsive gap="1rem">
         <FlexRowC gap="1rem">
           <H1>{iStr("applicationTitle", language, "PAD Team Builder")}</H1>
           <LanguageSelector />
@@ -79,7 +79,7 @@ const PadTeamBuilderPageContainer = React.forwardRef((props, ref) => {
             </button>
           </FlexRowC>
         </FlexRowC>
-      </FlexColC>
+      </FlexColCResponsive>
       <CardSelectorModal isOpen={modalIsOpen} />
       <LatentSelectorModal isOpen={latentModalIsOpen} />
       <BadgeSelectorModal isOpen={badgeModalIsOpen} />
