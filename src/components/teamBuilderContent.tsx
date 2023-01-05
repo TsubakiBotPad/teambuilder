@@ -5,7 +5,7 @@ import { useContext } from "react";
 
 import { iStr } from "../i18n/i18n";
 import { AppStateContext } from "../model/teamStateManager";
-import { FlexCol, FlexColC, FlexRow, FlexRowC } from "../stylePrimitives";
+import { FlexCol, FlexColC, FlexColCResponsive, FlexRow, FlexRowC } from "../stylePrimitives";
 import { AuthorText } from "./authorText";
 import { TeamBlock } from "./team";
 import { TeamSharedStatsDisplay } from "./teamStats/teamStats2p";
@@ -20,7 +20,7 @@ const TeamInput = styled.input`
 export const TeamBuilderContent = React.forwardRef((props, ref) => {
   const { gameConfig, setTeamName, teamName, instructions, setInstructions, language } = useContext(AppStateContext);
   return (
-    <FlexColC>
+    <FlexColCResponsive>
       <FlexRow gap="1rem">
         <FlexCol ref={ref as any}>
           <TeamInput
@@ -57,7 +57,7 @@ export const TeamBuilderContent = React.forwardRef((props, ref) => {
           </div>
         </FlexCol>
       </FlexRow>
-    </FlexColC>
+    </FlexColCResponsive>
   );
 });
 
