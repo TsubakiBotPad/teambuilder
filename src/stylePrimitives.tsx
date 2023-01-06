@@ -59,6 +59,10 @@ export const FlexColC = styled(FlexCol)`
   align-items: center;
 `;
 
+export const FlexColCResponsive = styled(FlexCol)`
+  align-items: safe center;
+`;
+
 type ColorProps = {
   color: string;
 };
