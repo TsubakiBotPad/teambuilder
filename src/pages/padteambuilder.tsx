@@ -29,7 +29,7 @@ import {
   linkLeadersNoSet,
   TeamStateContext
 } from "../model/teamStateManager";
-import { FlexColC, FlexColCResponsive, FlexRowC, H1, Page } from "../stylePrimitives";
+import { FlexColCResponsive, FlexRowC, H1, Page } from "../stylePrimitives";
 
 const maxPageWidth = "1440px";
 
