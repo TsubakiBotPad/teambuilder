@@ -87,7 +87,6 @@ const PadTeamBuilderPageContainer = React.forwardRef((props, ref) => {
               } else {
                 setStatsTab(["main", "main", "main"]);
               }
-              toast(statsTab[0] + ", " + statsTab[1]);
             }}
             className={css`
               cursor: pointer;
@@ -166,7 +165,7 @@ export const PadTeamBuilderPage = () => {
       });
     };
     f();
-  }, [teamState, gameConfig]);
+  }, [teamState, gameConfig, statsTab]);
 
   return (
     <DndProvider backend={HTML5Backend}>
