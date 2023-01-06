@@ -44,6 +44,6 @@
   "author": "チーム編成:",
   "withTsubotki": ", teambuilder.tsubakibot.com を利用によって",
   "linkCopied": "共有リンクをコピーしました",
-  "showAssists": "Show assist stats",
-  "hideAssists": "Hide assist stats"
+  "showAssists": "Assists: Disabled",
+  "hideAssists": "Assists: Enabled"
 }
