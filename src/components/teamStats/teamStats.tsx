@@ -1,5 +1,7 @@
 import { css } from "@emotion/css";
-import { TeamState } from "../../model/teamStateManager";
+import { useContext } from "react";
+import { iStr } from "../../i18n/i18n";
+import { AppStateContext, TeamState } from "../../model/teamStateManager";
 import { FlexCol } from "../../stylePrimitives";
 import { GameConfig } from "../gameConfigSelector";
 import { AttributeHistogram, computeAttributes } from "./attributes";
@@ -57,28 +59,64 @@ export const TeamStatDisplay = ({ teamStat, keyP, is2P }: { teamStat?: TeamStat;
   }
 
   return (
-    <FlexCol
-      className={css`
-        border: 1px solid #ccc;
-      `}
-    >
-      <TeamBasicStatsDisplay
-        tbs={teamStat.teamBasicStats}
-        tt={teamStat.teamTypes}
-        unbindablePct={teamStat.teamUnbindablePct}
-        ah={teamStat.attributes}
-        tl={teamStat.teamLatents}
-        keyP={keyP}
-        is2P={is2P}
-      />
-      <div
+    <FlexCol className={css``}>
+      <FlexCol
         className={css`
-          border-top: 1px solid #ccc;
-          margin: 0 0.5rem;
+          border: 1px solid #ccc;
         `}
       >
-        <AwakeningStatsDisplay awakenings={teamStat.awakenings} keyPrefix={keyP} />
-      </div>
+        <TeamStatsToggles keyP={keyP}></TeamStatsToggles>
+        <TeamBasicStatsDisplay
+          tbs={teamStat.teamBasicStats}
+          tt={teamStat.teamTypes}
+          unbindablePct={teamStat.teamUnbindablePct}
+          ah={teamStat.attributes}
+          tl={teamStat.teamLatents}
+          keyP={keyP}
+          is2P={is2P}
+        />
+        <div
+          className={css`
+            border-top: 1px solid #ccc;
+            margin: 0 0.5rem;
+          `}
+        >
+          <AwakeningStatsDisplay awakenings={teamStat.awakenings} keyPrefix={keyP} />
+        </div>
+      </FlexCol>
     </FlexCol>
+  );
+};
+
+const TeamStatsToggles = ({ keyP }: { keyP: string }) => {
+  const { language, statsTab, setStatsTab } = useContext(AppStateContext);
+  if (keyP !== "p1") {
+    return <></>;
+  }
+  return (
+    <div
+      className={css`
+        margin-top: -20px;
+        height: 20px;
+        box-sizing: border-box;
+        vertical-align: top;
+        color: #0645ad;
+      `}
+    >
+      <span
+        onClick={() => {
+          if (statsTab[0] === "main") {
+            setStatsTab(["no-assists", "no-assists", "no-assists"]);
+          } else {
+            setStatsTab(["main", "main", "main"]);
+          }
+        }}
+        className={css`
+          cursor: pointer;
+        `}
+      >
+        {iStr(statsTab[0] === "main" ? "hideAssists" : "showAssists", language)}
+      </span>
+    </div>
   );
 };

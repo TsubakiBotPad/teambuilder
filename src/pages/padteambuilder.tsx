@@ -40,8 +40,7 @@ export const DraggableTypes = {
 };
 
 const PadTeamBuilderPageContainer = React.forwardRef((props, ref) => {
-  const { language, modalIsOpen, latentModalIsOpen, badgeModalIsOpen, statsTab, setStatsTab } =
-    useContext(AppStateContext);
+  const { language, modalIsOpen, latentModalIsOpen, badgeModalIsOpen } = useContext(AppStateContext);
   return (
     <Page maxWidth={maxPageWidth}>
       <FlexColCResponsive gap="1rem">
@@ -80,20 +79,6 @@ const PadTeamBuilderPageContainer = React.forwardRef((props, ref) => {
               <BiLink />
             </button>
           </FlexRowC>
-          <span
-            onClick={() => {
-              if (statsTab[0] === "main") {
-                setStatsTab(["no-assists", "no-assists", "no-assists"]);
-              } else {
-                setStatsTab(["main", "main", "main"]);
-              }
-            }}
-            className={css`
-              cursor: pointer;
-            `}
-          >
-            {iStr(statsTab[0] === "main" ? "showAssists" : "hideAssists", language)}
-          </span>
         </FlexRowC>
       </FlexColCResponsive>
       <CardSelectorModal isOpen={modalIsOpen} />
@@ -159,9 +144,9 @@ export const PadTeamBuilderPage = () => {
   useMemo(() => {
     const f = async () => {
       setTeamStats({
-        p1: await computeTeamStat(teamState, gameConfig, "p1", statsTab[0] !== "main"),
-        p2: await computeTeamStat(teamState, gameConfig, "p2", statsTab[1] !== "main"),
-        p3: await computeTeamStat(teamState, gameConfig, "p3", statsTab[2] !== "main")
+        p1: await computeTeamStat(teamState, gameConfig, "p1", statsTab[0] === "main"),
+        p2: await computeTeamStat(teamState, gameConfig, "p2", statsTab[1] === "main"),
+        p3: await computeTeamStat(teamState, gameConfig, "p3", statsTab[2] === "main")
       });
     };
     f();

@@ -163,7 +163,7 @@ export const Latents = ({
 
       // check validity of awakening-restricted latents
       if (hasSixSlot) {
-        const a = await computeTotalAwakeningsFromSlots([teamSlot], not2P, statsTab[0] !== "main");
+        const a = await computeTotalAwakeningsFromSlots([teamSlot], not2P, statsTab[0] === "main");
         setMonsterAwakenings(Object.keys(a).map((b) => parseInt(b)));
       }
     };
