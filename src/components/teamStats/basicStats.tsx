@@ -84,7 +84,7 @@ export async function computeTeamBasicStats2P(
   const helper = await monsterCacheClient.get(slots[5].base.id);
   const ls = computeLeaderSkill(leader, helper);
 
-  var { hpAcc, rcvAcc, hpNoAwoAcc, rcvNoAwoAcc } = await accumulateBasicStats(slots, gameConfig);
+  var { hpAcc, rcvAcc, hpNoAwoAcc, rcvNoAwoAcc } = await accumulateBasicStats(slots, gameConfig, hasAssists);
 
   const awakenings = await computeTotalAwakeningsFromSlots(slots, false, hasAssists);
   const numTeamHp = awakenings[AwokenSkills.ENHTEAMHP] ?? 0;
@@ -120,7 +120,7 @@ export async function computeTeamBasicStats(
   const helper = await monsterCacheClient.get(slots[5].base.id);
   const ls = computeLeaderSkill(leader, helper);
 
-  var { hpAcc, rcvAcc, hpNoAwoAcc, rcvNoAwoAcc } = await accumulateBasicStats(slots, gameConfig);
+  var { hpAcc, rcvAcc, hpNoAwoAcc, rcvNoAwoAcc } = await accumulateBasicStats(slots, gameConfig, hasAssists);
 
   const awakenings = await computeTotalAwakeningsFromSlots(slots, not2P, hasAssists);
   const numTeamHp = awakenings[AwokenSkills.ENHTEAMHP] ?? 0;
@@ -155,7 +155,7 @@ export async function computeTeamBasicStats(
   };
 }
 
-async function accumulateBasicStats(slots: TeamSlotState[], gameConfig: GameConfig) {
+async function accumulateBasicStats(slots: TeamSlotState[], gameConfig: GameConfig, hasAssists: boolean) {
   var hpAcc = 0;
   var hpNoAwoAcc = 0;
 
@@ -168,7 +168,7 @@ async function accumulateBasicStats(slots: TeamSlotState[], gameConfig: GameConf
       continue;
     }
 
-    const m1a = await monsterCacheClient.get(s.assist.id);
+    const m1a = await monsterCacheClient.get(hasAssists ? s.assist.id : 0);
 
     const plus = 297; // TODO: make config
     var is_plus_297 = false;
