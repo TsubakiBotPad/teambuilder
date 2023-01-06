@@ -44,6 +44,6 @@
   "author": "Team by",
   "withTsubotki": ", with teambuilder.tsubakibot.com",
   "linkCopied": "Link copied to clipboard!",
-  "showAssists": "Show assist stats",
-  "hideAssists": "Hide assist stats"
+  "showAssists": "Assists: Disabled",
+  "hideAssists": "Assists: Enabled"
 }

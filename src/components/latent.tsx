@@ -106,7 +106,7 @@ export const Latents = ({
   latents: number[];
   teamSlot: TeamSlotState;
 }) => {
-  const { gameConfig, setCardSlotSelected, setLatentModalIsOpen } = useContext(AppStateContext);
+  const { gameConfig, setCardSlotSelected, setLatentModalIsOpen, statsTab } = useContext(AppStateContext);
   const { teamState, setTeamState } = useContext(TeamStateContext);
 
   const [monsterAwakenings, setMonsterAwakenings] = useState([] as number[]);
@@ -161,13 +161,14 @@ export const Latents = ({
         setHasError(false);
       }
 
+      // check validity of awakening-restricted latents
       if (hasSixSlot) {
-        const a = await computeTotalAwakeningsFromSlots([teamSlot], not2P, true);
+        const a = await computeTotalAwakeningsFromSlots([teamSlot], not2P, statsTab[0] !== "main");
         setMonsterAwakenings(Object.keys(a).map((b) => parseInt(b)));
       }
     };
     f();
-  }, [teamState, teamSlot, hasSixSlot, not2P, setHasError]);
+  }, [teamState, teamSlot, hasSixSlot, not2P, setHasError, statsTab]);
 
   const [, drag] = useDrag(() => ({
     type: DraggableTypes.latent,
