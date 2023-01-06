@@ -19,7 +19,7 @@
   "base": "base",
   "assist": "assist",
   "latents": "latents",
-  "search": "Search id/name/query",
+  "search": "Search id/name/^id query",
   "noCardSelected": "No card selected",
   "latentSlot": "slot",
   "awakening": "awakening",
