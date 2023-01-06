@@ -1,8 +1,6 @@
 import { css } from "@emotion/css";
 import styled from "@emotion/styled";
 
-import { AwakeningImage } from "../../model/images";
-import { AwokenSkills } from "../../model/types/monster";
 import { FlexCol, FlexColC, FlexRow } from "../../stylePrimitives";
 import { fixedDecimals } from "../generic/fixedDecimals";
 import { AttributeHistogram } from "./attributes";
