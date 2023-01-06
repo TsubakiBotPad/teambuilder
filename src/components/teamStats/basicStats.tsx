@@ -290,13 +290,16 @@ export const TeamBasicStatsDisplay = ({
               <tr>
                 <th></th>
                 <TH>
-                  <AwakeningImage
+                  <div
                     className={css`
+                      background: url("img/awo.png") no-repeat;
+                      background-size: contain;
+                      height: 20px;
+                      width: 20px;
                       margin-right: 1rem;
                       float: right;
+                      vertical-align: middle;
                     `}
-                    awakeningId={AwokenSkills.AWOKENKILLER}
-                    width={22}
                   />
                 </TH>
                 <TH>

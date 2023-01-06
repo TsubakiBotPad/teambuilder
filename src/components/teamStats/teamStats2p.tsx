@@ -1,8 +1,6 @@
 import { css } from "@emotion/css";
 import styled from "@emotion/styled";
 
-import { AwakeningImage } from "../../model/images";
-import { AwokenSkills } from "../../model/types/monster";
 import { FlexCol, FlexColC, FlexRow } from "../../stylePrimitives";
 import { fixedDecimals } from "../generic/fixedDecimals";
 import { AttributeHistogram } from "./attributes";
@@ -56,13 +54,16 @@ export const TeamSharedStatsDisplay = ({
             <tr>
               <th></th>
               <TH>
-                <AwakeningImage
+                <div
                   className={css`
+                    background: url("img/awo.png") no-repeat;
+                    background-size: contain;
+                    height: 20px;
+                    width: 20px;
                     margin-right: 1rem;
                     float: right;
+                    vertical-align: middle;
                   `}
-                  awakeningId={AwokenSkills.AWOKENKILLER}
-                  width={22}
                 />
               </TH>
               <TH>
