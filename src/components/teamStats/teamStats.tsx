@@ -2,7 +2,7 @@ import { css } from "@emotion/css";
 import { useContext } from "react";
 import { iStr } from "../../i18n/i18n";
 import { AppStateContext, TeamState } from "../../model/teamStateManager";
-import { FlexCol } from "../../stylePrimitives";
+import { FlexCol, FlexRowC, ToggleOption } from "../../stylePrimitives";
 import { GameConfig } from "../gameConfigSelector";
 import { AttributeHistogram, computeAttributes } from "./attributes";
 import {
@@ -89,34 +89,45 @@ export const TeamStatDisplay = ({ teamStat, keyP, is2P }: { teamStat?: TeamStat;
 };
 
 const TeamStatsToggles = ({ keyP }: { keyP: string }) => {
-  const { language, statsTab, setStatsTab } = useContext(AppStateContext);
+  const { language, statsTab } = useContext(AppStateContext);
   if (keyP !== "p1") {
     return <></>;
   }
   return (
-    <div
+    <FlexRowC
       className={css`
-        margin-top: -20px;
-        height: 20px;
+        margin-top: -30px;
+        height: 30px;
         box-sizing: border-box;
-        vertical-align: top;
-        color: #0645ad;
       `}
+      gap={"2px"}
     >
-      <span
+      {iStr("dungeonEffects", language)}
+      <AssistToggle isEnabled={statsTab[0] !== "main"}></AssistToggle>
+    </FlexRowC>
+  );
+};
+
+const AssistToggle = ({ isEnabled }: { isEnabled: boolean }) => {
+  const { setStatsTab } = useContext(AppStateContext);
+  if (isEnabled) {
+    return (
+      <ToggleOption
+        isEnabled={false}
+        image="assistBind.png"
         onClick={() => {
-          if (statsTab[0] === "main") {
-            setStatsTab(["no-assists", "no-assists", "no-assists"]);
-          } else {
-            setStatsTab(["main", "main", "main"]);
-          }
+          setStatsTab(["no-assists", "no-assists", "no-assists"]);
         }}
-        className={css`
-          cursor: pointer;
-        `}
-      >
-        {iStr(statsTab[0] === "main" ? "hideAssists" : "showAssists", language)}
-      </span>
-    </div>
+      ></ToggleOption>
+    );
+  }
+  return (
+    <ToggleOption
+      isEnabled={true}
+      image="assistBind.png"
+      onClick={() => {
+        setStatsTab(["main", "main", "main"]);
+      }}
+    ></ToggleOption>
   );
 };
