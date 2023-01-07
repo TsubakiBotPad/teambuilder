@@ -103,7 +103,7 @@ const TeamStatsToggles = ({ keyP }: { keyP: string }) => {
       gap={"2px"}
     >
       {iStr("dungeonEffects", language)}
-      <AssistToggle isEnabled={statsTab[0] === "main"}></AssistToggle>
+      <AssistToggle isEnabled={statsTab[0] !== "main"}></AssistToggle>
     </FlexRowC>
   );
 };
@@ -113,20 +113,20 @@ const AssistToggle = ({ isEnabled }: { isEnabled: boolean }) => {
   if (isEnabled) {
     return (
       <ToggleOption
-        isEnabled={false}
+        isEnabled={true}
         image="assistBind.png"
         onClick={() => {
-          setStatsTab(["no-assists", "no-assists", "no-assists"]);
+          setStatsTab(["main", "main", "main"]);
         }}
       ></ToggleOption>
     );
   }
   return (
     <ToggleOption
-      isEnabled={true}
+      isEnabled={false}
       image="assistBind.png"
       onClick={() => {
-        setStatsTab(["main", "main", "main"]);
+        setStatsTab(["no-assists", "no-assists", "no-assists"]);
       }}
     ></ToggleOption>
   );
