@@ -103,7 +103,7 @@ const TeamStatsToggles = ({ keyP }: { keyP: string }) => {
       gap={"2px"}
     >
       {iStr("dungeonEffects", language)}
-      <AssistToggle isEnabled={statsTab[0] !== "main"}></AssistToggle>
+      <AssistToggle isEnabled={statsTab[0] === "main"}></AssistToggle>
     </FlexRowC>
   );
 };
