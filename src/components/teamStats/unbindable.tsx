@@ -12,12 +12,18 @@ export async function computeTeamUnbindablePct(
 
   var count = 0;
   var filledSlots = 0;
+  var isLead = true;
   for (const slot of slots) {
     if (slot.base.id !== 0) {
       filledSlots += 1;
     }
 
     var cardBindRes = 0;
+
+    if (isLead && slot.base.id !== 0 && teamState[playerId].badgeId === "unbindable") {
+      cardBindRes += 1;
+    }
+
     const m1b = await monsterCacheClient.get(slot.base.id);
     if (m1b?.awakenings) {
       const unbindableRes = m1b.awakenings.filter((a) => !a.is_super && a.awoken_skill_id === AwokenSkills.UNBINDABLE);
@@ -32,6 +38,7 @@ export async function computeTeamUnbindablePct(
       cardBindRes += unbindableRes.length + bindRes.length * 0.5;
     }
 
+    isLead = false;
     count += cardBindRes >= 1 ? 1 : 0;
   }
 
