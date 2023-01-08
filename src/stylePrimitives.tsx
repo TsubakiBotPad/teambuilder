@@ -151,7 +151,7 @@ export const ToggleOption = styled.span<ToggleOptionProps>`
   cursor: pointer;
   filter: grayscale(${(props) => (props.isEnabled ? 0 : 1)});
   background: url("img/${(props) => props.image}") no-repeat;
-  height: 22px;
-  width: 22px;
+  height: 28px;
+  width: 28px;
   display: inline-block;
 `;

@@ -96,8 +96,8 @@ const TeamStatsToggles = ({ keyP }: { keyP: string }) => {
   return (
     <FlexRowC
       className={css`
-        margin-top: -30px;
-        height: 30px;
+        margin-top: -35px;
+        height: 35px;
         box-sizing: border-box;
       `}
       gap={"2px"}
