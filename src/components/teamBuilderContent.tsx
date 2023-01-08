@@ -26,9 +26,9 @@ export const TeamBuilderContent = React.forwardRef((props, ref) => {
         <FlexCol ref={ref as any}>
           <FlexRow
             className={css`
-              justify-content: space-between;
               align-items: end;
             `}
+            justifyContent="space-between"
           >
             <TeamInput
               placeholder={iStr("teamName", language)}
