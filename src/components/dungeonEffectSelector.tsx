@@ -4,8 +4,16 @@ import { iStr } from "../i18n/i18n";
 import { AppStateContext } from "../model/teamStateManager";
 import { FlexRowC, ToggleOption } from "../stylePrimitives";
 
+export interface dungeonEffects {
+  hasAssists: boolean;
+}
+
+export const DEFAULT_DUNGEON_EFFECTS: dungeonEffects = {
+  hasAssists: true
+};
+
 export const TeamStatsToggles = () => {
-  const { language, statsTab } = useContext(AppStateContext);
+  const { language, dungeonEffects } = useContext(AppStateContext);
   return (
     <div
       className={css`
@@ -23,21 +31,23 @@ export const TeamStatsToggles = () => {
         gap={".25rem"}
       >
         {iStr("dungeonEffects", language)}
-        <AssistToggle isEnabled={statsTab[0] !== "main"}></AssistToggle>
+        <AssistToggle isEnabled={!dungeonEffects.hasAssists}></AssistToggle>
       </FlexRowC>
     </div>
   );
 };
 
 const AssistToggle = ({ isEnabled }: { isEnabled: boolean }) => {
-  const { setStatsTab } = useContext(AppStateContext);
+  const { setDungeonEffects } = useContext(AppStateContext);
   if (isEnabled) {
     return (
       <ToggleOption
         isEnabled={true}
         image="assistBind.png"
         onClick={() => {
-          setStatsTab(["main", "main", "main"]);
+          setDungeonEffects({
+            hasAssists: true
+          });
         }}
       ></ToggleOption>
     );
@@ -47,7 +57,9 @@ const AssistToggle = ({ isEnabled }: { isEnabled: boolean }) => {
       isEnabled={false}
       image="assistBind.png"
       onClick={() => {
-        setStatsTab(["no-assists", "no-assists", "no-assists"]);
+        setDungeonEffects({
+          hasAssists: false
+        });
       }}
     ></ToggleOption>
   );

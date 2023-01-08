@@ -71,9 +71,9 @@ const TeamSlot = ({
   const otherTeamColor = teamId === "p1" ? teamIdToColor["p2"] : teamIdToColor["p1"];
   const componentId = { teamId: teamId, slotId: `teamSlot${slotId}` as keyof PlayerState };
 
-  const { gameConfig, statsTab } = useContext(AppStateContext);
+  const { gameConfig, dungeonEffects } = useContext(AppStateContext);
   const { teamState, setTeamState } = useContext(TeamStateContext);
-  const hasAssists = statsTab[0] === "main";
+  const hasAssists = dungeonEffects.hasAssists;
 
   const [, drag] = useDrag(
     () => ({

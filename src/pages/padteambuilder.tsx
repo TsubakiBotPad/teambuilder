@@ -120,7 +120,7 @@ export const PadTeamBuilderPage = () => {
   const [cardSlotSelected, setCardSlotSelected] = useState({});
   const [instructions, setInstructions] = useState<string | undefined>(parsedConfig.in);
   const [author, setAuthor] = useState<string | undefined>(parsedConfig.a);
-  const [statsTab, setStatsTab] = useState(DEFAULT_APP_STATE.statsTab);
+  const [dungeonEffects, setDungeonEffects] = useState(DEFAULT_APP_STATE.dungeonEffects);
 
   var updateUrl = useRef(
     debounce((config: Partial<ConfigData>) => {
@@ -144,13 +144,13 @@ export const PadTeamBuilderPage = () => {
   useMemo(() => {
     const f = async () => {
       setTeamStats({
-        p1: await computeTeamStat(teamState, gameConfig, "p1", statsTab[0] === "main"),
-        p2: await computeTeamStat(teamState, gameConfig, "p2", statsTab[1] === "main"),
-        p3: await computeTeamStat(teamState, gameConfig, "p3", statsTab[2] === "main")
+        p1: await computeTeamStat(teamState, gameConfig, "p1", dungeonEffects.hasAssists),
+        p2: await computeTeamStat(teamState, gameConfig, "p2", dungeonEffects.hasAssists),
+        p3: await computeTeamStat(teamState, gameConfig, "p3", dungeonEffects.hasAssists)
       });
     };
     f();
-  }, [teamState, gameConfig, statsTab]);
+  }, [teamState, gameConfig, dungeonEffects]);
 
   return (
     <DndProvider backend={HTML5Backend}>
@@ -179,8 +179,8 @@ export const PadTeamBuilderPage = () => {
           setLanguage,
           author,
           setAuthor,
-          statsTab,
-          setStatsTab
+          dungeonEffects,
+          setDungeonEffects
         }}
       >
         <TeamStateContext.Provider value={{ teamState, setTeamState }}>
