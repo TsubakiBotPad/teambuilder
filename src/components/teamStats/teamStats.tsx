@@ -100,7 +100,7 @@ const TeamStatsToggles = ({ keyP }: { keyP: string }) => {
         height: 35px;
         box-sizing: border-box;
       `}
-      gap={"2px"}
+      gap={".25rem"}
     >
       {iStr("dungeonEffects", language)}
       <AssistToggle isEnabled={statsTab[0] !== "main"}></AssistToggle>
