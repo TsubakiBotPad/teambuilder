@@ -8,6 +8,7 @@ import { AppStateContext } from "../model/teamStateManager";
 import { FlexCol, FlexColC, FlexColCResponsive, FlexRow, FlexRowC } from "../stylePrimitives";
 import { AuthorText } from "./authorText";
 import { TeamBlock } from "./team";
+import { TeamStatsToggles } from "./teamStats/teamStats";
 import { TeamSharedStatsDisplay } from "./teamStats/teamStats2p";
 
 const TeamInput = styled.input`
@@ -23,14 +24,22 @@ export const TeamBuilderContent = React.forwardRef((props, ref) => {
     <FlexColCResponsive>
       <FlexRow gap="1rem">
         <FlexCol ref={ref as any}>
-          <TeamInput
-            placeholder={iStr("teamName", language)}
-            size={35}
-            value={teamName}
-            onChange={(e) => {
-              setTeamName(e.target.value);
-            }}
-          />
+          <FlexRow
+            className={css`
+              justify-content: space-between;
+              align-items: end;
+            `}
+          >
+            <TeamInput
+              placeholder={iStr("teamName", language)}
+              size={35}
+              value={teamName}
+              onChange={(e) => {
+                setTeamName(e.target.value);
+              }}
+            />
+            <TeamStatsToggles></TeamStatsToggles>
+          </FlexRow>
           {gameConfig.mode !== "2p" ? <TeamBuilderContent1n3P /> : null}
           {gameConfig.mode === "2p" ? <TeamBuilderContent2P /> : null}
           <div

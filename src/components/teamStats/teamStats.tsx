@@ -65,7 +65,6 @@ export const TeamStatDisplay = ({ teamStat, keyP, is2P }: { teamStat?: TeamStat;
           border: 1px solid #ccc;
         `}
       >
-        <TeamStatsToggles keyP={keyP}></TeamStatsToggles>
         <TeamBasicStatsDisplay
           tbs={teamStat.teamBasicStats}
           tt={teamStat.teamTypes}
@@ -88,23 +87,28 @@ export const TeamStatDisplay = ({ teamStat, keyP, is2P }: { teamStat?: TeamStat;
   );
 };
 
-const TeamStatsToggles = ({ keyP }: { keyP: string }) => {
+export const TeamStatsToggles = () => {
   const { language, statsTab } = useContext(AppStateContext);
-  if (keyP !== "p1") {
-    return <></>;
-  }
   return (
-    <FlexRowC
+    <div
       className={css`
-        margin-top: -35px;
+        position: relative;
         height: 35px;
         box-sizing: border-box;
+        width: 440px;
       `}
-      gap={".25rem"}
     >
-      {iStr("dungeonEffects", language)}
-      <AssistToggle isEnabled={statsTab[0] !== "main"}></AssistToggle>
-    </FlexRowC>
+      <FlexRowC
+        className={css`
+          position: absolute;
+          top: 2.4rem;
+        `}
+        gap={".25rem"}
+      >
+        {iStr("dungeonEffects", language)}
+        <AssistToggle isEnabled={statsTab[0] !== "main"}></AssistToggle>
+      </FlexRowC>
+    </div>
   );
 };
 
