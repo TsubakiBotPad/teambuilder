@@ -7,8 +7,8 @@ import { iStr } from "../i18n/i18n";
 import { AppStateContext } from "../model/teamStateManager";
 import { FlexCol, FlexColC, FlexColCResponsive, FlexRow, FlexRowC } from "../stylePrimitives";
 import { AuthorText } from "./authorText";
+import { TeamStatsToggles } from "./dungeonEffectSelector";
 import { TeamBlock } from "./team";
-import { TeamStatsToggles } from "./teamStats/teamStats";
 import { TeamSharedStatsDisplay } from "./teamStats/teamStats2p";
 
 const TeamInput = styled.input`
