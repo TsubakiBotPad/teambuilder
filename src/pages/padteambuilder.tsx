@@ -23,12 +23,13 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import {
   AppStateContext,
+  DEFAULT_APP_STATE,
   DEFAULT_GAME_CONFIG,
   DEFAULT_TEAM_STATE,
   linkLeadersNoSet,
   TeamStateContext
 } from "../model/teamStateManager";
-import { FlexColC, FlexColCResponsive, FlexRowC, H1, Page } from "../stylePrimitives";
+import { FlexColCResponsive, FlexRowC, H1, Page } from "../stylePrimitives";
 
 const maxPageWidth = "1440px";
 
@@ -119,6 +120,7 @@ export const PadTeamBuilderPage = () => {
   const [cardSlotSelected, setCardSlotSelected] = useState({});
   const [instructions, setInstructions] = useState<string | undefined>(parsedConfig.in);
   const [author, setAuthor] = useState<string | undefined>(parsedConfig.a);
+  const [dungeonEffects, setDungeonEffects] = useState(DEFAULT_APP_STATE.dungeonEffects);
 
   var updateUrl = useRef(
     debounce((config: Partial<ConfigData>) => {
@@ -142,13 +144,13 @@ export const PadTeamBuilderPage = () => {
   useMemo(() => {
     const f = async () => {
       setTeamStats({
-        p1: await computeTeamStat(teamState, gameConfig, "p1"),
-        p2: await computeTeamStat(teamState, gameConfig, "p2"),
-        p3: await computeTeamStat(teamState, gameConfig, "p3")
+        p1: await computeTeamStat(teamState, gameConfig, "p1", dungeonEffects.hasAssists),
+        p2: await computeTeamStat(teamState, gameConfig, "p2", dungeonEffects.hasAssists),
+        p3: await computeTeamStat(teamState, gameConfig, "p3", dungeonEffects.hasAssists)
       });
     };
     f();
-  }, [teamState, gameConfig]);
+  }, [teamState, gameConfig, dungeonEffects]);
 
   return (
     <DndProvider backend={HTML5Backend}>
@@ -176,7 +178,9 @@ export const PadTeamBuilderPage = () => {
           language,
           setLanguage,
           author,
-          setAuthor
+          setAuthor,
+          dungeonEffects,
+          setDungeonEffects
         }}
       >
         <TeamStateContext.Provider value={{ teamState, setTeamState }}>

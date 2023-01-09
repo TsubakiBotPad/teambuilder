@@ -7,6 +7,7 @@ import { iStr } from "../i18n/i18n";
 import { AppStateContext } from "../model/teamStateManager";
 import { FlexCol, FlexColC, FlexColCResponsive, FlexRow, FlexRowC } from "../stylePrimitives";
 import { AuthorText } from "./authorText";
+import { TeamStatsToggles } from "./dungeonEffectSelector";
 import { TeamBlock } from "./team";
 import { TeamSharedStatsDisplay } from "./teamStats/teamStats2p";
 
@@ -23,14 +24,22 @@ export const TeamBuilderContent = React.forwardRef((props, ref) => {
     <FlexColCResponsive>
       <FlexRow gap="1rem">
         <FlexCol ref={ref as any}>
-          <TeamInput
-            placeholder={iStr("teamName", language)}
-            size={35}
-            value={teamName}
-            onChange={(e) => {
-              setTeamName(e.target.value);
-            }}
-          />
+          <FlexRow
+            className={css`
+              align-items: end;
+            `}
+            justifyContent="space-between"
+          >
+            <TeamInput
+              placeholder={iStr("teamName", language)}
+              size={35}
+              value={teamName}
+              onChange={(e) => {
+                setTeamName(e.target.value);
+              }}
+            />
+            <TeamStatsToggles></TeamStatsToggles>
+          </FlexRow>
           {gameConfig.mode !== "2p" ? <TeamBuilderContent1n3P /> : null}
           {gameConfig.mode === "2p" ? <TeamBuilderContent2P /> : null}
           <div

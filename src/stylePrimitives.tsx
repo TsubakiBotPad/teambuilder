@@ -141,3 +141,18 @@ export const TDrh = styled(TD)`
   font-weight: 600;
   text-align: right;
 `;
+
+type ToggleOptionProps = {
+  isEnabled: boolean;
+  image: string;
+};
+
+export const ToggleOption = styled.span<ToggleOptionProps>`
+  cursor: pointer;
+  filter: grayscale(${(props) => (props.isEnabled ? 0 : 1)});
+  background: url("img/${(props) => props.image}") no-repeat;
+  height: 22px;
+  width: 22px;
+  background-size: 22px;
+  display: inline-block;
+`;

@@ -30,12 +30,14 @@ interface DropResult {
 type ColorProps = {
   color: string;
   darken?: boolean;
+  grayscale?: boolean;
 };
 
 const ColorBG = styled.div<ColorProps>`
   background-color: ${(props) => props.color};
   padding: 0.5rem;
   ${(props) => (props.darken ? "filter: saturate(200%) brightness(1.2)" : "")};
+  ${(props) => (props.grayscale ? "filter:grayscale(1)" : "")};
 `;
 
 const teamIdToColor: { [key in string]: string } = {
@@ -69,8 +71,9 @@ const TeamSlot = ({
   const otherTeamColor = teamId === "p1" ? teamIdToColor["p2"] : teamIdToColor["p1"];
   const componentId = { teamId: teamId, slotId: `teamSlot${slotId}` as keyof PlayerState };
 
-  const { gameConfig } = useContext(AppStateContext);
+  const { gameConfig, dungeonEffects } = useContext(AppStateContext);
   const { teamState, setTeamState } = useContext(TeamStateContext);
+  const hasAssists = dungeonEffects.hasAssists;
 
   const [, drag] = useDrag(
     () => ({
@@ -114,7 +117,7 @@ const TeamSlot = ({
     >
       <div ref={drop}>
         <FlexColC>
-          <ColorBG color={"#f0f0f0"} darken={isOver}>
+          <ColorBG color={"#f0f0f0"} darken={isOver} grayscale={!hasAssists}>
             <Card componentId={{ ...componentId, use: "assist" }} monster={state.assist} />
           </ColorBG>
           <FlexRowC>

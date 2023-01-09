@@ -1,5 +1,6 @@
 import { debounce, DebouncedFunc } from "lodash";
 import React from "react";
+import { DEFAULT_DUNGEON_EFFECTS, dungeonEffects } from "../components/dungeonEffectSelector";
 
 import { GameConfig } from "../components/gameConfigSelector";
 import { TeamComponentId } from "../components/id";
@@ -110,9 +111,11 @@ interface AppState {
   setInstructions: React.Dispatch<React.SetStateAction<string | undefined>>;
   author?: string;
   setAuthor: React.Dispatch<React.SetStateAction<string | undefined>>;
+  dungeonEffects: dungeonEffects;
+  setDungeonEffects: React.Dispatch<React.SetStateAction<dungeonEffects>>;
 }
 
-const DEFAULT_APP_STATE: AppState = {
+export const DEFAULT_APP_STATE: AppState = {
   gameConfig: DEFAULT_GAME_CONFIG,
   setGameConfig: () => {},
   language: "en",
@@ -135,7 +138,9 @@ const DEFAULT_APP_STATE: AppState = {
   instructions: "",
   setInstructions: () => {},
   author: "",
-  setAuthor: () => {}
+  setAuthor: () => {},
+  dungeonEffects: DEFAULT_DUNGEON_EFFECTS,
+  setDungeonEffects: () => {}
 };
 
 export const AppStateContext = React.createContext(DEFAULT_APP_STATE);
