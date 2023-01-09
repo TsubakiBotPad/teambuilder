@@ -1,3 +1,4 @@
+import { toast } from "react-toastify";
 import { monsterCacheClient } from "../../model/monsterCacheClient";
 import { getTeamSlots, TeamState } from "../../model/teamStateManager";
 import { AwokenSkills } from "../../model/types/monster";
@@ -12,15 +13,15 @@ export async function computeTeamUnbindablePct(
 
   var count = 0;
   var filledSlots = 0;
-  var isLead = true;
-  for (const slot of slots) {
+  for (const i in slots) {
+    var slot = slots[i];
     if (slot.base.id !== 0) {
       filledSlots += 1;
     }
 
     var cardBindRes = 0;
 
-    if (isLead && slot.base.id !== 0 && teamState[playerId].badgeId === "unbindable") {
+    if (i === "0" && slot.base.id !== 0 && teamState[playerId].badgeId === "unbindable") {
       cardBindRes += 1;
     }
 
@@ -38,7 +39,6 @@ export async function computeTeamUnbindablePct(
       cardBindRes += unbindableRes.length + bindRes.length * 0.5;
     }
 
-    isLead = false;
     count += cardBindRes >= 1 ? 1 : 0;
   }
 
