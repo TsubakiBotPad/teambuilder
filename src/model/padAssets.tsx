@@ -65,17 +65,30 @@ const ASSET_NAME_TO_SPRITE_PROPS: { [key: string]: SpriteCoordinates } = {
   "rcv++": new SpriteCoordinates(260, 602, 76, 32),
 
   // types
-  awot: new SpriteCoordinates(338, 364, 32, 32),
-  enht: new SpriteCoordinates(338, 398, 32, 32),
-  vent: new SpriteCoordinates(338, 432, 32, 32),
-  godt: new SpriteCoordinates(338, 466, 32, 32),
-  drat: new SpriteCoordinates(338, 500, 32, 32),
-  devt: new SpriteCoordinates(338, 534, 32, 32),
-  mact: new SpriteCoordinates(338, 568, 32, 32),
-  balt: new SpriteCoordinates(338, 602, 32, 32),
-  attt: new SpriteCoordinates(338, 636, 32, 32),
-  phyt: new SpriteCoordinates(338, 670, 32, 32),
-  heat: new SpriteCoordinates(338, 704, 32, 32),
+  awok: new SpriteCoordinates(338, 364, 32, 32),
+  enhk: new SpriteCoordinates(338, 398, 32, 32),
+  venk: new SpriteCoordinates(338, 432, 32, 32),
+  godk: new SpriteCoordinates(338, 466, 32, 32),
+  drak: new SpriteCoordinates(338, 500, 32, 32),
+  devk: new SpriteCoordinates(338, 534, 32, 32),
+  mack: new SpriteCoordinates(338, 568, 32, 32),
+  balk: new SpriteCoordinates(338, 602, 32, 32),
+  attk: new SpriteCoordinates(338, 636, 32, 32),
+  phyk: new SpriteCoordinates(338, 670, 32, 32),
+  heak: new SpriteCoordinates(338, 704, 32, 32),
+
+  t0: new SpriteCoordinates(0, 0, 25, 25),
+  t1: new SpriteCoordinates(27, 0, 25, 25),
+  t2: new SpriteCoordinates(54, 0, 25, 25),
+  t3: new SpriteCoordinates(81, 0, 25, 25),
+  t4: new SpriteCoordinates(0, 27, 25, 25),
+  t5: new SpriteCoordinates(27, 27, 25, 25),
+  t6: new SpriteCoordinates(54, 27, 25, 25),
+  t7: new SpriteCoordinates(81, 27, 25, 25),
+  t8: new SpriteCoordinates(0, 54, 25, 25),
+  t9: new SpriteCoordinates(27, 54, 25, 25),
+  t10: new SpriteCoordinates(54, 54, 25, 25),
+  t11: new SpriteCoordinates(81, 54, 25, 25),
 
   // 2-slot stat latent with bg, single wide
   "hp++Square": new SpriteCoordinates(542, 364, 32, 32),
@@ -156,7 +169,7 @@ const ASSET_NAME_TO_SPRITE_PROPS: { [key: string]: SpriteCoordinates } = {
 };
 
 const PadAssetImg = styled.div<SpriteProps>`
-  background: url("img/padAssets.png") no-repeat;
+  background: url("img/${(props) => (props.image ? props.image : "padAssets.png")}") no-repeat;
   background-position: ${(props) => props.backgroundPosition};
   background-size: ${(props) => props.backgroundSize};
   width: ${(props) => props.width};
@@ -168,13 +181,15 @@ export const PadAssetImage = ({
   onClick,
   className,
   height: desiredHeight,
-  children
+  children,
+  image
 }: {
   assetName: string;
   onClick?: React.MouseEventHandler<HTMLImageElement>;
   className?: string;
   height?: number;
   children?: React.ReactNode;
+  image?: string;
 }) => {
   const c = ASSET_NAME_TO_SPRITE_PROPS[assetName];
   if (!c) {
@@ -183,20 +198,31 @@ export const PadAssetImage = ({
 
   const scale = desiredHeight ? desiredHeight / c.heightPx : 1;
 
-  const imgWidth = 1022;
-  const imgHeight = 1022;
+  const imgDimensions = {
+    "padAssets.png": {
+      width: 1022,
+      height: 1022
+    },
+    "typesSprite.png": {
+      width: 106,
+      height: 79
+    }
+  };
 
   // background-position:calc(var(--i)/var(--n) * 100px) calc(var(--j)/var(--n) * 100px);
-
+  image = image ?? "padAssets.png";
   return (
     <PadAssetImg
       width={`${c.widthPx * scale}px`}
       height={`${c.heightPx * scale}px`}
       backgroundPosition={`-${c.topPx * scale}px -${c.leftPx * scale}px`}
-      backgroundSize={`${imgWidth * scale}px ${imgHeight * scale}px`}
+      backgroundSize={`${imgDimensions[image as keyof typeof imgDimensions].width * scale}px ${
+        imgDimensions[image as keyof typeof imgDimensions].height * scale
+      }px`}
       scale={1}
       onClick={onClick}
       className={className}
+      image={image}
     >
       {children}
     </PadAssetImg>

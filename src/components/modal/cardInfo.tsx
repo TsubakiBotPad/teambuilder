@@ -9,7 +9,7 @@ import { AwakeningImage, BASE_ICON_URL } from "../../model/images";
 import { PadAssetImage } from "../../model/padAssets";
 import { AppStateContext } from "../../model/teamStateManager";
 import { computeLeaderSkill } from "../../model/types/leaderSkill";
-import { getKillers, MonsterType } from "../../model/types/monster";
+import { getKillers } from "../../model/types/monster";
 import { maxLevel } from "../../model/types/stat";
 import { FlexCol, FlexRow, FlexRowC, H3, TDh } from "../../stylePrimitives";
 import { fixedDecimals } from "../generic/fixedDecimals";
@@ -121,9 +121,10 @@ export const CardInfo = ({
             className={css`
               margin-right: 1px;
             `}
+            gap="1px"
           >
             {m.types.map((a) => {
-              return <PadAssetImage assetName={`${MonsterType[a].toLocaleLowerCase().substring(0, 3)}t`} height={22} />;
+              return <PadAssetImage assetName={`t${a}`} height={22} image="typesSprite.png" />;
             })}
           </FlexCol>
           <img src={`${BASE_ICON_URL}${leftPad(m.monster_id, 5)}.png`} alt="monster" height={"100%"} />
@@ -171,7 +172,7 @@ export const CardInfo = ({
           </b>
           <FlexRowC>
             {getKillers(m).map((a) => (
-              <PadAssetImage assetName={`${a.substring(0, 3).toLocaleLowerCase()}t`} height={25} />
+              <PadAssetImage assetName={`${a.substring(0, 3).toLocaleLowerCase()}k`} height={25} />
             ))}
           </FlexRowC>
         </FlexCol>

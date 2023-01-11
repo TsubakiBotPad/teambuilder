@@ -6,6 +6,7 @@ export type SpriteProps = {
   width: string;
   height: string;
   scale: number;
+  image?: string;
 };
 
 const AwoImg = styled.div<SpriteProps>`

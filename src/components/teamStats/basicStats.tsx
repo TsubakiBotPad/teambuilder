@@ -8,7 +8,7 @@ import { monsterCacheClient } from "../../model/monsterCacheClient";
 import { PadAssetImage } from "../../model/padAssets";
 import { AppStateContext, get2PTeamSlots, getTeamSlots, TeamSlotState, TeamState } from "../../model/teamStateManager";
 import { computeLeaderSkill } from "../../model/types/leaderSkill";
-import { Attribute, AwokenSkills, MonsterType } from "../../model/types/monster";
+import { Attribute, AwokenSkills } from "../../model/types/monster";
 import { stat } from "../../model/types/stat";
 import { FlexCol, FlexRow } from "../../stylePrimitives";
 import { GameConfig } from "../gameConfigSelector";
@@ -359,14 +359,8 @@ export const TeamBasicStatsDisplay = ({
                         width: 7rem;
                       `}
                     >
-                      {tt.map((a, i) => {
-                        return (
-                          <PadAssetImage
-                            assetName={`${MonsterType[a].toLocaleLowerCase().substring(0, 3)}t`}
-                            height={22}
-                            key={keyP + "Types" + i}
-                          />
-                        );
+                      {tt.map((a) => {
+                        return <PadAssetImage assetName={`t${a}`} height={22} image="typesSprite.png" />;
                       })}
                     </FlexRow>
                   </TD2>
