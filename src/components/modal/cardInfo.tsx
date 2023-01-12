@@ -124,7 +124,7 @@ export const CardInfo = ({
             gap="1px"
           >
             {m.types.map((a) => {
-              return <PadAssetImage assetName={`t${a}`} height={22} image="typesSprite.png" />;
+              return <PadAssetImage assetName={`t${a}`} height={22} />;
             })}
           </FlexCol>
           <img src={`${BASE_ICON_URL}${leftPad(m.monster_id, 5)}.png`} alt="monster" height={"100%"} />

@@ -360,7 +360,7 @@ export const TeamBasicStatsDisplay = ({
                       `}
                     >
                       {tt.map((a) => {
-                        return <PadAssetImage assetName={`t${a}`} height={22} image="typesSprite.png" />;
+                        return <PadAssetImage assetName={`t${a}`} height={22} />;
                       })}
                     </FlexRow>
                   </TD2>

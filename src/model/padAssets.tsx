@@ -7,12 +7,14 @@ class SpriteCoordinates {
   leftPx: number;
   widthPx: number;
   heightPx: number;
+  image?: string;
 
-  constructor(top: number, left: number, width: number, height: number) {
+  constructor(top: number, left: number, width: number, height: number, image?: string) {
     this.topPx = top;
     this.leftPx = left;
     this.widthPx = width;
     this.heightPx = height;
+    this.image = image ?? "padAssets.png";
   }
 }
 /* python
@@ -77,18 +79,18 @@ const ASSET_NAME_TO_SPRITE_PROPS: { [key: string]: SpriteCoordinates } = {
   phyk: new SpriteCoordinates(338, 670, 32, 32),
   heak: new SpriteCoordinates(338, 704, 32, 32),
 
-  t0: new SpriteCoordinates(0, 0, 25, 25),
-  t1: new SpriteCoordinates(27, 0, 25, 25),
-  t2: new SpriteCoordinates(54, 0, 25, 25),
-  t3: new SpriteCoordinates(81, 0, 25, 25),
-  t4: new SpriteCoordinates(0, 27, 25, 25),
-  t5: new SpriteCoordinates(27, 27, 25, 25),
-  t6: new SpriteCoordinates(54, 27, 25, 25),
-  t7: new SpriteCoordinates(81, 27, 25, 25),
-  t8: new SpriteCoordinates(0, 54, 25, 25),
-  t9: new SpriteCoordinates(27, 54, 25, 25),
-  t10: new SpriteCoordinates(54, 54, 25, 25),
-  t11: new SpriteCoordinates(81, 54, 25, 25),
+  t0: new SpriteCoordinates(0, 0, 25, 25, "typesSprite.png"),
+  t1: new SpriteCoordinates(27, 0, 25, 25, "typesSprite.png"),
+  t2: new SpriteCoordinates(54, 0, 25, 25, "typesSprite.png"),
+  t3: new SpriteCoordinates(81, 0, 25, 25, "typesSprite.png"),
+  t4: new SpriteCoordinates(0, 27, 25, 25, "typesSprite.png"),
+  t5: new SpriteCoordinates(27, 27, 25, 25, "typesSprite.png"),
+  t6: new SpriteCoordinates(54, 27, 25, 25, "typesSprite.png"),
+  t7: new SpriteCoordinates(81, 27, 25, 25, "typesSprite.png"),
+  t8: new SpriteCoordinates(0, 54, 25, 25, "typesSprite.png"),
+  t9: new SpriteCoordinates(27, 54, 25, 25, "typesSprite.png"),
+  t10: new SpriteCoordinates(54, 54, 25, 25, "typesSprite.png"),
+  t11: new SpriteCoordinates(81, 54, 25, 25, "typesSprite.png"),
 
   // 2-slot stat latent with bg, single wide
   "hp++Square": new SpriteCoordinates(542, 364, 32, 32),
@@ -169,7 +171,7 @@ const ASSET_NAME_TO_SPRITE_PROPS: { [key: string]: SpriteCoordinates } = {
 };
 
 const PadAssetImg = styled.div<SpriteProps>`
-  background: url("img/${(props) => (props.image ? props.image : "padAssets.png")}") no-repeat;
+  background: url("img/${(props) => props.image}") no-repeat;
   background-position: ${(props) => props.backgroundPosition};
   background-size: ${(props) => props.backgroundSize};
   width: ${(props) => props.width};
@@ -181,15 +183,13 @@ export const PadAssetImage = ({
   onClick,
   className,
   height: desiredHeight,
-  children,
-  image
+  children
 }: {
   assetName: string;
   onClick?: React.MouseEventHandler<HTMLImageElement>;
   className?: string;
   height?: number;
   children?: React.ReactNode;
-  image?: string;
 }) => {
   const c = ASSET_NAME_TO_SPRITE_PROPS[assetName];
   if (!c) {
@@ -210,19 +210,18 @@ export const PadAssetImage = ({
   };
 
   // background-position:calc(var(--i)/var(--n) * 100px) calc(var(--j)/var(--n) * 100px);
-  image = image ?? "padAssets.png";
   return (
     <PadAssetImg
       width={`${c.widthPx * scale}px`}
       height={`${c.heightPx * scale}px`}
       backgroundPosition={`-${c.topPx * scale}px -${c.leftPx * scale}px`}
-      backgroundSize={`${imgDimensions[image as keyof typeof imgDimensions].width * scale}px ${
-        imgDimensions[image as keyof typeof imgDimensions].height * scale
+      backgroundSize={`${imgDimensions[c.image as keyof typeof imgDimensions].width * scale}px ${
+        imgDimensions[c.image as keyof typeof imgDimensions].height * scale
       }px`}
       scale={1}
       onClick={onClick}
       className={className}
-      image={image}
+      image={c.image}
     >
       {children}
     </PadAssetImg>
