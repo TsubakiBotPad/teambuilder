@@ -9,7 +9,7 @@ import { AwakeningImage, BASE_ICON_URL } from "../../model/images";
 import { PadAssetImage } from "../../model/padAssets";
 import { AppStateContext } from "../../model/teamStateManager";
 import { computeLeaderSkill } from "../../model/types/leaderSkill";
-import { getKillers, MonsterType } from "../../model/types/monster";
+import { getKillers } from "../../model/types/monster";
 import { maxLevel } from "../../model/types/stat";
 import { FlexCol, FlexRow, FlexRowC, H3, TDh } from "../../stylePrimitives";
 import { fixedDecimals } from "../generic/fixedDecimals";
@@ -69,7 +69,6 @@ export const CardInfo = ({
           <H3>
             [{m.monster_id}] {language === "ja" ? m.name_ja : m.name_en}
           </H3>
-          <b>{m.types.map((a) => MonsterType[a]).join("/")}</b>
           <table
             className={css`
               font-size: 0.75rem;
@@ -117,7 +116,19 @@ export const CardInfo = ({
             </tbody>
           </table>
         </FlexCol>
-        <img src={`${BASE_ICON_URL}${leftPad(m.monster_id, 5)}.png`} alt="monster" height={"100%"} />
+        <FlexRow>
+          <FlexCol
+            className={css`
+              margin-right: 1px;
+            `}
+            gap="1px"
+          >
+            {m.types.map((a) => {
+              return <PadAssetImage assetName={`t${a}`} height={22} />;
+            })}
+          </FlexCol>
+          <img src={`${BASE_ICON_URL}${leftPad(m.monster_id, 5)}.png`} alt="monster" height={"100%"} />
+        </FlexRow>
       </div>
 
       <FlexRow gap="5rem" justifyContent="space-between">
@@ -161,7 +172,7 @@ export const CardInfo = ({
           </b>
           <FlexRowC>
             {getKillers(m).map((a) => (
-              <PadAssetImage assetName={`${a.substring(0, 3).toLocaleLowerCase()}t`} height={25} />
+              <PadAssetImage assetName={`${a.substring(0, 3).toLocaleLowerCase()}k`} height={25} />
             ))}
           </FlexRowC>
         </FlexCol>
