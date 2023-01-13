@@ -66,7 +66,7 @@ const ASSET_NAME_TO_SPRITE_PROPS: { [key: string]: SpriteCoordinates } = {
   "atk++": new SpriteCoordinates(260, 568, 76, 32),
   "rcv++": new SpriteCoordinates(260, 602, 76, 32),
 
-  // types
+  // killer latents
   awok: new SpriteCoordinates(338, 364, 32, 32),
   enhk: new SpriteCoordinates(338, 398, 32, 32),
   venk: new SpriteCoordinates(338, 432, 32, 32),
@@ -79,6 +79,7 @@ const ASSET_NAME_TO_SPRITE_PROPS: { [key: string]: SpriteCoordinates } = {
   phyk: new SpriteCoordinates(338, 670, 32, 32),
   heak: new SpriteCoordinates(338, 704, 32, 32),
 
+  // types
   t0: new SpriteCoordinates(0, 0, 25, 25, "typesSprite.png"),
   t1: new SpriteCoordinates(27, 0, 25, 25, "typesSprite.png"),
   t2: new SpriteCoordinates(54, 0, 25, 25, "typesSprite.png"),
@@ -91,6 +92,13 @@ const ASSET_NAME_TO_SPRITE_PROPS: { [key: string]: SpriteCoordinates } = {
   t9: new SpriteCoordinates(27, 54, 25, 25, "typesSprite.png"),
   t10: new SpriteCoordinates(54, 54, 25, 25, "typesSprite.png"),
   t11: new SpriteCoordinates(81, 54, 25, 25, "typesSprite.png"),
+
+  // subattributes created by the awakening
+  subattr0: new SpriteCoordinates(0, 0, 93, 93, "subattrSprite.png"),
+  subattr1: new SpriteCoordinates(95, 0, 93, 93, "subattrSprite.png"),
+  subattr2: new SpriteCoordinates(190, 0, 93, 93, "subattrSprite.png"),
+  subattr3: new SpriteCoordinates(0, 95, 93, 93, "subattrSprite.png"),
+  subattr4: new SpriteCoordinates(95, 95, 93, 93, "subattrSprite.png"),
 
   // 2-slot stat latent with bg, single wide
   "hp++Square": new SpriteCoordinates(542, 364, 32, 32),
@@ -214,6 +222,10 @@ export const PadAssetImage = ({
     "typesSprite.png": {
       width: 106,
       height: 79
+    },
+    "subattrSprite.png": {
+      width: 190,
+      height: 95
     }
   };
 
