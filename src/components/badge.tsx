@@ -15,12 +15,10 @@ export const BadgeDisplay = ({ badgeName, onClick }: { badgeName: string; onClic
       <div
         className={css`
           position: relative;
-          width: 16px;
-          height: 16px;
           left: -50%;
         `}
       >
-        {badgeName ? <PadAssetImage assetName={`${badgeName}badge`} height={16} /> : null}
+        {badgeName ? <PadAssetImage assetName={`${badgeName}badge`} width={18} /> : null}
       </div>
     </div>
   );
