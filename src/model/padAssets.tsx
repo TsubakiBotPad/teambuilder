@@ -183,12 +183,14 @@ export const PadAssetImage = ({
   onClick,
   className,
   height: desiredHeight,
+  width: desiredWidth,
   children
 }: {
   assetName: string;
   onClick?: React.MouseEventHandler<HTMLImageElement>;
   className?: string;
   height?: number;
+  width?: number;
   children?: React.ReactNode;
 }) => {
   const c = ASSET_NAME_TO_SPRITE_PROPS[assetName];
@@ -196,7 +198,13 @@ export const PadAssetImage = ({
     return <>missing:{assetName}</>;
   }
 
-  const scale = desiredHeight ? desiredHeight / c.heightPx : 1;
+  var scale = 1;
+  if (desiredHeight) {
+    scale = desiredHeight / c.heightPx;
+  }
+  if (desiredWidth) {
+    scale = desiredWidth / c.widthPx;
+  }
 
   const imgDimensions = {
     "padAssets.png": {
