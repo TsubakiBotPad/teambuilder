@@ -224,8 +224,8 @@ export const PadAssetImage = ({
       height: 79
     },
     "subattrSprite.png": {
-      width: 190,
-      height: 95
+      width: 283,
+      height: 188
     }
   };
 
