@@ -37,15 +37,13 @@ const CardSelectedImage = styled.div<CardSelectedType>`
   position: relative;
 
   &::before {
-    z-index: 999999;
+    z-index: 1;
     display: block;
     box-sizing: border-box;
     width: 93px;
     height: 93px;
     position: absolute;
-    left: -93px;
-    top: -93px;
-    outline: 3px dotted red;
+    content: "";
     background: ${(props) => (props.subattr ? 'url("img/subattr' + props.subattr + '.png")' : "")};
   }
 `;
@@ -105,6 +103,7 @@ const CardSelected = ({
           font-weight: 1000;
           position: absolute;
           padding: 0.15rem;
+          z-index: 2;
         `}
       >
         +297
@@ -117,6 +116,7 @@ const CardSelected = ({
           right: 0;
           top: 0;
           padding: 0.15rem;
+          z-index: 2;
           & div:not(:last-child) {
             margin-bottom: 0.15rem;
           }
@@ -131,6 +131,7 @@ const CardSelected = ({
       {/* Bottom Info */}
       <div
         className={css`
+          z-index: 2;
           position: absolute;
           bottom: 0%;
           width: 100%;
