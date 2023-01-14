@@ -6,7 +6,7 @@ import { GameConfig } from "../gameConfigSelector";
 
 export type AttributeHistogram = { [key: number]: boolean };
 
-const SUBATTR_AWAKENINGS = [
+export const SUBATTR_AWAKENINGS = [
   AwokenSkills.SUBATTRRED.valueOf(),
   AwokenSkills.SUBATTRBLUE.valueOf(),
   AwokenSkills.SUBATTRGREEN.valueOf(),
@@ -45,14 +45,14 @@ export async function computeAttributes(
     if (m1b?.attr1 !== undefined && m1b.attr1 in attrs) {
       attrs[m1b.attr1] = true;
     }
-    if (m1b?.attr2 !== undefined && m1b.attr2 in attrs) {
-      attrs[m1b.attr2] = true;
+    var subAttrToAdd = m1b?.attr2;
+    if (hasAssists) {
+      const newAttr = getAwakeningAttributeFromSlot(m1b, m1a, hasAssists);
+      subAttrToAdd = newAttr ?? subAttrToAdd;
     }
 
-    const attrToAdd = getAwakeningAttributeFromSlot(m1b, m1a, hasAssists);
-
-    if (attrToAdd !== undefined) {
-      attrs[attrToAdd] = true;
+    if (subAttrToAdd !== undefined && subAttrToAdd in attrs) {
+      attrs[subAttrToAdd] = true;
     }
   }
 
