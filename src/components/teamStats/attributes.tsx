@@ -13,7 +13,7 @@ export const SUBATTR_AWAKENINGS = [
   AwokenSkills.SUBATTRDARK.valueOf()
 ];
 
-export async function Attributes(
+export async function computeAttributes(
   gameConfig: GameConfig,
   teamState: TeamState,
   playerId: keyof TeamState,
