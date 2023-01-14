@@ -2,6 +2,7 @@ import { css } from "@emotion/css";
 import styled from "@emotion/styled";
 import { useContext } from "react";
 import { useDrag, useDrop } from "react-dnd";
+import { toast } from "react-toastify";
 
 import { ColorKey, getColor } from "../colors";
 import { AwakeningImage, BASE_ICON_URL } from "../model/images";
@@ -122,7 +123,15 @@ const CardSelected = ({ monster, componentId }: { componentId: Partial<TeamCompo
   );
 };
 
-export const Card = ({ componentId, monster }: { componentId: Partial<TeamComponentId>; monster: TeamCardInfo }) => {
+export const Card = ({
+  componentId,
+  monster,
+  subattr
+}: {
+  componentId: Partial<TeamComponentId>;
+  monster: TeamCardInfo;
+  subattr?: number | undefined;
+}) => {
   const { setModalIsOpen, setCardSlotSelected, gameConfig } = useContext(AppStateContext);
   const { teamState, setTeamState } = useContext(TeamStateContext);
 
@@ -161,6 +170,7 @@ export const Card = ({ componentId, monster }: { componentId: Partial<TeamCompon
     }),
     [componentId]
   );
+  toast(subattr);
 
   return (
     <div

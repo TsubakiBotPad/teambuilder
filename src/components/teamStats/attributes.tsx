@@ -1,3 +1,4 @@
+import { MonsterResponse } from "../../client/models/MonsterResponse";
 import { monsterCacheClient } from "../../model/monsterCacheClient";
 import { getTeamSlots, TeamState } from "../../model/teamStateManager";
 import { AwokenSkills } from "../../model/types/monster";
@@ -48,30 +49,37 @@ export async function computeAttributes(
       attrs[m1b.attr2] = true;
     }
 
-    var attrToAdd = undefined;
+    const attrToAdd = getAwakeningAttributeFromSlot(m1b, m1a, hasAssists);
 
-    if (m1b !== undefined && m1b.awakenings !== undefined) {
-      for (const a of m1b.awakenings) {
-        const awo = a.awoken_skill.awoken_skill_id;
-        if (SUBATTR_AWAKENINGS.includes(awo)) {
-          attrToAdd = awo;
-        }
-      }
-    }
-
-    if (hasAssists && m1a !== undefined && m1a.awakenings !== undefined) {
-      for (const a of m1a.awakenings) {
-        // The equip overrides the main attr
-        const awo = a.awoken_skill.awoken_skill_id;
-        if (SUBATTR_AWAKENINGS.includes(awo)) {
-          attrToAdd = awo;
-        }
-      }
-    }
     if (attrToAdd !== undefined) {
       attrs[SUBATTR_AWAKENINGS.indexOf(attrToAdd)] = true;
     }
   }
 
   return attrs;
+}
+
+export function getAwakeningAttributeFromSlot(m1b?: MonsterResponse, m1a?: MonsterResponse, hasAssists?: boolean) {
+  var attrToAdd = undefined;
+
+  if (m1b !== undefined && m1b.awakenings !== undefined) {
+    for (const a of m1b.awakenings) {
+      const awo = a.awoken_skill.awoken_skill_id;
+      if (SUBATTR_AWAKENINGS.includes(awo)) {
+        attrToAdd = awo;
+      }
+    }
+  }
+
+  if (hasAssists && m1a !== undefined && m1a.awakenings !== undefined) {
+    for (const a of m1a.awakenings) {
+      // The equip overrides the main attr
+      const awo = a.awoken_skill.awoken_skill_id;
+      if (SUBATTR_AWAKENINGS.includes(awo)) {
+        attrToAdd = awo;
+      }
+    }
+  }
+
+  return attrToAdd;
 }
