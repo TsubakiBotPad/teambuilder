@@ -6,7 +6,7 @@ import { GameConfig } from "../gameConfigSelector";
 
 export type AttributeHistogram = { [key: number]: boolean };
 
-export const SUBATTR_AWAKENINGS = [
+const SUBATTR_AWAKENINGS = [
   AwokenSkills.SUBATTRRED.valueOf(),
   AwokenSkills.SUBATTRBLUE.valueOf(),
   AwokenSkills.SUBATTRGREEN.valueOf(),
@@ -52,7 +52,7 @@ export async function computeAttributes(
     const attrToAdd = getAwakeningAttributeFromSlot(m1b, m1a, hasAssists);
 
     if (attrToAdd !== undefined) {
-      attrs[SUBATTR_AWAKENINGS.indexOf(attrToAdd)] = true;
+      attrs[attrToAdd] = true;
     }
   }
 
@@ -81,5 +81,9 @@ export function getAwakeningAttributeFromSlot(m1b?: MonsterResponse, m1a?: Monst
     }
   }
 
-  return attrToAdd;
+  if (attrToAdd !== undefined) {
+    return SUBATTR_AWAKENINGS.indexOf(attrToAdd);
+  }
+
+  return undefined;
 }

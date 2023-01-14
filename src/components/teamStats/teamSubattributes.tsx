@@ -16,7 +16,6 @@ export async function computeTeamSubattributes(
     const s = slots[i];
     const m1b = await monsterCacheClient.get(s.base.id);
     const m1a = await monsterCacheClient.get(s.assist.id);
-
     subattrs.push(getAwakeningAttributeFromSlot(m1b, m1a, hasAssists));
   }
 

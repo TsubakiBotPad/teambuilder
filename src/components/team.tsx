@@ -124,7 +124,11 @@ const TeamSlot = ({
       `}
     >
       <div ref={drop}>
-        <FlexColC>
+        <FlexColC
+          className={css`
+            position: relative;
+          `}
+        >
           <ColorBG color={"#f0f0f0"} darken={isOver} grayscale={!hasAssists}>
             <Card componentId={{ ...componentId, use: "assist" }} monster={state.assist} />
           </ColorBG>

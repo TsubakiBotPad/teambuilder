@@ -2,7 +2,6 @@ import { css } from "@emotion/css";
 import styled from "@emotion/styled";
 import { useContext } from "react";
 import { useDrag, useDrop } from "react-dnd";
-import { toast } from "react-toastify";
 
 import { ColorKey, getColor } from "../colors";
 import { AwakeningImage, BASE_ICON_URL } from "../model/images";
@@ -27,6 +26,7 @@ const CardEmpty = styled.div`
 
 type CardSelectedType = {
   monsterId: number;
+  subattr?: number;
 };
 
 const CardSelectedImage = styled.div<CardSelectedType>`
@@ -35,6 +35,19 @@ const CardSelectedImage = styled.div<CardSelectedType>`
   width: 5rem;
   height: 5rem;
   position: relative;
+
+  &::before {
+    z-index: 999999;
+    display: block;
+    box-sizing: border-box;
+    width: 93px;
+    height: 93px;
+    position: absolute;
+    left: -93px;
+    top: -93px;
+    outline: 3px dotted red;
+    background: ${(props) => (props.subattr ? 'url("img/subattr' + props.subattr + '.png")' : "")};
+  }
 `;
 
 const CardOverlayText = styled.div`
@@ -64,7 +77,15 @@ const BottomOverlay = styled.div`
   padding: 0.1rem 0.15rem;
 `;
 
-const CardSelected = ({ monster, componentId }: { componentId: Partial<TeamComponentId>; monster: TeamCardInfo }) => {
+const CardSelected = ({
+  monster,
+  componentId,
+  subattr
+}: {
+  componentId: Partial<TeamComponentId>;
+  monster: TeamCardInfo;
+  subattr?: number;
+}) => {
   const { gameConfig, setModalIsOpen, setCardSlotSelected } = useContext(AppStateContext);
   const not2P = gameConfig.mode !== "2p";
   return (
@@ -74,6 +95,7 @@ const CardSelected = ({ monster, componentId }: { componentId: Partial<TeamCompo
         setCardSlotSelected(componentId);
         setModalIsOpen(true);
       }}
+      subattr={subattr}
     >
       {/* +297 */}
       <div
@@ -170,8 +192,6 @@ export const Card = ({
     }),
     [componentId]
   );
-  toast(subattr);
-
   return (
     <div
       ref={drag}
@@ -179,11 +199,12 @@ export const Card = ({
         box-siding: border-box;
         border: 2px solid ${isOver ? "yellow" : "transparent"};
         cursor: grab;
+        position: relative;
       `}
     >
       <div ref={drop}>
         {monster.id !== 0 ? (
-          <CardSelected monster={monster} componentId={componentId} />
+          <CardSelected monster={monster} componentId={componentId} subattr={subattr} />
         ) : (
           <CardEmpty
             onClick={() => {

@@ -94,11 +94,11 @@ const ASSET_NAME_TO_SPRITE_PROPS: { [key: string]: SpriteCoordinates } = {
   t11: new SpriteCoordinates(81, 54, 25, 25, "typesSprite.png"),
 
   // subattributes created by the awakening
-  subattr0: new SpriteCoordinates(0, 0, 93, 93, "subattrSprite.png"),
-  subattr1: new SpriteCoordinates(95, 0, 93, 93, "subattrSprite.png"),
-  subattr2: new SpriteCoordinates(190, 0, 93, 93, "subattrSprite.png"),
-  subattr3: new SpriteCoordinates(0, 95, 93, 93, "subattrSprite.png"),
-  subattr4: new SpriteCoordinates(95, 95, 93, 93, "subattrSprite.png"),
+  // subattr0: new SpriteCoordinates(0, 0, 93, 93, "subattrSprite.png"),
+  // subattr1: new SpriteCoordinates(95, 0, 93, 93, "subattrSprite.png"),
+  // subattr2: new SpriteCoordinates(190, 0, 93, 93, "subattrSprite.png"),
+  // subattr3: new SpriteCoordinates(0, 95, 93, 93, "subattrSprite.png"),
+  // subattr4: new SpriteCoordinates(95, 95, 93, 93, "subattrSprite.png"),
 
   // 2-slot stat latent with bg, single wide
   "hp++Square": new SpriteCoordinates(542, 364, 32, 32),
