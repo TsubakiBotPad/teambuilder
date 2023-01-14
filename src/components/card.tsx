@@ -40,11 +40,12 @@ const CardSelectedImage = styled.div<CardSelectedType>`
     z-index: 1;
     display: block;
     box-sizing: border-box;
-    width: 93px;
-    height: 93px;
+    width: 80px;
+    height: 80px;
     position: absolute;
     content: "";
     background: ${(props) => (props.subattr ? 'url("img/subattr' + props.subattr + '.png")' : "")};
+    background-size: 80px;
   }
 `;
 
