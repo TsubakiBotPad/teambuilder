@@ -26,6 +26,7 @@ const CardEmpty = styled.div`
 
 type CardSelectedType = {
   monsterId: number;
+  subattr?: number;
 };
 
 const CardSelectedImage = styled.div<CardSelectedType>`
@@ -34,6 +35,17 @@ const CardSelectedImage = styled.div<CardSelectedType>`
   width: 5rem;
   height: 5rem;
   position: relative;
+
+  &::before {
+    display: block;
+    box-sizing: border-box;
+    width: 80px;
+    height: 80px;
+    position: absolute;
+    content: "";
+    background: ${(props) => (props.subattr ? 'url("img/subattr' + props.subattr + '.png")' : "")};
+    background-size: 80px;
+  }
 `;
 
 const CardOverlayText = styled.div`
@@ -63,7 +75,15 @@ const BottomOverlay = styled.div`
   padding: 0.1rem 0.15rem;
 `;
 
-const CardSelected = ({ monster, componentId }: { componentId: Partial<TeamComponentId>; monster: TeamCardInfo }) => {
+const CardSelected = ({
+  monster,
+  componentId,
+  subattr
+}: {
+  componentId: Partial<TeamComponentId>;
+  monster: TeamCardInfo;
+  subattr?: number;
+}) => {
   const { gameConfig, setModalIsOpen, setCardSlotSelected } = useContext(AppStateContext);
   const not2P = gameConfig.mode !== "2p";
   return (
@@ -73,56 +93,67 @@ const CardSelected = ({ monster, componentId }: { componentId: Partial<TeamCompo
         setCardSlotSelected(componentId);
         setModalIsOpen(true);
       }}
+      subattr={subattr}
     >
-      {/* +297 */}
-      <div
-        className={css`
-          color: yellow;
-          -webkit-text-stroke: 0.5px black;
-          font-weight: 1000;
-          position: absolute;
-          padding: 0.15rem;
-        `}
-      >
-        +297
-      </div>
+      <div>
+        {/* +297 */}
+        <div
+          className={css`
+            color: yellow;
+            -webkit-text-stroke: 0.5px black;
+            font-weight: 1000;
+            position: absolute;
+            padding: 0.15rem;
+          `}
+        >
+          +297
+        </div>
 
-      {/* Right Corner */}
-      <div
-        className={css`
-          position: absolute;
-          right: 0;
-          top: 0;
-          padding: 0.15rem;
-          & div:not(:last-child) {
-            margin-bottom: 0.15rem;
-          }
-        `}
-      >
-        <FlexColC gap={"0.25rem"}>
-          <img src={"img/awoInheritable.png"} width={"20px"} alt="awokenStar" />
-          <div>{not2P && monster.sa ? <AwakeningImage awakeningId={monster.sa} width={22} /> : null}</div>
-        </FlexColC>
-      </div>
+        {/* Right Corner */}
+        <div
+          className={css`
+            position: absolute;
+            right: 0;
+            top: 0;
+            padding: 0.15rem;
+            & div:not(:last-child) {
+              margin-bottom: 0.15rem;
+            }
+          `}
+        >
+          <FlexColC gap={"0.25rem"}>
+            <img src={"img/awoInheritable.png"} width={"20px"} alt="awokenStar" />
+            <div>{not2P && monster.sa ? <AwakeningImage awakeningId={monster.sa} width={22} /> : null}</div>
+          </FlexColC>
+        </div>
 
-      {/* Bottom Info */}
-      <div
-        className={css`
-          position: absolute;
-          bottom: 0%;
-          width: 100%;
-        `}
-      >
-        <BottomOverlay>
-          <LevelText level={monster.level} />
-          <CardOverlayText>#{monster.id}</CardOverlayText>
-        </BottomOverlay>
+        {/* Bottom Info */}
+        <div
+          className={css`
+            position: absolute;
+            bottom: 0%;
+            width: 100%;
+          `}
+        >
+          <BottomOverlay>
+            <LevelText level={monster.level} />
+            <CardOverlayText>#{monster.id}</CardOverlayText>
+          </BottomOverlay>
+        </div>
       </div>
     </CardSelectedImage>
   );
 };
 
-export const Card = ({ componentId, monster }: { componentId: Partial<TeamComponentId>; monster: TeamCardInfo }) => {
+export const Card = ({
+  componentId,
+  monster,
+  subattr
+}: {
+  componentId: Partial<TeamComponentId>;
+  monster: TeamCardInfo;
+  subattr?: number | undefined;
+}) => {
   const { setModalIsOpen, setCardSlotSelected, gameConfig } = useContext(AppStateContext);
   const { teamState, setTeamState } = useContext(TeamStateContext);
 
@@ -161,7 +192,6 @@ export const Card = ({ componentId, monster }: { componentId: Partial<TeamCompon
     }),
     [componentId]
   );
-
   return (
     <div
       ref={drag}
@@ -169,11 +199,12 @@ export const Card = ({ componentId, monster }: { componentId: Partial<TeamCompon
         box-siding: border-box;
         border: 2px solid ${isOver ? "yellow" : "transparent"};
         cursor: grab;
+        position: relative;
       `}
     >
       <div ref={drop}>
         {monster.id !== 0 ? (
-          <CardSelected monster={monster} componentId={componentId} />
+          <CardSelected monster={monster} componentId={componentId} subattr={subattr} />
         ) : (
           <CardEmpty
             onClick={() => {

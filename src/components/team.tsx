@@ -1,5 +1,6 @@
 import { css } from "@emotion/css";
 import styled from "@emotion/styled";
+import { toNumber } from "lodash";
 import { useContext } from "react";
 import { useDrag, useDrop } from "react-dnd";
 import { AiOutlineCaretDown } from "react-icons/ai";
@@ -71,9 +72,10 @@ const TeamSlot = ({
   const otherTeamColor = teamId === "p1" ? teamIdToColor["p2"] : teamIdToColor["p1"];
   const componentId = { teamId: teamId, slotId: `teamSlot${slotId}` as keyof PlayerState };
 
-  const { gameConfig, dungeonEffects } = useContext(AppStateContext);
+  const { gameConfig, dungeonEffects, teamStats } = useContext(AppStateContext);
   const { teamState, setTeamState } = useContext(TeamStateContext);
   const hasAssists = dungeonEffects.hasAssists;
+  const subattrs = teamStats[teamId]?.teamSubattributes;
 
   const [, drag] = useDrag(
     () => ({
@@ -107,6 +109,12 @@ const TeamSlot = ({
     [componentId]
   );
 
+  const slot = toNumber(slotId) - 1;
+  var subattr = undefined;
+  if (subattrs) {
+    subattr = subattrs[slot];
+  }
+
   return (
     <div
       ref={drag}
@@ -116,7 +124,11 @@ const TeamSlot = ({
       `}
     >
       <div ref={drop}>
-        <FlexColC>
+        <FlexColC
+          className={css`
+            position: relative;
+          `}
+        >
           <ColorBG color={"#f0f0f0"} darken={isOver} grayscale={!hasAssists}>
             <Card componentId={{ ...componentId, use: "assist" }} monster={state.assist} />
           </ColorBG>
@@ -125,7 +137,7 @@ const TeamSlot = ({
           </FlexRowC>
           <ColorBG color={invert ? otherTeamColor : teamIdToColor[teamId]} darken={isOver}>
             <FlexColC gap="0.25rem">
-              <Card componentId={{ ...componentId, use: "base" }} monster={state.base} />
+              <Card componentId={{ ...componentId, use: "base" }} monster={state.base} subattr={subattr} />
               <Latents componentId={{ ...componentId, use: "latents" }} latents={state.latents} teamSlot={state} />
             </FlexColC>
           </ColorBG>

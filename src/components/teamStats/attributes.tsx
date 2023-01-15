@@ -1,8 +1,18 @@
+import { MonsterResponse } from "../../client/models/MonsterResponse";
 import { monsterCacheClient } from "../../model/monsterCacheClient";
 import { getTeamSlots, TeamState } from "../../model/teamStateManager";
+import { AwokenSkills } from "../../model/types/monster";
 import { GameConfig } from "../gameConfigSelector";
 
 export type AttributeHistogram = { [key: number]: boolean };
+
+export const SUBATTR_AWAKENINGS = [
+  AwokenSkills.SUBATTRRED.valueOf(),
+  AwokenSkills.SUBATTRBLUE.valueOf(),
+  AwokenSkills.SUBATTRGREEN.valueOf(),
+  AwokenSkills.SUBATTRLIGHT.valueOf(),
+  AwokenSkills.SUBATTRDARK.valueOf()
+];
 
 export async function computeAttributes(
   gameConfig: GameConfig,
@@ -30,14 +40,50 @@ export async function computeAttributes(
 
   for (var s of slots) {
     const m1b = await monsterCacheClient.get(s.base.id);
+    const m1a = await monsterCacheClient.get(s.assist.id);
 
     if (m1b?.attr1 !== undefined && m1b.attr1 in attrs) {
       attrs[m1b.attr1] = true;
     }
-    if (m1b?.attr2 !== undefined && m1b.attr2 in attrs) {
-      attrs[m1b.attr2] = true;
+    var subAttrToAdd = m1b?.attr2;
+    if (hasAssists) {
+      const newAttr = getAwakeningAttributeFromSlot(m1b, m1a, hasAssists);
+      subAttrToAdd = newAttr ?? subAttrToAdd;
+    }
+
+    if (subAttrToAdd !== undefined && subAttrToAdd in attrs) {
+      attrs[subAttrToAdd] = true;
     }
   }
 
   return attrs;
+}
+
+export function getAwakeningAttributeFromSlot(m1b?: MonsterResponse, m1a?: MonsterResponse, hasAssists?: boolean) {
+  var attrToAdd = undefined;
+
+  if (m1b !== undefined && m1b.awakenings !== undefined) {
+    for (const a of m1b.awakenings) {
+      const awo = a.awoken_skill.awoken_skill_id;
+      if (SUBATTR_AWAKENINGS.includes(awo)) {
+        attrToAdd = awo;
+      }
+    }
+  }
+
+  if (hasAssists && m1a !== undefined && m1a.awakenings !== undefined) {
+    for (const a of m1a.awakenings) {
+      // The equip overrides the main attr
+      const awo = a.awoken_skill.awoken_skill_id;
+      if (SUBATTR_AWAKENINGS.includes(awo)) {
+        attrToAdd = awo;
+      }
+    }
+  }
+
+  if (attrToAdd !== undefined) {
+    return SUBATTR_AWAKENINGS.indexOf(attrToAdd);
+  }
+
+  return undefined;
 }

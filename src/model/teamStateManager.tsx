@@ -18,6 +18,7 @@ export interface TeamSlotState {
   base: TeamCardInfo;
   assist: TeamCardInfo;
   latents: number[];
+  subattr?: number;
 }
 
 export interface PlayerState {

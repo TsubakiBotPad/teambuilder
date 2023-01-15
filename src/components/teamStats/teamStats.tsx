@@ -11,6 +11,7 @@ import {
 } from "./awakenings";
 import { computeTeamBasicStats, computeTeamBasicStats2P, TeamBasicStats, TeamBasicStatsDisplay } from "./basicStats";
 import { computeLatents, computeLatents2P, LatentInfo, LatentInfoShared } from "./latents";
+import { computeTeamSubattributes } from "./teamSubattributes";
 import { computeTypes, TeamTypes } from "./types";
 import { computeTeamUnbindablePct } from "./unbindable";
 
@@ -24,6 +25,7 @@ export interface TeamStat {
   awakenings?: AwakeningHistogram;
   sharedAwakenings?: AwakeningHistogram;
   attributes?: AttributeHistogram;
+  teamSubattributes?: (number | undefined)[];
   teamTypes?: TeamTypes;
   teamUnbindablePct?: number;
   teamBasicStats?: TeamBasicStats;
@@ -42,6 +44,7 @@ export async function computeTeamStat(
     awakenings: await computeTotalAwakenings(gameConfig, teamState, player, hasAssists),
     sharedAwakenings: await computeSharedAwakenings(gameConfig, teamState, player, hasAssists),
     attributes: await computeAttributes(gameConfig, teamState, player, hasAssists),
+    teamSubattributes: await computeTeamSubattributes(gameConfig, teamState, player, hasAssists),
     teamTypes: await computeTypes(gameConfig, teamState, player),
     teamUnbindablePct: await computeTeamUnbindablePct(gameConfig, teamState, player, hasAssists),
     teamBasicStats: await computeTeamBasicStats(gameConfig, teamState, player, hasAssists),
