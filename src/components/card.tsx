@@ -72,7 +72,7 @@ const BottomOverlay = styled.div`
   background-color: rgba(0, 0, 0, 0.6);
   display: flex;
   justify-content: space-between;
-  padding: 0.1rem 0.15rem;
+  padding: 0.05rem 0.15rem;
 `;
 
 const CardSelected = ({
