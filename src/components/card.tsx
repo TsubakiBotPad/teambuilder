@@ -36,8 +36,7 @@ const CardSelectedImage = styled.div<CardSelectedType>`
   height: 5rem;
   position: relative;
 
-  &::after {
-    z-index: 1;
+  &::before {
     display: block;
     box-sizing: border-box;
     width: 80px;
@@ -96,52 +95,51 @@ const CardSelected = ({
       }}
       subattr={subattr}
     >
-      {/* +297 */}
-      <div
-        className={css`
-          color: yellow;
-          -webkit-text-stroke: 0.5px black;
-          font-weight: 1000;
-          position: absolute;
-          padding: 0.15rem;
-          z-index: 2;
-        `}
-      >
-        +297
-      </div>
+      <div>
+        {/* +297 */}
+        <div
+          className={css`
+            color: yellow;
+            -webkit-text-stroke: 0.5px black;
+            font-weight: 1000;
+            position: absolute;
+            padding: 0.15rem;
+          `}
+        >
+          +297
+        </div>
 
-      {/* Right Corner */}
-      <div
-        className={css`
-          position: absolute;
-          right: 0;
-          top: 0;
-          padding: 0.15rem;
-          z-index: 2;
-          & div:not(:last-child) {
-            margin-bottom: 0.15rem;
-          }
-        `}
-      >
-        <FlexColC gap={"0.25rem"}>
-          <img src={"img/awoInheritable.png"} width={"20px"} alt="awokenStar" />
-          <div>{not2P && monster.sa ? <AwakeningImage awakeningId={monster.sa} width={22} /> : null}</div>
-        </FlexColC>
-      </div>
+        {/* Right Corner */}
+        <div
+          className={css`
+            position: absolute;
+            right: 0;
+            top: 0;
+            padding: 0.15rem;
+            & div:not(:last-child) {
+              margin-bottom: 0.15rem;
+            }
+          `}
+        >
+          <FlexColC gap={"0.25rem"}>
+            <img src={"img/awoInheritable.png"} width={"20px"} alt="awokenStar" />
+            <div>{not2P && monster.sa ? <AwakeningImage awakeningId={monster.sa} width={22} /> : null}</div>
+          </FlexColC>
+        </div>
 
-      {/* Bottom Info */}
-      <div
-        className={css`
-          z-index: 2;
-          position: absolute;
-          bottom: 0%;
-          width: 100%;
-        `}
-      >
-        <BottomOverlay>
-          <LevelText level={monster.level} />
-          <CardOverlayText>#{monster.id}</CardOverlayText>
-        </BottomOverlay>
+        {/* Bottom Info */}
+        <div
+          className={css`
+            position: absolute;
+            bottom: 0%;
+            width: 100%;
+          `}
+        >
+          <BottomOverlay>
+            <LevelText level={monster.level} />
+            <CardOverlayText>#{monster.id}</CardOverlayText>
+          </BottomOverlay>
+        </div>
       </div>
     </CardSelectedImage>
   );
