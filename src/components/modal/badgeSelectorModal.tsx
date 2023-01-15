@@ -32,6 +32,7 @@ const overlayClassName = css`
   background-color: rgba(0, 0, 0, 0.4);
   position: fixed;
   inset: 0;
+  z-index: 100;
 `;
 
 export const BadgeSelectorModal = ({ isOpen }: { isOpen: boolean }) => {

@@ -36,7 +36,7 @@ const CardSelectedImage = styled.div<CardSelectedType>`
   height: 5rem;
   position: relative;
 
-  &::before {
+  &::after {
     z-index: 1;
     display: block;
     box-sizing: border-box;

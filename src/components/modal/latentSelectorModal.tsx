@@ -34,6 +34,7 @@ const overlayClassName = css`
   background-color: rgba(0, 0, 0, 0.4);
   position: fixed;
   inset: 0;
+  z-index: 100;
 `;
 
 const DEFAULT_MAX_LATENTS = 6;
