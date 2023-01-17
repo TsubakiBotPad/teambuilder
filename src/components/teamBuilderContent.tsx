@@ -28,11 +28,11 @@ export const TeamBuilderContent = React.forwardRef((props, ref) => {
             className={css`
               align-items: end;
             `}
-            justifyContent="space-between"
+            justifyContent="start"
           >
             <TeamInput
               placeholder={iStr("teamName", language)}
-              size={35}
+              size={41}
               value={teamName}
               onChange={(e) => {
                 setTeamName(e.target.value);

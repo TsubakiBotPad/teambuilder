@@ -21,6 +21,7 @@ export const TeamStatsToggles = () => {
         height: 35px;
         box-sizing: border-box;
         width: 440px;
+        padding-left: 0.5rem;
       `}
     >
       <FlexRowC
