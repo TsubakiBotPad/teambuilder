@@ -141,6 +141,10 @@ export const PadTeamBuilderPage = () => {
     updateUrl.current({ n: teamName, ts: teamState, gc: gameConfig, in: instructions, a: author });
   }, [teamName, teamState, gameConfig, instructions, author]);
 
+  useEffect(() => {
+    document.title = teamName !== "" ? `${teamName} - teambuilder | tsubakibot` : "teambuilder | tsubakibot";
+  }, [teamName]);
+
   useMemo(() => {
     const f = async () => {
       setTeamStats({
