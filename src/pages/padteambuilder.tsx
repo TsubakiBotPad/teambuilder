@@ -142,8 +142,9 @@ export const PadTeamBuilderPage = () => {
   }, [teamName, teamState, gameConfig, instructions, author]);
 
   useEffect(() => {
-    document.title = teamName !== "" ? `${teamName} - teambuilder | tsubakibot` : "teambuilder | tsubakibot";
-  }, [teamName]);
+    const tabName = iStr("tabName", language);
+    document.title = teamName !== "" ? `${teamName} | ${tabName}` : tabName;
+  }, [teamName, language]);
 
   useMemo(() => {
     const f = async () => {
