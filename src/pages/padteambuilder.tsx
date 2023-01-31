@@ -141,6 +141,11 @@ export const PadTeamBuilderPage = () => {
     updateUrl.current({ n: teamName, ts: teamState, gc: gameConfig, in: instructions, a: author });
   }, [teamName, teamState, gameConfig, instructions, author]);
 
+  useEffect(() => {
+    const tabName = iStr("tabName", language);
+    document.title = teamName !== "" ? `${teamName} | ${tabName}` : tabName;
+  }, [teamName, language]);
+
   useMemo(() => {
     const f = async () => {
       setTeamStats({
