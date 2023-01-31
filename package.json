@@ -68,6 +68,10 @@
     ]
   },
   "devDependencies": {
+    "@babel/cli": "^7.20.7",
+    "@babel/core": "^7.20.12",
+    "@babel/preset-env": "^7.20.2",
+    "@emotion/babel-plugin": "^11.10.5",
     "@types/google.maps": "^3.50.2",
     "@types/react-color": "^3.0.6",
     "@types/react-toastify": "^4.1.0",
