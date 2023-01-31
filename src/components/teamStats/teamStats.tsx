@@ -63,9 +63,7 @@ export const TeamStatDisplay = ({ teamStat, keyP, is2P }: { teamStat?: TeamStat;
     <FlexCol className={css``}>
       <FlexCol
         className={css`
-          box-shadow: 3px 3px 7px 5px lightgray;
-          border-radius: 5px;
-          label: team-stats-display;
+          border: 1px solid #ccc;
         `}
       >
         <TeamBasicStatsDisplay
