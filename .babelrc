@@ -6,7 +6,7 @@
         // sourceMap is on by default but source maps are dead code eliminated in production
         "sourceMap": true,
         "autoLabel": "always",
-        "labelFormat": "[local]",
+        "labelFormat": "[filename]__[local]",
         "cssPropOptimization": true
       }
     ]
