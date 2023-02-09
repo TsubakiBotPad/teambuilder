@@ -4,7 +4,7 @@ function useModifierKey(modifierKey: string) {
   const [isDown, setIsDown] = useState(false);
   useEffect(() => {
     function modifierKeyDn(e: KeyboardEvent) {
-    // vscode says e.keyCode is deprecated but MDN says this should be included
+      // vscode says e.keyCode is deprecated but MDN says this should be included
       if (e.isComposing || e.keyCode === 229) return;
       if (e.key !== modifierKey) return;
       e.stopPropagation();
