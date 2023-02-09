@@ -79,20 +79,21 @@ const TeamSlot = ({
   const subattrs = teamStats[teamId]?.teamSubattributes;
 
   const ctrlKeyDown = useModifierKey("Control");
+  const altKeyDown = useModifierKey("Alt");
   const [, drag] = useDrag(
     () => ({
       type: DraggableTypes.slot,
       item: { cardId: componentId },
       end(item, monitor) {
         const dropResult = monitor.getDropResult() as DropResult;
-        if (ctrlKeyDown) {
+        if (ctrlKeyDown || altKeyDown) {
           copySlot(teamState, setTeamState, componentId, dropResult.target);
         } else {
           swapSlot(teamState, setTeamState, componentId, dropResult.target);
         }
       }
     }),
-    [gameConfig, ctrlKeyDown]
+    [gameConfig, ctrlKeyDown, altKeyDown]
   );
 
   const [{ isOver }, drop] = useDrop(

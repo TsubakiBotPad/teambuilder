@@ -158,6 +158,7 @@ export const Card = ({
   const { setModalIsOpen, setCardSlotSelected, gameConfig } = useContext(AppStateContext);
   const { teamState, setTeamState } = useContext(TeamStateContext);
   const ctrlKeyDown = useModifierKey("Control");
+  const altKeyDown = useModifierKey("Alt");
 
   const [, drag] = useDrag(
     () => ({
@@ -169,14 +170,14 @@ export const Card = ({
           return;
         }
 
-        if (ctrlKeyDown) {
+        if (ctrlKeyDown || altKeyDown) {
           copyCard(teamState, setTeamState, componentId, dropResult.target);
         } else {
           swapCards(teamState, setTeamState, componentId, dropResult.target);
         }
       }
     }),
-    [gameConfig, ctrlKeyDown]
+    [gameConfig, ctrlKeyDown, altKeyDown]
   );
 
   const [{ isOver }, drop] = useDrop(

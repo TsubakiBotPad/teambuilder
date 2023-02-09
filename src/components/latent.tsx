@@ -172,6 +172,7 @@ export const Latents = ({
   }, [teamState, teamSlot, hasSixSlot, not2P, setHasError, dungeonEffects]);
 
   const ctrlKeyDown = useModifierKey("Control");
+  const altKeyDown = useModifierKey("Alt");
   const [, drag] = useDrag(
     () => ({
       type: DraggableTypes.latent,
@@ -182,14 +183,14 @@ export const Latents = ({
           return;
         }
 
-        if (ctrlKeyDown) {
+        if (ctrlKeyDown || altKeyDown) {
           copyLatents(teamState, setTeamState, componentId, dropResult.target);
         } else {
           swapLatents(teamState, setTeamState, componentId, dropResult.target);
         }
       }
     }),
-    [ctrlKeyDown]
+    [ctrlKeyDown, altKeyDown]
   );
 
   const [{ isOver }, drop] = useDrop(
