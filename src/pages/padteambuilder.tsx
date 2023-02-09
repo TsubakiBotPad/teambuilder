@@ -138,6 +138,12 @@ export const PadTeamBuilderPage = () => {
   );
 
   useEffect(() => {
+    window.addEventListener("hashchange", function (e) {
+      window.location.reload();
+    });
+  });
+
+  useEffect(() => {
     updateUrl.current({ n: teamName, ts: teamState, gc: gameConfig, in: instructions, a: author });
   }, [teamName, teamState, gameConfig, instructions, author]);
 
