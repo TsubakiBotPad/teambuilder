@@ -1,7 +1,8 @@
 import { css } from "@emotion/css";
 import styled from "@emotion/styled";
-import React, { useContext, useMemo, useState } from "react";
+import { useContext, useMemo, useState } from "react";
 import { useDrag, useDrop } from "react-dnd";
+import useModifierKey from "../hooks/useModifierKey";
 
 import { monsterCacheClient } from "../model/monsterCacheClient";
 import { PadAssetImage } from "../model/padAssets";
@@ -170,22 +171,27 @@ export const Latents = ({
     f();
   }, [teamState, teamSlot, hasSixSlot, not2P, setHasError, dungeonEffects]);
 
-  const [, drag] = useDrag(() => ({
-    type: DraggableTypes.latent,
-    item: { cardId: componentId },
-    end(item, monitor) {
-      const dropResult = monitor.getDropResult() as DropResult;
-      if (!dropResult) {
-        return;
-      }
+  const ctrlKeyDown = useModifierKey("Control");
+  const altKeyDown = useModifierKey("Alt");
+  const [, drag] = useDrag(
+    () => ({
+      type: DraggableTypes.latent,
+      item: { cardId: componentId },
+      end(item, monitor) {
+        const dropResult = monitor.getDropResult() as DropResult;
+        if (!dropResult) {
+          return;
+        }
 
-      if (dropResult.dropEffect === "copy") {
-        copyLatents(teamState, setTeamState, componentId, dropResult.target);
-      } else {
-        swapLatents(teamState, setTeamState, componentId, dropResult.target);
+        if (ctrlKeyDown || altKeyDown) {
+          copyLatents(teamState, setTeamState, componentId, dropResult.target);
+        } else {
+          swapLatents(teamState, setTeamState, componentId, dropResult.target);
+        }
       }
-    }
-  }));
+    }),
+    [ctrlKeyDown, altKeyDown]
+  );
 
   const [{ isOver }, drop] = useDrop(
     () => ({

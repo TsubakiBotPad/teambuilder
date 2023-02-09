@@ -5,6 +5,7 @@ import { useContext } from "react";
 import { useDrag, useDrop } from "react-dnd";
 import { AiOutlineCaretDown } from "react-icons/ai";
 import { RxDotsHorizontal } from "react-icons/rx";
+import useModifierKey from "../hooks/useModifierKey";
 
 import {
   AppStateContext,
@@ -77,20 +78,22 @@ const TeamSlot = ({
   const hasAssists = dungeonEffects.hasAssists;
   const subattrs = teamStats[teamId]?.teamSubattributes;
 
+  const ctrlKeyDown = useModifierKey("Control");
+  const altKeyDown = useModifierKey("Alt");
   const [, drag] = useDrag(
     () => ({
       type: DraggableTypes.slot,
       item: { cardId: componentId },
       end(item, monitor) {
         const dropResult = monitor.getDropResult() as DropResult;
-        if (dropResult.dropEffect === "copy") {
+        if (ctrlKeyDown || altKeyDown) {
           copySlot(teamState, setTeamState, componentId, dropResult.target);
         } else {
           swapSlot(teamState, setTeamState, componentId, dropResult.target);
         }
       }
     }),
-    [gameConfig]
+    [gameConfig, ctrlKeyDown, altKeyDown]
   );
 
   const [{ isOver }, drop] = useDrop(

@@ -4,6 +4,7 @@ import { useContext } from "react";
 import { useDrag, useDrop } from "react-dnd";
 
 import { ColorKey, getColor } from "../colors";
+import useModifierKey from "../hooks/useModifierKey";
 import { AwakeningImage, BASE_ICON_URL } from "../model/images";
 import { AppStateContext, copyCard, swapCards, TeamCardInfo, TeamStateContext } from "../model/teamStateManager";
 import { DraggableTypes } from "../pages/padteambuilder";
@@ -156,6 +157,8 @@ export const Card = ({
 }) => {
   const { setModalIsOpen, setCardSlotSelected, gameConfig } = useContext(AppStateContext);
   const { teamState, setTeamState } = useContext(TeamStateContext);
+  const ctrlKeyDown = useModifierKey("Control");
+  const altKeyDown = useModifierKey("Alt");
 
   const [, drag] = useDrag(
     () => ({
@@ -167,14 +170,14 @@ export const Card = ({
           return;
         }
 
-        if (dropResult.dropEffect === "copy") {
+        if (ctrlKeyDown || altKeyDown) {
           copyCard(teamState, setTeamState, componentId, dropResult.target);
         } else {
           swapCards(teamState, setTeamState, componentId, dropResult.target);
         }
       }
     }),
-    [gameConfig]
+    [gameConfig, ctrlKeyDown, altKeyDown]
   );
 
   const [{ isOver }, drop] = useDrop(
