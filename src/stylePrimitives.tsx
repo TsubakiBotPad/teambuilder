@@ -1,52 +1,76 @@
 import styled from "@emotion/styled";
 import { breakpoint } from "./breakpoints";
+import { ReactNode } from "react";
+import clsx from "clsx";
 
-export const H1 = styled.h1`
-  font-size: 1.75rem;
-  font-weight: 500;
-`;
+export const H1 = ({ children, className }: { children: ReactNode; className?: string }) => {
+  return <h1 className={clsx("text-3xl font-medium", className)}>{children}</h1>;
+};
 
-export const H2 = styled.h2`
-  font-size: 1.5rem;
-  font-weight: 600;
-`;
+export const H2 = ({ children, className }: { children: ReactNode; className?: string }) => {
+  return <h1 className={clsx("text-2xl font-semibold", className)}>{children}</h1>;
+};
 
-export const H3 = styled.h3`
-  font-size: 1.25rem;
-  font-weight: 600;
-`;
+export const H3 = ({ children, className }: { children: ReactNode; className?: string }) => {
+  return <h1 className={clsx("text-xl font-semibold", className)}>{children}</h1>;
+};
 
 type FlexColProps = {
   gap?: string;
   wrap?: string;
 };
 
-type FlexRowProps = {
-  gap?: string;
-  wrap?: string;
-  center?: boolean;
+// type FlexRowProps = {
+//   gap?: string;
+//   wrap?: string;
+//   center?: boolean;
+//   justifyContent?: string;
+// };
+
+// export const FlexRow = styled.div<FlexRowProps>`
+//   display: flex;
+//   gap: ${(props) => (props.gap ? props.gap : "0")};
+//   justify-content: ${(props) => (props.justifyContent ? props.justifyContent : props.center ? "center" : "start")};
+//   flex-wrap: ${(props) => (props.wrap ? props.wrap : "nowrap")};
+// `;
+
+export const FlexRow = ({
+  children,
+  gap = "gap-0",
+  justifyContent = "justify-center",
+  wrap = "flex-nowrap",
+  className
+}: {
+  children: ReactNode;
+  gap?: number | string;
   justifyContent?: string;
+  wrap?: string;
+  className?: string;
+}) => {
+  return <div className={clsx(className, "flex", { gap }, { justifyContent }, { wrap })}>{children}</div>;
 };
 
-export const FlexRow = styled.div<FlexRowProps>`
-  display: flex;
-  gap: ${(props) => (props.gap ? props.gap : "0")};
-  justify-content: ${(props) => (props.justifyContent ? props.justifyContent : props.center ? "center" : "start")};
-  flex-wrap: ${(props) => (props.wrap ? props.wrap : "nowrap")};
-`;
+// export const FlexRowC = styled(FlexRow)`
+//   align-items: center;
+// `;
 
-export const FlexRowC = styled(FlexRow)`
-  align-items: center;
-`;
+export const FlexRowC = ({ children, className, ...rest }: { children: ReactNode; className?: string }) => {
+  const newClassName = clsx(className, "items-center");
+  return (
+    <FlexRow className={newClassName} {...rest}>
+      {children}
+    </FlexRow>
+  );
+};
 
-export const RespRow = styled.div<FlexRowProps>`
-  display: flex;
-  @media ${breakpoint.xs} {
-    flex-direction: column;
-  }
-  gap: ${(props) => (props.gap ? props.gap : "0")};
-  justify-content: ${(props) => (props.center ? "center" : "start")};
-`;
+// export const RespRow = styled.div<FlexRowProps>`
+//   display: flex;
+//   @media ${breakpoint.xs} {
+//     flex-direction: column;
+//   }
+//   gap: ${(props) => (props.gap ? props.gap : "0")};
+//   justify-content: ${(props) => (props.center ? "center" : "start")};
+// `;
 
 export const FlexCol = styled.div<FlexColProps>`
   display: flex;
