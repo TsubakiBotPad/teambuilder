@@ -238,7 +238,7 @@ export const Latents = ({
                 </RemainderLatents>
               </>
             ) : (
-              <FlexRow gap="3px" wrap="wrap">
+              <FlexRow gap="gap-0.5" wrap="flex-wrap">
                 {remainderLatents
                   .sort((a, b) => {
                     return b - a;

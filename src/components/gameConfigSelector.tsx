@@ -29,7 +29,7 @@ export const GameConfigSelector = () => {
   const { teamState, setTeamState } = useContext(TeamStateContext);
 
   return (
-    <FlexRowC gap="0.25rem">
+    <FlexRowC gap="gap-1">
       <span>{iStr("gameMode", language)}:</span>
       <FlexRowC>
         <FancyButton

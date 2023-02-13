@@ -22,7 +22,7 @@ export const SuperAwakeningSelector = ({
   return (
     <FlexRowC>
       {superAwakenings.length > 0 ? (
-        <FlexRow gap="0.25rem">
+        <FlexRow gap="gap-1">
           {superAwakenings.map((a) => (
             <div
               className={css`

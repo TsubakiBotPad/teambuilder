@@ -1,6 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ["./src/**/*.{ts,tsx,js}"],
+  content: ["./src/**/*.{ts,tsx,js,html}"],
   theme: {
     extend: {
       fontSize: {
@@ -8,5 +8,9 @@ module.exports = {
       }
     }
   },
-  plugins: []
+  corePlugins: {
+    preflight: false
+  },
+  plugins: [],
+  prefix: "tw-"
 };

@@ -78,7 +78,7 @@ export const CardInfo = ({
               <tr>
                 <TDh width={"1rem"}>AW</TDh>
                 <td>
-                  <FlexRow gap="0.25rem">
+                  <FlexRow gap="gap-1">
                     {m.awakenings
                       .filter((a) => !a.is_super)
                       .map((a) => (
@@ -131,7 +131,7 @@ export const CardInfo = ({
         </FlexRow>
       </div>
 
-      <FlexRow gap="5rem" justifyContent="space-between">
+      <FlexRow gap="gap-20" justifyContent="justify-between">
         <FlexCol>
           <b>{m.is_inheritable ? iStr("inheritable", language) : iStr("notInheritable", language)}</b>
           <span>

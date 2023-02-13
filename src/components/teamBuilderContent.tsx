@@ -22,7 +22,7 @@ export const TeamBuilderContent = React.forwardRef((props, ref) => {
   const { gameConfig, setTeamName, teamName, instructions, setInstructions, language } = useContext(AppStateContext);
   return (
     <FlexColCResponsive>
-      <FlexRow gap="1rem">
+      <FlexRow gap="gap-4">
         <FlexCol ref={ref as any}>
           <FlexRow
             className={css`
@@ -42,13 +42,8 @@ export const TeamBuilderContent = React.forwardRef((props, ref) => {
           </FlexRow>
           {gameConfig.mode !== "2p" ? <TeamBuilderContent1n3P /> : null}
           {gameConfig.mode === "2p" ? <TeamBuilderContent2P /> : null}
-          <div
-            className={css`
-              padding-left: 0.5rem;
-              padding-top: 0.5rem;
-            `}
-          >
-            <FlexCol gap="0.25rem">
+          <div className="pl-2 pt-2">
+            <FlexCol gap="gap-1">
               <AuthorText />
               <textarea
                 rows={15}
@@ -98,7 +93,7 @@ export const TeamBuilderContent2P = () => {
           <TeamBlock playerId="p3" shouldShow={gameConfig.mode === "3p"} />
         </FlexCol>
         {teamStat1 && teamStat2 ? (
-          <FlexRowC gap="1rem">
+          <FlexRowC gap="gap-4">
             <FlexColC>
               <span>{iStr("shared", language)}</span>
               <div
