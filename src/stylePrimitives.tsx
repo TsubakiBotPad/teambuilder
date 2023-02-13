@@ -39,22 +39,36 @@ export const FlexRow = ({
   gap = "gap-0",
   justifyContent = "justify-center",
   wrap = "flex-nowrap",
-  className
+  className,
+  ...rest
 }: {
   children: ReactNode;
   gap?: number | string;
   justifyContent?: string;
   wrap?: string;
   className?: string;
+  [rest: string]: any;
 }) => {
-  return <div className={clsx(className, "flex", { gap }, { justifyContent }, { wrap })}>{children}</div>;
+  return (
+    <div className={clsx(className, "flex", { gap }, { justifyContent }, { wrap })} {...rest}>
+      {children}
+    </div>
+  );
 };
 
 // export const FlexRowC = styled(FlexRow)`
 //   align-items: center;
 // `;
 
-export const FlexRowC = ({ children, className, ...rest }: { children: ReactNode; className?: string }) => {
+export const FlexRowC = ({
+  children,
+  className,
+  ...rest
+}: {
+  children: ReactNode;
+  className?: string;
+  [rest: string]: any;
+}) => {
   const newClassName = clsx(className, "items-center");
   return (
     <FlexRow className={newClassName} {...rest}>

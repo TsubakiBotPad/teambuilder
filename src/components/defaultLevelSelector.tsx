@@ -27,7 +27,7 @@ const FancyButton = styled.button<FancyButtonProps>`
 export const DefaultLevelSelector = () => {
   const { language, gameConfig, setGameConfig } = useContext(AppStateContext);
   return (
-    <FlexRowC gap="0.25rem">
+    <FlexRowC gap="gap-1">
       <span>{iStr("defaultLevel", language)}:</span>
       <FlexRowC>
         <FancyButton
