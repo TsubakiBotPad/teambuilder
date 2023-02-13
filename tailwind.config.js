@@ -11,6 +11,5 @@ module.exports = {
   corePlugins: {
     preflight: false
   },
-  plugins: [],
-  prefix: "tw-"
+  plugins: []
 };
