@@ -37,7 +37,7 @@ type FlexColProps = {
 export const FlexRow = ({
   children,
   gap = "gap-0",
-  justifyContent = "justify-center",
+  justifyContent = "justify-start",
   wrap = "flex-nowrap",
   className,
   ...rest
