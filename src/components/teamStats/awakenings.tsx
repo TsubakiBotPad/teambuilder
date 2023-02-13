@@ -230,7 +230,7 @@ export const AwakeningRowDisplay = ({
         const val = numToDisplay ?? 0;
         const shouldShow = (ALWAYS_SHOW_AWOKENSKILLS.includes(b.awokenSkill) || numToDisplay) as boolean;
         return shouldShow ? (
-          <FlexRowC gap="0.15rem" key={keyPrefix + numToDisplay + i}>
+          <FlexRowC className="gap-0.5" key={keyPrefix + numToDisplay + i}>
             <div
               className={css`
                 opacity: ${numToDisplay ? 1 : 0.6};
@@ -302,7 +302,7 @@ export const AwakeningStatsDisplay = ({
                 >
                   {iStr(a.header, language, "Header")}
                 </div>
-                <FlexRow gap="0.5rem">
+                <FlexRow className="gap-2">
                   <AwakeningRowDisplay ah={ah} asa={a.data} keyPrefix={keyPrefix + a.header + j} />
                 </FlexRow>
               </FlexCol>

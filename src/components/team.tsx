@@ -188,7 +188,7 @@ export const TeamBlock = ({ playerId, shouldShow }: { playerId: keyof TeamState;
   const is2P = gameConfig.mode === "2p";
   return shouldShow ? (
     <FlexCol gap="0.25rem">
-      <FlexRowC gap="gap-2">
+      <FlexRowC className="gap-2">
         <H2>{playerId}</H2>
         {!is2P ? (
           <BadgeDisplay

@@ -88,7 +88,7 @@ const AlternateEvoImages = ({
 
   return (
     <FlexColC>
-      <FlexRowC gap="0.25rem">
+      <FlexRowC className="gap-1">
         {ids.map((id) => (
           <AltEvoImg
             key={id}
@@ -255,7 +255,7 @@ export const CardSelectorModal = ({ isOpen }: { isOpen: boolean }) => {
             </FlexColC>
 
             <FlexColC>
-              <FlexRowC gap="1rem">
+              <FlexRowC className="gap-4">
                 <ConfirmButton
                   onClick={() => {
                     var cardInfo = selectedMonster

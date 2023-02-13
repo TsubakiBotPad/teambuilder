@@ -68,7 +68,7 @@ export const BadgeSelectorModal = ({ isOpen }: { isOpen: boolean }) => {
             </FlexRowC>
           </H2>
           <FlexColC>
-            <FlexRow wrap="flex-wrap" gap="gap-1">
+            <FlexRow className="flex-wrap gap-1">
               {BADGE_NAMES.map((name, i) => {
                 return (
                   <div
@@ -92,7 +92,7 @@ export const BadgeSelectorModal = ({ isOpen }: { isOpen: boolean }) => {
                 );
               })}
             </FlexRow>
-            <FlexRowC gap="gap-4 rounded">
+            <FlexRowC className="gap-4">
               <ConfirmButton
                 onClick={() => {
                   setPlayerBadge(playerSelected as any, selectedBadge, teamState, setTeamState);

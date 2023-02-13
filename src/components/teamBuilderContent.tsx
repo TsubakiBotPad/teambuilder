@@ -22,14 +22,9 @@ export const TeamBuilderContent = React.forwardRef((props, ref) => {
   const { gameConfig, setTeamName, teamName, instructions, setInstructions, language } = useContext(AppStateContext);
   return (
     <FlexColCResponsive>
-      <FlexRow gap="gap-4">
+      <FlexRow className="gap-4">
         <FlexCol ref={ref as any}>
-          <FlexRow
-            className={css`
-              align-items: end;
-            `}
-            justifyContent="start"
-          >
+          <FlexRow className="items-end justify-start">
             <TeamInput
               placeholder={iStr("teamName", language)}
               size={41}
@@ -93,7 +88,7 @@ export const TeamBuilderContent2P = () => {
           <TeamBlock playerId="p3" shouldShow={gameConfig.mode === "3p"} />
         </FlexCol>
         {teamStat1 && teamStat2 ? (
-          <FlexRowC gap="gap-4">
+          <FlexRowC className="gap-4">
             <FlexColC>
               <span>{iStr("shared", language)}</span>
               <div

@@ -36,21 +36,15 @@ type FlexColProps = {
 
 export const FlexRow = ({
   children,
-  gap = "gap-0",
-  justifyContent = "justify-start",
-  wrap = "flex-nowrap",
   className,
   ...rest
 }: {
   children: ReactNode;
-  gap?: string;
-  justifyContent?: string;
-  wrap?: string;
   className?: string;
   [rest: string]: any;
 }) => {
   return (
-    <div {...rest} className={clsx(className, "flex", gap, justifyContent, wrap)}>
+    <div {...rest} className={clsx(className, "flex")}>
       {children}
     </div>
   );

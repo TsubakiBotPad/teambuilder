@@ -284,7 +284,7 @@ export const TeamBasicStatsDisplay = ({
           margin: 0.5rem 0;
         `}
       >
-        <FlexRow gap="2.5rem" justifyContent="space-between">
+        <FlexRow className="gap-10 justify-between">
           <table>
             <thead>
               <tr>
@@ -353,12 +353,7 @@ export const TeamBasicStatsDisplay = ({
                     <b>{iStr("types", language)}</b>
                   </TD2>
                   <TD2>
-                    <FlexRow
-                      wrap="wrap"
-                      className={css`
-                        width: 7rem;
-                      `}
-                    >
+                    <FlexRow className="helloWorld flex-wrap width-28">
                       {tt.map((a) => {
                         return <PadAssetImage assetName={`t${a}`} height={22} />;
                       })}
@@ -375,7 +370,7 @@ export const TeamBasicStatsDisplay = ({
                     <b>{iStr("attributes", language)}</b>
                   </TD2>
                   <TD2>
-                    <FlexRow gap={"0.25rem"}>
+                    <FlexRow className="gap-1">
                       {Object.entries(ah).map((a, i) => {
                         const attr = Attribute[a[0] as keyof {}].toLocaleLowerCase();
                         return (
@@ -395,7 +390,7 @@ export const TeamBasicStatsDisplay = ({
                   <b>{iStr("surges", language)}</b>
                 </TD>
                 <td>
-                  <FlexRow gap="0.1rem">
+                  <FlexRow className="gap-0.5">
                     <PadAssetImage assetName="psf" height={20} className={latentClassname(!!tl?.psf)} />
                     <PadAssetImage assetName="jsf" height={20} className={latentClassname(!!tl?.jsf)} />
                   </FlexRow>

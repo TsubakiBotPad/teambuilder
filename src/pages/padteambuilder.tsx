@@ -44,14 +44,14 @@ const PadTeamBuilderPageContainer = React.forwardRef((props, ref) => {
   return (
     <Page maxWidth={maxPageWidth}>
       <FlexColCResponsive gap="1rem">
-        <FlexRowC gap="1rem">
+        <FlexRowC className="gap-4">
           <H1>{iStr("applicationTitle", language, "PAD Team Builder")}</H1>
           <LanguageSelector />
         </FlexRowC>
-        <FlexRowC gap="2rem">
+        <FlexRowC className="gap-8">
           <GameConfigSelector />
           <DefaultLevelSelector />
-          <FlexRowC gap="0.25rem">
+          <FlexRowC className="gap-1">
             {iStr("export", language)}:
             <button
               onClick={() => exportComponentAsPNG(ref as any)}

@@ -24,14 +24,7 @@ export const TeamStatsToggles = () => {
         padding-left: 0.5rem;
       `}
     >
-      <FlexRowC
-        // className={css`
-        //   position: absolute;
-        //   top: 2.4rem;
-        // `}
-        className="absolute top-10"
-        gap="gap-1"
-      >
+      <FlexRowC className="absolute top-10 gap-1">
         {iStr("dungeonEffects", language)}
         <AssistToggle isEnabled={!dungeonEffects.hasAssists}></AssistToggle>
       </FlexRowC>

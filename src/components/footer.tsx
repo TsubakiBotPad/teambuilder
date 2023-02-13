@@ -12,7 +12,7 @@ export const Footer = () => {
         <FlexColC gap="0.25rem">
           <span className="text-xs">PAD Team Builder is made with love by the Tsubotki team :3</span>
 
-          <FlexRowC gap="gap-5">
+          <FlexRowC className="gap-5">
             <a href="https://www.buymeacoffee.com/maxjank">
               <img
                 src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=&slug=maxjank&button_colour=FFDD00&font_colour=000000&font_family=Cookie&outline_colour=000000&coffee_colour=ffffff"

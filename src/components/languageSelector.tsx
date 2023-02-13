@@ -30,7 +30,7 @@ const flagClassname = (focused: boolean) => {
 export const LanguageSelector = () => {
   const { language, setLanguage } = useContext(AppStateContext);
   return (
-    <FlexRowC gap="gap-1">
+    <FlexRowC className="gap-1">
       <FancyButton
         focused={language === "en"}
         onClick={() => {

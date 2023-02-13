@@ -101,7 +101,7 @@ export const LatentSelectorModal = ({ isOpen }: { isOpen: boolean }) => {
             </FlexRowC>
           </H2>
           <FlexColC gap="2rem">
-            <FlexRow wrap={"wrap"}>
+            <FlexRow className="flex-wrap">
               <FlexCol gap="1rem">
                 {Object.entries(LATENTS_BY_SIZE).map(([n, names], j) => {
                   return (
@@ -109,7 +109,7 @@ export const LatentSelectorModal = ({ isOpen }: { isOpen: boolean }) => {
                       <H3>
                         {n}-{iStr("slots", language)}
                       </H3>
-                      <FlexRow wrap="wrap">
+                      <FlexRow className="flex-wrap">
                         {names.map((n, i) => {
                           return (
                             <PadAssetImage
@@ -127,9 +127,9 @@ export const LatentSelectorModal = ({ isOpen }: { isOpen: boolean }) => {
                 })}
               </FlexCol>
             </FlexRow>
-            <FlexRow gap={"14px"}>
+            <FlexRow className="gap-3.5">
               {selectedLatents.length !== 0 ? (
-                <FlexRow gap={"14px"}>
+                <FlexRow className="gap-3.5">
                   {selectedLatents.map((i: number, idx: number) => {
                     const name = LATENTS_ID_TO_NAME[i];
                     const valid = true; // TODO: check against monster
@@ -181,14 +181,14 @@ export const LatentSelectorModal = ({ isOpen }: { isOpen: boolean }) => {
                 </FlexRow>
               ) : null}
               {maxLatents - currentSize !== 0 ? (
-                <FlexRow gap={"14px"}>
+                <FlexRow className="gap-3.5">
                   {Array.from(Array(maxLatents - currentSize > 0 ? maxLatents - currentSize : 0).keys()).map((i) => {
                     return <PadAssetImage assetName="emptyLatent" height={31} key={"remainderLatents" + i} />;
                   })}
                 </FlexRow>
               ) : null}
             </FlexRow>
-            <FlexRowC gap="1rem">
+            <FlexRowC className="gap-4">
               <ConfirmButton
                 onClick={() => {
                   setCardLatents(cardSlotSelected, selectedLatents, teamState, setTeamState);

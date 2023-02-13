@@ -137,7 +137,7 @@ export const AwakeningStatsDisplay2P = ({
                   padding: 0 0.5rem;
                 `}
               >
-                <FlexRow className={css``} gap="0.5rem">
+                <FlexRow className="gap-2">
                   <AwakeningRowDisplay ah={ah} asa={a.data} keyPrefix={keyPrefix + a.header + j} />
                 </FlexRow>
               </FlexCol>
