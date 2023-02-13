@@ -49,7 +49,6 @@ export const FlexRow = ({
   className?: string;
   [rest: string]: any;
 }) => {
-  console.log(gap);
   return (
     <div {...rest} className={clsx(className, "flex", gap, justifyContent, wrap)}>
       {children}

@@ -1,16 +1,13 @@
-import { css } from "@emotion/css";
-
 import { FlexColC, FlexRowC } from "../stylePrimitives";
 
 export const Footer = () => {
   return (
     <>
       <div
-        className={css`
-          margin: 0.5rem 0;
-          padding: 0.5rem 0;
-          background-color: #feeeee;
-        `}
+        className="py-2 my-2"
+        style={{
+          backgroundColor: "#feeeee"
+        }}
       >
         <FlexColC gap="0.25rem">
           <span className="text-xs">PAD Team Builder is made with love by the Tsubotki team :3</span>
@@ -23,14 +20,7 @@ export const Footer = () => {
                 alt="coffee"
               />
             </a>
-            <div
-              className={css`
-                border: 1px solid black;
-                border-radius: 4px;
-                padding: 0.1rem 0 0 0;
-                background-color: white;
-              `}
-            >
+            <div className="border-black border border-solid rounded pb-0.5 bg-white">
               <a href="https://www.patreon.com/tsubaki_bot">
                 <img src="img/patreon.png" width={"55px"} alt="patreon" />
               </a>
