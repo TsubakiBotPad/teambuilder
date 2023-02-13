@@ -9,7 +9,7 @@ export const Footer = () => {
           backgroundColor: "#feeeee"
         }}
       >
-        <FlexColC gap="0.25rem">
+        <FlexColC className="gap-1">
           <span className="text-xs">PAD Team Builder is made with love by the Tsubotki team :3</span>
 
           <FlexRowC className="gap-5">

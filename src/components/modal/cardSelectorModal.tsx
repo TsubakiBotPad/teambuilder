@@ -217,7 +217,7 @@ export const CardSelectorModal = ({ isOpen }: { isOpen: boolean }) => {
             padding: 1rem;
           `}
         >
-          <FlexCol gap="0.5rem">
+          <FlexCol className="gap-2">
             <H2>
               <FlexRowC>
                 {cardSlotSelected.teamId}
@@ -227,7 +227,7 @@ export const CardSelectorModal = ({ isOpen }: { isOpen: boolean }) => {
                 {iStr(cardSlotSelected.use, language)}
               </FlexRowC>
             </H2>
-            <FlexColC gap="0.5rem">
+            <FlexColC className="gap-2">
               <CardQueryInput
                 ref={inputRef}
                 type="text"
@@ -284,12 +284,12 @@ export const CardSelectorModal = ({ isOpen }: { isOpen: boolean }) => {
             </FlexColC>
 
             <FlexCol
-              gap="1rem"
-              className={css`
-                border: 1px solid black;
-                padding: 1rem;
-                box-shadow: 2px 2px #888888;
-              `}
+              className="gap-4 p-4 shadow border border-solid border-black"
+              // className={css`
+              //   border: 1px solid black;
+              //   padding: 1rem;
+              //   box-shadow: 2px 2px #888888;
+              // `}
             >
               {selectedMonster ? (
                 <CardInfo

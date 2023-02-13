@@ -59,13 +59,8 @@ export const CardInfo = ({
   const superAwakenings = m.awakenings.filter((a) => a.is_super);
   return (
     <>
-      <div
-        className={css`
-          display: flex;
-          justify-content: space-between;
-        `}
-      >
-        <FlexCol gap="0.25rem">
+      <div className="flex justify-between">
+        <FlexCol className="gap-1">
           <H3>
             [{m.monster_id}] {language === "ja" ? m.name_ja : m.name_en}
           </H3>
@@ -117,12 +112,7 @@ export const CardInfo = ({
           </table>
         </FlexCol>
         <FlexRow>
-          <FlexCol
-            className={css`
-              margin-right: 1px;
-            `}
-            gap="1px"
-          >
+          <FlexCol className="gap-px mr-px">
             {m.types.map((a) => {
               return <PadAssetImage assetName={`t${a}`} height={22} />;
             })}
@@ -166,7 +156,7 @@ export const CardInfo = ({
             </tbody>
           </table>
         </FlexCol>
-        <FlexCol gap="0.25rem">
+        <FlexCol className="gap-1">
           <b>
             {iStr("killers", language)} [{m.latent_slots} {iStr("slots", language)}]
           </b>

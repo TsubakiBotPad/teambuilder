@@ -1,4 +1,3 @@
-import { css } from "@emotion/css";
 import { TeamState } from "../../model/teamStateManager";
 import { FlexCol } from "../../stylePrimitives";
 import { GameConfig } from "../gameConfigSelector";
@@ -60,12 +59,8 @@ export const TeamStatDisplay = ({ teamStat, keyP, is2P }: { teamStat?: TeamStat;
   }
 
   return (
-    <FlexCol className={css``}>
-      <FlexCol
-        className={css`
-          border: 1px solid #ccc;
-        `}
-      >
+    <FlexCol>
+      <FlexCol className="border-slate-400 border border-solid rounded">
         <TeamBasicStatsDisplay
           tbs={teamStat.teamBasicStats}
           tt={teamStat.teamTypes}
@@ -75,12 +70,7 @@ export const TeamStatDisplay = ({ teamStat, keyP, is2P }: { teamStat?: TeamStat;
           keyP={keyP}
           is2P={is2P}
         />
-        <div
-          className={css`
-            border-top: 1px solid #ccc;
-            margin: 0 0.5rem;
-          `}
-        >
+        <div className="border-t border-solid border-slate-400 mx-2">
           <AwakeningStatsDisplay awakenings={teamStat.awakenings} keyPrefix={keyP} />
         </div>
       </FlexCol>

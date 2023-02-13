@@ -100,9 +100,9 @@ export const LatentSelectorModal = ({ isOpen }: { isOpen: boolean }) => {
               {iStr("latents", language)}
             </FlexRowC>
           </H2>
-          <FlexColC gap="2rem">
+          <FlexColC className="gap-8">
             <FlexRow className="flex-wrap">
-              <FlexCol gap="1rem">
+              <FlexCol className="gap-4">
                 {Object.entries(LATENTS_BY_SIZE).map(([n, names], j) => {
                   return (
                     <FlexCol key={n + j}>

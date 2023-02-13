@@ -122,7 +122,7 @@ const CardSelected = ({
             }
           `}
         >
-          <FlexColC gap={"0.25rem"}>
+          <FlexColC className="gap-1">
             <img src={"img/awoInheritable.png"} width={"20px"} alt="awokenStar" />
             <div>{not2P && monster.sa ? <AwakeningImage awakeningId={monster.sa} width={22} /> : null}</div>
           </FlexColC>

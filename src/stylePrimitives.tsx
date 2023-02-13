@@ -15,11 +15,6 @@ export const H3 = ({ children, className }: { children: ReactNode; className?: s
   return <h1 className={clsx("text-xl font-semibold", className)}>{children}</h1>;
 };
 
-type FlexColProps = {
-  gap?: string;
-  wrap?: string;
-};
-
 // type FlexRowProps = {
 //   gap?: string;
 //   wrap?: string;
@@ -80,20 +75,65 @@ export const FlexRowC = ({
 //   justify-content: ${(props) => (props.center ? "center" : "start")};
 // `;
 
-export const FlexCol = styled.div<FlexColProps>`
-  display: flex;
-  flex-direction: column;
-  gap: ${(props) => (props.gap ? props.gap : "0")};
-  ${(props) => (props.wrap ? `flex-wrap: ${props.wrap};` : "")}
-`;
+// export const FlexCol = styled.div<FlexColProps>`
+//   display: flex;
+//   flex-direction: column;
+//   gap: ${(props) => (props.gap ? props.gap : "0")};
+//   ${(props) => (props.wrap ? `flex-wrap: ${props.wrap};` : "")}
+// `;
 
-export const FlexColC = styled(FlexCol)`
-  align-items: center;
-`;
+// export const FlexColC = styled(FlexCol)`
+//   align-items: center;
+// `;
 
-export const FlexColCResponsive = styled(FlexCol)`
-  align-items: safe center;
-`;
+export const FlexCol = ({
+  children,
+  className,
+  ...rest
+}: {
+  children: ReactNode;
+  className?: string;
+  [rest: string]: any;
+}) => {
+  return (
+    <div {...rest} className={clsx(className, "flex flex-col")}>
+      {children}
+    </div>
+  );
+};
+
+export const FlexColC = ({
+  children,
+  className,
+  ...rest
+}: {
+  children: ReactNode;
+  className?: string;
+  [rest: string]: any;
+}) => {
+  const newClassName = clsx(className, "items-center");
+  return (
+    <FlexCol className={newClassName} {...rest}>
+      {children}
+    </FlexCol>
+  );
+};
+
+export const FlexColCResponsive = ({
+  children,
+  style,
+  ...rest
+}: {
+  children: ReactNode;
+  style?: Object;
+  [rest: string]: any;
+}) => {
+  return (
+    <FlexCol {...rest} style={{ ...style, ...{ alignItems: "safe center" } }}>
+      {children}
+    </FlexCol>
+  );
+};
 
 type ColorProps = {
   color: string;

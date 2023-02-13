@@ -127,11 +127,7 @@ const TeamSlot = ({
       `}
     >
       <div ref={drop}>
-        <FlexColC
-          className={css`
-            position: relative;
-          `}
-        >
+        <FlexColC className="relative">
           <ColorBG color={"#f0f0f0"} darken={isOver} grayscale={!hasAssists}>
             <Card componentId={{ ...componentId, use: "assist" }} monster={state.assist} />
           </ColorBG>
@@ -139,7 +135,7 @@ const TeamSlot = ({
             <AiOutlineCaretDown />
           </FlexRowC>
           <ColorBG color={invert ? otherTeamColor : teamIdToColor[teamId]} darken={isOver}>
-            <FlexColC gap="0.25rem">
+            <FlexColC className="gap-1">
               <Card componentId={{ ...componentId, use: "base" }} monster={state.base} subattr={subattr} />
               <Latents componentId={{ ...componentId, use: "latents" }} latents={state.latents} teamSlot={state} />
             </FlexColC>
@@ -158,18 +154,14 @@ const Team = ({ teamId, state }: { teamId: keyof TeamState; state: PlayerState }
   const { gameConfig } = useContext(AppStateContext);
 
   return (
-    <FlexCol gap="0.25rem">
+    <FlexCol className="gap-1">
       <FlexRow>
         <TeamSlot teamId={teamId} slotId={"1"} state={state.teamSlot1} />
         <TeamSlot teamId={teamId} slotId={"2"} state={state.teamSlot2} />
         <TeamSlot teamId={teamId} slotId={"3"} state={state.teamSlot3} />
         <TeamSlot teamId={teamId} slotId={"4"} state={state.teamSlot4} />
         <TeamSlot teamId={teamId} slotId={"5"} state={state.teamSlot5} />
-        <div
-          className={css`
-            margin-left: 0.5rem;
-          `}
-        >
+        <div className="ml-2">
           <TeamSlot teamId={teamId} slotId={"6"} state={state.teamSlot6} invert={gameConfig.mode === "2p"} />
         </div>
       </FlexRow>
@@ -187,7 +179,7 @@ export const TeamBlock = ({ playerId, shouldShow }: { playerId: keyof TeamState;
   const { teamState } = useContext(TeamStateContext);
   const is2P = gameConfig.mode === "2p";
   return shouldShow ? (
-    <FlexCol gap="0.25rem">
+    <FlexCol className="gap-1">
       <FlexRowC className="gap-2">
         <H2>{playerId}</H2>
         {!is2P ? (

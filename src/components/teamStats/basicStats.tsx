@@ -278,12 +278,7 @@ export const TeamBasicStatsDisplay = ({
         min-width: 26.5rem;
       `}
     >
-      <FlexCol
-        gap={"0.5rem"}
-        className={css`
-          margin: 0.5rem 0;
-        `}
-      >
+      <FlexCol className="my-2 gap-2">
         <FlexRow className="gap-10 justify-between">
           <table>
             <thead>

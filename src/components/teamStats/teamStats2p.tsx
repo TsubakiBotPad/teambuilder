@@ -43,11 +43,7 @@ export const TeamSharedStatsDisplay = ({
   }
 
   return (
-    <FlexColC
-      className={css`
-        padding: 0.5rem;
-      `}
-    >
+    <FlexColC className="p-2">
       <div>
         <table>
           <thead>
@@ -117,26 +113,12 @@ export const AwakeningStatsDisplay2P = ({
 
   const ah = awakenings;
   return (
-    <FlexColC
-      className={css`
-        padding: 0 1rem;
-      `}
-    >
-      <FlexCol
-        gap="0.75rem"
-        className={css`
-          margin: 0.5rem 0;
-        `}
-      >
+    <FlexColC className="px-4">
+      <FlexCol className="gap-3 my-2">
         <FlexRow>
           {AwakeningsToDisplay2PShared.map((a, j) => {
             return (
-              <FlexCol
-                key={`${keyPrefix}awakenings${j}`}
-                className={css`
-                  padding: 0 0.5rem;
-                `}
-              >
+              <FlexCol className="px-2" key={`${keyPrefix}awakenings${j}`}>
                 <FlexRow className="gap-2">
                   <AwakeningRowDisplay ah={ah} asa={a.data} keyPrefix={keyPrefix + a.header + j} />
                 </FlexRow>

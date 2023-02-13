@@ -216,15 +216,7 @@ export const AwakeningRowDisplay = ({
   keyPrefix: string;
 }) => {
   return (
-    <FlexCol
-      gap={"0.1rem 1rem"}
-      wrap="wrap"
-      className={css`
-        height: 8rem;
-        width: 100%;
-        font-size: 16px;
-      `}
-    >
+    <FlexCol className="flex-wrap h-32 w-full text-xs">
       {asa.map((b, i) => {
         var numToDisplay = b.aggFunc ? b.aggFunc(ah) : ah[b.awokenSkill];
         const val = numToDisplay ?? 0;
@@ -272,7 +264,7 @@ export const AwakeningStatsDisplay = ({
         padding: 0.5rem 0.25rem;
       `}
     >
-      <FlexCol gap="0.75rem">
+      <FlexCol className="gap-3">
         <FlexRow>
           {AwakeningsToDisplay.map((a, j) => {
             return (

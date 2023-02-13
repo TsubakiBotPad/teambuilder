@@ -43,7 +43,7 @@ const PadTeamBuilderPageContainer = React.forwardRef((props, ref) => {
   const { language, modalIsOpen, latentModalIsOpen, badgeModalIsOpen } = useContext(AppStateContext);
   return (
     <Page maxWidth={maxPageWidth}>
-      <FlexColCResponsive gap="1rem">
+      <FlexColCResponsive className="gap-4">
         <FlexRowC className="gap-4">
           <H1>{iStr("applicationTitle", language, "PAD Team Builder")}</H1>
           <LanguageSelector />

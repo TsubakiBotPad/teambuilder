@@ -1,5 +1,3 @@
-import { css } from "@emotion/css";
-import styled from "@emotion/styled";
 import React from "react";
 import { useContext } from "react";
 
@@ -11,13 +9,6 @@ import { TeamStatsToggles } from "./dungeonEffectSelector";
 import { TeamBlock } from "./team";
 import { TeamSharedStatsDisplay } from "./teamStats/teamStats2p";
 
-const TeamInput = styled.input`
-  border: 0;
-  font-size: 1.75rem;
-  font-weight: 600;
-  padding: 0.25rem 0.5rem 0.25rem 0;
-`;
-
 export const TeamBuilderContent = React.forwardRef((props, ref) => {
   const { gameConfig, setTeamName, teamName, instructions, setInstructions, language } = useContext(AppStateContext);
   return (
@@ -25,7 +16,8 @@ export const TeamBuilderContent = React.forwardRef((props, ref) => {
       <FlexRow className="gap-4">
         <FlexCol ref={ref as any}>
           <FlexRow className="items-end justify-start">
-            <TeamInput
+            <input
+              className="border-0 text-3xl font-semibold py-1 pt-2"
               placeholder={iStr("teamName", language)}
               size={41}
               value={teamName}
@@ -38,14 +30,12 @@ export const TeamBuilderContent = React.forwardRef((props, ref) => {
           {gameConfig.mode !== "2p" ? <TeamBuilderContent1n3P /> : null}
           {gameConfig.mode === "2p" ? <TeamBuilderContent2P /> : null}
           <div className="pl-2 pt-2">
-            <FlexCol gap="gap-1">
+            <FlexCol className="gap-1">
               <AuthorText />
               <textarea
                 rows={15}
                 cols={10}
-                className={css`
-                  width: 37.7rem;
-                `}
+                style={{ width: "37.7rem" }}
                 value={instructions}
                 onChange={(e) => {
                   setInstructions(e.target.value);
@@ -64,7 +54,7 @@ export const TeamBuilderContent1n3P = () => {
   const { gameConfig } = useContext(AppStateContext);
 
   return (
-    <FlexCol gap="1.5rem">
+    <FlexCol className="gap-6">
       <TeamBlock playerId="p1" shouldShow={true} />
       <TeamBlock playerId="p2" shouldShow={gameConfig.mode === "2p" || gameConfig.mode === "3p"} />
       <TeamBlock playerId="p3" shouldShow={gameConfig.mode === "3p"} />
@@ -82,7 +72,7 @@ export const TeamBuilderContent2P = () => {
   return (
     <FlexCol>
       <FlexRow>
-        <FlexCol gap="1.5rem">
+        <FlexCol className="gap-6">
           <TeamBlock playerId="p1" shouldShow={true} />
           <TeamBlock playerId="p2" shouldShow={gameConfig.mode === "2p" || gameConfig.mode === "3p"} />
           <TeamBlock playerId="p3" shouldShow={gameConfig.mode === "3p"} />
@@ -91,11 +81,7 @@ export const TeamBuilderContent2P = () => {
           <FlexRowC className="gap-4">
             <FlexColC>
               <span>{iStr("shared", language)}</span>
-              <div
-                className={css`
-                  border: solid 1px #aaa;
-                `}
-              >
+              <div className="border border-solid border-slate-400 rounded">
                 <TeamSharedStatsDisplay
                   sbs={teamStat1.sharedBasicStats}
                   tbs1={teamStat1.teamBasicStats}

@@ -159,9 +159,18 @@
   top: 2.5rem
 }
 
+.mx-2 {
+  margin-left: 0.5rem;
+  margin-right: 0.5rem
+}
+
 .my-2 {
   margin-top: 0.5rem;
   margin-bottom: 0.5rem
+}
+
+.ml-2 {
+  margin-left: 0.5rem
 }
 
 .block {
@@ -179,6 +188,10 @@
 .transform {
   -webkit-transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
           transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))
+}
+
+.flex-col {
+  flex-direction: column
 }
 
 .flex-wrap {
@@ -241,6 +254,10 @@
   gap: 1.25rem
 }
 
+.gap-6 {
+  gap: 1.5rem
+}
+
 .gap-8 {
   gap: 2rem
 }
@@ -253,6 +270,14 @@
   border-width: 1px
 }
 
+.border-0 {
+  border-width: 0px
+}
+
+.border-t {
+  border-top-width: 1px
+}
+
 .border-solid {
   border-style: solid
 }
@@ -262,9 +287,33 @@
   border-color: rgb(0 0 0 / var(--tw-border-opacity))
 }
 
+.border-slate-400 {
+  --tw-border-opacity: 1;
+  border-color: rgb(148 163 184 / var(--tw-border-opacity))
+}
+
 .bg-white {
   --tw-bg-opacity: 1;
   background-color: rgb(255 255 255 / var(--tw-bg-opacity))
+}
+
+.p-2 {
+  padding: 0.5rem
+}
+
+.px-2 {
+  padding-left: 0.5rem;
+  padding-right: 0.5rem
+}
+
+.px-4 {
+  padding-left: 1rem;
+  padding-right: 1rem
+}
+
+.py-1 {
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem
 }
 
 .py-2 {
