@@ -43,14 +43,15 @@ export const FlexRow = ({
   ...rest
 }: {
   children: ReactNode;
-  gap?: number | string;
+  gap?: string;
   justifyContent?: string;
   wrap?: string;
   className?: string;
   [rest: string]: any;
 }) => {
+  console.log(gap);
   return (
-    <div className={clsx(className, "flex", { gap }, { justifyContent }, { wrap })} {...rest}>
+    <div {...rest} className={clsx(className, "flex", gap, justifyContent, wrap)}>
       {children}
     </div>
   );
