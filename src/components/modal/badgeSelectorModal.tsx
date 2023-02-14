@@ -28,12 +28,6 @@ const modalClassName = css`
   }
 `;
 
-const overlayClassName = css`
-  background-color: rgba(0, 0, 0, 0.4);
-  position: fixed;
-  inset: 0;
-`;
-
 export const BadgeSelectorModal = ({ isOpen }: { isOpen: boolean }) => {
   const [selectedBadge, setSelectedBadge] = useState<string>("");
   const { language, setBadgeModalIsOpen, playerSelected } = useContext(AppStateContext);
@@ -49,7 +43,7 @@ export const BadgeSelectorModal = ({ isOpen }: { isOpen: boolean }) => {
         setBadgeModalIsOpen(false);
       }}
       className={modalClassName}
-      overlayClassName={overlayClassName}
+      overlayClassName="fixed inset-0 bg-black/40"
       ariaHideApp={false}
     >
       <div className="min-w-[75vw] max-w-[90vw] sm:min-w-[50vw] sm:max-w-[50vw]">

@@ -132,12 +132,6 @@ const modalClassName = css`
   }
 `;
 
-const overlayClassName = css`
-  background-color: rgba(0, 0, 0, 0.4);
-  position: fixed;
-  inset: 0;
-`;
-
 const f = async (
   e: any,
   setQueriedId: any,
@@ -206,7 +200,7 @@ export const CardSelectorModal = ({ isOpen }: { isOpen: boolean }) => {
         setModalIsOpen(false);
       }}
       className={modalClassName}
-      overlayClassName={overlayClassName}
+      overlayClassName="fixed inset-0 bg-black/40"
       ariaHideApp={false}
     >
       <div className="min-w-[75vw] max-w-[90vw] sm:min-w-[50vw] sm:max-w-[50vw]">

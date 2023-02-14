@@ -31,11 +31,11 @@ const modalClassName = css`
   }
 `;
 
-const overlayClassName = css`
-  background-color: rgba(0, 0, 0, 0.4);
-  position: fixed;
-  inset: 0;
-`;
+// const overlayClassName = css`
+//   background-color: rgba(0, 0, 0, 0.4);
+//   position: fixed;
+//   inset: 0;
+// `;
 
 const DEFAULT_MAX_LATENTS = 6;
 
@@ -77,7 +77,7 @@ export const LatentSelectorModal = ({ isOpen }: { isOpen: boolean }) => {
         setLatentModalIsOpen(false);
       }}
       className={modalClassName}
-      overlayClassName={overlayClassName}
+      overlayClassName="fixed inset-0 bg-black/40"
       ariaHideApp={false}
     >
       <div className="min-w-[75vw] max-w-[90vw] sm:min-w-[50vw] sm:max-w-[50vw]">
