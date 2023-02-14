@@ -3,7 +3,6 @@ import { useContext, useMemo, useState } from "react";
 import { IoIosRemoveCircle } from "react-icons/io";
 import Modal from "react-modal";
 
-import { breakpoint } from "../../breakpoints";
 import { MonsterResponse } from "../../client";
 import { iStr } from "../../i18n/i18n";
 import { monsterCacheClient } from "../../model/monsterCacheClient";
@@ -15,27 +14,6 @@ import { ConfirmButton, RemoveButton } from "../generic/confirmButton";
 import { ModalCloseButton } from "./common";
 import { BsDot } from "react-icons/bs";
 import clsx from "clsx";
-
-const modalClassName = css`
-  border: 0;
-  position: absolute;
-  left: 25vw;
-  top: 10vh;
-
-  @media ${breakpoint.xs} {
-    left: 5vw;
-  }
-
-  &:focus-visible {
-    outline: 0;
-  }
-`;
-
-// const overlayClassName = css`
-//   background-color: rgba(0, 0, 0, 0.4);
-//   position: fixed;
-//   inset: 0;
-// `;
 
 const DEFAULT_MAX_LATENTS = 6;
 
@@ -76,7 +54,7 @@ export const LatentSelectorModal = ({ isOpen }: { isOpen: boolean }) => {
       onRequestClose={() => {
         setLatentModalIsOpen(false);
       }}
-      className={modalClassName}
+      className="border-0 absolute left-[5vw] sm:left-[25vw] top-[10vh] focus-visible:outline-none"
       overlayClassName="fixed inset-0 bg-black/40"
       ariaHideApp={false}
     >

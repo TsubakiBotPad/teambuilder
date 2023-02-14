@@ -2,7 +2,6 @@ import { css } from "@emotion/css";
 import { useContext, useState } from "react";
 import Modal from "react-modal";
 
-import { breakpoint } from "../../breakpoints";
 import { PadAssetImage } from "../../model/padAssets";
 import { AppStateContext, setPlayerBadge, TeamStateContext } from "../../model/teamStateManager";
 import { BADGE_NAMES } from "../../model/types/badges";
@@ -12,21 +11,6 @@ import { ModalCloseButton } from "./common";
 import { IoIosRemoveCircle, IoIosCheckmarkCircle } from "react-icons/io";
 import { iStr } from "../../i18n/i18n";
 import { BsDot } from "react-icons/bs";
-
-const modalClassName = css`
-  border: 0;
-  position: absolute;
-  left: 25vw;
-  top: 10vh;
-
-  @media ${breakpoint.xs} {
-    left: 5vw;
-  }
-
-  &:focus-visible {
-    outline: 0;
-  }
-`;
 
 export const BadgeSelectorModal = ({ isOpen }: { isOpen: boolean }) => {
   const [selectedBadge, setSelectedBadge] = useState<string>("");
@@ -42,7 +26,7 @@ export const BadgeSelectorModal = ({ isOpen }: { isOpen: boolean }) => {
       onRequestClose={() => {
         setBadgeModalIsOpen(false);
       }}
-      className={modalClassName}
+      className="border-0 absolute left-[5vw] sm:left-[25vw] top-[10vh] focus-visible:outline-none"
       overlayClassName="fixed inset-0 bg-black/40"
       ariaHideApp={false}
     >

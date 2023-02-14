@@ -1,12 +1,9 @@
-import { css } from "@emotion/css";
-import styled from "@emotion/styled";
 import { AxiosError } from "axios";
 import { debounce } from "lodash";
 import { useContext, useMemo, useRef, useState } from "react";
 import { IoIosCheckmarkCircle, IoIosRemoveCircle } from "react-icons/io";
 import Modal from "react-modal";
 
-import { breakpoint } from "../../breakpoints";
 import { ApiError, MonsterResponse } from "../../client";
 import { iStr } from "../../i18n/i18n";
 import { BASE_ICON_URL } from "../../model/images";
@@ -19,15 +16,7 @@ import { leftPad } from "../generic/leftPad";
 import { CardInfo } from "./cardInfo";
 import { ModalCloseButton } from "./common";
 import { BsDot } from "react-icons/bs";
-
-const CardQueryInput = styled.input`
-  border: 1px solid gray;
-  border-radius: 2px;
-  font-size: 1rem;
-  padding: 0.5rem 0.5rem;
-  text-align: center;
-  width: 95%;
-`;
+import clsx from "clsx";
 
 const handleInputChange = async (
   query: string,
@@ -60,16 +49,6 @@ const handleInputChange = async (
   }
 };
 
-type AltEvoimgProps = {
-  selected: boolean;
-};
-
-const AltEvoImg = styled.img<AltEvoimgProps>`
-  border: ${(props) => (props.selected ? "1px solid black" : "0")};
-  width: 3rem;
-  opacity: ${(props) => (props.selected ? "1" : "0.8")};
-`;
-
 const AlternateEvoImages = ({
   ids,
   selectedMonster,
@@ -90,7 +69,7 @@ const AlternateEvoImages = ({
     <FlexColC>
       <FlexRowC className="gap-1">
         {ids.map((id) => (
-          <AltEvoImg
+          <img
             key={id}
             src={`${BASE_ICON_URL}${leftPad(id, 5)}.png`}
             onClick={async (e) => {
@@ -109,28 +88,19 @@ const AlternateEvoImages = ({
               );
               setModalIsOpen(false);
             }}
-            selected={selectedMonster ? id === selectedMonster.monster_id : false}
+            className={clsx(
+              "w-12 rounded-sm cursor-pointer",
+              selectedMonster && selectedMonster.monster_id === id
+                ? "opacity-1 border border-solid border-black"
+                : "opacity-80 border-0"
+            )}
+            alt={selectedMonster ? selectedMonster.name_en : ""}
           />
         ))}
       </FlexRowC>
     </FlexColC>
   );
 };
-
-const modalClassName = css`
-  border: 0;
-  position: absolute;
-  left: 25vw;
-  top: 10vh;
-
-  @media ${breakpoint.xs} {
-    left: 5vw;
-  }
-
-  &:focus-visible {
-    outline: 0;
-  }
-`;
 
 const f = async (
   e: any,
@@ -199,7 +169,7 @@ export const CardSelectorModal = ({ isOpen }: { isOpen: boolean }) => {
       onRequestClose={() => {
         setModalIsOpen(false);
       }}
-      className={modalClassName}
+      className="border-0 absolute left-[5vw] sm:left-[25vw] top-[10vh] focus-visible:outline-none"
       overlayClassName="fixed inset-0 bg-black/40"
       ariaHideApp={false}
     >
@@ -217,7 +187,8 @@ export const CardSelectorModal = ({ isOpen }: { isOpen: boolean }) => {
               </FlexRowC>
             </H2>
             <FlexColC className="gap-2">
-              <CardQueryInput
+              <input
+                className="border border-solid border-slate-500 rounded-sm text-base p-2 text-center w-[95%]"
                 ref={inputRef}
                 type="text"
                 placeholder={iStr("search", language)}
