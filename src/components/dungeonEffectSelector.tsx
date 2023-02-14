@@ -1,4 +1,3 @@
-import { css } from "@emotion/css";
 import { useContext } from "react";
 import { iStr } from "../i18n/i18n";
 import { AppStateContext } from "../model/teamStateManager";
@@ -16,13 +15,14 @@ export const TeamStatsToggles = () => {
   const { language, dungeonEffects } = useContext(AppStateContext);
   return (
     <div
-      className={css`
-        position: relative;
-        height: 35px;
-        box-sizing: border-box;
-        width: 440px;
-        padding-left: 0.5rem;
-      `}
+      className="relative h-9 w-[440px] pl-2"
+      // {css`
+      //   position: relative;
+      //   height: 35px;
+      //   box-sizing: border-box;
+      //   width: 440px;
+      //   padding-left: 0.5rem;
+      // `}
     >
       <FlexRowC className="absolute top-10 gap-1">
         {iStr("dungeonEffects", language)}

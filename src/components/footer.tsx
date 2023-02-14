@@ -3,12 +3,7 @@ import { FlexColC, FlexRowC } from "../stylePrimitives";
 export const Footer = () => {
   return (
     <>
-      <div
-        className="py-2 my-2"
-        style={{
-          backgroundColor: "#feeeee"
-        }}
-      >
+      <div className="py-2 my-2 bg-[#feeeee]">
         <FlexColC className="gap-1">
           <span className="text-xs">PAD Team Builder is made with love by the Tsubotki team :3</span>
 

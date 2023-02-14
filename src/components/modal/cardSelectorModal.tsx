@@ -283,14 +283,7 @@ export const CardSelectorModal = ({ isOpen }: { isOpen: boolean }) => {
               </FlexRowC>
             </FlexColC>
 
-            <FlexCol
-              className="gap-4 p-4 shadow border border-solid border-black"
-              // className={css`
-              //   border: 1px solid black;
-              //   padding: 1rem;
-              //   box-shadow: 2px 2px #888888;
-              // `}
-            >
+            <FlexCol className="gap-4 p-4 shadow-sm shadow-slate-400 border border-solid border-black rounded">
               {selectedMonster ? (
                 <CardInfo
                   monster={selectedMonster}

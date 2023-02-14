@@ -117,7 +117,7 @@ export const CardInfo = ({
               return <PadAssetImage assetName={`t${a}`} height={22} />;
             })}
           </FlexCol>
-          <img src={`${BASE_ICON_URL}${leftPad(m.monster_id, 5)}.png`} alt="monster" height={"100%"} />
+          <img src={`${BASE_ICON_URL}${leftPad(m.monster_id, 5)}.png`} alt="monster" height="108px" />
         </FlexRow>
       </div>
 

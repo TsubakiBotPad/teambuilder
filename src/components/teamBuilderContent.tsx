@@ -19,7 +19,7 @@ export const TeamBuilderContent = React.forwardRef((props, ref) => {
             <input
               className="border-0 text-3xl font-semibold py-1 pt-2"
               placeholder={iStr("teamName", language)}
-              size={41}
+              size={38}
               value={teamName}
               onChange={(e) => {
                 setTeamName(e.target.value);
