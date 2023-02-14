@@ -159,6 +159,34 @@
   top: 2.5rem
 }
 
+.left-\[45\%\] {
+  left: 45%
+}
+
+.top-0 {
+  top: 0px
+}
+
+.left-\[95\%\] {
+  left: 95%
+}
+
+.top-\[2\.3rem\] {
+  top: 2.3rem
+}
+
+.right-\[2\.3rem\] {
+  right: 2.3rem
+}
+
+.right-\[-2\.3rem\] {
+  right: -2.3rem
+}
+
+.left-\[calc\(100\%_-_2\.3rem\)\] {
+  left: calc(100% - 2.3rem)
+}
+
 .m-4 {
   margin: 1rem
 }
@@ -221,6 +249,10 @@
 
 .h-\[22px\] {
   height: 22px
+}
+
+.h-0 {
+  height: 0px
 }
 
 .w-1\/4 {

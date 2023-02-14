@@ -14,6 +14,7 @@ import { FlexCol, FlexColC, FlexRow, FlexRowC, H2, H3 } from "../../stylePrimiti
 import { ConfirmButton, RemoveButton } from "../generic/confirmButton";
 import { ModalCloseButton } from "./common";
 import { BsDot } from "react-icons/bs";
+import clsx from "clsx";
 
 const modalClassName = css`
   border: 0;
@@ -128,26 +129,16 @@ export const LatentSelectorModal = ({ isOpen }: { isOpen: boolean }) => {
                     const isSixSlot = Math.floor(i / 100) === 6;
                     if (isSixSlot) {
                       return (
-                        <div key={"selectedLatent" + idx} className={css``}>
+                        <div key={"selectedLatent" + idx}>
                           <PadAssetImage
                             assetName={"6slotLatentBg"}
                             onClick={() => {
                               selectedLatents.splice(idx, 1);
                               setSelectedLatents([...selectedLatents]);
                             }}
-                            className={css`
-                              opacity: ${valid ? "1" : "0.5"};
-                              position: relative;
-                            `}
+                            className={clsx("relative", valid ? "opacity-1" : "opacity-50")}
                           >
-                            <div
-                              className={css`
-                                position: absolute;
-                                top: 0;
-                                left: 45%;
-                                height: 0;
-                              `}
-                            >
+                            <div className="absolute top-0 left-[45%] h-0">
                               <PadAssetImage assetName={`${name}latentbase`} />
                             </div>
                           </PadAssetImage>

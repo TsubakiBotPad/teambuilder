@@ -1,4 +1,3 @@
-import { css } from "@emotion/css";
 import { AiFillCloseCircle } from "react-icons/ai";
 
 export const ModalCloseButton = ({
@@ -11,13 +10,7 @@ export const ModalCloseButton = ({
   setModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
   return (
-    <div
-      className={css`
-        position: relative;
-        top: 2.3rem;
-        left: 95%;
-      `}
-    >
+    <div className="relative top-[2.3rem] left-[calc(100%_-_2.3rem)]">
       <AiFillCloseCircle
         size={25}
         color={hoverClose ? "gray" : "lightgray"}
