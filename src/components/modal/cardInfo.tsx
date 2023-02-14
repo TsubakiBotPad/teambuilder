@@ -11,7 +11,7 @@ import { AppStateContext } from "../../model/teamStateManager";
 import { computeLeaderSkill } from "../../model/types/leaderSkill";
 import { getKillers } from "../../model/types/monster";
 import { maxLevel } from "../../model/types/stat";
-import { FlexCol, FlexRow, FlexRowC, H3, TDh } from "../../stylePrimitives";
+import { FlexCol, FlexRow, FlexRowC, H3, TD } from "../../stylePrimitives";
 import { fixedDecimals } from "../generic/fixedDecimals";
 import { leftPad } from "../generic/leftPad";
 import { LevelSelector } from "../levelSelector";
@@ -31,12 +31,6 @@ const LeaderSkillText = ({ monster: m }: { monster: MonsterResponse }) => {
 };
 
 const TH = styled.th`
-  padding: 0rem 0.5rem;
-  text-align: right;
-  font-weight: 600;
-`;
-
-const TD = styled.td`
   padding: 0rem 0.5rem;
   text-align: right;
   font-weight: 600;
@@ -71,7 +65,7 @@ export const CardInfo = ({
           >
             <tbody>
               <tr>
-                <TDh width={"1rem"}>AW</TDh>
+                <TD className="w-4 font-semibold text-right px-2">AW</TD>
                 <td>
                   <FlexRow className="gap-1">
                     {m.awakenings
@@ -83,7 +77,7 @@ export const CardInfo = ({
                 </td>
               </tr>
               <tr>
-                <TDh>LV</TDh>
+                <TD className="font-semibold text-right px-2">LV</TD>
                 <td>
                   <LevelSelector
                     currentLevel={currentLevel}
@@ -96,7 +90,7 @@ export const CardInfo = ({
               </tr>
               {gameConfig.mode !== "2p" && superAwakenings.length > 0 && currentLevel && currentLevel > 99 ? (
                 <tr>
-                  <TDh>SA</TDh>
+                  <TD className="font-semibold text-right px-2">SA</TD>
                   <td>
                     <SuperAwakeningSelector
                       currentSA={currentSA}
@@ -142,15 +136,15 @@ export const CardInfo = ({
             </thead>
             <tbody>
               <tr>
-                <TD>HP</TD>
+                <td className="font-semibold text-right px-2">HP</td>
                 <td>{m.hp_max}</td>
               </tr>
               <tr>
-                <TD>ATK</TD>
+                <td className="font-semibold text-right px-2">ATK</td>
                 <td>{m.atk_max}</td>
               </tr>
               <tr>
-                <TD>RCV</TD>
+                <td className="font-semibold text-right px-2">RCV</td>
                 <td>{m.rcv_max}</td>
               </tr>
             </tbody>

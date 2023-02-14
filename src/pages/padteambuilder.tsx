@@ -31,7 +31,7 @@ import {
 } from "../model/teamStateManager";
 import { FlexColCResponsive, FlexRowC, H1, Page } from "../stylePrimitives";
 
-const maxPageWidth = "1440px";
+const maxPageWidth = "max-w-page";
 
 export const DraggableTypes = {
   card: "card",
@@ -42,7 +42,7 @@ export const DraggableTypes = {
 const PadTeamBuilderPageContainer = React.forwardRef((props, ref) => {
   const { language, modalIsOpen, latentModalIsOpen, badgeModalIsOpen } = useContext(AppStateContext);
   return (
-    <Page maxWidth={maxPageWidth}>
+    <Page className={maxPageWidth}>
       <FlexColCResponsive className="gap-4">
         <FlexRowC className="gap-4">
           <H1>{iStr("applicationTitle", language, "PAD Team Builder")}</H1>

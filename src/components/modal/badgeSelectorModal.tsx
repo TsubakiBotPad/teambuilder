@@ -6,7 +6,7 @@ import { breakpoint } from "../../breakpoints";
 import { PadAssetImage } from "../../model/padAssets";
 import { AppStateContext, setPlayerBadge, TeamStateContext } from "../../model/teamStateManager";
 import { BADGE_NAMES } from "../../model/types/badges";
-import { BoundingBox, FlexColC, FlexRow, FlexRowC, H2 } from "../../stylePrimitives";
+import { FlexColC, FlexRow, FlexRowC, H2 } from "../../stylePrimitives";
 import { ConfirmButton, RemoveButton } from "../generic/confirmButton";
 import { ModalCloseButton } from "./common";
 import { IoIosRemoveCircle, IoIosCheckmarkCircle } from "react-icons/io";
@@ -52,14 +52,9 @@ export const BadgeSelectorModal = ({ isOpen }: { isOpen: boolean }) => {
       overlayClassName={overlayClassName}
       ariaHideApp={false}
     >
-      <BoundingBox minWidth="50vw" maxWidth="50vw" minWidthM="75vw" maxWidthM="90vw">
+      <div className="min-w-[75vw] max-w-[90vw] sm:min-w-[50vw] sm:max-w-[50vw]">
         <ModalCloseButton hoverClose={hoverClose} setHoverClose={setHoverClose} setModalOpen={setBadgeModalIsOpen} />
-        <div
-          className={css`
-            background-color: #fefefe;
-            padding: 1rem;
-          `}
-        >
+        <div className="bg-slate-50 p-4 rounded shadow-sm shadow-slate-50">
           <H2>
             <FlexRowC>
               {playerSelected}
@@ -111,7 +106,7 @@ export const BadgeSelectorModal = ({ isOpen }: { isOpen: boolean }) => {
             </FlexRowC>
           </FlexColC>
         </div>
-      </BoundingBox>
+      </div>
     </Modal>
   );
 };

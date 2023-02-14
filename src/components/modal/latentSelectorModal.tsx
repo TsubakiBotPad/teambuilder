@@ -10,7 +10,7 @@ import { monsterCacheClient } from "../../model/monsterCacheClient";
 import { PadAssetImage } from "../../model/padAssets";
 import { AppStateContext, setCardLatents, TeamSlotState, TeamStateContext } from "../../model/teamStateManager";
 import { LATENTS_BY_SIZE, LATENTS_ID_TO_NAME, LATENTS_NAME_TO_ID } from "../../model/types/latents";
-import { BoundingBox, FlexCol, FlexColC, FlexRow, FlexRowC, H2, H3 } from "../../stylePrimitives";
+import { FlexCol, FlexColC, FlexRow, FlexRowC, H2, H3 } from "../../stylePrimitives";
 import { ConfirmButton, RemoveButton } from "../generic/confirmButton";
 import { ModalCloseButton } from "./common";
 import { BsDot } from "react-icons/bs";
@@ -79,19 +79,10 @@ export const LatentSelectorModal = ({ isOpen }: { isOpen: boolean }) => {
       overlayClassName={overlayClassName}
       ariaHideApp={false}
     >
-      <BoundingBox minWidth="50vw" maxWidth="50vw" minWidthM="75vw" maxWidthM="90vw">
+      <div className="min-w-[75vw] max-w-[90vw] sm:min-w-[50vw] sm:max-w-[50vw]">
         <ModalCloseButton hoverClose={hoverClose} setHoverClose={setHoverClose} setModalOpen={setLatentModalIsOpen} />
-        <div
-          className={css`
-            background-color: #fefefe;
-            padding: 1rem;
-          `}
-        >
-          <H2
-            className={css`
-              margin-bottom: 1rem;
-            `}
-          >
+        <div className="bg-slate-50 p-4 rounded shadow-sm shadow-slate-50">
+          <H2 className="mb-4">
             <FlexRowC>
               {cardSlotSelected.teamId}
               <BsDot />
@@ -207,7 +198,7 @@ export const LatentSelectorModal = ({ isOpen }: { isOpen: boolean }) => {
             </FlexRowC>
           </FlexColC>
         </div>
-      </BoundingBox>
+      </div>
     </Modal>
   );
 };

@@ -1,5 +1,3 @@
-import styled from "@emotion/styled";
-import { breakpoint } from "./breakpoints";
 import { ReactNode } from "react";
 import clsx from "clsx";
 
@@ -129,76 +127,101 @@ export const HR2 = ({
   );
 };
 
-type PageProps = {
-  maxWidth: string;
-  margin?: string;
+export const PageBox = ({
+  children,
+  className,
+  ...rest
+}: {
+  children: ReactNode;
+  className?: string;
+  [rest: string]: any;
+}) => {
+  return (
+    <div {...rest} className={clsx(className, "w-full m-4")}>
+      {children}
+    </div>
+  );
 };
 
-export const PageBox = styled.div<PageProps>`
-  width: 100%;
-  max-width: ${(props) => props.maxWidth};
-  margin: ${(props) => (props.margin ? props.margin : "1rem")};
-`;
-
-export const Page = ({ maxWidth, children }: { maxWidth: string; children: React.ReactNode }) => {
+export const Page = ({
+  children,
+  className,
+  ...rest
+}: {
+  children: ReactNode;
+  className?: string;
+  [rest: string]: any;
+}) => {
   return (
     <PageFlow>
-      <PageBox maxWidth={maxWidth}>{children}</PageBox>
+      <PageBox {...rest} className={clsx(className)}>
+        {children}
+      </PageBox>
     </PageFlow>
   );
 };
 
-export const PageFlow = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
-type BoundingBoxProps = {
-  maxWidth?: string;
-  maxWidthM?: string;
-  minWidth?: string;
-  minWidthM?: string;
+export const PageFlow = ({
+  children,
+  className,
+  ...rest
+}: {
+  children: ReactNode;
+  className?: string;
+  [rest: string]: any;
+}) => {
+  return (
+    <div {...rest} className={clsx(className, "flex justify-center items-center")}>
+      {children}
+    </div>
+  );
 };
 
-export const BoundingBox = styled.div<BoundingBoxProps>`
-  max-width: ${(props) => props.maxWidth ?? "100%"};
-  min-width: ${(props) => props.minWidth ?? "0%"};
+export const TD = ({
+  children,
+  className,
+  ...rest
+}: {
+  children?: ReactNode;
+  className?: string;
+  [rest: string]: any;
+}) => {
+  return (
+    <td {...rest} className={clsx(className, "py-2 px-1")}>
+      {children}
+    </td>
+  );
+};
 
-  @media ${breakpoint.xs} {
-    max-width: ${(props) => props.maxWidthM ?? "100%"};
-    min-width: ${(props) => props.minWidthM ?? "0%"};
-  }
-`;
-
-export const TD = styled.td`
-  padding: 0.5rem 0.25rem;
-`;
-
-export const TDr = styled(TD)`
-  text-align: right;
-`;
-
-export const TDh = styled(TD)`
-  font-weight: 600;
-`;
-
-export const TDrh = styled(TD)`
-  font-weight: 600;
-  text-align: right;
-`;
-
-type ToggleOptionProps = {
+export const ToggleOption = ({
+  children,
+  className,
+  isEnabled,
+  image,
+  ...rest
+}: {
+  children?: ReactNode;
+  className?: string;
   isEnabled: boolean;
   image: string;
+  [rest: string]: any;
+}) => {
+  return (
+    <span
+      {...rest}
+      className={clsx(
+        className,
+        "inline-block cursor-pointer h-[22px] w-[22px]",
+        isEnabled ? "grayscale-0" : "grayscale",
+        image
+      )}
+      style={{
+        backgroundSize: "22px",
+        width: "22px",
+        height: "22px"
+      }}
+    >
+      {children}
+    </span>
+  );
 };
-
-export const ToggleOption = styled.span<ToggleOptionProps>`
-  cursor: pointer;
-  filter: grayscale(${(props) => (props.isEnabled ? 0 : 1)});
-  background: url("img/${(props) => props.image}") no-repeat;
-  height: 22px;
-  width: 22px;
-  background-size: 22px;
-  display: inline-block;
-`;

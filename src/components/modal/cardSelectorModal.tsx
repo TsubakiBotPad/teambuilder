@@ -12,7 +12,7 @@ import { iStr } from "../../i18n/i18n";
 import { BASE_ICON_URL } from "../../model/images";
 import { monsterCacheClient } from "../../model/monsterCacheClient";
 import { AppStateContext, setCard, TeamCardInfo, TeamSlotState, TeamStateContext } from "../../model/teamStateManager";
-import { BoundingBox, FlexCol, FlexColC, FlexRowC, H2 } from "../../stylePrimitives";
+import { FlexCol, FlexColC, FlexRowC, H2 } from "../../stylePrimitives";
 import { GameConfig } from "../gameConfigSelector";
 import { ConfirmButton, RemoveButton } from "../generic/confirmButton";
 import { leftPad } from "../generic/leftPad";
@@ -209,14 +209,9 @@ export const CardSelectorModal = ({ isOpen }: { isOpen: boolean }) => {
       overlayClassName={overlayClassName}
       ariaHideApp={false}
     >
-      <BoundingBox minWidth="50vw" maxWidth="50vw" minWidthM="75vw" maxWidthM="90vw">
+      <div className="min-w-[75vw] max-w-[90vw] sm:min-w-[50vw] sm:max-w-[50vw]">
         <ModalCloseButton hoverClose={hoverClose} setHoverClose={setHoverClose} setModalOpen={setModalIsOpen} />
-        <div
-          className={css`
-            background-color: #fefefe;
-            padding: 1rem;
-          `}
-        >
+        <div className="bg-slate-50 p-4 rounded shadow-sm shadow-slate-50">
           <FlexCol className="gap-2">
             <H2>
               <FlexRowC>
@@ -298,7 +293,7 @@ export const CardSelectorModal = ({ isOpen }: { isOpen: boolean }) => {
             </FlexCol>
           </FlexCol>
         </div>
-      </BoundingBox>
+      </div>
     </Modal>
   );
 };
