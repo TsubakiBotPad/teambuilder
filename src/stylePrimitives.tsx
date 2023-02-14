@@ -15,20 +15,6 @@ export const H3 = ({ children, className }: { children: ReactNode; className?: s
   return <h1 className={clsx("text-xl font-semibold", className)}>{children}</h1>;
 };
 
-// type FlexRowProps = {
-//   gap?: string;
-//   wrap?: string;
-//   center?: boolean;
-//   justifyContent?: string;
-// };
-
-// export const FlexRow = styled.div<FlexRowProps>`
-//   display: flex;
-//   gap: ${(props) => (props.gap ? props.gap : "0")};
-//   justify-content: ${(props) => (props.justifyContent ? props.justifyContent : props.center ? "center" : "start")};
-//   flex-wrap: ${(props) => (props.wrap ? props.wrap : "nowrap")};
-// `;
-
 export const FlexRow = ({
   children,
   className,
@@ -44,10 +30,6 @@ export const FlexRow = ({
     </div>
   );
 };
-
-// export const FlexRowC = styled(FlexRow)`
-//   align-items: center;
-// `;
 
 export const FlexRowC = ({
   children,
@@ -65,26 +47,6 @@ export const FlexRowC = ({
     </FlexRow>
   );
 };
-
-// export const RespRow = styled.div<FlexRowProps>`
-//   display: flex;
-//   @media ${breakpoint.xs} {
-//     flex-direction: column;
-//   }
-//   gap: ${(props) => (props.gap ? props.gap : "0")};
-//   justify-content: ${(props) => (props.center ? "center" : "start")};
-// `;
-
-// export const FlexCol = styled.div<FlexColProps>`
-//   display: flex;
-//   flex-direction: column;
-//   gap: ${(props) => (props.gap ? props.gap : "0")};
-//   ${(props) => (props.wrap ? `flex-wrap: ${props.wrap};` : "")}
-// `;
-
-// export const FlexColC = styled(FlexCol)`
-//   align-items: center;
-// `;
 
 export const FlexCol = ({
   children,
@@ -121,39 +83,51 @@ export const FlexColC = ({
 
 export const FlexColCResponsive = ({
   children,
-  style,
+  className,
   ...rest
 }: {
   children: ReactNode;
-  style?: Object;
+  className?: string;
   [rest: string]: any;
 }) => {
   return (
-    <FlexCol {...rest} style={{ ...style, ...{ alignItems: "safe center" } }}>
+    <FlexCol {...rest} className={clsx(className, "items-start xl:items-center")}>
       {children}
     </FlexCol>
   );
 };
 
-type ColorProps = {
-  color: string;
+export const HR = ({
+  children,
+  className,
+  ...rest
+}: {
+  children?: ReactNode;
+  className?: string;
+  [rest: string]: any;
+}) => {
+  return (
+    <hr {...rest} className={clsx(className, "border-0 border-b border-solid w-full my-8")}>
+      {children}
+    </hr>
+  );
 };
 
-export const HR = styled.hr<ColorProps>`
-  border: 0;
-  border-bottom: 1px solid ${(props) => props.color};
-  width: 100%;
-  margin-top: 2rem;
-  margin-bottom: 2rem;
-`;
-
-export const HR2 = styled.hr`
-  border: 0;
-  border-bottom: 1px solid black;
-  width: 25%;
-  margin-top: 0.25rem;
-  margin-bottom: 0.25rem;
-`;
+export const HR2 = ({
+  children,
+  className,
+  ...rest
+}: {
+  children?: ReactNode;
+  className?: string;
+  [rest: string]: any;
+}) => {
+  return (
+    <hr {...rest} className={clsx(className, "border-0 border-b border-black border-solid w-1/4 my-1")}>
+      {children}
+    </hr>
+  );
+};
 
 type PageProps = {
   maxWidth: string;
