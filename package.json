@@ -17,7 +17,6 @@
     "ajv": "^6.12.6",
     "axios": "^1.2.1",
     "buffer": "^6.0.3",
-    "clsx": "^1.2.1",
     "country-flag-icons": "^1.5.5",
     "husky": "^8.0.1",
     "json5": "^2.2.1",
@@ -77,8 +76,7 @@
     "@types/smooth-scroll": "^16.1.1",
     "customize-cra": "^1.0.0",
     "react-app-rewired": "^2.2.1",
-    "tailwindcss": "^3.2.6",
-    "tailwindcss-alpha": "^0.1.4"
+    "tailwindcss": "^3.2.6"
   },
   "homepage": "http://teambuilder.tsubakibot.com/"
 }

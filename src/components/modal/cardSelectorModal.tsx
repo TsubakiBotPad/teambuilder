@@ -16,7 +16,7 @@ import { leftPad } from "../generic/leftPad";
 import { CardInfo } from "./cardInfo";
 import { ModalCloseButton } from "./common";
 import { BsDot } from "react-icons/bs";
-import clsx from "clsx";
+import clsx from "../../clsx";
 
 const handleInputChange = async (
   query: string,

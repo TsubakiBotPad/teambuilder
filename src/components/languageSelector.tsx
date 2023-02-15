@@ -1,7 +1,6 @@
-import styled from "@emotion/styled";
-import clsx from "clsx";
+import clsx from "../clsx";
 import { JP, US } from "country-flag-icons/react/3x2";
-import { useContext } from "react";
+import { ReactNode, useContext } from "react";
 
 import { AppStateContext } from "../model/teamStateManager";
 import { FlexRowC } from "../stylePrimitives";
@@ -11,18 +10,25 @@ export interface GameConfig {
   defaultCardLevel: number;
 }
 
-type FancyButtonProps = {
+const FancyButton = ({
+  children,
+  focused,
+  ...rest
+}: {
+  children: ReactNode;
   focused: boolean;
-};
-
-const FancyButton = styled.button<FancyButtonProps>`
-  cursor: pointer;
-`;
-
-const flagClassname = (focused: boolean) => {
-  return clsx(
-    "w-7 border border-solid rounded-sm",
-    focused ? "opacity-1 border-slate-800 shadow-sm shadow-slate-400" : "opacity-50 border-slate-300"
+  [rest: string]: any;
+}) => {
+  return (
+    <button
+      {...rest}
+      className={clsx(
+        focused ? "opacity-1 border-slate-800 shadow-sm shadow-slate-400" : "opacity-50 border-slate-3",
+        "cursor-pointer w-7 border border-solid rounded-sm"
+      )}
+    >
+      {children}
+    </button>
   );
 };
 
@@ -31,12 +37,13 @@ export const LanguageSelector = () => {
   return (
     <FlexRowC className="gap-1">
       <FancyButton
+        className="cursor-pointer"
         focused={language === "en"}
         onClick={() => {
           setLanguage("en");
         }}
       >
-        <US title="English" className={flagClassname(language === "en")} />
+        <US title="English" />
       </FancyButton>
       <FancyButton
         focused={language === "ja"}
@@ -44,7 +51,7 @@ export const LanguageSelector = () => {
           setLanguage("ja");
         }}
       >
-        <JP title="日本語" className={flagClassname(language === "ja")} />
+        <JP title="日本語" />
       </FancyButton>
     </FlexRowC>
   );

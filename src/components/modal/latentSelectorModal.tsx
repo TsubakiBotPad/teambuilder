@@ -13,7 +13,7 @@ import { FlexCol, FlexColC, FlexRow, FlexRowC, H2, H3 } from "../../stylePrimiti
 import { ConfirmButton, RemoveButton } from "../generic/confirmButton";
 import { ModalCloseButton } from "./common";
 import { BsDot } from "react-icons/bs";
-import clsx from "clsx";
+import clsx from "../../clsx";
 
 const DEFAULT_MAX_LATENTS = 6;
 
