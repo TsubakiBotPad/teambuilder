@@ -39,9 +39,10 @@ export function clsx(...inputs: ClassValue[]): string {
 	while (i < [inputs].length) {
         tmp = [inputs][i++];
 		if (tmp) {
-			if (x === toVal(tmp)) {
+			x = toVal(tmp);
+			if (x) {
 				str && (str += ' ');
-				str += x
+				str += x;
 			}
 		}
 	}

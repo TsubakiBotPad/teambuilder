@@ -226,6 +226,10 @@
   margin-right: 1px
 }
 
+.mb-2 {
+  margin-bottom: 0.5rem
+}
+
 .block {
   display: block
 }
@@ -391,6 +395,42 @@
   gap: 1px
 }
 
+.space-x-2 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-x-reverse: 0;
+  margin-right: calc(0.5rem * var(--tw-space-x-reverse));
+  margin-left: calc(0.5rem * calc(1 - var(--tw-space-x-reverse)))
+}
+
+.space-x-0 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-x-reverse: 0;
+  margin-right: calc(0px * var(--tw-space-x-reverse));
+  margin-left: calc(0px * calc(1 - var(--tw-space-x-reverse)))
+}
+
+.space-x-0\.5 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-x-reverse: 0;
+  margin-right: calc(0.125rem * var(--tw-space-x-reverse));
+  margin-left: calc(0.125rem * calc(1 - var(--tw-space-x-reverse)))
+}
+
+.divide-x > :not([hidden]) ~ :not([hidden]) {
+  --tw-divide-x-reverse: 0;
+  border-right-width: calc(1px * var(--tw-divide-x-reverse));
+  border-left-width: calc(1px * calc(1 - var(--tw-divide-x-reverse)))
+}
+
+.divide-x-reverse > :not([hidden]) ~ :not([hidden]) {
+  --tw-divide-x-reverse: 1
+}
+
+.divide-solid > :not([hidden]) ~ :not([hidden]) {
+  border-style: solid
+}
+
+.divide-black\/25 > :not([hidden]) ~ :not([hidden]) {
+  border-color: rgb(0 0 0 / 0.25)
+}
+
 .rounded {
   border-radius: 0.25rem
 }
@@ -442,6 +482,10 @@
 .border-slate-800 {
   --tw-border-opacity: 1;
   border-color: rgb(30 41 59 / var(--tw-border-opacity))
+}
+
+.border-black\/25 {
+  border-color: rgb(0 0 0 / 0.25)
 }
 
 .bg-\[\#feeeee\] {
@@ -498,6 +542,11 @@
 .py-2 {
   padding-top: 0.5rem;
   padding-bottom: 0.5rem
+}
+
+.py-0 {
+  padding-top: 0px;
+  padding-bottom: 0px
 }
 
 .pb-0 {
@@ -570,6 +619,14 @@
   opacity: 0.8
 }
 
+.opacity-100 {
+  opacity: 1
+}
+
+.opacity-60 {
+  opacity: 0.6
+}
+
 .shadow-sm {
   --tw-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
   --tw-shadow-colored: 0 1px 2px 0 var(--tw-shadow-color);
@@ -609,6 +666,14 @@
           filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow)
 }
 
+.first\:pl-0:first-child {
+  padding-left: 0px
+}
+
+.last\:pr-0:last-child {
+  padding-right: 0px
+}
+
 .focus-visible\:outline-none:focus-visible {
   outline: 2px solid transparent;
   outline-offset: 2px
@@ -632,4 +697,12 @@
   .xl\:items-center {
     align-items: center
   }
+}
+
+.\[\&\:not\(\:first-child\)\]\:border-l:not(:first-child) {
+  border-left-width: 1px
+}
+
+.\[\&\:not\(\:first-child\)\]\:border-l-black\/25:not(:first-child) {
+  border-left-color: rgb(0 0 0 / 0.25)
 }

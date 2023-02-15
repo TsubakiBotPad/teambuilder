@@ -1,4 +1,3 @@
-import { css } from "@emotion/css";
 import { useContext } from "react";
 
 import { iStr } from "../../i18n/i18n";
@@ -216,18 +215,14 @@ export const AwakeningRowDisplay = ({
   keyPrefix: string;
 }) => {
   return (
-    <FlexCol className="flex-wrap h-32 w-full text-xs">
+    <FlexCol className="flex-wrap h-32 w-full text-base">
       {asa.map((b, i) => {
         var numToDisplay = b.aggFunc ? b.aggFunc(ah) : ah[b.awokenSkill];
         const val = numToDisplay ?? 0;
         const shouldShow = (ALWAYS_SHOW_AWOKENSKILLS.includes(b.awokenSkill) || numToDisplay) as boolean;
         return shouldShow ? (
           <FlexRowC className="gap-0.5" key={keyPrefix + numToDisplay + i}>
-            <div
-              className={css`
-                opacity: ${numToDisplay ? 1 : 0.6};
-              `}
-            >
+            <div className={numToDisplay ? "opacity-100" : "opacity-60"}>
               <AwakeningImage awakeningId={b.awokenSkill} width={23} />
             </div>
             {b.percent ? ":" : "x"}
@@ -259,41 +254,17 @@ export const AwakeningStatsDisplay = ({
 
   const ah = awakenings;
   return (
-    <FlexCol
-      className={css`
-        padding: 0.5rem 0.25rem;
-      `}
-    >
+    <FlexCol className="py-2 px-1">
       <FlexCol className="gap-3">
         <FlexRow>
           {AwakeningsToDisplay.map((a, j) => {
             return (
               <FlexCol
                 key={`${keyPrefix}awakenings${a.header + j}`}
-                className={css`
-                  &:not(:first-child) {
-                    border-left: 1px solid rgba(0, 0, 0, 0.25);
-                  }
-
-                  padding: 0 0.5rem;
-
-                  &:first-child {
-                    padding-left: 0;
-                  }
-                  &:last-child {
-                    padding-right: 0;
-                  }
-                `}
+                className="[&:not(:first-child)]:border-l border-black/25 border-solid px-2 first:pl-0 last:pr-0"
+                // className="divide-x divide-black/25 px-2 divide-solid"
               >
-                <div
-                  className={css`
-                    margin-bottom: 0.5rem;
-                    text-align: center;
-                    font-size: 16px;
-                  `}
-                >
-                  {iStr(a.header, language, "Header")}
-                </div>
+                <div className="mb-2 text-center text-base">{iStr(a.header, language, "Header")}</div>
                 <FlexRow className="gap-2">
                   <AwakeningRowDisplay ah={ah} asa={a.data} keyPrefix={keyPrefix + a.header + j} />
                 </FlexRow>

@@ -23,8 +23,8 @@ const FancyButton = ({
     <button
       {...rest}
       className={clsx(
-        focused ? "opacity-1 border-slate-800 shadow-sm shadow-slate-400" : "opacity-50 border-slate-3",
-        "cursor-pointer w-7 border border-solid rounded-sm"
+        focused ? "opacity-1 border-slate-800 shadow-sm shadow-slate-400" : "opacity-50 border-slate-300",
+        "cursor-pointer border border-solid rounded-sm"
       )}
     >
       {children}
@@ -43,7 +43,7 @@ export const LanguageSelector = () => {
           setLanguage("en");
         }}
       >
-        <US title="English" />
+        <US title="English" className="w-7" />
       </FancyButton>
       <FancyButton
         focused={language === "ja"}
@@ -51,7 +51,7 @@ export const LanguageSelector = () => {
           setLanguage("ja");
         }}
       >
-        <JP title="日本語" />
+        <JP title="日本語" className="w-7" />
       </FancyButton>
     </FlexRowC>
   );
