@@ -188,7 +188,7 @@ export const CardSelectorModal = ({ isOpen }: { isOpen: boolean }) => {
             </H2>
             <FlexColC className="gap-2">
               <input
-                className="border border-solid border-slate-500 rounded-sm text-base p-2 text-center w-[95%]"
+                className="border border-solid border-slate-500 rounded text-base p-2 text-center w-[95%]"
                 ref={inputRef}
                 type="text"
                 placeholder={iStr("search", language)}

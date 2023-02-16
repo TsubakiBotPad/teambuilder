@@ -5,7 +5,7 @@ const Button = ({ children, className, ...rest }: { children: ReactNode; classNa
   return (
     <button
       {...rest}
-      className={clsx(className, "cursor-pointer flex justify-center py-1 border border-solid gap rounded")}
+      className={clsx(className, "cursor-pointer flex justify-center py-1 border border-solid gap-1 rounded")}
     >
       {children}
     </button>
