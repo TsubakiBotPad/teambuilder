@@ -33,6 +33,9 @@ module.exports = {
       // fontSize: {
       //   xxs: ["10px", "14px"]
       // }
+      fontFamily: {
+        roboto: ["Roboto Mono", "monospace"]
+      }
     }
   },
   // temporarily blocklist images until I can move the image directory

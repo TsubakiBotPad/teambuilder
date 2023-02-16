@@ -1,4 +1,3 @@
-import { css } from "@emotion/css";
 import { debounce } from "lodash";
 import React, { useContext, useEffect, useMemo, useRef, useState } from "react";
 import { exportComponentAsPNG } from "react-component-export-image";
@@ -31,8 +30,6 @@ import {
 } from "../model/teamStateManager";
 import { FlexColCResponsive, FlexRowC, H1, Page } from "../stylePrimitives";
 
-const maxPageWidth = "max-w-page";
-
 export const DraggableTypes = {
   card: "card",
   latent: "latent",
@@ -42,7 +39,7 @@ export const DraggableTypes = {
 const PadTeamBuilderPageContainer = React.forwardRef((props, ref) => {
   const { language, modalIsOpen, latentModalIsOpen, badgeModalIsOpen } = useContext(AppStateContext);
   return (
-    <Page className={maxPageWidth}>
+    <Page className={"max-w-page"}>
       <FlexColCResponsive className="gap-4">
         <FlexRowC className="gap-4">
           <H1>{iStr("applicationTitle", language, "PAD Team Builder")}</H1>
@@ -55,12 +52,7 @@ const PadTeamBuilderPageContainer = React.forwardRef((props, ref) => {
             {iStr("export", language)}:
             <button
               onClick={() => exportComponentAsPNG(ref as any)}
-              className={css`
-                box-shadow: 1px 1px #ccc;
-                border: 1px solid black;
-                padding: 0 0.1rem;
-                cursor: pointer;
-              `}
+              className="shadow-sm shadow-slate-500 border border-solid border-black py-0 px-px cursor-pointer"
             >
               <BsImage />
             </button>
@@ -69,12 +61,7 @@ const PadTeamBuilderPageContainer = React.forwardRef((props, ref) => {
                 navigator.clipboard.writeText(window.location.href);
                 toast(iStr("linkCopied", language));
               }}
-              className={css`
-                box-shadow: 1px 1px #ccc;
-                border: 1px solid black;
-                padding: 0 0.1rem;
-                cursor: pointer;
-              `}
+              className="shadow-sm shadow-slate-500 border border-solid border-black py-0 px-px cursor-pointer"
             >
               <BiLink />
             </button>

@@ -1,4 +1,3 @@
-import { css } from "@emotion/css";
 import { useContext, useState } from "react";
 import Modal from "react-modal";
 
@@ -11,6 +10,7 @@ import { ModalCloseButton } from "./common";
 import { IoIosRemoveCircle, IoIosCheckmarkCircle } from "react-icons/io";
 import { iStr } from "../../i18n/i18n";
 import { BsDot } from "react-icons/bs";
+import clsx from "../../clsx";
 
 export const BadgeSelectorModal = ({ isOpen }: { isOpen: boolean }) => {
   const [selectedBadge, setSelectedBadge] = useState<string>("");
@@ -45,13 +45,10 @@ export const BadgeSelectorModal = ({ isOpen }: { isOpen: boolean }) => {
               {BADGE_NAMES.map((name, i) => {
                 return (
                   <div
-                    className={css`
-                      border: 3px solid ${selectedBadge === name ? "black" : "transparent"};
-                      background-color: ${selectedBadge === name ? "lightgreen" : "transparent"};
-                      display: flex;
-                      align-items: center;
-                      padding: 2px;
-                    `}
+                    className={clsx(
+                      selectedBadge === name ? " border-black bg-green-400" : "border-transparent",
+                      "border-[3px] border-solid flex items-center p-[2px] rounded"
+                    )}
                     key={name + i}
                   >
                     <PadAssetImage

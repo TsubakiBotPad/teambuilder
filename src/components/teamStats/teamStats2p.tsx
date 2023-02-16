@@ -1,6 +1,5 @@
-import { css } from "@emotion/css";
-import styled from "@emotion/styled";
-
+import { ReactNode } from "react";
+import clsx from "../../clsx";
 import { FlexCol, FlexColC, FlexRow } from "../../stylePrimitives";
 import { fixedDecimals } from "../generic/fixedDecimals";
 import { AttributeHistogram } from "./attributes";
@@ -8,17 +7,13 @@ import { AwakeningHistogram, AwakeningRowDisplay, AwakeningsToDisplay2PShared } 
 import { TeamBasicStats } from "./basicStats";
 import { TeamTypes } from "./types";
 
-const TD = styled.td`
-  padding: 0 1rem 0 0;
-  vertical-align: middle;
-  text-align: right;
-`;
-
-const TH = styled.th`
-  padding: 0rem 0rem;
-  vertical-align: middle;
-  text-align: center;
-`;
+const TD = ({ children, className, ...rest }: { children: ReactNode; className?: string; [rest: string]: any }) => {
+  return (
+    <td {...rest} className={clsx(className, "pr-4 align-middle text-right")}>
+      {children}
+    </td>
+  );
+};
 
 export const TeamSharedStatsDisplay = ({
   sbs,
@@ -49,32 +44,12 @@ export const TeamSharedStatsDisplay = ({
           <thead>
             <tr>
               <th></th>
-              <TH>
-                <div
-                  className={css`
-                    background: url("img/awo.png") no-repeat;
-                    background-size: contain;
-                    height: 20px;
-                    width: 20px;
-                    margin-right: 1rem;
-                    float: right;
-                    vertical-align: middle;
-                  `}
-                />
-              </TH>
-              <TH>
-                <div
-                  className={css`
-                    background: url("img/awoBind.png") no-repeat;
-                    background-size: contain;
-                    height: 20px;
-                    width: 20px;
-                    margin-right: 1rem;
-                    float: right;
-                    vertical-align: middle;
-                  `}
-                />
-              </TH>
+              <td>
+                <div className="bg-[url('../public/img/awo.png')] bg-contain h-[20px] w-[20px] mr-4 float-right" />
+              </td>
+              <td>
+                <div className="bg-[url('../public/img/awoBind.png')] bg-contain h-[20px] w-[20px] mr-4 float-right" />
+              </td>
             </tr>
           </thead>
           <tbody>

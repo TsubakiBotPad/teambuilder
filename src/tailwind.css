@@ -230,12 +230,20 @@
   margin-left: 0.5rem
 }
 
+.ml-px {
+  margin-left: 1px
+}
+
 .mr-4 {
   margin-right: 1rem
 }
 
 .mr-px {
   margin-right: 1px
+}
+
+.mr-0 {
+  margin-right: 0px
 }
 
 .block {
@@ -290,6 +298,10 @@
   width: 1.75rem
 }
 
+.w-\[16px\] {
+  width: 16px
+}
+
 .w-\[20px\] {
   width: 20px
 }
@@ -308,10 +320,6 @@
 
 .w-full {
   width: 100%
-}
-
-.w-\[16px\] {
-  width: 16px
 }
 
 .min-w-\[26\.5rem\] {
@@ -437,12 +445,12 @@
   border-radius: 0.25rem
 }
 
-.rounded-sm {
-  border-radius: 0.125rem
-}
-
 .rounded-\[1000px\] {
   border-radius: 1000px
+}
+
+.rounded-sm {
+  border-radius: 0.125rem
 }
 
 .border {
@@ -451,6 +459,14 @@
 
 .border-0 {
   border-width: 0px
+}
+
+.border-2 {
+  border-width: 2px
+}
+
+.border-\[3px\] {
+  border-width: 3px
 }
 
 .border-b {
@@ -489,14 +505,18 @@
   border-color: rgb(100 116 139 / var(--tw-border-opacity))
 }
 
+.border-slate-700 {
+  --tw-border-opacity: 1;
+  border-color: rgb(51 65 85 / var(--tw-border-opacity))
+}
+
 .border-slate-800 {
   --tw-border-opacity: 1;
   border-color: rgb(30 41 59 / var(--tw-border-opacity))
 }
 
-.border-slate-700 {
-  --tw-border-opacity: 1;
-  border-color: rgb(51 65 85 / var(--tw-border-opacity))
+.border-transparent {
+  border-color: transparent
 }
 
 .bg-\[\#feeeee\] {
@@ -516,6 +536,11 @@
 .bg-white {
   --tw-bg-opacity: 1;
   background-color: rgb(255 255 255 / var(--tw-bg-opacity))
+}
+
+.bg-green-400 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(74 222 128 / var(--tw-bg-opacity))
 }
 
 .bg-\[url\(\'\.\.\/public\/img\/assistBind\.png\'\)\] {
@@ -540,6 +565,10 @@
 
 .p-4 {
   padding: 1rem
+}
+
+.p-\[2px\] {
+  padding: 2px
 }
 
 .px-1 {
@@ -572,12 +601,26 @@
   padding-bottom: 0.5rem
 }
 
+.py-px {
+  padding-top: 1px;
+  padding-bottom: 1px
+}
+
+.px-px {
+  padding-left: 1px;
+  padding-right: 1px
+}
+
 .pb-0 {
   padding-bottom: 0px
 }
 
 .pb-0\.5 {
   padding-bottom: 0.125rem
+}
+
+.pb-px {
+  padding-bottom: 1px
 }
 
 .pl-2 {
@@ -592,12 +635,8 @@
   padding-top: 0.5rem
 }
 
-.pb-4 {
-  padding-bottom: 1rem
-}
-
-.pb-px {
-  padding-bottom: 1px
+.pr-0 {
+  padding-right: 0px
 }
 
 .text-center {
@@ -612,6 +651,10 @@
   vertical-align: middle
 }
 
+.font-roboto {
+  font-family: Roboto Mono, monospace
+}
+
 .text-2xl {
   font-size: 1.563rem
 }
@@ -622,6 +665,10 @@
 
 .text-base {
   font-size: 1rem
+}
+
+.text-sm {
+  font-size: 0.8rem
 }
 
 .text-xl {
@@ -640,8 +687,26 @@
   font-weight: 600
 }
 
+.text-purple-500 {
+  --tw-text-opacity: 1;
+  color: rgb(168 85 247 / var(--tw-text-opacity))
+}
+
+.text-purple-600 {
+  --tw-text-opacity: 1;
+  color: rgb(147 51 234 / var(--tw-text-opacity))
+}
+
 .opacity-100 {
   opacity: 1
+}
+
+.opacity-25 {
+  opacity: 0.25
+}
+
+.opacity-40 {
+  opacity: 0.4
 }
 
 .opacity-50 {
@@ -654,14 +719,6 @@
 
 .opacity-80 {
   opacity: 0.8
-}
-
-.opacity-40 {
-  opacity: 0.4
-}
-
-.opacity-25 {
-  opacity: 0.25
 }
 
 .shadow-sm {
@@ -677,6 +734,11 @@
 
 .shadow-slate-50 {
   --tw-shadow-color: #f8fafc;
+  --tw-shadow: var(--tw-shadow-colored)
+}
+
+.shadow-slate-500 {
+  --tw-shadow-color: #64748b;
   --tw-shadow: var(--tw-shadow-colored)
 }
 
