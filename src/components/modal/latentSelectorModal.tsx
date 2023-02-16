@@ -49,7 +49,7 @@ export const LatentSelectorModal = ({ isOpen }: { isOpen: boolean }) => {
   return (
     <Modal
       isOpen={isOpen}
-      contentLabel="Example Modal"
+      contentLabel="Latent Selector"
       shouldCloseOnOverlayClick={true}
       onRequestClose={() => {
         setLatentModalIsOpen(false);

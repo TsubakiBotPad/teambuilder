@@ -1,6 +1,5 @@
-import { css } from "@emotion/css";
-import styled from "@emotion/styled";
-import { useContext } from "react";
+import { ReactNode, useContext } from "react";
+import clsx from "../../clsx";
 
 import { iStr } from "../../i18n/i18n";
 import { AwakeningImage } from "../../model/images";
@@ -18,39 +17,20 @@ import { computeTotalAwakeningsFromSlots } from "./awakenings";
 import { LatentInfo } from "./latents";
 import { TeamTypes } from "./types";
 
-const TD = styled.td`
-  padding: 0 1rem 0 0;
-  vertical-align: middle;
-  text-align: right;
-`;
-
-const TD2 = styled.td`
-  padding: 0 1rem 0.1rem 0;
-  vertical-align: middle;
-  text-align: right;
-`;
-
-const TH = styled.th`
-  padding: 0rem 0rem;
-  vertical-align: middle;
-  text-align: center;
-`;
-
-type AttrImgProps = {
-  selected: boolean;
+const TD = ({ children, className, ...rest }: { children: ReactNode; className?: string; [rest: string]: any }) => {
+  return (
+    <td {...rest} className={clsx(className, "pr-4 align-middle text-right")}>
+      {children}
+    </td>
+  );
 };
 
-const AttrImg = styled.img<AttrImgProps>`
-  width: 16px;
-  opacity: ${(props) => (props.selected ? "1" : "0.25")};
-  border: ${(props) => (props.selected ? "1px solid gray" : "0")};
-  border-radius: ${(props) => (props.selected ? "1000px" : "0")};
-`;
-
-const latentClassname = (focused: boolean) => {
-  return css`
-    opacity: ${focused ? 1 : 0.4};
-  `;
+const TD2 = ({ children, className, ...rest }: { children: ReactNode; className?: string; [rest: string]: any }) => {
+  return (
+    <td {...rest} className={clsx(className, "pr-4 pb-px align-middle text-right")}>
+      {children}
+    </td>
+  );
 };
 
 export interface TeamBasicStats {
@@ -271,45 +251,19 @@ export const TeamBasicStatsDisplay = ({
   }
 
   return (
-    <div
-      className={css`
-        padding: 0 0.5rem;
-        font-size: 16px;
-        min-width: 26.5rem;
-      `}
-    >
+    <div className="px-2 py-0 text-base min-w-[26.5rem]">
       <FlexCol className="my-2 gap-2">
         <FlexRow className="gap-10 justify-between">
           <table>
             <thead>
               <tr>
-                <th></th>
-                <TH>
-                  <div
-                    className={css`
-                      background: url("img/awo.png") no-repeat;
-                      background-size: contain;
-                      height: 20px;
-                      width: 20px;
-                      margin-right: 1rem;
-                      float: right;
-                      vertical-align: middle;
-                    `}
-                  />
-                </TH>
-                <TH>
-                  <div
-                    className={css`
-                      background: url("img/awoBind.png") no-repeat;
-                      background-size: contain;
-                      height: 20px;
-                      width: 20px;
-                      margin-right: 1rem;
-                      float: right;
-                      vertical-align: middle;
-                    `}
-                  />
-                </TH>
+                <td></td>
+                <td>
+                  <div className="bg-[url('../public/img/awo.png')] bg-contain h-[20px] w-[20px] mr-4 float-right" />
+                </td>
+                <td>
+                  <div className="bg-[url('../public/img/awoBind.png')] bg-contain h-[20px] w-[20px] mr-4 float-right" />
+                </td>
               </tr>
             </thead>
             <tbody>
@@ -348,7 +302,7 @@ export const TeamBasicStatsDisplay = ({
                     <b>{iStr("types", language)}</b>
                   </TD2>
                   <TD2>
-                    <FlexRow className="helloWorld flex-wrap width-28">
+                    <FlexRow className="flex-wrap width-28">
                       {tt.map((a) => {
                         return <PadAssetImage assetName={`t${a}`} height={22} />;
                       })}
@@ -370,7 +324,16 @@ export const TeamBasicStatsDisplay = ({
                         const attr = Attribute[a[0] as keyof {}].toLocaleLowerCase();
                         return (
                           <span key={keyP + attr + i}>
-                            <AttrImg src={`img/orb${attr}.webp`} selected={a[1]} />
+                            <img
+                              className={clsx(
+                                "w-[16px]",
+                                a[1]
+                                  ? "opacity-100 border-solid border border-slate-700 rounded-[1000px]"
+                                  : "opacity-25"
+                              )}
+                              alt={attr}
+                              src={`img/orb${attr}.webp`}
+                            />
                           </span>
                         );
                       })}
@@ -386,21 +349,15 @@ export const TeamBasicStatsDisplay = ({
                 </TD>
                 <td>
                   <FlexRow className="gap-0.5">
-                    <PadAssetImage assetName="psf" height={20} className={latentClassname(!!tl?.psf)} />
-                    <PadAssetImage assetName="jsf" height={20} className={latentClassname(!!tl?.jsf)} />
+                    <PadAssetImage assetName="psf" height={20} className={!!tl?.psf ? "opacity-100" : "opacity-40"} />
+                    <PadAssetImage assetName="jsf" height={20} className={!!tl?.jsf ? "opacity-100" : "opacity-40"} />
                   </FlexRow>
                 </td>
               </tr>
               {unbindablePct !== undefined ? (
                 <tr>
                   <TD>
-                    <AwakeningImage
-                      className={css`
-                        float: right;
-                      `}
-                      awakeningId={AwokenSkills.UNBINDABLE}
-                      width={22}
-                    />
+                    <AwakeningImage className="inline-block" awakeningId={AwokenSkills.UNBINDABLE} width={22} />
                   </TD>
                   <td>{fixedDecimals(unbindablePct, 0)}%</td>
                 </tr>
