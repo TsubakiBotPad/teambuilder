@@ -10,7 +10,7 @@ export const ModalCloseButton = ({
   setModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
   return (
-    <div className="relative top-[2.3rem] left-[calc(100%_-_2.3rem)]">
+    <div className="relative top-[2.3rem] left-[calc(100%_-_2.3rem)] cursor-pointer">
       <AiFillCloseCircle
         size={25}
         color={hoverClose ? "gray" : "lightgray"}

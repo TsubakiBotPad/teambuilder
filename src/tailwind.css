@@ -246,6 +246,18 @@
   margin-right: 0px
 }
 
+.mb-3 {
+  margin-bottom: 0.75rem
+}
+
+.mb-8 {
+  margin-bottom: 2rem
+}
+
+.mb-6 {
+  margin-bottom: 1.5rem
+}
+
 .block {
   display: block
 }
@@ -519,6 +531,16 @@
   border-color: transparent
 }
 
+.border-green-800 {
+  --tw-border-opacity: 1;
+  border-color: rgb(22 101 52 / var(--tw-border-opacity))
+}
+
+.border-rose-800 {
+  --tw-border-opacity: 1;
+  border-color: rgb(159 18 57 / var(--tw-border-opacity))
+}
+
 .bg-\[\#feeeee\] {
   --tw-bg-opacity: 1;
   background-color: rgb(254 238 238 / var(--tw-bg-opacity))
@@ -541,6 +563,36 @@
 .bg-green-400 {
   --tw-bg-opacity: 1;
   background-color: rgb(74 222 128 / var(--tw-bg-opacity))
+}
+
+.bg-green-500 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(34 197 94 / var(--tw-bg-opacity))
+}
+
+.bg-rose-500 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(244 63 94 / var(--tw-bg-opacity))
+}
+
+.bg-green-300 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(134 239 172 / var(--tw-bg-opacity))
+}
+
+.bg-rose-300 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(253 164 175 / var(--tw-bg-opacity))
+}
+
+.bg-green-200 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(187 247 208 / var(--tw-bg-opacity))
+}
+
+.bg-rose-200 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(254 205 211 / var(--tw-bg-opacity))
 }
 
 .bg-\[url\(\'\.\.\/public\/img\/assistBind\.png\'\)\] {
@@ -609,6 +661,16 @@
 .px-px {
   padding-left: 1px;
   padding-right: 1px
+}
+
+.px-3 {
+  padding-left: 0.75rem;
+  padding-right: 0.75rem
+}
+
+.px-8 {
+  padding-left: 2rem;
+  padding-right: 2rem
 }
 
 .pb-0 {
@@ -695,6 +757,16 @@
 .text-purple-600 {
   --tw-text-opacity: 1;
   color: rgb(147 51 234 / var(--tw-text-opacity))
+}
+
+.text-green-800 {
+  --tw-text-opacity: 1;
+  color: rgb(22 101 52 / var(--tw-text-opacity))
+}
+
+.text-rose-800 {
+  --tw-text-opacity: 1;
+  color: rgb(159 18 57 / var(--tw-text-opacity))
 }
 
 .opacity-100 {

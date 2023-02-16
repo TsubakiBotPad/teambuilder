@@ -41,12 +41,12 @@ export const BadgeSelectorModal = ({ isOpen }: { isOpen: boolean }) => {
             </FlexRowC>
           </H2>
           <FlexColC>
-            <FlexRow className="flex-wrap gap-1">
+            <FlexRow className="flex-wrap gap-1 mb-6">
               {BADGE_NAMES.map((name, i) => {
                 return (
                   <div
                     className={clsx(
-                      selectedBadge === name ? " border-black bg-green-400" : "border-transparent",
+                      selectedBadge === name ? " border-black bg-green-200" : "border-transparent",
                       "border-[3px] border-solid flex items-center p-[2px] rounded"
                     )}
                     key={name + i}

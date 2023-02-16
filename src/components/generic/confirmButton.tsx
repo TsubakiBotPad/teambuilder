@@ -1,22 +1,45 @@
-import styled from "@emotion/styled";
-import { ColorKey, getColor } from "../../colors";
+import { ReactNode } from "react";
+import clsx from "../../clsx";
 
-export const ConfirmButton = styled.button`
-  border: 1px solid ${getColor(ColorKey.CONFIRM_BUTTON_BORDER)};
-  padding: 0.25rem 2rem;
-  background-color: ${getColor(ColorKey.CONFIRM_BUTTON_BG)};
-  color: ${getColor(ColorKey.CONFIRM_BUTTON_ICON)};
-  display: flex;
-  justify-content: center;
-  gap: 0.25rem;
-`;
+const Button = ({ children, className, ...rest }: { children: ReactNode; className?: string; [rest: string]: any }) => {
+  return (
+    <button
+      {...rest}
+      className={clsx(className, "cursor-pointer flex justify-center py-1 border border-solid gap rounded")}
+    >
+      {children}
+    </button>
+  );
+};
 
-export const RemoveButton = styled.button`
-  border: 1px solid ${getColor(ColorKey.REMOVE_BUTTON_BORDER)};
-  padding: 0.25rem 0.75rem;
-  background-color: ${getColor(ColorKey.REMOVE_BUTTON_BG)};
-  color: ${getColor(ColorKey.REMOVE_BUTTON_ICON)};
-  display: flex;
-  justify-content: center;
-  gap: 0.25rem;
-`;
+export const ConfirmButton = ({
+  children,
+  className,
+  ...rest
+}: {
+  children: ReactNode;
+  className?: string;
+  [rest: string]: any;
+}) => {
+  return (
+    <Button {...rest} className={clsx(className, "px-8 bg-green-200 border-green-800 text-green-800")}>
+      {children}
+    </Button>
+  );
+};
+
+export const RemoveButton = ({
+  children,
+  className,
+  ...rest
+}: {
+  children: ReactNode;
+  className?: string;
+  [rest: string]: any;
+}) => {
+  return (
+    <Button {...rest} className={clsx(className, "px-3 bg-rose-200 border-rose-800 text-rose-800")}>
+      {children}
+    </Button>
+  );
+};
