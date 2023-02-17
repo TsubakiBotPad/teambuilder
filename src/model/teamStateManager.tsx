@@ -45,6 +45,10 @@ export const DEFAULT_TEAM_SLOT_STATE = () => {
   };
 };
 
+export const teamSlotEmpty = (slot: TeamSlotState) => {
+  return slot.base.id === 0 && slot.assist.id === 0 && slot.latents.length === 0;
+};
+
 export const DEFAULT_TEAM_STATE: TeamState = {
   p1: {
     badgeId: "",
@@ -368,7 +372,16 @@ export function copySlot(
 }
 
 export function linkLeaders(teamState: TeamState, setTeamState: React.Dispatch<React.SetStateAction<TeamState>>) {
+  // Give the P1 lead to P2
+  if (teamSlotEmpty(teamState.p1.teamSlot1) && !teamSlotEmpty(teamState.p2.teamSlot6)) {
+    teamState.p1.teamSlot1 = teamState.p2.teamSlot6;
+  }
   teamState.p2.teamSlot6 = teamState.p1.teamSlot1;
+
+  // Give the P2 lead to P1
+  if (teamSlotEmpty(teamState.p2.teamSlot1) && !teamSlotEmpty(teamState.p1.teamSlot6)) {
+    teamState.p2.teamSlot1 = teamState.p1.teamSlot6;
+  }
   teamState.p1.teamSlot6 = teamState.p2.teamSlot1;
   setTeamState({ ...teamState });
 }
