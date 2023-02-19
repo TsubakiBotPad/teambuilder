@@ -373,9 +373,9 @@ export function copySlot(
 
 export function linkLeaders(teamState: TeamState, setTeamState: React.Dispatch<React.SetStateAction<TeamState>>) {
   // We need to make sure we don't lose data in the 1p -> 2p transition. Because P1 is
-  // always onscreen, it's impossible for dataloss to happen in the P1 aka P2 helper
-  // position, but dataloss CAN happen in the P2 aka P1 pair lead slot. So we may
-  // wish to assign EITHER the P1 pair lead OR the P2 lead here, whichever one
+  // always onscreen, it's impossible for dataloss to happen in the P1 lead aka P2 helper
+  // position, but dataloss CAN happen in the P2 lead aka P1 helper slot. So we may
+  // wish to assign EITHER the P1 helper OR the P2 lead here, whichever one
   // actually exists.
 
   teamState.p2.teamSlot6 = teamState.p1.teamSlot1;
