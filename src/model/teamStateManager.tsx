@@ -372,14 +372,10 @@ export function copySlot(
 }
 
 export function linkLeaders(teamState: TeamState, setTeamState: React.Dispatch<React.SetStateAction<TeamState>>) {
-  // Give the P1 lead to P2
-  if (teamSlotEmpty(teamState.p1.teamSlot1) && !teamSlotEmpty(teamState.p2.teamSlot6)) {
-    teamState.p1.teamSlot1 = teamState.p2.teamSlot6;
-  }
   teamState.p2.teamSlot6 = teamState.p1.teamSlot1;
 
-  // Give the P2 lead to P1
-  if (teamSlotEmpty(teamState.p2.teamSlot1) && !teamSlotEmpty(teamState.p1.teamSlot6)) {
+  // Give the P1 helper to P2
+  if (!teamSlotEmpty(teamState.p1.teamSlot6)) {
     teamState.p2.teamSlot1 = teamState.p1.teamSlot6;
   }
   teamState.p1.teamSlot6 = teamState.p2.teamSlot1;
