@@ -45,6 +45,10 @@ export const DEFAULT_TEAM_SLOT_STATE = () => {
   };
 };
 
+export const teamSlotEmpty = (slot: TeamSlotState) => {
+  return slot.base.id === 0 && slot.assist.id === 0 && slot.latents.length === 0;
+};
+
 export const DEFAULT_TEAM_STATE: TeamState = {
   p1: {
     badgeId: "",
@@ -368,7 +372,18 @@ export function copySlot(
 }
 
 export function linkLeaders(teamState: TeamState, setTeamState: React.Dispatch<React.SetStateAction<TeamState>>) {
+  // We need to make sure we don't lose data in the 1p -> 2p transition. Because P1 is
+  // always onscreen, it's impossible for dataloss to happen in the P1 lead aka P2 helper
+  // position, but dataloss CAN happen in the P2 lead aka P1 helper slot. So we may
+  // wish to assign EITHER the P1 helper OR the P2 lead here, whichever one
+  // actually exists.
+
   teamState.p2.teamSlot6 = teamState.p1.teamSlot1;
+
+  // Give the P1 helper to P2
+  if (!teamSlotEmpty(teamState.p1.teamSlot6)) {
+    teamState.p2.teamSlot1 = teamState.p1.teamSlot6;
+  }
   teamState.p1.teamSlot6 = teamState.p2.teamSlot1;
   setTeamState({ ...teamState });
 }
