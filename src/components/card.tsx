@@ -19,8 +19,8 @@ interface DropResult {
 
 const CardEmpty = styled.div`
   background-color: "#fefefe";
-  width: 5rem;
-  height: 5rem;
+  width: 100%;
+  aspect-ratio: 1/1;
   border: 2px dotted #aaa;
   box-sizing: border-box;
 `;
@@ -34,7 +34,7 @@ const CardSelectedImage = styled.div<CardSelectedType>`
   background: ${(props) => `url("${BASE_ICON_URL}${leftPad(props.monsterId, 5)}.png")`};
   background-size: cover;
   width: 5rem;
-  height: 5rem;
+  aspect-ratio: 1/1;
   position: relative;
 
   &::before {

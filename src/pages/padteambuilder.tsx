@@ -1,26 +1,16 @@
-import { css } from "@emotion/css";
+import "react-toastify/dist/ReactToastify.css";
+
 import { debounce } from "lodash";
 import React, { useContext, useEffect, useMemo, useRef, useState } from "react";
-import { exportComponentAsPNG } from "react-component-export-image";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
-import { BsImage } from "react-icons/bs";
-import { BiLink } from "react-icons/bi";
 import { useNavigate, useParams } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
 
-import { DefaultLevelSelector } from "../components/defaultLevelSelector";
 import { Footer } from "../components/footer";
-import { GameConfigSelector } from "../components/gameConfigSelector";
-import { LanguageSelector } from "../components/languageSelector";
-import { BadgeSelectorModal } from "../components/modal/badgeSelectorModal";
-import { CardSelectorModal } from "../components/modal/cardSelectorModal";
-import { LatentSelectorModal } from "../components/modal/latentSelectorModal";
-import { TeamBuilderContent } from "../components/teamBuilderContent";
 import { computeTeamStat, TeamStats } from "../components/teamStats/teamStats";
 import { iStr, Language } from "../i18n/i18n";
 import { ConfigData, deserializeConfig, serializeConfig } from "../model/serializedUri";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import {
   AppStateContext,
   DEFAULT_APP_STATE,
@@ -29,65 +19,15 @@ import {
   linkLeadersNoSet,
   TeamStateContext
 } from "../model/teamStateManager";
-import { FlexColCResponsive, FlexRowC, H1, Page } from "../stylePrimitives";
-
-const maxPageWidth = "1440px";
+import { DesktopPageContainer } from "./desktop";
+import { MobilePageContainer } from "./mobile";
+import { isMobile } from "../breakpoints";
 
 export const DraggableTypes = {
   card: "card",
   latent: "latent",
   slot: "slot"
 };
-
-const PadTeamBuilderPageContainer = React.forwardRef((props, ref) => {
-  const { language, modalIsOpen, latentModalIsOpen, badgeModalIsOpen } = useContext(AppStateContext);
-  return (
-    <Page maxWidth={maxPageWidth}>
-      <FlexColCResponsive gap="1rem">
-        <FlexRowC gap="1rem">
-          <H1>{iStr("applicationTitle", language, "PAD Team Builder")}</H1>
-          <LanguageSelector />
-        </FlexRowC>
-        <FlexRowC gap="2rem">
-          <GameConfigSelector />
-          <DefaultLevelSelector />
-          <FlexRowC gap="0.25rem">
-            {iStr("export", language)}:
-            <button
-              onClick={() => exportComponentAsPNG(ref as any)}
-              className={css`
-                box-shadow: 1px 1px #ccc;
-                border: 1px solid black;
-                padding: 0 0.1rem;
-                cursor: pointer;
-              `}
-            >
-              <BsImage />
-            </button>
-            <button
-              onClick={() => {
-                navigator.clipboard.writeText(window.location.href);
-                toast(iStr("linkCopied", language));
-              }}
-              className={css`
-                box-shadow: 1px 1px #ccc;
-                border: 1px solid black;
-                padding: 0 0.1rem;
-                cursor: pointer;
-              `}
-            >
-              <BiLink />
-            </button>
-          </FlexRowC>
-        </FlexRowC>
-      </FlexColCResponsive>
-      <CardSelectorModal isOpen={modalIsOpen} />
-      <LatentSelectorModal isOpen={latentModalIsOpen} />
-      <BadgeSelectorModal isOpen={badgeModalIsOpen} />
-      <TeamBuilderContent ref={ref} />
-    </Page>
-  );
-});
 
 export const PadTeamBuilderPage = () => {
   const ref = useRef();
@@ -207,8 +147,9 @@ export const PadTeamBuilderPage = () => {
             pauseOnHover={false}
             theme="light"
           />
-          <PadTeamBuilderPageContainer ref={ref} />
-          <Footer />
+
+          {isMobile() ? <MobilePageContainer ref={ref} /> : <DesktopPageContainer ref={ref} />}
+          {/* <Footer /> */}
         </TeamStateContext.Provider>
       </AppStateContext.Provider>
     </DndProvider>

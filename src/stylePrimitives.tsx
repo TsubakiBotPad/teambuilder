@@ -26,6 +26,7 @@ type FlexRowProps = {
   wrap?: string;
   center?: boolean;
   justifyContent?: string;
+  width?: string;
 };
 
 export const FlexRow = styled.div<FlexRowProps>`
@@ -33,6 +34,7 @@ export const FlexRow = styled.div<FlexRowProps>`
   gap: ${(props) => (props.gap ? props.gap : "0")};
   justify-content: ${(props) => (props.justifyContent ? props.justifyContent : props.center ? "center" : "start")};
   flex-wrap: ${(props) => (props.wrap ? props.wrap : "nowrap")};
+  width: ${(props) => (props.width ? props.width : "inherit")};
 `;
 
 export const FlexRowC = styled(FlexRow)`
