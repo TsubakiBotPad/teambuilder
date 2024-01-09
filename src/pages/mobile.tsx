@@ -1,13 +1,9 @@
 import "react-toastify/dist/ReactToastify.css";
 
-import { css } from "@emotion/css";
 import React, { useContext, useEffect, useMemo, useRef, useState } from "react";
-import { exportComponentAsPNG } from "react-component-export-image";
-import { BiLink } from "react-icons/bi";
-import { BsImage } from "react-icons/bs";
-import { toast } from "react-toastify";
 
 import { DefaultLevelSelector } from "../components/defaultLevelSelector";
+import { ExportControls } from "../components/export";
 import { GameConfigSelector } from "../components/gameConfigSelector";
 import { LanguageSelector } from "../components/languageSelector";
 import { BadgeSelectorModal } from "../components/modal/badgeSelectorModal";
@@ -17,7 +13,6 @@ import { TeamBuilderContentMobile } from "../components/teamBuilderContentMobile
 import { iStr } from "../i18n/i18n";
 import { AppStateContext } from "../model/teamStateManager";
 import { FlexColCResponsive, FlexRowC, H1, Page } from "../stylePrimitives";
-import { ExportControls } from "../components/export";
 
 const maxPageWidth = "100vw";
 

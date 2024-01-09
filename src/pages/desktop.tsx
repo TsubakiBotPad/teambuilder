@@ -1,13 +1,9 @@
 import "react-toastify/dist/ReactToastify.css";
 
-import { css } from "@emotion/css";
 import React, { useContext, useEffect, useMemo, useRef, useState } from "react";
-import { exportComponentAsPNG } from "react-component-export-image";
-import { BiLink } from "react-icons/bi";
-import { BsImage } from "react-icons/bs";
-import { toast } from "react-toastify";
 
 import { DefaultLevelSelector } from "../components/defaultLevelSelector";
+import { ExportControls } from "../components/export";
 import { GameConfigSelector } from "../components/gameConfigSelector";
 import { LanguageSelector } from "../components/languageSelector";
 import { BadgeSelectorModal } from "../components/modal/badgeSelectorModal";
@@ -40,31 +36,7 @@ export const DesktopPageContainer = React.forwardRef((props, ref) => {
           <DefaultLevelSelector />
           <FlexRowC gap="0.25rem">
             {iStr("export", language)}:
-            <button
-              onClick={() => exportComponentAsPNG(ref as any)}
-              className={css`
-                box-shadow: 1px 1px #ccc;
-                border: 1px solid black;
-                padding: 0 0.1rem;
-                cursor: pointer;
-              `}
-            >
-              <BsImage />
-            </button>
-            <button
-              onClick={() => {
-                navigator.clipboard.writeText(window.location.href);
-                toast(iStr("linkCopied", language));
-              }}
-              className={css`
-                box-shadow: 1px 1px #ccc;
-                border: 1px solid black;
-                padding: 0 0.1rem;
-                cursor: pointer;
-              `}
-            >
-              <BiLink />
-            </button>
+            <ExportControls ref={ref} />
           </FlexRowC>
         </FlexRowC>
       </FlexColCResponsive>
