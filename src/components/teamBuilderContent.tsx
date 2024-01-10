@@ -10,6 +10,7 @@ import { AuthorText } from "./authorText";
 import { TeamStatsToggles } from "./dungeonEffectSelector";
 import { TeamBlock } from "./team";
 import { TeamSharedStatsDisplay } from "./teamStats/teamStats2p";
+import { TeamNotes } from "../teamNotes";
 
 const TeamInput = styled.input`
   border: 0;
@@ -48,21 +49,7 @@ export const TeamBuilderContent = React.forwardRef((props, ref) => {
               padding-top: 0.5rem;
             `}
           >
-            <FlexCol gap="0.25rem">
-              <AuthorText />
-              <textarea
-                rows={15}
-                cols={10}
-                className={css`
-                  width: 37.7rem;
-                `}
-                value={instructions}
-                onChange={(e) => {
-                  setInstructions(e.target.value);
-                }}
-                placeholder={iStr("notesPlaceholder", language)}
-              />
-            </FlexCol>
+            <TeamNotes />
           </div>
         </FlexCol>
       </FlexRow>

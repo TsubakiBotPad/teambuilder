@@ -10,6 +10,7 @@ import { AuthorText } from "./authorText";
 import { TeamStatsToggles } from "./dungeonEffectSelector";
 import { TeamBlock } from "./team";
 import { TeamSharedStatsDisplay } from "./teamStats/teamStats2p";
+import { TeamNotes } from "../teamNotes";
 
 const TeamInput = styled.input`
   border: 0;
@@ -22,49 +23,32 @@ export const TeamBuilderContentMobile = React.forwardRef((props, ref) => {
   const { gameConfig, setTeamName, teamName, instructions, setInstructions, language } = useContext(AppStateContext);
   return (
     <FlexColCResponsive>
-      <FlexRow gap="1rem">
-        <FlexCol ref={ref as any}>
-          <FlexRow
-            className={css`
-              align-items: end;
-            `}
-            justifyContent="start"
-          >
-            <TeamInput
-              placeholder={iStr("teamName", language)}
-              size={10}
-              value={teamName}
-              onChange={(e) => {
-                setTeamName(e.target.value);
-              }}
-            />
-            {/* <TeamStatsToggles></TeamStatsToggles> */}
-          </FlexRow>
-          {gameConfig.mode !== "2p" ? <TeamBuilderContent1n3P /> : null}
-          {gameConfig.mode === "2p" ? <TeamBuilderContent2P /> : null}
-        </FlexCol>
-      </FlexRow>
+      <FlexCol ref={ref as any}>
+        <FlexRow
+          className={css`
+            align-items: end;
+          `}
+          justifyContent="start"
+        >
+          <TeamInput
+            placeholder={iStr("teamName", language)}
+            size={10}
+            value={teamName}
+            onChange={(e) => {
+              setTeamName(e.target.value);
+            }}
+          />
+          {/* <TeamStatsToggles></TeamStatsToggles> */}
+        </FlexRow>
+        {gameConfig.mode !== "2p" ? <TeamBuilderContent1n3P /> : null}
+        {gameConfig.mode === "2p" ? <TeamBuilderContent2P /> : null}
+      </FlexCol>
       <div
         className={css`
-          padding-left: 0.5rem;
-          padding-top: 0.5rem;
+          padding: 0.5rem;
         `}
       >
-        <FlexCol gap="0.25rem">
-          <AuthorText />
-          <textarea
-            rows={15}
-            cols={10}
-            className={css`
-              width: 100%;
-            `}
-            value={instructions}
-            onChange={(e) => {
-              setInstructions(e.target.value);
-            }}
-            placeholder={iStr("notesPlaceholder", language)}
-          />
-        </FlexCol>
+        <TeamNotes />
       </div>
     </FlexColCResponsive>
   );
