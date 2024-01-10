@@ -22,6 +22,7 @@ import { FlexColC } from "../stylePrimitives";
 import { Card } from "./card";
 import { TeamComponentId } from "./id";
 import { Latents } from "./latent";
+import { breakpoint } from "../breakpoints";
 
 interface DropResult {
   dropEffect: string;
@@ -36,7 +37,12 @@ type ColorProps = {
 
 const ColorBG = styled.div<ColorProps>`
   background-color: ${(props) => props.color};
-  padding: 0.25rem;
+  padding: 0rem;
+
+  @media ${breakpoint.xl} {
+    padding: 0.25rem;
+  }
+
   ${(props) => (props.darken ? "filter: saturate(200%) brightness(1.2)" : "")};
   ${(props) => (props.grayscale ? "filter:grayscale(1)" : "")};
   width: 100%;
@@ -57,7 +63,11 @@ const GrabDots = styled.div<ColorProps>`
   display: flex;
   justify-content: center;
   ${(props) => (props.darken ? "filter: saturate(200%) brightness(1.2)" : "")};
-  padding: 0.25rem;
+  padding: 0rem;
+
+  @media ${breakpoint.xl} {
+    padding: 0.25rem;
+  }
 `;
 
 type ComponentId = {

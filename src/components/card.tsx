@@ -18,18 +18,20 @@ interface DropResult {
   target: TeamComponentId;
 }
 
+const mobileCardWidth = "15vw";
+const desktopCardWidth = "5rem";
+
 const CardEmpty = styled.div`
   background-color: "#fefefe";
   @media ${breakpoint.xl} {
-    width: 5rem;
-    height: 5rem;
+    width: ${desktopCardWidth};
   }
 
   @media ${breakpoint.xs} {
-    width: 10vw;
-    aspect-ratio: 1/1;
+    width: ${mobileCardWidth};
   }
 
+  aspect-ratio: 1/1;
   border: 2px dotted #aaa;
   box-sizing: border-box;
 `;
@@ -43,15 +45,14 @@ const CardSelectedImage = styled.div<CardSelectedType>`
   background: ${(props) => `url("${BASE_ICON_URL}${leftPad(props.monsterId, 5)}.png")`};
   background-size: cover;
   @media ${breakpoint.xl} {
-    width: 5rem;
-    height: 5rem;
+    width: ${desktopCardWidth};
   }
 
   @media ${breakpoint.xs} {
-    width: 50vw;
-    aspect-ratio: 1/1;
+    width: ${mobileCardWidth};
   }
 
+  aspect-ratio: 1/1;
   position: relative;
 
   &::before {

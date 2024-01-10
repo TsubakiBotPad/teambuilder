@@ -17,6 +17,7 @@ import { AttributeHistogram } from "./attributes";
 import { computeTotalAwakeningsFromSlots } from "./awakenings";
 import { LatentInfo } from "./latents";
 import { TeamTypes } from "./types";
+import { breakpoint } from "../../breakpoints";
 
 const TD = styled.td`
   padding: 0 1rem 0 0;
@@ -275,7 +276,12 @@ export const TeamBasicStatsDisplay = ({
       className={css`
         padding: 0 0.5rem;
         font-size: 16px;
-        min-width: 26.5rem;
+        min-width: 23.5rem;
+        max-width: 90vw;
+
+        @media ${breakpoint.xl} {
+          min-width: 26.5rem;
+        }
       `}
     >
       <FlexCol

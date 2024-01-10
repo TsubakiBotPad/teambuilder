@@ -29,14 +29,25 @@ const Team = ({ teamId, state }: { teamId: keyof TeamState; state: PlayerState }
   );
 };
 
-const TeamRow = styled(FlexRow)`
-  padding: 0.5rem;
-  gap: 2rem;
-  width: 100%;
-`;
+const TeamInfoMobile = ({ playerId }: { playerId: keyof TeamState }) => {
+  const { teamState } = useContext(TeamStateContext);
+  const { gameConfig, teamStats } = useContext(AppStateContext);
+  const is2P = gameConfig.mode === "2p";
+  return (
+    <FlexCol
+      className={css`
+        padding: 0.5rem;
+        gap: 2rem;
+      `}
+    >
+      <Team teamId={playerId} state={teamState[playerId]} />
+      <TeamStatDisplay teamStat={teamStats[playerId]} keyP={playerId} is2P={is2P} />
+    </FlexCol>
+  );
+};
 
-export const TeamBlock = ({ playerId, shouldShow }: { playerId: keyof TeamState; shouldShow: boolean }) => {
-  const { gameConfig, teamStats, setPlayerSelected, setBadgeModalIsOpen } = useContext(AppStateContext);
+export const TeamBlockMobile = ({ playerId, shouldShow }: { playerId: keyof TeamState; shouldShow: boolean }) => {
+  const { gameConfig, setPlayerSelected, setBadgeModalIsOpen } = useContext(AppStateContext);
   const { teamState } = useContext(TeamStateContext);
   const is2P = gameConfig.mode === "2p";
   return shouldShow ? (
@@ -53,10 +64,7 @@ export const TeamBlock = ({ playerId, shouldShow }: { playerId: keyof TeamState;
           />
         ) : null}
       </FlexRowC>
-      <TeamRow>
-        <Team teamId={playerId} state={teamState[playerId]} />
-        <TeamStatDisplay teamStat={teamStats[playerId]} keyP={playerId} is2P={is2P} />
-      </TeamRow>
+      <TeamInfoMobile playerId={playerId} />
     </FlexCol>
   ) : (
     <></>
