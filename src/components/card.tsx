@@ -26,7 +26,7 @@ const CardEmpty = styled.div`
   }
 
   @media ${breakpoint.xs} {
-    width: 100%;
+    width: 10vw;
     aspect-ratio: 1/1;
   }
 
@@ -48,7 +48,7 @@ const CardSelectedImage = styled.div<CardSelectedType>`
   }
 
   @media ${breakpoint.xs} {
-    width: 100%;
+    width: 50vw;
     aspect-ratio: 1/1;
   }
 

@@ -37,7 +37,7 @@ type ColorProps = {
 
 const ColorBG = styled.div<ColorProps>`
   background-color: ${(props) => props.color};
-  padding: 0.5rem;
+  padding: 0.25rem;
   ${(props) => (props.darken ? "filter: saturate(200%) brightness(1.2)" : "")};
   ${(props) => (props.grayscale ? "filter:grayscale(1)" : "")};
   width: 100%;
@@ -58,6 +58,7 @@ const GrabDots = styled.div<ColorProps>`
   display: flex;
   justify-content: center;
   ${(props) => (props.darken ? "filter: saturate(200%) brightness(1.2)" : "")};
+  padding: 0.25rem;
 `;
 
 const TeamSlot = ({
@@ -134,7 +135,9 @@ const TeamSlot = ({
           `}
         >
           <ColorBG color={"#f0f0f0"} darken={isOver} grayscale={!hasAssists}>
-            <Card componentId={{ ...componentId, use: "assist" }} monster={state.assist} />
+            <FlexColC>
+              <Card componentId={{ ...componentId, use: "assist" }} monster={state.assist} />
+            </FlexColC>
           </ColorBG>
           <FlexRowC>
             <AiOutlineCaretDown />
@@ -163,25 +166,14 @@ const Team = ({ teamId, state }: { teamId: keyof TeamState; state: PlayerState }
 
   return (
     <FlexRow width="100%" gap="0.5rem">
-      <TeamSlotContainer>
-        <TeamSlot teamId={teamId} slotId={"1"} state={state.teamSlot1} />
-      </TeamSlotContainer>
-      <TeamSlotContainer>
-        <TeamSlot teamId={teamId} slotId={"2"} state={state.teamSlot2} />
-      </TeamSlotContainer>
-      <TeamSlotContainer>
-        <TeamSlot teamId={teamId} slotId={"3"} state={state.teamSlot3} />
-      </TeamSlotContainer>
-      <TeamSlotContainer>
-        <TeamSlot teamId={teamId} slotId={"4"} state={state.teamSlot4} />
-      </TeamSlotContainer>
-      <TeamSlotContainer>
-        <TeamSlot teamId={teamId} slotId={"5"} state={state.teamSlot5} />
-      </TeamSlotContainer>
+      <TeamSlot teamId={teamId} slotId={"1"} state={state.teamSlot1} />
+      <TeamSlot teamId={teamId} slotId={"2"} state={state.teamSlot2} />
+      <TeamSlot teamId={teamId} slotId={"3"} state={state.teamSlot3} />
+      <TeamSlot teamId={teamId} slotId={"4"} state={state.teamSlot4} />
+      <TeamSlot teamId={teamId} slotId={"5"} state={state.teamSlot5} />
       <div
         className={css`
           margin-left: 0.5rem;
-          width: 15%;
         `}
       >
         <TeamSlot teamId={teamId} slotId={"6"} state={state.teamSlot6} invert={gameConfig.mode === "2p"} />

@@ -32,7 +32,7 @@ const LatentEmpty = styled.div`
   }
 
   @media ${breakpoint.xs} {
-    width: 100%;
+    width: 10vw;
     aspect-ratio: 2/1;
   }
   border: 2px dotted #aaa;
@@ -47,7 +47,7 @@ const LatentSelected = styled(FlexRow)`
   }
 
   @media ${breakpoint.xs} {
-    width: 100%;
+    width: 10vw;
     aspect-ratio: 2/1;
   }
   flex-wrap: wrap;
@@ -231,7 +231,6 @@ export const Latents = ({
         box-siding: border-box;
         border: 2px solid ${isOver ? "yellow" : "transparent"};
         cursor: grab;
-        width: 100%;
       `}
     >
       <div ref={drop}>
