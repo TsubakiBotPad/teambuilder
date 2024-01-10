@@ -22,7 +22,7 @@ import { FlexColC } from "../stylePrimitives";
 import { Card } from "./card";
 import { TeamComponentId } from "./id";
 import { Latents } from "./latent";
-import { breakpoint } from "../breakpoints";
+import { breakpoint, isMobile } from "../breakpoints";
 
 interface DropResult {
   dropEffect: string;
@@ -196,10 +196,12 @@ export const TeamSlot = ({
           <AssistRow isOver={isOver} hasAssists={hasAssists} componentId={componentId} monster={state.assist} />
           <AiOutlineCaretDown />
           <MonsterRow isOver={isOver} color={teamColor} state={state} subattr={subattr} componentId={componentId} />
-          <GrabDots color={teamColor} darken={isOver}>
-            <RxDotsHorizontal />
-            <RxDotsHorizontal />
-          </GrabDots>
+          {!isMobile() ? (
+            <GrabDots color={teamColor} darken={isOver}>
+              <RxDotsHorizontal />
+              <RxDotsHorizontal />
+            </GrabDots>
+          ) : null}
         </FlexColC>
       </div>
     </div>

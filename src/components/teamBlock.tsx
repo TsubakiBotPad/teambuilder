@@ -1,5 +1,5 @@
 import { css } from "@emotion/css";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 
 import { isMobile } from "../breakpoints";
 import { AppStateContext, TeamState, TeamStateContext } from "../model/teamStateManager";
@@ -7,6 +7,7 @@ import { FlexCol, FlexColC, FlexRow, FlexRowC, H2 } from "../stylePrimitives";
 import { BadgeDisplay } from "./badge";
 import { TeamDisplay } from "./teamDisplay";
 import { TeamStatDisplay } from "./teamStats/teamStats";
+import { AiOutlineCaretDown, AiOutlineCaretRight } from "react-icons/ai";
 
 const TeamInfo = ({ playerId }: { playerId: keyof TeamState }) => {
   const { teamState } = useContext(TeamStateContext);
@@ -30,10 +31,32 @@ const TeamInfoMobile = ({ playerId }: { playerId: keyof TeamState }) => {
   const { teamState } = useContext(TeamStateContext);
   const { gameConfig, teamStats } = useContext(AppStateContext);
   const is2P = gameConfig.mode === "2p";
+  const [statHidden, setStatHidden] = useState(true);
+
   return (
-    <FlexColC gap="2rem">
+    <FlexColC gap="0.5rem">
       <TeamDisplay teamId={playerId} state={teamState[playerId]} gap={"0"} />
-      <TeamStatDisplay teamStat={teamStats[playerId]} keyP={playerId} is2P={is2P} />
+      <FlexCol
+        className={css`
+          width: 100%;
+        `}
+      >
+        <div
+          onClick={() => {
+            setStatHidden(!statHidden);
+          }}
+        >
+          <FlexRow>
+            {statHidden ? <AiOutlineCaretRight /> : <AiOutlineCaretDown />}
+            <p>
+              {statHidden ? "Show" : "Hide"} {playerId} Stats
+            </p>
+          </FlexRow>
+        </div>
+        <div hidden={statHidden}>
+          <TeamStatDisplay teamStat={teamStats[playerId]} keyP={playerId} is2P={is2P} />
+        </div>
+      </FlexCol>
     </FlexColC>
   );
 };

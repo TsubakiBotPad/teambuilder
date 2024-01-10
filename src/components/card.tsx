@@ -18,8 +18,8 @@ interface DropResult {
   target: TeamComponentId;
 }
 
-const mobileCardWidth = "15vw";
-const desktopCardWidth = "5rem";
+export const mobileCardWidth = "15vw";
+export const desktopCardWidth = "5rem";
 
 const CardEmpty = styled.div`
   background-color: "#fefefe";

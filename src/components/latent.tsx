@@ -18,6 +18,7 @@ import { FlexRow } from "../stylePrimitives";
 import { TeamComponentId } from "./id";
 import { computeTotalAwakeningsFromSlots } from "./teamStats/awakenings";
 import { breakpoint } from "../breakpoints";
+import { desktopCardWidth, mobileCardWidth } from "./card";
 
 interface DropResult {
   dropEffect: string;
@@ -27,14 +28,14 @@ interface DropResult {
 const LatentEmpty = styled.div`
   background-color: "lightyellow";
   @media ${breakpoint.xl} {
-    width: 5rem;
-    height: 2.1rem;
+    width: ${desktopCardWidth};
   }
 
   @media ${breakpoint.xs} {
-    width: 10vw;
-    aspect-ratio: 2/1;
+    width: ${mobileCardWidth};
   }
+
+  aspect-ratio: 5/2.1;
   border: 2px dotted #aaa;
   box-sizing: border-box;
 `;
@@ -42,14 +43,14 @@ const LatentEmpty = styled.div`
 const LatentSelected = styled(FlexRow)`
   background-color: lightred;
   @media ${breakpoint.xl} {
-    width: 5rem;
-    height: 2.1rem;
+    width: ${desktopCardWidth};
   }
 
   @media ${breakpoint.xs} {
-    width: 10vw;
-    aspect-ratio: 2/1;
+    width: ${mobileCardWidth};
   }
+
+  aspect-ratio: 5/2.1;
   flex-wrap: wrap;
   gap: 0px 2px;
   position: relative;

@@ -27,7 +27,7 @@ export const MobilePageContainer = React.forwardRef((props, ref) => {
   return (
     <Page maxWidth={maxPageWidth}>
       <FlexColCResponsive gap="1rem">
-        <H1>Mobile {iStr("applicationTitle", language, "PAD Team Builder")}</H1>
+        <H1>{iStr("applicationTitle", language, "PAD Team Builder")} M</H1>
         <FlexRowC>
           <LanguageSelector />
           <GameConfigSelector />
