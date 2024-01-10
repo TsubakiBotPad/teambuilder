@@ -1,66 +1,12 @@
 import { css } from "@emotion/css";
 import styled from "@emotion/styled";
-import { toNumber } from "lodash";
 import { useContext } from "react";
-import { useDrag, useDrop } from "react-dnd";
-import { AiOutlineCaretDown } from "react-icons/ai";
-import { RxDotsHorizontal } from "react-icons/rx";
-import useModifierKey from "../hooks/useModifierKey";
 
-import {
-  AppStateContext,
-  copySlot,
-  PlayerState,
-  swapSlot,
-  TeamSlotState,
-  TeamState,
-  TeamStateContext
-} from "../model/teamStateManager";
-import { DraggableTypes } from "../pages/padteambuilder";
-import { FlexCol, FlexColC, FlexRow, FlexRowC, H2 } from "../stylePrimitives";
+import { AppStateContext, PlayerState, TeamState, TeamStateContext } from "../model/teamStateManager";
+import { FlexCol, FlexRow, FlexRowC, H2 } from "../stylePrimitives";
 import { BadgeDisplay } from "./badge";
-import { Card } from "./card";
-import { TeamComponentId } from "./id";
-import { Latents } from "./latent";
-import { TeamStatDisplay } from "./teamStats/teamStats";
 import { TeamSlot } from "./teamSlot";
-
-interface DropResult {
-  dropEffect: string;
-  target: TeamComponentId;
-}
-
-type ColorProps = {
-  color: string;
-  darken?: boolean;
-  grayscale?: boolean;
-};
-
-const ColorBG = styled.div<ColorProps>`
-  background-color: ${(props) => props.color};
-  padding: 0.25rem;
-  ${(props) => (props.darken ? "filter: saturate(200%) brightness(1.2)" : "")};
-  ${(props) => (props.grayscale ? "filter:grayscale(1)" : "")};
-  width: 100%;
-`;
-
-const teamIdToColor: { [key in string]: string } = {
-  p1: "pink",
-  p2: "lightblue",
-  p3: "lightgreen"
-};
-
-const GrabDots = styled.div<ColorProps>`
-  height: 1rem;
-  color: #555;
-  cursor: grab;
-  background-color: ${(props) => props.color};
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  ${(props) => (props.darken ? "filter: saturate(200%) brightness(1.2)" : "")};
-  padding: 0.25rem;
-`;
+import { TeamStatDisplay } from "./teamStats/teamStats";
 
 const Team = ({ teamId, state }: { teamId: keyof TeamState; state: PlayerState }) => {
   const { gameConfig } = useContext(AppStateContext);
@@ -109,7 +55,7 @@ export const TeamBlock = ({ playerId, shouldShow }: { playerId: keyof TeamState;
       </FlexRowC>
       <TeamRow>
         <Team teamId={playerId} state={teamState[playerId]} />
-        {/* <TeamStatDisplay teamStat={teamStats[playerId]} keyP={playerId} is2P={is2P} /> */}
+        <TeamStatDisplay teamStat={teamStats[playerId]} keyP={playerId} is2P={is2P} />
       </TeamRow>
     </FlexCol>
   ) : (
