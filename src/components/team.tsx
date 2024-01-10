@@ -23,6 +23,7 @@ import { Card } from "./card";
 import { TeamComponentId } from "./id";
 import { Latents } from "./latent";
 import { TeamStatDisplay } from "./teamStats/teamStats";
+import { TeamSlot } from "./teamSlot";
 
 interface DropResult {
   dropEffect: string;
@@ -61,106 +62,6 @@ const GrabDots = styled.div<ColorProps>`
   padding: 0.25rem;
 `;
 
-const TeamSlot = ({
-  teamId,
-  slotId,
-  state,
-  invert
-}: {
-  teamId: keyof TeamState;
-  slotId: string;
-  state: TeamSlotState;
-  invert?: boolean;
-}) => {
-  const otherTeamColor = teamId === "p1" ? teamIdToColor["p2"] : teamIdToColor["p1"];
-  const componentId = { teamId: teamId, slotId: `teamSlot${slotId}` as keyof PlayerState };
-
-  const { gameConfig, dungeonEffects, teamStats } = useContext(AppStateContext);
-  const { teamState, setTeamState } = useContext(TeamStateContext);
-  const hasAssists = dungeonEffects.hasAssists;
-  const subattrs = teamStats[teamId]?.teamSubattributes;
-
-  const ctrlKeyDown = useModifierKey("Control");
-  const altKeyDown = useModifierKey("Alt");
-  const [, drag] = useDrag(
-    () => ({
-      type: DraggableTypes.slot,
-      item: { cardId: componentId },
-      end(item, monitor) {
-        const dropResult = monitor.getDropResult() as DropResult;
-        if (ctrlKeyDown || altKeyDown) {
-          copySlot(teamState, setTeamState, componentId, dropResult.target);
-        } else {
-          swapSlot(teamState, setTeamState, componentId, dropResult.target);
-        }
-      }
-    }),
-    [gameConfig, ctrlKeyDown, altKeyDown]
-  );
-
-  const [{ isOver }, drop] = useDrop(
-    () => ({
-      accept: DraggableTypes.slot,
-      drop: (item, monitor) => {
-        return {
-          target: componentId
-        };
-      },
-      collect: (monitor) => ({
-        isOver: !!monitor.isOver(),
-        x: monitor.getItem()
-      })
-    }),
-    [componentId]
-  );
-
-  const slot = toNumber(slotId) - 1;
-  var subattr = undefined;
-  if (subattrs) {
-    subattr = subattrs[slot];
-  }
-
-  return (
-    <div
-      ref={drag}
-      className={css`
-        box-siding: border-box;
-        cursor: grab;
-      `}
-    >
-      <div ref={drop}>
-        <FlexColC
-          className={css`
-            position: relative;
-          `}
-        >
-          <ColorBG color={"#f0f0f0"} darken={isOver} grayscale={!hasAssists}>
-            <FlexColC>
-              <Card componentId={{ ...componentId, use: "assist" }} monster={state.assist} />
-            </FlexColC>
-          </ColorBG>
-          <FlexRowC>
-            <AiOutlineCaretDown />
-          </FlexRowC>
-          <ColorBG color={invert ? otherTeamColor : teamIdToColor[teamId]} darken={isOver}>
-            <FlexColC gap="0.25rem">
-              <Card componentId={{ ...componentId, use: "base" }} monster={state.base} subattr={subattr} />
-              <Latents componentId={{ ...componentId, use: "latents" }} latents={state.latents} teamSlot={state} />
-            </FlexColC>
-          </ColorBG>
-          <GrabDots color={invert ? otherTeamColor : teamIdToColor[teamId]} darken={isOver}>
-            <RxDotsHorizontal />
-            <RxDotsHorizontal />
-          </GrabDots>
-        </FlexColC>
-      </div>
-    </div>
-  );
-};
-
-const TeamSlotContainer = styled.div`
-  width: 15%;
-`;
 const Team = ({ teamId, state }: { teamId: keyof TeamState; state: PlayerState }) => {
   const { gameConfig } = useContext(AppStateContext);
 
