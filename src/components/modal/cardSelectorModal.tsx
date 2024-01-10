@@ -88,7 +88,7 @@ const AlternateEvoImages = ({
 
   return (
     <FlexColC>
-      <FlexRowC gap="0.25rem">
+      <FlexRowC gap="0.25rem" wrap="wrap">
         {ids.map((id) => (
           <AltEvoImg
             key={id}
@@ -125,6 +125,7 @@ const modalClassName = css`
 
   @media ${breakpoint.xs} {
     left: 5vw;
+    top: 0;
   }
 
   &:focus-visible {
@@ -209,7 +210,7 @@ export const CardSelectorModal = ({ isOpen }: { isOpen: boolean }) => {
       overlayClassName={overlayClassName}
       ariaHideApp={false}
     >
-      <BoundingBox minWidth="50vw" maxWidth="50vw" minWidthM="75vw" maxWidthM="90vw">
+      <BoundingBox minWidth="50vw" maxWidth="50vw" minWidthM="90vw" maxWidthM="90vw">
         <ModalCloseButton hoverClose={hoverClose} setHoverClose={setHoverClose} setModalOpen={setModalIsOpen} />
         <div
           className={css`
