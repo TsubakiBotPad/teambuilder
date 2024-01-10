@@ -159,7 +159,7 @@ const Team = ({ teamId, state }: { teamId: keyof TeamState; state: PlayerState }
 
   return (
     <FlexCol gap="0.25rem">
-      <FlexRow>
+      <FlexRow width="100%">
         <TeamSlot teamId={teamId} slotId={"1"} state={state.teamSlot1} />
         <TeamSlot teamId={teamId} slotId={"2"} state={state.teamSlot2} />
         <TeamSlot teamId={teamId} slotId={"3"} state={state.teamSlot3} />

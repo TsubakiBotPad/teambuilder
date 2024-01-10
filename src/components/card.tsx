@@ -11,6 +11,7 @@ import { DraggableTypes } from "../pages/padteambuilder";
 import { FlexColC } from "../stylePrimitives";
 import { leftPad } from "./generic/leftPad";
 import { TeamComponentId } from "./id";
+import { breakpoint } from "../breakpoints";
 
 interface DropResult {
   dropEffect: string;
@@ -19,8 +20,16 @@ interface DropResult {
 
 const CardEmpty = styled.div`
   background-color: "#fefefe";
-  width: 100%;
-  aspect-ratio: 1/1;
+  @media ${breakpoint.xl} {
+    width: 5rem;
+    height: 5rem;
+  }
+
+  @media ${breakpoint.xs} {
+    width: 100%;
+    aspect-ratio: 1/1;
+  }
+
   border: 2px dotted #aaa;
   box-sizing: border-box;
 `;
@@ -33,8 +42,16 @@ type CardSelectedType = {
 const CardSelectedImage = styled.div<CardSelectedType>`
   background: ${(props) => `url("${BASE_ICON_URL}${leftPad(props.monsterId, 5)}.png")`};
   background-size: cover;
-  width: 5rem;
-  aspect-ratio: 1/1;
+  @media ${breakpoint.xl} {
+    width: 5rem;
+    height: 5rem;
+  }
+
+  @media ${breakpoint.xs} {
+    width: 100%;
+    aspect-ratio: 1/1;
+  }
+
   position: relative;
 
   &::before {

@@ -17,6 +17,7 @@ import { DraggableTypes } from "../pages/padteambuilder";
 import { FlexRow } from "../stylePrimitives";
 import { TeamComponentId } from "./id";
 import { computeTotalAwakeningsFromSlots } from "./teamStats/awakenings";
+import { breakpoint } from "../breakpoints";
 
 interface DropResult {
   dropEffect: string;
@@ -25,16 +26,30 @@ interface DropResult {
 
 const LatentEmpty = styled.div`
   background-color: "lightyellow";
-  width: 5rem;
-  height: 2.14rem;
+  @media ${breakpoint.xl} {
+    width: 5rem;
+    height: 2.1rem;
+  }
+
+  @media ${breakpoint.xs} {
+    width: 100%;
+    aspect-ratio: 2/1;
+  }
   border: 2px dotted #aaa;
   box-sizing: border-box;
 `;
 
 const LatentSelected = styled(FlexRow)`
   background-color: lightred;
-  width: 5rem;
-  height: 2.14rem;
+  @media ${breakpoint.xl} {
+    width: 5rem;
+    height: 2.1rem;
+  }
+
+  @media ${breakpoint.xs} {
+    width: 100%;
+    aspect-ratio: 2/1;
+  }
   flex-wrap: wrap;
   gap: 0px 2px;
   position: relative;
@@ -216,6 +231,7 @@ export const Latents = ({
         box-siding: border-box;
         border: 2px solid ${isOver ? "yellow" : "transparent"};
         cursor: grab;
+        width: 100%;
       `}
     >
       <div ref={drop}>
