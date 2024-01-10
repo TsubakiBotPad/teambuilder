@@ -11,7 +11,7 @@ import { DraggableTypes } from "../pages/padteambuilder";
 import { FlexColC } from "../stylePrimitives";
 import { leftPad } from "./generic/leftPad";
 import { TeamComponentId } from "./id";
-import { breakpoint } from "../breakpoints";
+import { breakpoint, isMobile } from "../breakpoints";
 
 interface DropResult {
   dropEffect: string;
@@ -71,6 +71,10 @@ const CardOverlayText = styled.div`
   font-size: 0.75rem;
   font-weight: bold;
   color: #fff;
+
+  @media ${breakpoint.xs} {
+    font-size: 9px;
+  }
 `;
 
 const LevelText = ({ level }: { level: number }) => {
@@ -123,6 +127,9 @@ const CardSelected = ({
             font-weight: 1000;
             position: absolute;
             padding: 0.15rem;
+            @media ${breakpoint.xs} {
+              font-size: 14px;
+            }
           `}
         >
           +297
@@ -137,6 +144,10 @@ const CardSelected = ({
             padding: 0.15rem;
             & div:not(:last-child) {
               margin-bottom: 0.15rem;
+            }
+
+            @media ${breakpoint.xs} {
+              padding: 0.05rem 0;
             }
           `}
         >
