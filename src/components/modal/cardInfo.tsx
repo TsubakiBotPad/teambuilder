@@ -18,6 +18,51 @@ import { LevelSelector } from "../levelSelector";
 import { SuperAwakeningSelector } from "../superAwakeningSelector";
 import { breakpoint, isMobile } from "../../breakpoints";
 
+const MonsterTitle = ({ monster: m }: { monster: MonsterResponse }) => {
+  const { language } = useContext(AppStateContext);
+  return (
+    <span
+      className={css`
+        font-size: 1.25rem;
+        font-weight: 600;
+        @media ${breakpoint.xs} {
+          font-size: 14px;
+        }
+      `}
+    >
+      [{m.monster_id}] {language === "ja" ? m.name_ja : m.name_en}
+    </span>
+  );
+};
+
+function monsterTypes(m: MonsterResponse) {
+  return m.types.map((a) => {
+    return <PadAssetImage assetName={`t${a}`} height={22} />;
+  });
+}
+
+const MonsterImage = ({ monster: m }: { monster: MonsterResponse }) => {
+  return <img src={`${BASE_ICON_URL}${leftPad(m.monster_id, 5)}.png`} alt="monster" width={"100px"} height={"100px"} />;
+};
+
+const MonsterKillers = ({ monster: m }: { monster: MonsterResponse }) => {
+  const { language } = useContext(AppStateContext);
+  return (
+    <FlexRow gap="0.25rem">
+      <FlexRowC>
+        {getKillers(m).map((a) => (
+          <PadAssetImage assetName={`${a.substring(0, 3).toLocaleLowerCase()}k`} height={25} />
+        ))}
+        {
+          <span>
+            [{m.latent_slots} {iStr("slots", language)}]
+          </span>
+        }
+      </FlexRowC>
+    </FlexRow>
+  );
+};
+
 const LeaderSkillText = ({ monster: m }: { monster: MonsterResponse }) => {
   if (!m.leader_skill) return <></>;
 
@@ -107,6 +152,71 @@ const MonsterText = ({ monster: m }: { monster: MonsterResponse }) => {
   );
 };
 
+const MonsterStats = ({
+  monster: m,
+  currentSA,
+  setCurrentSA,
+  currentLevel,
+  setCurrentLevel
+}: {
+  monster: MonsterResponse;
+  currentSA: number | undefined;
+  setCurrentSA: React.Dispatch<React.SetStateAction<number | undefined>>;
+  currentLevel: number | undefined;
+  setCurrentLevel: React.Dispatch<React.SetStateAction<number | undefined>>;
+}) => {
+  const { gameConfig } = useContext(AppStateContext);
+  const superAwakenings = m.awakenings.filter((a) => a.is_super);
+  return (
+    <table
+      className={css`
+        font-size: 0.75rem;
+      `}
+    >
+      <tbody>
+        <tr>
+          <TDh width={"1rem"}>AW</TDh>
+          <td>
+            <FlexRow>
+              {m.awakenings
+                .filter((a) => !a.is_super)
+                .map((a) => (
+                  <AwakeningImage key={a.awakening_id} awakeningId={a.awoken_skill_id} />
+                ))}
+            </FlexRow>
+          </td>
+        </tr>
+        <tr>
+          <TDh>LV</TDh>
+          <td>
+            <LevelSelector
+              currentLevel={currentLevel}
+              selectedMonster={m}
+              setLevel={(n: number) => {
+                setCurrentLevel(n);
+              }}
+            />
+          </td>
+        </tr>
+        {gameConfig.mode !== "2p" && superAwakenings.length > 0 && currentLevel && currentLevel > 99 ? (
+          <tr>
+            <TDh>SA</TDh>
+            <td>
+              <SuperAwakeningSelector
+                currentSA={currentSA}
+                selectedMonster={m}
+                setSA={(n: number) => {
+                  setCurrentSA(n);
+                }}
+              />
+            </td>
+          </tr>
+        ) : null}
+      </tbody>
+    </table>
+  );
+};
+
 const TH = styled.th`
   padding: 0rem 0.5rem;
   text-align: right;
@@ -132,8 +242,6 @@ export const CardInfo = ({
   currentLevel: number | undefined;
   setCurrentLevel: React.Dispatch<React.SetStateAction<number | undefined>>;
 }) => {
-  const { gameConfig, language } = useContext(AppStateContext);
-  const superAwakenings = m.awakenings.filter((a) => a.is_super);
   return (
     <div
       className={css`
@@ -149,91 +257,20 @@ export const CardInfo = ({
         `}
       >
         <FlexCol gap="0.25rem">
-          <span
-            className={css`
-              font-size: 1.25rem;
-              font-weight: 600;
-              @media ${breakpoint.xs} {
-                font-size: 14px;
-              }
-            `}
-          >
-            [{m.monster_id}] {language === "ja" ? m.name_ja : m.name_en}
-          </span>
-
-          <FlexRow gap="0.25rem">
-            <b></b>
-            <FlexRowC>
-              {getKillers(m).map((a) => (
-                <PadAssetImage assetName={`${a.substring(0, 3).toLocaleLowerCase()}k`} height={25} />
-              ))}
-              {
-                <span>
-                  [{m.latent_slots} {iStr("slots", language)}]
-                </span>
-              }
-            </FlexRowC>
-          </FlexRow>
-          <table
-            className={css`
-              font-size: 0.75rem;
-            `}
-          >
-            <tbody>
-              <tr>
-                <TDh width={"1rem"}>AW</TDh>
-                <td>
-                  <FlexRow>
-                    {m.awakenings
-                      .filter((a) => !a.is_super)
-                      .map((a) => (
-                        <AwakeningImage key={a.awakening_id} awakeningId={a.awoken_skill_id} />
-                      ))}
-                  </FlexRow>
-                </td>
-              </tr>
-              <tr>
-                <TDh>LV</TDh>
-                <td>
-                  <LevelSelector
-                    currentLevel={currentLevel}
-                    selectedMonster={m}
-                    setLevel={(n: number) => {
-                      setCurrentLevel(n);
-                    }}
-                  />
-                </td>
-              </tr>
-              {gameConfig.mode !== "2p" && superAwakenings.length > 0 && currentLevel && currentLevel > 99 ? (
-                <tr>
-                  <TDh>SA</TDh>
-                  <td>
-                    <SuperAwakeningSelector
-                      currentSA={currentSA}
-                      selectedMonster={m}
-                      setSA={(n: number) => {
-                        setCurrentSA(n);
-                      }}
-                    />
-                  </td>
-                </tr>
-              ) : null}
-            </tbody>
-          </table>
+          <MonsterTitle monster={m} />
+          <MonsterKillers monster={m} />
+          <MonsterStats
+            monster={m}
+            currentLevel={currentLevel}
+            currentSA={currentSA}
+            setCurrentLevel={setCurrentLevel}
+            setCurrentSA={setCurrentSA}
+          />
         </FlexCol>
         {!isMobile() ? (
           <FlexRow>
-            <FlexCol
-              className={css`
-                margin-right: 1px;
-              `}
-              gap="1px"
-            >
-              {m.types.map((a) => {
-                return <PadAssetImage assetName={`t${a}`} height={22} />;
-              })}
-            </FlexCol>
-            <img src={`${BASE_ICON_URL}${leftPad(m.monster_id, 5)}.png`} alt="monster" height={"100%"} />
+            <FlexCol>{monsterTypes(m)}</FlexCol>
+            <MonsterImage monster={m} />
           </FlexRow>
         ) : null}
       </div>
