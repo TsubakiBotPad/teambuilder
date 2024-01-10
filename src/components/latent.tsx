@@ -17,7 +17,7 @@ import { DraggableTypes } from "../pages/padteambuilder";
 import { FlexRow } from "../stylePrimitives";
 import { TeamComponentId } from "./id";
 import { computeTotalAwakeningsFromSlots } from "./teamStats/awakenings";
-import { breakpoint } from "../breakpoints";
+import { breakpoint, isMobile } from "../breakpoints";
 import { desktopCardWidth, mobileCardWidth } from "./card";
 
 interface DropResult {
@@ -35,7 +35,7 @@ const LatentEmpty = styled.div`
     width: ${mobileCardWidth};
   }
 
-  aspect-ratio: 5/2.1;
+  aspect-ratio: 5/2;
   border: 2px dotted #aaa;
   box-sizing: border-box;
 `;
@@ -44,13 +44,14 @@ const LatentSelected = styled(FlexRow)`
   background-color: lightred;
   @media ${breakpoint.xl} {
     width: ${desktopCardWidth};
+    height: 2.1rem;
   }
 
   @media ${breakpoint.xs} {
     width: ${mobileCardWidth};
+    height: 1.75rem;
   }
 
-  aspect-ratio: 5/2.1;
   flex-wrap: wrap;
   gap: 0px 2px;
   position: relative;
@@ -64,6 +65,13 @@ const RemainderLatents = styled.div`
   display: flex;
   gap: 3px;
   justify-content: center;
+
+  @media ${breakpoint.xs} {
+    gap: 0px;
+    width: 50%;
+    top: -62%;
+    left: 49%;
+  }
 `;
 
 const SixSlotLatent = ({
@@ -78,7 +86,8 @@ const SixSlotLatent = ({
   if (!latentName) {
     return <></>;
   }
-
+  const mobile = isMobile();
+  const topIcon = `${halfBreakDamage ? (mobile ? 1 : 2) : 7}px`;
   return (
     <div
       className={css`
@@ -95,7 +104,7 @@ const SixSlotLatent = ({
         height={17}
         className={css`
           position: relative;
-          top: ${halfBreakDamage ? 2 : 7}px;
+          top: ${topIcon};
           left: 11px;
         `}
       />
@@ -105,7 +114,7 @@ const SixSlotLatent = ({
           height={12}
           className={css`
             position: relative;
-            top: 1px;
+            top: ${mobile ? 0 : 1}px;
             left: 13px;
           `}
         />
@@ -234,7 +243,12 @@ export const Latents = ({
         cursor: grab;
       `}
     >
-      <div ref={drop}>
+      <div
+        ref={drop}
+        className={css`
+          height: 100%;
+        `}
+      >
         {latents.length !== 0 ? (
           <LatentSelected
             onClick={() => {
