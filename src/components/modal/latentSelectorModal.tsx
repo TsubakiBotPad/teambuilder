@@ -23,6 +23,7 @@ const modalClassName = css`
 
   @media ${breakpoint.xs} {
     left: 5vw;
+    top: 0;
   }
 
   &:focus-visible {
@@ -38,177 +39,22 @@ const overlayClassName = css`
 
 const DEFAULT_MAX_LATENTS = 6;
 
-export const LatentSelectorModal = ({ isOpen }: { isOpen: boolean }) => {
-  const [selectedLatents, setSelectedLatents] = useState<number[]>([]);
-  const { language, setLatentModalIsOpen, cardSlotSelected } = useContext(AppStateContext);
-  const { teamState, setTeamState } = useContext(TeamStateContext);
-  const [hoverClose, setHoverClose] = useState(false);
-  const [currentMonster, setCurrentMonster] = useState<MonsterResponse | undefined>(undefined);
-
-  useMemo(() => {
-    const f = async () => {
-      if (!cardSlotSelected || !cardSlotSelected.teamId || !cardSlotSelected.slotId) {
-        return;
-      }
-
-      const monster = teamState[cardSlotSelected.teamId!][cardSlotSelected.slotId!] as TeamSlotState;
-      const m = await monsterCacheClient.get(monster.base.id);
-
-      setCurrentMonster(m);
-      setSelectedLatents(monster.latents);
-    };
-    f();
-  }, [teamState, cardSlotSelected]);
-
-  const maxLatents = currentMonster?.latent_slots ?? DEFAULT_MAX_LATENTS;
-
-  const currentSize = selectedLatents.reduce((a, b) => {
-    const s = Math.floor(b / 100);
-    return a + s;
-  }, 0);
-
+const LatentSlotTitle = () => {
+  const { language, cardSlotSelected } = useContext(AppStateContext);
   return (
-    <Modal
-      isOpen={isOpen}
-      contentLabel="Example Modal"
-      shouldCloseOnOverlayClick={true}
-      onRequestClose={() => {
-        setLatentModalIsOpen(false);
-      }}
-      className={modalClassName}
-      overlayClassName={overlayClassName}
-      ariaHideApp={false}
+    <H2
+      className={css`
+        margin-bottom: 1rem;
+      `}
     >
-      <BoundingBox minWidth="50vw" maxWidth="50vw" minWidthM="75vw" maxWidthM="90vw">
-        <ModalCloseButton hoverClose={hoverClose} setHoverClose={setHoverClose} setModalOpen={setLatentModalIsOpen} />
-        <div
-          className={css`
-            background-color: #fefefe;
-            padding: 1rem;
-          `}
-        >
-          <H2
-            className={css`
-              margin-bottom: 1rem;
-            `}
-          >
-            <FlexRowC>
-              {cardSlotSelected.teamId}
-              <BsDot />
-              {iStr(cardSlotSelected.slotId, language)}
-              <BsDot />
-              {iStr("latents", language)}
-            </FlexRowC>
-          </H2>
-          <FlexColC gap="2rem">
-            <FlexRow wrap={"wrap"}>
-              <FlexCol gap="1rem">
-                {Object.entries(LATENTS_BY_SIZE).map(([n, names], j) => {
-                  return (
-                    <FlexCol key={n + j}>
-                      <H3>
-                        {n}-{iStr("slots", language)}
-                      </H3>
-                      <FlexRow wrap="wrap">
-                        {names.map((n, i) => {
-                          return (
-                            <PadAssetImage
-                              assetName={n}
-                              onClick={() => {
-                                handleAddLatent(n, maxLatents, selectedLatents, setSelectedLatents);
-                              }}
-                              key={n + j + i}
-                            />
-                          );
-                        })}
-                      </FlexRow>
-                    </FlexCol>
-                  );
-                })}
-              </FlexCol>
-            </FlexRow>
-            <FlexRow gap={"14px"}>
-              {selectedLatents.length !== 0 ? (
-                <FlexRow gap={"14px"}>
-                  {selectedLatents.map((i: number, idx: number) => {
-                    const name = LATENTS_ID_TO_NAME[i];
-                    const valid = true; // TODO: check against monster
-
-                    const isSixSlot = Math.floor(i / 100) === 6;
-                    if (isSixSlot) {
-                      return (
-                        <div key={"selectedLatent" + idx} className={css``}>
-                          <PadAssetImage
-                            assetName={"6slotLatentBg"}
-                            onClick={() => {
-                              selectedLatents.splice(idx, 1);
-                              setSelectedLatents([...selectedLatents]);
-                            }}
-                            className={css`
-                              opacity: ${valid ? "1" : "0.5"};
-                              position: relative;
-                            `}
-                          >
-                            <div
-                              className={css`
-                                position: absolute;
-                                top: 0;
-                                left: 45%;
-                                height: 0;
-                              `}
-                            >
-                              <PadAssetImage assetName={`${name}latentbase`} />
-                            </div>
-                          </PadAssetImage>
-                        </div>
-                      );
-                    }
-
-                    return (
-                      <PadAssetImage
-                        assetName={name}
-                        onClick={() => {
-                          selectedLatents.splice(idx, 1);
-                          setSelectedLatents([...selectedLatents]);
-                        }}
-                        className={css`
-                          opacity: ${valid ? "1" : "0.5"};
-                        `}
-                        key={"selectedLatent" + idx}
-                      />
-                    );
-                  })}
-                </FlexRow>
-              ) : null}
-              {maxLatents - currentSize !== 0 ? (
-                <FlexRow gap={"14px"}>
-                  {Array.from(Array(maxLatents - currentSize > 0 ? maxLatents - currentSize : 0).keys()).map((i) => {
-                    return <PadAssetImage assetName="emptyLatent" height={31} key={"remainderLatents" + i} />;
-                  })}
-                </FlexRow>
-              ) : null}
-            </FlexRow>
-            <FlexRowC gap="1rem">
-              <ConfirmButton
-                onClick={() => {
-                  setCardLatents(cardSlotSelected, selectedLatents, teamState, setTeamState);
-                  setLatentModalIsOpen(false);
-                }}
-              >
-                <IoIosRemoveCircle /> {iStr("confirm", language)}
-              </ConfirmButton>
-              <RemoveButton
-                onClick={() => {
-                  setSelectedLatents([]);
-                }}
-              >
-                <IoIosRemoveCircle /> {iStr("clear", language)}
-              </RemoveButton>
-            </FlexRowC>
-          </FlexColC>
-        </div>
-      </BoundingBox>
-    </Modal>
+      <FlexRowC>
+        {cardSlotSelected.teamId}
+        <BsDot />
+        {iStr(cardSlotSelected.slotId, language)}
+        <BsDot />
+        {iStr("latents", language)}
+      </FlexRowC>
+    </H2>
   );
 };
 
@@ -232,3 +78,220 @@ function handleAddLatent(
     // TODO: animate error
   }
 }
+
+const LatentOptions = ({
+  selectedLatents,
+  setSelectedLatents,
+  currentMonster
+}: {
+  selectedLatents: number[];
+  setSelectedLatents: React.Dispatch<React.SetStateAction<number[]>>;
+  currentMonster: MonsterResponse | undefined;
+}) => {
+  const { language } = useContext(AppStateContext);
+
+  const maxLatents = currentMonster?.latent_slots ?? DEFAULT_MAX_LATENTS;
+
+  return (
+    <FlexRow wrap={"wrap"}>
+      <FlexCol gap="1rem">
+        {Object.entries(LATENTS_BY_SIZE).map(([n, names], j) => {
+          return (
+            <FlexCol key={n + j}>
+              <H3>
+                {n}-{iStr("slots", language)}
+              </H3>
+              <FlexRow wrap="wrap">
+                {names.map((n, i) => {
+                  return (
+                    <PadAssetImage
+                      assetName={n}
+                      onClick={() => {
+                        handleAddLatent(n, maxLatents, selectedLatents, setSelectedLatents);
+                      }}
+                      key={n + j + i}
+                    />
+                  );
+                })}
+              </FlexRow>
+            </FlexCol>
+          );
+        })}
+      </FlexCol>
+    </FlexRow>
+  );
+};
+
+const LatentsSelected = ({
+  currentMonster,
+  selectedLatents,
+  setSelectedLatents
+}: {
+  currentMonster: MonsterResponse | undefined;
+  selectedLatents: number[];
+  setSelectedLatents: React.Dispatch<React.SetStateAction<number[]>>;
+}) => {
+  const maxLatents = currentMonster?.latent_slots ?? DEFAULT_MAX_LATENTS;
+
+  const currentSize = selectedLatents.reduce((a, b) => {
+    const s = Math.floor(b / 100);
+    return a + s;
+  }, 0);
+
+  return (
+    <FlexRow gap={"14px"}>
+      {selectedLatents.length !== 0 ? (
+        <FlexRow gap={"14px"}>
+          {selectedLatents.map((i: number, idx: number) => {
+            const name = LATENTS_ID_TO_NAME[i];
+            const valid = true; // TODO: check against monster
+
+            const isSixSlot = Math.floor(i / 100) === 6;
+            if (isSixSlot) {
+              return (
+                <div key={"selectedLatent" + idx} className={css``}>
+                  <PadAssetImage
+                    assetName={"6slotLatentBg"}
+                    onClick={() => {
+                      selectedLatents.splice(idx, 1);
+                      setSelectedLatents([...selectedLatents]);
+                    }}
+                    className={css`
+                      opacity: ${valid ? "1" : "0.5"};
+                      position: relative;
+                    `}
+                  >
+                    <div
+                      className={css`
+                        position: absolute;
+                        top: 0;
+                        left: 45%;
+                        height: 0;
+                      `}
+                    >
+                      <PadAssetImage assetName={`${name}latentbase`} />
+                    </div>
+                  </PadAssetImage>
+                </div>
+              );
+            }
+
+            return (
+              <PadAssetImage
+                assetName={name}
+                onClick={() => {
+                  selectedLatents.splice(idx, 1);
+                  setSelectedLatents([...selectedLatents]);
+                }}
+                className={css`
+                  opacity: ${valid ? "1" : "0.5"};
+                `}
+                key={"selectedLatent" + idx}
+              />
+            );
+          })}
+        </FlexRow>
+      ) : null}
+      {maxLatents - currentSize !== 0 ? (
+        <FlexRow gap={"14px"}>
+          {Array.from(Array(maxLatents - currentSize > 0 ? maxLatents - currentSize : 0).keys()).map((i) => {
+            return <PadAssetImage assetName="emptyLatent" height={31} key={"remainderLatents" + i} />;
+          })}
+        </FlexRow>
+      ) : null}
+    </FlexRow>
+  );
+};
+
+const Confirmation = ({
+  selectedLatents,
+  setSelectedLatents
+}: {
+  selectedLatents: number[];
+  setSelectedLatents: React.Dispatch<React.SetStateAction<number[]>>;
+}) => {
+  const { language, setLatentModalIsOpen, cardSlotSelected } = useContext(AppStateContext);
+  const { teamState, setTeamState } = useContext(TeamStateContext);
+
+  return (
+    <FlexRowC gap="1rem">
+      <ConfirmButton
+        onClick={() => {
+          setCardLatents(cardSlotSelected, selectedLatents, teamState, setTeamState);
+          setLatentModalIsOpen(false);
+        }}
+      >
+        <IoIosRemoveCircle /> {iStr("confirm", language)}
+      </ConfirmButton>
+      <RemoveButton
+        onClick={() => {
+          setSelectedLatents([]);
+        }}
+      >
+        <IoIosRemoveCircle /> {iStr("clear", language)}
+      </RemoveButton>
+    </FlexRowC>
+  );
+};
+
+export const LatentSelectorModal = ({ isOpen }: { isOpen: boolean }) => {
+  const [selectedLatents, setSelectedLatents] = useState<number[]>([]);
+  const { setLatentModalIsOpen, cardSlotSelected } = useContext(AppStateContext);
+  const { teamState } = useContext(TeamStateContext);
+  const [hoverClose, setHoverClose] = useState(false);
+  const [currentMonster, setCurrentMonster] = useState<MonsterResponse | undefined>(undefined);
+
+  useMemo(() => {
+    const f = async () => {
+      if (!cardSlotSelected || !cardSlotSelected.teamId || !cardSlotSelected.slotId) {
+        return;
+      }
+
+      const monster = teamState[cardSlotSelected.teamId!][cardSlotSelected.slotId!] as TeamSlotState;
+      const m = await monsterCacheClient.get(monster.base.id);
+
+      setCurrentMonster(m);
+      setSelectedLatents(monster.latents);
+    };
+    f();
+  }, [teamState, cardSlotSelected]);
+
+  return (
+    <Modal
+      isOpen={isOpen}
+      contentLabel="Example Modal"
+      shouldCloseOnOverlayClick={true}
+      onRequestClose={() => {
+        setLatentModalIsOpen(false);
+      }}
+      className={modalClassName}
+      overlayClassName={overlayClassName}
+      ariaHideApp={false}
+    >
+      <BoundingBox minWidth="50vw" maxWidth="50vw" minWidthM="90vw" maxWidthM="90vw">
+        <ModalCloseButton hoverClose={hoverClose} setHoverClose={setHoverClose} setModalOpen={setLatentModalIsOpen} />
+        <div
+          className={css`
+            background-color: #fefefe;
+            padding: 1rem;
+          `}
+        >
+          <FlexColC gap="1rem">
+            <LatentSlotTitle />
+            <LatentOptions
+              currentMonster={currentMonster}
+              selectedLatents={selectedLatents}
+              setSelectedLatents={setSelectedLatents}
+            />
+            <LatentsSelected
+              currentMonster={currentMonster}
+              selectedLatents={selectedLatents}
+              setSelectedLatents={setSelectedLatents}
+            />
+            <Confirmation selectedLatents={selectedLatents} setSelectedLatents={setSelectedLatents} />
+          </FlexColC>
+        </div>
+      </BoundingBox>
+    </Modal>
+  );
+};
