@@ -40,6 +40,7 @@ const ColorBG = styled.div<ColorProps>`
   padding: 0.5rem;
   ${(props) => (props.darken ? "filter: saturate(200%) brightness(1.2)" : "")};
   ${(props) => (props.grayscale ? "filter:grayscale(1)" : "")};
+  width: 100%;
 `;
 
 const teamIdToColor: { [key in string]: string } = {
@@ -154,32 +155,45 @@ const TeamSlot = ({
   );
 };
 
+const TeamSlotContainer = styled.div`
+  width: 15%;
+`;
 const Team = ({ teamId, state }: { teamId: keyof TeamState; state: PlayerState }) => {
   const { gameConfig } = useContext(AppStateContext);
 
   return (
-    <FlexCol gap="0.25rem">
-      <FlexRow width="100%">
+    <FlexRow width="100%" gap="0.5rem">
+      <TeamSlotContainer>
         <TeamSlot teamId={teamId} slotId={"1"} state={state.teamSlot1} />
+      </TeamSlotContainer>
+      <TeamSlotContainer>
         <TeamSlot teamId={teamId} slotId={"2"} state={state.teamSlot2} />
+      </TeamSlotContainer>
+      <TeamSlotContainer>
         <TeamSlot teamId={teamId} slotId={"3"} state={state.teamSlot3} />
+      </TeamSlotContainer>
+      <TeamSlotContainer>
         <TeamSlot teamId={teamId} slotId={"4"} state={state.teamSlot4} />
+      </TeamSlotContainer>
+      <TeamSlotContainer>
         <TeamSlot teamId={teamId} slotId={"5"} state={state.teamSlot5} />
-        <div
-          className={css`
-            margin-left: 0.5rem;
-          `}
-        >
-          <TeamSlot teamId={teamId} slotId={"6"} state={state.teamSlot6} invert={gameConfig.mode === "2p"} />
-        </div>
-      </FlexRow>
-    </FlexCol>
+      </TeamSlotContainer>
+      <div
+        className={css`
+          margin-left: 0.5rem;
+          width: 15%;
+        `}
+      >
+        <TeamSlot teamId={teamId} slotId={"6"} state={state.teamSlot6} invert={gameConfig.mode === "2p"} />
+      </div>
+    </FlexRow>
   );
 };
 
 const TeamRow = styled(FlexRow)`
   padding: 0.5rem;
   gap: 2rem;
+  width: 100%;
 `;
 
 export const TeamBlock = ({ playerId, shouldShow }: { playerId: keyof TeamState; shouldShow: boolean }) => {

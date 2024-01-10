@@ -32,7 +32,7 @@ export const TeamBuilderContentMobile = React.forwardRef((props, ref) => {
           >
             <TeamInput
               placeholder={iStr("teamName", language)}
-              size={41}
+              size={10}
               value={teamName}
               onChange={(e) => {
                 setTeamName(e.target.value);
@@ -42,30 +42,30 @@ export const TeamBuilderContentMobile = React.forwardRef((props, ref) => {
           </FlexRow>
           {gameConfig.mode !== "2p" ? <TeamBuilderContent1n3P /> : null}
           {gameConfig.mode === "2p" ? <TeamBuilderContent2P /> : null}
-          <div
-            className={css`
-              padding-left: 0.5rem;
-              padding-top: 0.5rem;
-            `}
-          >
-            <FlexCol gap="0.25rem">
-              <AuthorText />
-              <textarea
-                rows={15}
-                cols={10}
-                className={css`
-                  width: 37.7rem;
-                `}
-                value={instructions}
-                onChange={(e) => {
-                  setInstructions(e.target.value);
-                }}
-                placeholder={iStr("notesPlaceholder", language)}
-              />
-            </FlexCol>
-          </div>
         </FlexCol>
       </FlexRow>
+      <div
+        className={css`
+          padding-left: 0.5rem;
+          padding-top: 0.5rem;
+        `}
+      >
+        <FlexCol gap="0.25rem">
+          <AuthorText />
+          <textarea
+            rows={15}
+            cols={10}
+            className={css`
+              width: 100%;
+            `}
+            value={instructions}
+            onChange={(e) => {
+              setInstructions(e.target.value);
+            }}
+            placeholder={iStr("notesPlaceholder", language)}
+          />
+        </FlexCol>
+      </div>
     </FlexColCResponsive>
   );
 });
