@@ -7,6 +7,7 @@ import { iStr } from "../i18n/i18n";
 import { AppStateContext } from "../model/teamStateManager";
 import { useContext } from "react";
 import React from "react";
+import { circularIcon } from "./settings";
 
 export const ExportControls = React.forwardRef((props, ref) => {
   const { language } = useContext(AppStateContext);
@@ -15,10 +16,8 @@ export const ExportControls = React.forwardRef((props, ref) => {
       <button
         onClick={() => exportComponentAsPNG(ref as any)}
         className={css`
-          box-shadow: 1px 1px #ccc;
-          border: 1px solid black;
-          padding: 0 0.1rem;
-          cursor: pointer;
+          ${circularIcon};
+          background: #ccd;
         `}
       >
         <BsImage />
@@ -29,10 +28,8 @@ export const ExportControls = React.forwardRef((props, ref) => {
           toast(iStr("linkCopied", language));
         }}
         className={css`
-          box-shadow: 1px 1px #ccc;
-          border: 1px solid black;
-          padding: 0 0.1rem;
-          cursor: pointer;
+          ${circularIcon};
+          background: #cdc;
         `}
       >
         <BiLink />

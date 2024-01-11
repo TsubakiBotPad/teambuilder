@@ -56,6 +56,8 @@ export const PadTeamBuilderPage = () => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [latentModalIsOpen, setLatentModalIsOpen] = useState(false);
   const [badgeModalIsOpen, setBadgeModalIsOpen] = useState(false);
+  const [settingsModalIsOpen, setSettingsModalIsOpen] = useState(false);
+
   const [playerSelected, setPlayerSelected] = useState("");
   const [cardSlotSelected, setCardSlotSelected] = useState({});
   const [instructions, setInstructions] = useState<string | undefined>(parsedConfig.in);
@@ -119,6 +121,8 @@ export const PadTeamBuilderPage = () => {
           setLatentModalIsOpen,
           badgeModalIsOpen,
           setBadgeModalIsOpen,
+          settingsModalIsOpen,
+          setSettingsModalIsOpen,
           cardSlotSelected,
           setCardSlotSelected,
           playerSelected,
