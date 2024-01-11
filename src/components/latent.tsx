@@ -65,13 +65,6 @@ const RemainderLatents = styled.div`
   display: flex;
   gap: 3px;
   justify-content: center;
-
-  @media ${breakpoint.xs} {
-    gap: 0px;
-    width: 50%;
-    top: -62%;
-    left: 49%;
-  }
 `;
 
 const SixSlotLatent = ({
@@ -235,6 +228,7 @@ export const Latents = ({
     [componentId]
   );
 
+  const height = isMobile() ? 12 : 16;
   return (
     <div
       ref={drag}
@@ -263,7 +257,11 @@ export const Latents = ({
                 <RemainderLatents>
                   {remainderLatents.map((a, i) => {
                     return (
-                      <PadAssetImage assetName={LATENTS_ID_TO_NAME[a]} height={16} key={LATENTS_ID_TO_NAME[a] + i} />
+                      <PadAssetImage
+                        assetName={LATENTS_ID_TO_NAME[a]}
+                        height={height}
+                        key={LATENTS_ID_TO_NAME[a] + i}
+                      />
                     );
                   })}
                 </RemainderLatents>
@@ -276,7 +274,11 @@ export const Latents = ({
                   })
                   .map((a, i) => {
                     return (
-                      <PadAssetImage assetName={LATENTS_ID_TO_NAME[a]} height={16} key={LATENTS_ID_TO_NAME[a] + i} />
+                      <PadAssetImage
+                        assetName={LATENTS_ID_TO_NAME[a]}
+                        height={height}
+                        key={LATENTS_ID_TO_NAME[a] + i}
+                      />
                     );
                   })}
               </FlexRow>
