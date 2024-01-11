@@ -49,7 +49,7 @@ const LatentSelected = styled(FlexRow)`
 
   @media ${breakpoint.xs} {
     width: ${mobileCardWidth};
-    height: 1.75rem;
+    height: 1.55rem;
   }
 
   flex-wrap: wrap;
@@ -88,30 +88,31 @@ const SixSlotLatent = ({
   }
   const mobile = isMobile();
   const topIcon = `${halfBreakDamage ? (mobile ? 1 : 2) : 7}px`;
+  const height = mobile ? 12 : 15;
   return (
     <div
       className={css`
         width: 100%;
         height: 100%;
         background: url(img/6slotL.png);
-        background-size: contain;
+        background-size: cover;
         background-repeat: no-repeat;
         filter: grayscale(${valid ? 0 : 1});
       `}
     >
       <PadAssetImage
         assetName={`${latentName}latentbase`}
-        height={17}
+        height={height}
         className={css`
           position: relative;
           top: ${topIcon};
-          left: 11px;
+          left: 13px;
         `}
       />
       {halfBreakDamage ? (
         <PadAssetImage
           assetName={`1.5xlatentbase`}
-          height={12}
+          height={height}
           className={css`
             position: relative;
             top: ${mobile ? 0 : 1}px;
