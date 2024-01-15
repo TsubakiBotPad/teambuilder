@@ -133,7 +133,6 @@ export async function computeTeamBasicStats(
   var rcvBadgeMult = 1;
 
   if (not2P) {
-    debugger;
     if (playerBadgeId === "hp") {
       hpBadgeMult = 1.05;
     } else if (playerBadgeId === "hp+") {

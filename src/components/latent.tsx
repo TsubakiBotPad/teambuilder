@@ -228,7 +228,7 @@ export const Latents = ({
     [componentId]
   );
 
-  const height = isMobile() ? 12 : 16;
+  const height = isMobile() ? 11 : 16;
   return (
     <div
       ref={drag}

@@ -45,7 +45,6 @@ export async function computeTotalAwakeningsFromSlots(
   }, {});
 
   if (badgeId === "sb") {
-    debugger;
     histogram[AwokenSkills.SKILLBOOST] += 1;
   }
 
