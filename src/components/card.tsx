@@ -23,7 +23,7 @@ export const desktopCardWidth = "5rem";
 
 const CardEmpty = styled.div`
   background-color: "#fefefe";
-  @media ${breakpoint.xl} {
+  @media ${breakpoint.md} {
     width: ${desktopCardWidth};
   }
 
@@ -44,7 +44,7 @@ type CardSelectedType = {
 const CardSelectedImage = styled.div<CardSelectedType>`
   background: ${(props) => `url("${BASE_ICON_URL}${leftPad(props.monsterId, 5)}.png")`};
   background-size: cover;
-  @media ${breakpoint.xl} {
+  @media ${breakpoint.md} {
     width: ${desktopCardWidth};
   }
 
