@@ -11,7 +11,12 @@ import { GameConfig } from "../gameConfigSelector";
 
 export type AwakeningHistogram = { [key: string]: number };
 
-export async function computeTotalAwakeningsFromSlots(slots: TeamSlotState[], includeSA: boolean, hasAssists: boolean) {
+export async function computeTotalAwakeningsFromSlots(
+  slots: TeamSlotState[],
+  includeSA: boolean,
+  hasAssists: boolean,
+  badgeId: string
+) {
   const totalAwakenings = [];
   for (const slot of slots) {
     const m1b = await monsterCacheClient.get(slot.base.id);
@@ -39,6 +44,15 @@ export async function computeTotalAwakeningsFromSlots(slots: TeamSlotState[], in
     return acc;
   }, {});
 
+  if (badgeId == "sb") {
+    debugger;
+    histogram[AwokenSkills.SKILLBOOST] += 1;
+  }
+
+  if (badgeId == "sbr") {
+    histogram[AwokenSkills.SKILLBINDRES] += 2.5;
+  }
+
   return histogram;
 }
 
@@ -49,7 +63,7 @@ export async function computeTotalAwakenings(
   hasAssists: boolean
 ) {
   var slots = getTeamSlots(gameConfig, teamState, playerId);
-  return computeTotalAwakeningsFromSlots(slots, gameConfig.mode !== "2p", hasAssists);
+  return computeTotalAwakeningsFromSlots(slots, gameConfig.mode !== "2p", hasAssists, teamState[playerId].badgeId);
 }
 
 export async function computeSharedAwakenings(
@@ -63,7 +77,7 @@ export async function computeSharedAwakenings(
   }
 
   var slots = get2PTeamSlots(teamState);
-  return computeTotalAwakeningsFromSlots(slots, false, hasAssists);
+  return computeTotalAwakeningsFromSlots(slots, false, hasAssists, "");
 }
 
 export class AwokenSkillAggregation {

@@ -87,15 +87,15 @@ export async function computeTeamBasicStats2P(
 
   var { hpAcc, rcvAcc, hpNoAwoAcc, rcvNoAwoAcc } = await accumulateBasicStats(slots, gameConfig, hasAssists);
 
-  const awakenings = await computeTotalAwakeningsFromSlots(slots, false, hasAssists);
+  const awakenings = await computeTotalAwakeningsFromSlots(slots, false, hasAssists, "");
   const numTeamHp = awakenings[AwokenSkills.ENHTEAMHP] ?? 0;
   const numTeamRcv = awakenings[AwokenSkills.ENHTEAMRCV] ?? 0;
 
   var hpBadgeMult = 1;
   var rcvBadgeMult = 1;
 
-  hpAcc *= 1 + 0.05 * numTeamHp * hpBadgeMult;
-  rcvAcc *= 1 + 0.2 * numTeamRcv * rcvBadgeMult;
+  hpAcc *= (1 + 0.05 * numTeamHp) * hpBadgeMult;
+  rcvAcc *= (1 + 0.2 * numTeamRcv) * rcvBadgeMult;
 
   return {
     hp: hpAcc,
@@ -123,28 +123,30 @@ export async function computeTeamBasicStats(
 
   var { hpAcc, rcvAcc, hpNoAwoAcc, rcvNoAwoAcc } = await accumulateBasicStats(slots, gameConfig, hasAssists);
 
-  const awakenings = await computeTotalAwakeningsFromSlots(slots, not2P, hasAssists);
+  var playerBadgeId = teamState[playerId].badgeId;
+
+  const awakenings = await computeTotalAwakeningsFromSlots(slots, not2P, hasAssists, playerBadgeId);
   const numTeamHp = awakenings[AwokenSkills.ENHTEAMHP] ?? 0;
   const numTeamRcv = awakenings[AwokenSkills.ENHTEAMRCV] ?? 0;
 
   var hpBadgeMult = 1;
   var rcvBadgeMult = 1;
 
-  var playerBadgeId = teamState[playerId].badgeId;
   if (not2P) {
-    if (playerBadgeId === "hpbadge") {
+    debugger;
+    if (playerBadgeId === "hp") {
       hpBadgeMult = 1.05;
-    } else if (playerBadgeId === "hp+badge") {
+    } else if (playerBadgeId === "hp+") {
       hpBadgeMult = 1.15;
-    } else if (playerBadgeId === "rcvbadge") {
+    } else if (playerBadgeId === "rcv") {
       rcvBadgeMult = 1.25;
-    } else if (playerBadgeId === "rcv+badge") {
+    } else if (playerBadgeId === "rcv+") {
       rcvBadgeMult = 1.35;
     }
   }
 
-  hpAcc *= 1 + 0.05 * numTeamHp * hpBadgeMult;
-  rcvAcc *= 1 + 0.2 * numTeamRcv * rcvBadgeMult;
+  hpAcc *= (1 + 0.05 * numTeamHp) * hpBadgeMult;
+  rcvAcc *= (1 + 0.2 * numTeamRcv) * rcvBadgeMult;
 
   return {
     hp: hpAcc,
