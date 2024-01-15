@@ -11,16 +11,27 @@ import { DraggableTypes } from "../pages/padteambuilder";
 import { FlexColC } from "../stylePrimitives";
 import { leftPad } from "./generic/leftPad";
 import { TeamComponentId } from "./id";
+import { breakpoint, isMobile } from "../breakpoints";
 
 interface DropResult {
   dropEffect: string;
   target: TeamComponentId;
 }
 
+export const mobileCardWidth = "15vw";
+export const desktopCardWidth = "5rem";
+
 const CardEmpty = styled.div`
   background-color: "#fefefe";
-  width: 5rem;
-  height: 5rem;
+  @media ${breakpoint.xl} {
+    width: ${desktopCardWidth};
+  }
+
+  @media ${breakpoint.xs} {
+    width: ${mobileCardWidth};
+  }
+
+  aspect-ratio: 1/1;
   border: 2px dotted #aaa;
   box-sizing: border-box;
 `;
@@ -33,8 +44,15 @@ type CardSelectedType = {
 const CardSelectedImage = styled.div<CardSelectedType>`
   background: ${(props) => `url("${BASE_ICON_URL}${leftPad(props.monsterId, 5)}.png")`};
   background-size: cover;
-  width: 5rem;
-  height: 5rem;
+  @media ${breakpoint.xl} {
+    width: ${desktopCardWidth};
+  }
+
+  @media ${breakpoint.xs} {
+    width: ${mobileCardWidth};
+  }
+
+  aspect-ratio: 1/1;
   position: relative;
 
   &::before {
@@ -53,6 +71,10 @@ const CardOverlayText = styled.div`
   font-size: 0.75rem;
   font-weight: bold;
   color: #fff;
+
+  @media ${breakpoint.xs} {
+    font-size: 9px;
+  }
 `;
 
 const LevelText = ({ level }: { level: number }) => {
@@ -105,6 +127,9 @@ const CardSelected = ({
             font-weight: 1000;
             position: absolute;
             padding: 0.15rem;
+            @media ${breakpoint.xs} {
+              font-size: 14px;
+            }
           `}
         >
           +297
@@ -119,6 +144,10 @@ const CardSelected = ({
             padding: 0.15rem;
             & div:not(:last-child) {
               margin-bottom: 0.15rem;
+            }
+
+            @media ${breakpoint.xs} {
+              padding: 0.05rem 0;
             }
           `}
         >

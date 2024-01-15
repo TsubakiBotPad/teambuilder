@@ -5,24 +5,24 @@ import { useContext } from "react";
 import { useDrag, useDrop } from "react-dnd";
 import { AiOutlineCaretDown } from "react-icons/ai";
 import { RxDotsHorizontal } from "react-icons/rx";
-import useModifierKey from "../hooks/useModifierKey";
 
+import useModifierKey from "../hooks/useModifierKey";
 import {
   AppStateContext,
   copySlot,
   PlayerState,
   swapSlot,
+  TeamCardInfo,
   TeamSlotState,
   TeamState,
   TeamStateContext
 } from "../model/teamStateManager";
 import { DraggableTypes } from "../pages/padteambuilder";
-import { FlexCol, FlexColC, FlexRow, FlexRowC, H2 } from "../stylePrimitives";
-import { BadgeDisplay } from "./badge";
+import { FlexColC } from "../stylePrimitives";
 import { Card } from "./card";
 import { TeamComponentId } from "./id";
 import { Latents } from "./latent";
-import { TeamStatDisplay } from "./teamStats/teamStats";
+import { breakpoint, isMobile } from "../breakpoints";
 
 interface DropResult {
   dropEffect: string;
@@ -37,9 +37,15 @@ type ColorProps = {
 
 const ColorBG = styled.div<ColorProps>`
   background-color: ${(props) => props.color};
-  padding: 0.5rem;
+  padding: 0rem;
+
+  @media ${breakpoint.xl} {
+    padding: 0.25rem;
+  }
+
   ${(props) => (props.darken ? "filter: saturate(200%) brightness(1.2)" : "")};
   ${(props) => (props.grayscale ? "filter:grayscale(1)" : "")};
+  width: 100%;
 `;
 
 const teamIdToColor: { [key in string]: string } = {
@@ -57,9 +63,62 @@ const GrabDots = styled.div<ColorProps>`
   display: flex;
   justify-content: center;
   ${(props) => (props.darken ? "filter: saturate(200%) brightness(1.2)" : "")};
+  padding: 0rem;
+
+  @media ${breakpoint.xl} {
+    padding: 0.25rem;
+  }
 `;
 
-const TeamSlot = ({
+type ComponentId = {
+  teamId: keyof TeamState;
+  slotId: keyof PlayerState;
+};
+
+const AssistRow = ({
+  isOver,
+  hasAssists,
+  componentId,
+  monster
+}: {
+  isOver: boolean;
+  hasAssists: boolean;
+  componentId: ComponentId;
+  monster: TeamCardInfo;
+}) => {
+  return (
+    <ColorBG color={"#f0f0f0"} darken={isOver} grayscale={!hasAssists}>
+      <FlexColC>
+        <Card componentId={{ ...componentId, use: "assist" }} monster={monster} />
+      </FlexColC>
+    </ColorBG>
+  );
+};
+
+const MonsterRow = ({
+  isOver,
+  componentId,
+  color,
+  subattr,
+  state
+}: {
+  isOver: boolean;
+  componentId: ComponentId;
+  color: string;
+  subattr: number | undefined;
+  state: TeamSlotState;
+}) => {
+  return (
+    <ColorBG color={color} darken={isOver}>
+      <FlexColC gap="0.25rem">
+        <Card componentId={{ ...componentId, use: "base" }} monster={state.base} subattr={subattr} />
+        <Latents componentId={{ ...componentId, use: "latents" }} latents={state.latents} teamSlot={state} />
+      </FlexColC>
+    </ColorBG>
+  );
+};
+
+export const TeamSlot = ({
   teamId,
   slotId,
   state,
@@ -118,6 +177,8 @@ const TeamSlot = ({
     subattr = subattrs[slot];
   }
 
+  const teamColor = invert ? otherTeamColor : teamIdToColor[teamId];
+
   return (
     <div
       ref={drag}
@@ -132,80 +193,17 @@ const TeamSlot = ({
             position: relative;
           `}
         >
-          <ColorBG color={"#f0f0f0"} darken={isOver} grayscale={!hasAssists}>
-            <Card componentId={{ ...componentId, use: "assist" }} monster={state.assist} />
-          </ColorBG>
-          <FlexRowC>
-            <AiOutlineCaretDown />
-          </FlexRowC>
-          <ColorBG color={invert ? otherTeamColor : teamIdToColor[teamId]} darken={isOver}>
-            <FlexColC gap="0.25rem">
-              <Card componentId={{ ...componentId, use: "base" }} monster={state.base} subattr={subattr} />
-              <Latents componentId={{ ...componentId, use: "latents" }} latents={state.latents} teamSlot={state} />
-            </FlexColC>
-          </ColorBG>
-          <GrabDots color={invert ? otherTeamColor : teamIdToColor[teamId]} darken={isOver}>
-            <RxDotsHorizontal />
-            <RxDotsHorizontal />
-          </GrabDots>
+          <AssistRow isOver={isOver} hasAssists={hasAssists} componentId={componentId} monster={state.assist} />
+          <AiOutlineCaretDown />
+          <MonsterRow isOver={isOver} color={teamColor} state={state} subattr={subattr} componentId={componentId} />
+          {!isMobile() ? (
+            <GrabDots color={teamColor} darken={isOver}>
+              <RxDotsHorizontal />
+              <RxDotsHorizontal />
+            </GrabDots>
+          ) : null}
         </FlexColC>
       </div>
     </div>
-  );
-};
-
-const Team = ({ teamId, state }: { teamId: keyof TeamState; state: PlayerState }) => {
-  const { gameConfig } = useContext(AppStateContext);
-
-  return (
-    <FlexCol gap="0.25rem">
-      <FlexRow>
-        <TeamSlot teamId={teamId} slotId={"1"} state={state.teamSlot1} />
-        <TeamSlot teamId={teamId} slotId={"2"} state={state.teamSlot2} />
-        <TeamSlot teamId={teamId} slotId={"3"} state={state.teamSlot3} />
-        <TeamSlot teamId={teamId} slotId={"4"} state={state.teamSlot4} />
-        <TeamSlot teamId={teamId} slotId={"5"} state={state.teamSlot5} />
-        <div
-          className={css`
-            margin-left: 0.5rem;
-          `}
-        >
-          <TeamSlot teamId={teamId} slotId={"6"} state={state.teamSlot6} invert={gameConfig.mode === "2p"} />
-        </div>
-      </FlexRow>
-    </FlexCol>
-  );
-};
-
-const TeamRow = styled(FlexRow)`
-  padding: 0.5rem;
-  gap: 2rem;
-`;
-
-export const TeamBlock = ({ playerId, shouldShow }: { playerId: keyof TeamState; shouldShow: boolean }) => {
-  const { gameConfig, teamStats, setPlayerSelected, setBadgeModalIsOpen } = useContext(AppStateContext);
-  const { teamState } = useContext(TeamStateContext);
-  const is2P = gameConfig.mode === "2p";
-  return shouldShow ? (
-    <FlexCol gap="0.25rem">
-      <FlexRowC gap="0.5rem">
-        <H2>{playerId}</H2>
-        {!is2P ? (
-          <BadgeDisplay
-            onClick={() => {
-              setPlayerSelected(playerId);
-              setBadgeModalIsOpen(true);
-            }}
-            badgeName={teamState[playerId].badgeId}
-          />
-        ) : null}
-      </FlexRowC>
-      <TeamRow>
-        <Team teamId={playerId} state={teamState[playerId]} />
-        <TeamStatDisplay teamStat={teamStats[playerId]} keyP={playerId} is2P={is2P} />
-      </TeamRow>
-    </FlexCol>
-  ) : (
-    <></>
   );
 };

@@ -107,6 +107,8 @@ interface AppState {
   setLatentModalIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
   badgeModalIsOpen: boolean;
   setBadgeModalIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  settingsModalIsOpen: boolean;
+  setSettingsModalIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
   cardSlotSelected: Partial<TeamComponentId>;
   setCardSlotSelected: React.Dispatch<React.SetStateAction<Partial<TeamComponentId>>>;
   playerSelected: string;
@@ -135,6 +137,8 @@ export const DEFAULT_APP_STATE: AppState = {
   setLatentModalIsOpen: () => {},
   badgeModalIsOpen: false,
   setBadgeModalIsOpen: () => {},
+  settingsModalIsOpen: false,
+  setSettingsModalIsOpen: () => {},
   cardSlotSelected: {},
   setCardSlotSelected: () => {},
   playerSelected: "",

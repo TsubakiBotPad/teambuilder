@@ -15,3 +15,9 @@ export const breakpoint = {
   xl: `(min-width: ${size.xl})`,
   xxl: `(min-width: ${size.xxl})`
 };
+
+
+export function isMobile() {
+  const query = `(max-width: 768px)`;
+  return window.matchMedia(query).matches;
+}

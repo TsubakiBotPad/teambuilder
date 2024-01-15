@@ -1,12 +1,16 @@
 import { css } from "@emotion/css";
 import styled from "@emotion/styled";
 
-import { FlexCol, FlexColC, FlexRow } from "../../stylePrimitives";
+import { FlexCol, FlexColC, FlexRow, FlexRowC } from "../../stylePrimitives";
 import { fixedDecimals } from "../generic/fixedDecimals";
 import { AttributeHistogram } from "./attributes";
 import { AwakeningHistogram, AwakeningRowDisplay, AwakeningsToDisplay2PShared } from "./awakenings";
 import { TeamBasicStats } from "./basicStats";
 import { TeamTypes } from "./types";
+import { iStr } from "../../i18n/i18n";
+import { AppStateContext } from "../../model/teamStateManager";
+import { useContext } from "react";
+import { TeamStat } from "./teamStats";
 
 const TD = styled.td`
   padding: 0 1rem 0 0;
@@ -19,6 +23,49 @@ const TH = styled.th`
   vertical-align: middle;
   text-align: center;
 `;
+
+export const TeamSharedStats = ({
+  teamStat1,
+  teamStat2,
+  sharedAwakenings
+}: {
+  teamStat1: TeamStat | undefined;
+  teamStat2: TeamStat | undefined;
+  sharedAwakenings?: AwakeningHistogram;
+}) => {
+  const { language } = useContext(AppStateContext);
+
+  if (!teamStat1 || !teamStat2) {
+    return null;
+  }
+
+  return (
+    <FlexRowC gap="1rem">
+      <FlexColC>
+        <span>{iStr("shared", language)}</span>
+        <div
+          className={css`
+            border: solid 1px #aaa;
+          `}
+        >
+          <TeamSharedStatsDisplay
+            sbs={teamStat1.sharedBasicStats}
+            tbs1={teamStat1.teamBasicStats}
+            tbs2={teamStat2.teamBasicStats}
+            tt1={teamStat1.teamTypes}
+            tt2={teamStat2.teamTypes}
+            unbindablePct1={teamStat1.teamUnbindablePct}
+            unbindablePct2={teamStat2.teamUnbindablePct}
+            ah1={teamStat1.attributes}
+            ah2={teamStat2.attributes}
+            keyP={"p1"}
+            sAwo={sharedAwakenings}
+          />
+        </div>
+      </FlexColC>
+    </FlexRowC>
+  );
+};
 
 export const TeamSharedStatsDisplay = ({
   sbs,

@@ -17,6 +17,8 @@ import { DraggableTypes } from "../pages/padteambuilder";
 import { FlexRow } from "../stylePrimitives";
 import { TeamComponentId } from "./id";
 import { computeTotalAwakeningsFromSlots } from "./teamStats/awakenings";
+import { breakpoint, isMobile } from "../breakpoints";
+import { desktopCardWidth, mobileCardWidth } from "./card";
 
 interface DropResult {
   dropEffect: string;
@@ -25,16 +27,31 @@ interface DropResult {
 
 const LatentEmpty = styled.div`
   background-color: "lightyellow";
-  width: 5rem;
-  height: 2.14rem;
+  @media ${breakpoint.xl} {
+    width: ${desktopCardWidth};
+  }
+
+  @media ${breakpoint.xs} {
+    width: ${mobileCardWidth};
+  }
+
+  aspect-ratio: 5/2;
   border: 2px dotted #aaa;
   box-sizing: border-box;
 `;
 
 const LatentSelected = styled(FlexRow)`
   background-color: lightred;
-  width: 5rem;
-  height: 2.14rem;
+  @media ${breakpoint.xl} {
+    width: ${desktopCardWidth};
+    height: 2.1rem;
+  }
+
+  @media ${breakpoint.xs} {
+    width: ${mobileCardWidth};
+    height: 1.55rem;
+  }
+
   flex-wrap: wrap;
   gap: 0px 2px;
   position: relative;
@@ -62,34 +79,36 @@ const SixSlotLatent = ({
   if (!latentName) {
     return <></>;
   }
-
+  const mobile = isMobile();
+  const topIcon = `${halfBreakDamage ? (mobile ? 1 : 2) : 7}px`;
+  const height = mobile ? 12 : 15;
   return (
     <div
       className={css`
         width: 100%;
         height: 100%;
         background: url(img/6slotL.png);
-        background-size: contain;
+        background-size: cover;
         background-repeat: no-repeat;
         filter: grayscale(${valid ? 0 : 1});
       `}
     >
       <PadAssetImage
         assetName={`${latentName}latentbase`}
-        height={17}
+        height={height}
         className={css`
           position: relative;
-          top: ${halfBreakDamage ? 2 : 7}px;
-          left: 11px;
+          top: ${topIcon};
+          left: 13px;
         `}
       />
       {halfBreakDamage ? (
         <PadAssetImage
           assetName={`1.5xlatentbase`}
-          height={12}
+          height={height}
           className={css`
             position: relative;
-            top: 1px;
+            top: ${mobile ? 0 : 1}px;
             left: 13px;
           `}
         />
@@ -209,6 +228,7 @@ export const Latents = ({
     [componentId]
   );
 
+  const height = isMobile() ? 12 : 16;
   return (
     <div
       ref={drag}
@@ -218,7 +238,12 @@ export const Latents = ({
         cursor: grab;
       `}
     >
-      <div ref={drop}>
+      <div
+        ref={drop}
+        className={css`
+          height: 100%;
+        `}
+      >
         {latents.length !== 0 ? (
           <LatentSelected
             onClick={() => {
@@ -232,7 +257,11 @@ export const Latents = ({
                 <RemainderLatents>
                   {remainderLatents.map((a, i) => {
                     return (
-                      <PadAssetImage assetName={LATENTS_ID_TO_NAME[a]} height={16} key={LATENTS_ID_TO_NAME[a] + i} />
+                      <PadAssetImage
+                        assetName={LATENTS_ID_TO_NAME[a]}
+                        height={height}
+                        key={LATENTS_ID_TO_NAME[a] + i}
+                      />
                     );
                   })}
                 </RemainderLatents>
@@ -245,7 +274,11 @@ export const Latents = ({
                   })
                   .map((a, i) => {
                     return (
-                      <PadAssetImage assetName={LATENTS_ID_TO_NAME[a]} height={16} key={LATENTS_ID_TO_NAME[a] + i} />
+                      <PadAssetImage
+                        assetName={LATENTS_ID_TO_NAME[a]}
+                        height={height}
+                        key={LATENTS_ID_TO_NAME[a] + i}
+                      />
                     );
                   })}
               </FlexRow>

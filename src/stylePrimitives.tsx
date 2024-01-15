@@ -16,6 +16,11 @@ export const H3 = styled.h3`
   font-weight: 600;
 `;
 
+export const H4 = styled.h4`
+  font-size: 1rem;
+  font-weight: 600;
+`;
+
 type FlexColProps = {
   gap?: string;
   wrap?: string;
@@ -26,6 +31,7 @@ type FlexRowProps = {
   wrap?: string;
   center?: boolean;
   justifyContent?: string;
+  width?: string;
 };
 
 export const FlexRow = styled.div<FlexRowProps>`
@@ -33,6 +39,7 @@ export const FlexRow = styled.div<FlexRowProps>`
   gap: ${(props) => (props.gap ? props.gap : "0")};
   justify-content: ${(props) => (props.justifyContent ? props.justifyContent : props.center ? "center" : "start")};
   flex-wrap: ${(props) => (props.wrap ? props.wrap : "nowrap")};
+  width: ${(props) => (props.width ? props.width : "inherit")};
 `;
 
 export const FlexRowC = styled(FlexRow)`
@@ -116,12 +123,12 @@ type BoundingBoxProps = {
 };
 
 export const BoundingBox = styled.div<BoundingBoxProps>`
-  max-width: ${(props) => props.maxWidth ?? "100%"};
-  min-width: ${(props) => props.minWidth ?? "0%"};
+  max-width: ${(props) => props.maxWidthM ?? "100%"};
+  min-width: ${(props) => props.minWidthM ?? "0%"};
 
-  @media ${breakpoint.xs} {
-    max-width: ${(props) => props.maxWidthM ?? "100%"};
-    min-width: ${(props) => props.minWidthM ?? "0%"};
+  @media ${breakpoint.xl} {
+    max-width: ${(props) => props.maxWidth ?? "100%"};
+    min-width: ${(props) => props.minWidth ?? "0%"};
   }
 `;
 
