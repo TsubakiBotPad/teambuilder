@@ -3,6 +3,7 @@ import styled from "@emotion/styled";
 import { useContext } from "react";
 import { HiOutlineArrowNarrowRight } from "react-icons/hi";
 
+import { breakpoint, isMobile } from "../../breakpoints";
 import { MonsterResponse } from "../../client";
 import { iStr } from "../../i18n/i18n";
 import { AwakeningImage, BASE_ICON_URL } from "../../model/images";
@@ -11,12 +12,11 @@ import { AppStateContext } from "../../model/teamStateManager";
 import { computeLeaderSkill } from "../../model/types/leaderSkill";
 import { getKillers } from "../../model/types/monster";
 import { maxLevel } from "../../model/types/stat";
-import { FlexCol, FlexRow, FlexRowC, H3, H4, TDh } from "../../stylePrimitives";
+import { FlexCol, FlexRow, FlexRowC, TDh } from "../../stylePrimitives";
 import { fixedDecimals } from "../generic/fixedDecimals";
 import { leftPad } from "../generic/leftPad";
 import { LevelSelector } from "../levelSelector";
 import { SuperAwakeningSelector } from "../superAwakeningSelector";
-import { breakpoint, isMobile } from "../../breakpoints";
 
 const MonsterTitle = ({ monster: m }: { monster: MonsterResponse }) => {
   const { language } = useContext(AppStateContext);

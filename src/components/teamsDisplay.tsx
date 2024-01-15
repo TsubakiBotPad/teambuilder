@@ -1,14 +1,12 @@
-import { css } from "@emotion/css";
 import React, { useState } from "react";
 import { useContext } from "react";
-
-import { iStr } from "../i18n/i18n";
-import { AppStateContext } from "../model/teamStateManager";
-import { FlexCol, FlexColC, FlexRow, FlexRowC } from "../stylePrimitives";
-import { TeamBlock } from "./teamBlock";
-import { TeamSharedStats, TeamSharedStatsDisplay } from "./teamStats/teamStats2p";
-import { isMobile } from "../breakpoints";
 import { AiOutlineCaretDown, AiOutlineCaretRight } from "react-icons/ai";
+
+import { isMobile } from "../breakpoints";
+import { AppStateContext } from "../model/teamStateManager";
+import { FlexCol, FlexRow } from "../stylePrimitives";
+import { TeamBlock } from "./teamBlock";
+import { TeamSharedStats } from "./teamStats/teamStats2p";
 
 export const TeamsDisplay1n3P = () => {
   const { gameConfig } = useContext(AppStateContext);

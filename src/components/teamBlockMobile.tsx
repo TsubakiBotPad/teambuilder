@@ -1,5 +1,4 @@
 import { css } from "@emotion/css";
-import styled from "@emotion/styled";
 import { useContext } from "react";
 
 import { AppStateContext, PlayerState, TeamState, TeamStateContext } from "../model/teamStateManager";

@@ -3,6 +3,7 @@ import styled from "@emotion/styled";
 import { useContext } from "react";
 import { useDrag, useDrop } from "react-dnd";
 
+import { breakpoint } from "../breakpoints";
 import { ColorKey, getColor } from "../colors";
 import useModifierKey from "../hooks/useModifierKey";
 import { AwakeningImage, BASE_ICON_URL } from "../model/images";
@@ -11,7 +12,6 @@ import { DraggableTypes } from "../pages/padteambuilder";
 import { FlexColC } from "../stylePrimitives";
 import { leftPad } from "./generic/leftPad";
 import { TeamComponentId } from "./id";
-import { breakpoint, isMobile } from "../breakpoints";
 
 interface DropResult {
   dropEffect: string;

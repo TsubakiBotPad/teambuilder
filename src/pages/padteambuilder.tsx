@@ -1,13 +1,13 @@
 import "react-toastify/dist/ReactToastify.css";
 
 import { debounce } from "lodash";
-import React, { useContext, useEffect, useMemo, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { useNavigate, useParams } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 
-import { Footer } from "../components/footer";
+import { isMobile } from "../breakpoints";
 import { computeTeamStat, TeamStats } from "../components/teamStats/teamStats";
 import { iStr, Language } from "../i18n/i18n";
 import { ConfigData, deserializeConfig, serializeConfig } from "../model/serializedUri";
@@ -21,7 +21,6 @@ import {
 } from "../model/teamStateManager";
 import { DesktopPageContainer } from "./desktop";
 import { MobilePageContainer } from "./mobile";
-import { isMobile } from "../breakpoints";
 
 export const DraggableTypes = {
   card: "card",

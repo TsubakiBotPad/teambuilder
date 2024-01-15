@@ -1,5 +1,5 @@
 import { css } from "@emotion/css";
-import { useContext, useMemo, useRef, useState } from "react";
+import { useContext, useState } from "react";
 import Modal from "react-modal";
 
 import { breakpoint } from "../../breakpoints";

@@ -44,12 +44,12 @@ export async function computeTotalAwakeningsFromSlots(
     return acc;
   }, {});
 
-  if (badgeId == "sb") {
+  if (badgeId === "sb") {
     debugger;
     histogram[AwokenSkills.SKILLBOOST] += 1;
   }
 
-  if (badgeId == "sbr") {
+  if (badgeId === "sbr") {
     histogram[AwokenSkills.SKILLBINDRES] += 2.5;
   }
 

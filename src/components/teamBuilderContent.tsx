@@ -18,7 +18,7 @@ const TeamInput = styled.input`
 `;
 
 export const TeamBuilderContent = React.forwardRef((props, ref) => {
-  const { gameConfig, setTeamName, teamName, instructions, setInstructions, language } = useContext(AppStateContext);
+  const { gameConfig, setTeamName, teamName, language } = useContext(AppStateContext);
   return (
     <FlexColCResponsive>
       <FlexRow gap="1rem">
